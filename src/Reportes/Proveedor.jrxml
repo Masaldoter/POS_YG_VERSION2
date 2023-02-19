@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="65b03927-991f-428f-a718-cd48709bbd0f">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     proveedores.`idproveedores` AS proveedores_idproveedores,
+     proveedores.`Proveedor` AS proveedores_Proveedor,
+     proveedores.`Vendedor` AS proveedores_Vendedor,
+     proveedores.`Tel` AS proveedores_Tel
+FROM
+     `proveedores` proveedores]]>
+	</queryString>
+	<field name="proveedores_idproveedores" class="java.lang.Integer"/>
+	<field name="proveedores_Proveedor" class="java.lang.String"/>
+	<field name="proveedores_Vendedor" class="java.lang.String"/>
+	<field name="proveedores_Tel" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="138" splitType="Stretch">
+			<staticText>
+				<reportElement x="227" y="99" width="100" height="20" uuid="0846b89f-b44a-48a3-b9a3-7195d43fb73f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Tel: 4035-25-73]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="227" y="79" width="100" height="20" uuid="043b243e-e9e5-4be3-912b-d777ac4fe9ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[4789627-2]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="455" y="0" width="100" height="20" uuid="17ee64f0-849b-439f-9ea2-73a19dc8fa4a"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="158" y="59" width="239" height="20" uuid="eb401f1a-f691-4656-8a7c-b13e158b2017"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Zona 1, Las Cruces, Petén, Guatemala]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="14" width="243" height="45" uuid="011a2d3f-2478-4da7-b377-83754e6f0331"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ferretería El Amigo]]></text>
+			</staticText>
+			<image>
+				<reportElement x="23" y="14" width="131" height="115" uuid="8a898e91-47b9-4a5d-b2b0-008df7fbe648"/>
+				<imageExpression><![CDATA["C:\\Sistema Punto de Venta YG\\FerreteríaPequeño.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="182" y="0" width="191" height="35" uuid="1067fda9-f428-4a95-95cc-58e3b76f1db1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Proveedores]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="54" y="0" width="57" height="20" uuid="751104a8-f77c-41d1-8151-0ca9ff68eed2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="0" width="135" height="20" uuid="0125b369-31f6-4096-8bf3-03234e94862e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proveedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="246" y="0" width="149" height="20" uuid="6a763be2-13b4-4cf4-a102-268e8e8fc369"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="395" y="0" width="100" height="20" uuid="1f04a264-7bbd-4a95-a09e-7d803dd42ccf"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tel]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="56" y="0" width="55" height="20" uuid="26b58070-f824-4a79-addb-38c8ebf99ced"/>
+				<textFieldExpression><![CDATA[$F{proveedores_idproveedores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="0" width="135" height="20" uuid="0ff37806-39e5-41eb-8053-d363308ee497"/>
+				<textFieldExpression><![CDATA[$F{proveedores_Proveedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="246" y="0" width="149" height="20" uuid="b5e57c65-71f0-4671-b71d-68bdf2274dd3"/>
+				<textFieldExpression><![CDATA[$F{proveedores_Vendedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="395" y="0" width="100" height="20" uuid="47321f04-cf3c-49c7-afaa-4b0ea87c433e"/>
+				<textFieldExpression><![CDATA[$F{proveedores_Tel}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement x="201" y="0" width="152" height="45" uuid="ab09829d-5642-4065-a5a0-93f35b972254"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA["El Amigo de tu economía"]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="225" y="17" width="80" height="20" uuid="8d94a3eb-f6c8-4e5b-8937-e865b3aa2e97"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="305" y="17" width="40" height="20" uuid="a2ece15c-0206-45df-8988-fd9845a7ee65"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
