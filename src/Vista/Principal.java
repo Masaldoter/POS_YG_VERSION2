@@ -36,10 +36,13 @@ import Vista.REPORTES_VENTAS.MOVIMIENTOS_DIARIOS;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_GENERALES;
 import Vista.SESION.SESION;
 import Vista.VENTAS.CAJA.INTERNAL_CAJA_PRINCIPAL;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -50,6 +53,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -108,7 +112,6 @@ public final class Principal extends javax.swing.JFrame {
         this.setTitle(PARAMETROS_VERSION_SISTEMA.NOMBRE_SISTEMA+" "+PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA+
         " | "+PARAMETROS_EMPRESA.NOMBRE_EMPRESA.toUpperCase()+ " | "+PARAMETROS_USUARIOS.NOMBRE_USUARIO+ 
         " | "+PARAMETROS_USUARIOS.ROL_USUARIO.toUpperCase());
-        jMenu13.setVisible(false);
         Ventas.CargarDatosImpresionRapida(CheckBoxImpresionRapida);
         ConfigVentas.CargarDatosModoReinventario(CheckBoxModoStockCero);
         ConfigVentas.CargarDatosProductosPersonalizados(CheckPermitirProductosPersonalizados);
@@ -131,12 +134,14 @@ public final class Principal extends javax.swing.JFrame {
             jSeparator24.setVisible(false);
             jMenu9.setVisible(false);
             jMenu6.setVisible(false);
+            jMenu13.setVisible(false);
+            jSeparator1.setVisible(false);
         } else {
         }
         AlIniciarSesion();
         Cerrar();
     }
-    
+
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
@@ -377,7 +382,6 @@ public final class Principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(getIconImage());
-        setIconImages(getIconImages());
         setMinimumSize(new java.awt.Dimension(800, 700));
 
         DESKTOP_PRINCIPAL.setAutoscrolls(true);
@@ -393,7 +397,7 @@ public final class Principal extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        jPanel1.setBackground(new java.awt.Color(184, 183, 255));
+        jPanel1.setBackground(new java.awt.Color(51, 153, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("BASE DE DATOS:");
@@ -573,6 +577,11 @@ public final class Principal extends javax.swing.JFrame {
         jMenu13.setText("CAJA");
 
         jMenuItem23.setText("CAJA PRINCIPAL");
+        jMenuItem23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem23ActionPerformed(evt);
+            }
+        });
         jMenu13.add(jMenuItem23);
         jMenu13.add(jSeparator55);
 
@@ -1233,6 +1242,64 @@ public final class Principal extends javax.swing.JFrame {
         REFRESCAR_KARDEX();
     }//GEN-LAST:event_jMenuItem31ActionPerformed
 
+    private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem23ActionPerformed
+
+    public static void CAMBIAR_ICONO(){
+        ImageIcon icono = new ImageIcon(ObtenerRutaImagen(1)); // carga el icono desde archivo
+
+        // crea una imagen en blanco del mismo tamaño que el icono
+        BufferedImage imagen = new BufferedImage(icono.getIconWidth(), icono.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        // dibuja el icono sobre la imagen
+        Graphics2D g = imagen.createGraphics();
+        icono.paintIcon(null, g, 0, 0);
+        g.dispose();
+
+        // obtiene la imagen modificada con el nuevo color
+        BufferedImage imagenModificada = cambiarColorImagen(imagen, Color.GREEN); // aquí se cambia el color a rojo
+
+        // crea un nuevo icono a partir de la imagen modificada
+        ImageIcon nuevoIcono = new ImageIcon(imagenModificada);
+
+        // muestra el nuevo icono
+        // por ejemplo, en un JLabel:
+        JLabel etiqueta = new JLabel(nuevoIcono);
+        JOptionPane.showMessageDialog(null, "AQUÍ HAGO UNA PRUEBA DE CAMBIAR EL COLOR DEL ICONO", "MUESTRA DE ICONO", JOptionPane.OK_CANCEL_OPTION, nuevoIcono);
+    }
+    
+    private static BufferedImage cambiarColorImagen(BufferedImage imagen, Color nuevoColor) {
+        // crea una copia de la imagen
+        BufferedImage nuevaImagen = new BufferedImage(imagen.getWidth(), imagen.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        nuevaImagen.createGraphics().drawImage(imagen, 0, 0, null);
+
+        // obtiene los componentes RGB del nuevo color
+        int r = nuevoColor.getRed();
+        int g = nuevoColor.getGreen();
+        int b = nuevoColor.getBlue();
+
+        // recorre los píxeles de la imagen y modifica su color
+        for (int x = 0; x < nuevaImagen.getWidth(); x++) {
+            for (int y = 0; y < nuevaImagen.getHeight(); y++) {
+                int colorActual = nuevaImagen.getRGB(x, y);
+                int alpha = (colorActual >> 24) & 0xff;
+                int red = (colorActual >> 16) & 0xff;
+                int green = (colorActual >> 8) & 0xff;
+                int blue = colorActual & 0xff;
+                if (red == 0 && green == 0 && blue == 0) { // cambia solo los píxeles negros
+                    red = r;
+                    green = g;
+                    blue = b;
+                    int nuevoColorRGB = (alpha << 24) | (red << 16) | (green << 8) | blue;
+                    nuevaImagen.setRGB(x, y, nuevoColorRGB);
+                }
+            }
+        }
+
+        return nuevaImagen;
+    }
+    
     //Redireccionamiento a facebook
     public void Facebook() {
         if (java.awt.Desktop.isDesktopSupported()) {

@@ -12,35 +12,33 @@ import java.util.Date;
  * @author Masaldoter
  */
 public class Compras {
-    private int IdCompra, Proveedor, UsuarioRegistro, UsuarioModifico;
-    private String TipoDocumento, NumeroDocumento, SerieDocumento;
-    private Float Total;
-    private Date FechaCompra, FechaRegistro, FechaModificacion;
+    private int idcompras, Proveedor, USUARIO_REGISTRO_COMPRA, USUARIO_MODIFICO_COMPRA;
+    private String TipoDocumento, NumeroDocumento, SerieDocumento, DESCRIPCION_COMPRAS, FECHA_HORA_COMPRA;
+    private Float TOTAL_COMPRA;
     
     public Compras(){
         
     }
 
-    public Compras(int IdCompra, int Proveedor, int UsuarioRegistro, int UsuarioModifico, String TipoDocumento, String NumeroDocumento, String SerieDocumento, Float Total, Date FechaCompra, Date FechaRegistro, Date FechaModificacion) {
-        this.IdCompra = IdCompra;
+    public Compras(int idcompras, int Proveedor, int USUARIO_REGISTRO_COMPRA, int USUARIO_MODIFICO_COMPRA, String TipoDocumento, String NumeroDocumento, String SerieDocumento, String DESCRIPCION_COMPRAS, String FECHA_HORA_COMPRA, Float TOTAL_COMPRA) {
+        this.idcompras = idcompras;
         this.Proveedor = Proveedor;
-        this.UsuarioRegistro = UsuarioRegistro;
-        this.UsuarioModifico = UsuarioModifico;
+        this.USUARIO_REGISTRO_COMPRA = USUARIO_REGISTRO_COMPRA;
+        this.USUARIO_MODIFICO_COMPRA = USUARIO_MODIFICO_COMPRA;
         this.TipoDocumento = TipoDocumento;
         this.NumeroDocumento = NumeroDocumento;
         this.SerieDocumento = SerieDocumento;
-        this.Total = Total;
-        this.FechaCompra = FechaCompra;
-        this.FechaRegistro = FechaRegistro;
-        this.FechaModificacion = FechaModificacion;
+        this.DESCRIPCION_COMPRAS = DESCRIPCION_COMPRAS;
+        this.FECHA_HORA_COMPRA = FECHA_HORA_COMPRA;
+        this.TOTAL_COMPRA = TOTAL_COMPRA;
     }
 
-    public int getIdCompra() {
-        return IdCompra;
+    public int getIdcompras() {
+        return idcompras;
     }
 
-    public void setIdCompra(int IdCompra) {
-        this.IdCompra = IdCompra;
+    public void setIdcompras(int idcompras) {
+        this.idcompras = idcompras;
     }
 
     public int getProveedor() {
@@ -51,20 +49,20 @@ public class Compras {
         this.Proveedor = Proveedor;
     }
 
-    public int getUsuarioRegistro() {
-        return UsuarioRegistro;
+    public int getUSUARIO_REGISTRO_COMPRA() {
+        return USUARIO_REGISTRO_COMPRA;
     }
 
-    public void setUsuarioRegistro(int UsuarioRegistro) {
-        this.UsuarioRegistro = UsuarioRegistro;
+    public void setUSUARIO_REGISTRO_COMPRA(int USUARIO_REGISTRO_COMPRA) {
+        this.USUARIO_REGISTRO_COMPRA = USUARIO_REGISTRO_COMPRA;
     }
 
-    public int getUsuarioModifico() {
-        return UsuarioModifico;
+    public int getUSUARIO_MODIFICO_COMPRA() {
+        return USUARIO_MODIFICO_COMPRA;
     }
 
-    public void setUsuarioModifico(int UsuarioModifico) {
-        this.UsuarioModifico = UsuarioModifico;
+    public void setUSUARIO_MODIFICO_COMPRA(int USUARIO_MODIFICO_COMPRA) {
+        this.USUARIO_MODIFICO_COMPRA = USUARIO_MODIFICO_COMPRA;
     }
 
     public String getTipoDocumento() {
@@ -91,36 +89,27 @@ public class Compras {
         this.SerieDocumento = SerieDocumento;
     }
 
-    public Float getTotal() {
-        return Total;
+    public String getDESCRIPCION_COMPRAS() {
+        return DESCRIPCION_COMPRAS;
     }
 
-    public void setTotal(Float Total) {
-        this.Total = Total;
+    public void setDESCRIPCION_COMPRAS(String DESCRIPCION_COMPRAS) {
+        this.DESCRIPCION_COMPRAS = DESCRIPCION_COMPRAS;
     }
 
-    public Date getFechaCompra() {
-        return FechaCompra;
+    public String getFECHA_HORA_COMPRA() {
+        return FECHA_HORA_COMPRA;
     }
 
-    public void setFechaCompra(Date FechaCompra) {
-        this.FechaCompra = FechaCompra;
+    public void setFECHA_HORA_COMPRA(String FECHA_HORA_COMPRA) {
+        this.FECHA_HORA_COMPRA = FECHA_HORA_COMPRA;
     }
 
-    public Date getFechaRegistro() {
-        return FechaRegistro;
+    public Float getTOTAL_COMPRA() {
+        return TOTAL_COMPRA;
     }
 
-    public void setFechaRegistro(Date FechaRegistro) {
-        this.FechaRegistro = FechaRegistro;
+    public void setTOTAL_COMPRA(Float TOTAL_COMPRA) {
+        this.TOTAL_COMPRA = TOTAL_COMPRA;
     }
-
-    public Date getFechaModificacion() {
-        return FechaModificacion;
-    }
-
-    public void setFechaModificacion(Date FechaModificacion) {
-        this.FechaModificacion = FechaModificacion;
-    }
-    
 }
