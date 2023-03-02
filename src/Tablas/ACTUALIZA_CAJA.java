@@ -18,19 +18,17 @@ import java.sql.SQLException;
  */
 public class ACTUALIZA_CAJA extends ConexionesSQL{
     
-    public static List LISTAR_CAJAS(){
+    public static List LISTAR_CAJAS(String Fecha){
         List<CAJA> Listapro = new ArrayList();
         try {
             cn = conexion.getInstancia().getConnection();
             rs = null;
             ps = null;
             CAJA caja;
-             ps = cn.prepareStatement("SELECT idcaja, ESTADO_DE_CAJA, FECHA_HORA_APERTURA_CAJA, FECHA_HORA_CIERRE_CAJA, USUARIO_APERTURO_CAJA, USUARIO_CERRO_CAJA, ARQUEO_DE_CAJA, FECHA from caja WHERE FECHA="+METODOS_GLOBALES.Fecha());
+             ps = cn.prepareStatement("SELECT idcaja, ESTADO_DE_CAJA, FECHA_HORA_APERTURA_CAJA, FECHA_HORA_CIERRE_CAJA, USUARIO_APERTURO_CAJA, USUARIO_CERRO_CAJA, ARQUEO_DE_CAJA, FECHA from caja WHERE FECHA= '"+Fecha+"'");
              rs = ps.executeQuery();
-
-            while (rs.next()) {
+             while (rs.next()) {
                 caja= new CAJA();
-                //pro1.setIdProductos(rs.getInt("productos.CodigoBarras"));
                 caja.setIdcaja(rs.getInt("idcaja"));
                 caja.setESTADO_DE_CAJA(rs.getString("ESTADO_DE_CAJA"));
                 caja.setFECHA_HORA_APERTURA_CAJA(rs.getString("FECHA_HORA_APERTURA_CAJA"));

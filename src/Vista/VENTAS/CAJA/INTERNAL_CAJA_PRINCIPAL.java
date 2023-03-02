@@ -4,6 +4,7 @@
  */
 package Vista.VENTAS.CAJA;
 
+import static CLASES_GLOBALES.METODOS_GLOBALES.Fecha;
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
 import CONSULTAS.CONSULTAS_CAJA;
 import Modelo.CAJA;
@@ -49,17 +50,17 @@ public class INTERNAL_CAJA_PRINCIPAL extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "ESTADO DE CAJA", "FECHA", "USUARIO"
+                "ID", "ESTADO DE CAJA", "USUARIO APERTURÓ", "USUARIO CERRÓ", "FECHA APERTURA", "FECHA CIERRE", "TOTAL INICIAL", "ARQUEO DE CAJA", "FECHA"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -89,6 +90,11 @@ public class INTERNAL_CAJA_PRINCIPAL extends javax.swing.JInternalFrame {
         });
 
         jButton2.setText("TURNOS");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("NUEVA CAJA");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -149,23 +155,32 @@ public class INTERNAL_CAJA_PRINCIPAL extends javax.swing.JInternalFrame {
         ACTUALIZAR_CAJAS();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    public Object[] ACTUALIZAR_CAJAS(){
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        System.out.println(Fecha());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    public void ACTUALIZAR_CAJAS(){
        LIMPIAR_TABLA(jTable1);
         LIMPIAR_TABLA(jTable1);
         DefaultTableModel modelo2 = new DefaultTableModel();
         modelo2 = (DefaultTableModel) jTable1.getModel();
         
-        List<CAJA> ListarPr = ACTUALIZA_CAJA.LISTAR_CAJAS();
-        Object[] ob = new Object[4];
+        List<CAJA> ListarPr = ACTUALIZA_CAJA.LISTAR_CAJAS(Fecha());
+        Object[] ob = new Object[9];
         for (int i = 0; i < ListarPr.size(); i++) {
             ob[0] = ListarPr.get(i).getIdcaja();
             ob[1] = ListarPr.get(i).getESTADO_DE_CAJA();
-            ob[2] = ListarPr.get(i).getFECHA_HORA_APERTURA_CAJA();
-            ob[3] = ListarPr.get(i).getFECHA_HORA_CIERRE_CAJA();
+            ob[2] = ListarPr.get(i).getUSUARIO_APERTURO_CAJA();
+            ob[3] = ListarPr.get(i).getUSUARIO_CERRO_CAJA();
+            ob[4] = ListarPr.get(i).getFECHA_HORA_APERTURA_CAJA();
+            ob[5] = ListarPr.get(i).getFECHA_HORA_CIERRE_CAJA();
+            ob[6] = ListarPr.get(i).getTotal_inicial_CAJA();
+            ob[7] = ListarPr.get(i).getARQUEO_DE_CAJA();
+            ob[8] = ListarPr.get(i).getFECHA();
             modelo2.addRow(ob);
         }
         jTable1.setModel(modelo2);
-        return ob;
+       //return ob;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
