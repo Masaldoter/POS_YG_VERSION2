@@ -10,7 +10,7 @@ package CLASES_GLOBALES;
  */
 public class PARAMETROS_VERSION_SISTEMA {
     public static String NOMBRE_SISTEMA = "SISTEMA PUNTO DE VENTA";
-    public static String VERSION_SISTEMA = "3.3.3";
+    public static String VERSION_SISTEMA = "3.3.4";
     public static String NOMBRE_DESARROLLADOR = "ALDO GUTIÉRREZ";
     public static String TELEFONO_DESARROLLADOR = "50240805837";
     public static String FACEBOOK_DESARROLLADOR = "https://www.facebook.com/Masaldotergt/";
@@ -32,13 +32,16 @@ public class PARAMETROS_VERSION_SISTEMA {
             + "LAS LETRAS EN LOS PRECIOS(POS) SE AGRANDAN\n"
             + "(POS): A LA OBSERVACIÓN SE LE AGREGO ACCESO RAPIDO(F11)\n"
             + "\n"
-            + "VERSIÓN 3.3.3 (ACTUAL):\n"
+            + "VERSIÓN 3.3.3:\n"
             + "*BUGS: SE QUITÓ EL HILO DE FACTURAR\n\n"
             + "*NOVEDADES: SE HA AGREGADO LA OPCIÓN DE ACTIVAR Y DESACTIVAR\n"
             + "PRODUCTOS, SE HA MODIFICADO LA APARICIÓN EN TODAS LAS BUSQUEDAS\n"
             + "DE PRODUCTOS\n\n"
             + "LA FACTURA NO SE PUEDE GENERAR SIN NIT/CUI CUANDO SEA MAYOR A\n"
-            + "Q2,500.00\n\nSE QUITÓ LA VENTANA DE AVISO AL FACTURAR";
+            + "Q2,500.00\n\nSE QUITÓ LA VENTANA DE AVISO AL FACTURAR"
+            + "\n"
+            + "VERSIÓN 3.3.4 (ACTUAL):\n"
+            + "*SE AGRREGÓ CAJA, GASTOS\n\n";
 
 
     

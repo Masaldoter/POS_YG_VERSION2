@@ -43,7 +43,7 @@ public class VER_CAJAS extends javax.swing.JDialog {
         for (int i = 0; i < ListarPr.size(); i++) {
             ob[0] = ListarPr.get(i).getIdcaja();
             ob[1] = ListarPr.get(i).getESTADO_DE_CAJA();
-            ob[2] = ListarPr.get(i).getUSUARIO_APERTURO_CAJA();
+            ob[2] = ListarPr.get(i).getTotal_inicial_CAJA();
             modelo2.addRow(ob);
         }
         jTable1.setModel(modelo2);

@@ -101,8 +101,7 @@ public final class Principal extends javax.swing.JFrame {
     KARDEX K= new KARDEX();
     //VENTANAS EMERGENTES
     public static ADMINISTRACION_DE_USUARIOS ADMIN_USUARIOS;
-    //NUMERO INTERNO DE VENTA
-    public ObtenerToken OT = new ObtenerToken();       
+    //NUMERO INTERNO DE VENTA    
     
     public Principal(){
         
@@ -121,7 +120,6 @@ public final class Principal extends javax.swing.JFrame {
         DatosEmpresaDao datosDao= new DatosEmpresaDao();
         datosDao.VerDatos();
         datosDao.VerDatosCertificador();
-        OT.ObtenerToken();
         //MoverEntreSistema();
         HORA_FECHA();
         CARGAR_INICIO();
@@ -975,11 +973,11 @@ public final class Principal extends javax.swing.JFrame {
     
     public void MoverEntreSistema() {
         if (jLabel4.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
-                CA.setVisible(true);
+                
             } else {
                 ABRIR_VENTANAS(P_O_S, true);
                 P_O_S.IdVenta.requestFocus();
@@ -1013,7 +1011,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void ItemVentasGeneralesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemVentasGeneralesActionPerformed
         if(jLabel4.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
@@ -1105,7 +1103,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void ItemVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemVentasActionPerformed
         if (jLabel4.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
@@ -1188,7 +1186,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
         if(jLabel4.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
             VER_CAJAS CA= new VER_CAJAS(this, true, this);
             CA.setVisible(true);
         }else{
@@ -1265,7 +1263,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
         if (jLabel4.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURE UNA :)", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
