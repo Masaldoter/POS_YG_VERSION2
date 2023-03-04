@@ -42,8 +42,10 @@ public class ConsultarNitWebService {
                     ObtenerToken OT = new ObtenerToken();
                     OT.ObtenerToken();
                     URL url = null;
-                        url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/SHAREDINFO?NIT=0000" + DU.getNit()
-                                + "&DATA1=SHARED_GETINFONITcom&DATA2=NIT|" + DPCEntrada.getNIT_CUI() + "&USERNAME=" + DU.getUsuario());
+                       /* url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/SHAREDINFO?NIT=0000" + DU.getNit()
+                                + "&DATA1=SHARED_GETINFONITcom&DATA2=NIT|" + DPCEntrada.getNIT_CUI() + "&USERNAME=" + DU.getUsuario());*/
+                        url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/SHAREDINFO?NIT=000047896272&DATA1=SHARED_GETINFONITcom&DATA2=NIT|"
+                                + "" + DPCEntrada.getNIT_CUI() + "&USERNAME=47896272");
 
                     HttpURLConnection http = (HttpURLConnection) url.openConnection();
                     http.setRequestMethod("GET");

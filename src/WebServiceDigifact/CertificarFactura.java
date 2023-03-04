@@ -56,7 +56,8 @@ public class CertificarFactura {
                 TP.setContrasenia(DU.getContrasenia());
                 TP = OT.ObtenerToken(TP);*/
 
-                URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/FelRequestV2?NIT=0000"+DU.getNit()+"&TIPO=CERTIFICATE_DTE_XML_TOSIGN&FORMAT=XML&USERNAME="+DU.getUsuario());
+                //URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/FelRequestV2?NIT=0000"+DU.getNit()+"&TIPO=CERTIFICATE_DTE_XML_TOSIGN&FORMAT=XML&USERNAME="+DU.getUsuario());
+                URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/FelRequestV2?NIT=000047896272&TIPO=CERTIFICATE_DTE_XML_TOSIGN&FORMAT=XML&USERNAME=47896272");
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
                 http.setRequestMethod("POST");
                 http.setDoOutput(true);

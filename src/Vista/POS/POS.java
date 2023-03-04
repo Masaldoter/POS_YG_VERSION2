@@ -1055,7 +1055,7 @@ public class POS extends javax.swing.JInternalFrame {
             Float cant = Float.parseFloat(TablaVentas.getValueAt(i, 2).toString());
             Float precio = Float.parseFloat(TablaVentas.getValueAt(i, 3).toString());
             Float Desc = Float.parseFloat(TablaVentas.getValueAt(i, 5).toString());
-            String Total = TablaVentas.getValueAt(i, 4).toString();
+            String Total = TablaVentas.getValueAt(i, 6).toString();
             String Nombre = TablaVentas.getValueAt(i, 1).toString();
             DetallesCotizacionesParametros.setNoCotizacion(String.valueOf(lblNumeroSerieCotizacion.getText()));
             DetallesCotizacionesParametros.setCodigoBarras(cod);
@@ -1064,7 +1064,7 @@ public class POS extends javax.swing.JInternalFrame {
             DetallesCotizacionesParametros.setDescuento(Desc);
             DetallesCotizacionesParametros.setTotal(Float.parseFloat(Total));
             DetallesCotizacionesParametros.setNombreProducto(Nombre);
-            DetallesCotizacionesParametros.setProductoRegistrado(Integer.parseInt(TablaVentas.getValueAt(i, 6).toString()));
+            DetallesCotizacionesParametros.setProductoRegistrado(Integer.parseInt(TablaVentas.getValueAt(i, 8).toString()));
             CotizacionDao.RegistraDetallesCotizacion(DetallesCotizacionesParametros);
         }
 
