@@ -185,7 +185,8 @@ public class VentaDao extends ConexionesSQL {
         Boolean ESTADO_REGISTRO=false;
 
         String sql = "INSERT INTO  registro (Cliente, NitCliente, TIPO_IDENTIFICACION, DireccionCliente, Total, Fecha, Hora, Pago, Cambio, NumeroTransaccion, NoFactura, Usuario, FormaPago, Observacion, TotalEnLetras, NombreCertificador"
-                + ", NitCertificador, FechaAutorizacion, NumeroAutorizacion, NumeroDocumento, SerieDocumento, TipoDocumentoFel, Estado, NitEmisor, NumeroDeAccesoInterno) VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + ", NitCertificador, FechaAutorizacion, NumeroAutorizacion, NumeroDocumento, SerieDocumento, TipoDocumentoFel, Estado, NitEmisor, NumeroDeAccesoInterno, id_CAJA_registro) "
+                + "VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             ps = cn.prepareStatement(sql);
@@ -214,6 +215,7 @@ public class VentaDao extends ConexionesSQL {
             ps.setString(23, "FACTURADO");
             ps.setString(24, v.getNitEmisor());
             ps.setString(25, v.getNUMERO_INTERNO());
+            ps.setInt(26, v.getId_CAJA_registro());
             ps.execute();
             ESTADO_REGISTRO=true;
 

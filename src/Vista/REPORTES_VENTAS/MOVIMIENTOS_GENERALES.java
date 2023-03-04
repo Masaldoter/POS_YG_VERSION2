@@ -12,6 +12,7 @@ import static CONSULTAS.CONSULTAS_VENTAS.ActualizarRegistroVenta;
 import static CONSULTAS.CONSULTAS_VENTAS.ActualizarRegistroVentaPorDocumento;
 import Tablas.ActualizarTablaVentasDiariasYGenerales;
 import Vista.Detalles;
+import Vista.Principal;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 
@@ -20,8 +21,15 @@ import javax.swing.JButton;
  * @author aldoy
  */
 public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
+    
+    Principal principal;
     public MOVIMIENTOS_GENERALES() {
         initComponents();
+    }
+    
+    public MOVIMIENTOS_GENERALES(Principal principal) {
+        initComponents();
+        this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
@@ -569,7 +577,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 ((JButton)value).doClick();
                 String Id = TablaReporteVentas.getValueAt(fila, 0).toString();
                 JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 0);
+                Detalles de= new Detalles(codigo, 1, 0, this.principal.P_O_S);
                 de.setVisible(true);
             }
         }
@@ -588,7 +596,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 ((JButton)value).doClick();
                 String Id = TablaVentasNombreProductos.getValueAt(fila, 0).toString();
                 JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 0);
+                Detalles de= new Detalles(codigo, 1, 0, this.principal.P_O_S);
                 de.setVisible(true);
             }
         }

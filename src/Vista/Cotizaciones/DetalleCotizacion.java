@@ -14,14 +14,7 @@ import ReportesImpresion.DatosClienteYFactura;
 import ReportesImpresion.Documentos;
 import Conexiones.ConexionesSQL;
 import static Vista.Cotizaciones.CotizacionesGenerales.ActualizarTablaEstado;
-import static Vista.POS.POS.AgregarProducto;
-import static Vista.POS.POS.BusquedaCodigoBarras;
-import static Vista.POS.POS.CantidadVenta;
-import static Vista.POS.POS.CheckIngresoAutomatico;
-import static Vista.POS.POS.ConsultarNit_CUIFinal;
-import static Vista.POS.POS.Final;
-import static Vista.POS.POS.IdVenta;
-import static Vista.POS.POS.NombreVenta;
+import Vista.POS.POS;
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -44,13 +37,14 @@ public final class DetalleCotizacion extends javax.swing.JFrame {
         String strDateFormat = "YYYY-MM-dd";
         SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
         String fecha=objSDF.format(fech);
-        
+        POS pos;
     public DetalleCotizacion() {
         
     }
-    public DetalleCotizacion(String NumeroFactura, int ModoAbierto, int TipoDeVista) {
+    public DetalleCotizacion(String NumeroFactura, int ModoAbierto, int TipoDeVista, POS pos) {
         
         initComponents();
+        this.pos = pos;
         this.setLocationRelativeTo(null);
         CargarTodosLosDetalles(NumeroFactura);
         v.CargarDatosFormatoImpresion(jComboBox1);
@@ -1021,33 +1015,33 @@ public final class DetalleCotizacion extends javax.swing.JFrame {
                                                            ESTA ACCI\u00d3N ELIMINARA ESTA COTIZACI\u00d3N Y LA PASARA
                                                             A LA SECCI\u00d3N DE VENTAS.
                                                            TENGA EN CUENTA QUE SI TIENE PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTAR\u00c1""", "¿ESTÁ SEGURO DE REALIZAR LA VENTA?", JOptionPane.YES_NO_OPTION);
-        Boolean VerificarCheckEnVenta = CheckIngresoAutomatico.isSelected();
+        Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
         if(Seleccion==0){
           //  Principal.MoverEntreSistema();
            // Principal.MoverEntreSistema();
             if(VerificarCheckEnVenta == true){
-            CheckIngresoAutomatico.setSelected(false);    
+            pos.CheckIngresoAutomatico.setSelected(false);    
             }
-        ConsultarNit_CUIFinal(CajaNit.getText());
+        pos.ConsultarNit_CUIFinal(CajaNit.getText());
         for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
             if(Integer.parseInt(TablaDetalles.getValueAt(i, 5).toString())==0){
                 
-                NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
-                IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
-                CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-                Final.setText(TablaDetalles.getValueAt(i, 3).toString());
-                AgregarProducto(); 
+                pos.NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
+                pos.IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
+                pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+                pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
+                pos.AgregarProducto(); 
             }else{
-               BusquedaCodigoBarras(TablaDetalles.getValueAt(i, 0).toString());
-               Final.setText(TablaDetalles.getValueAt(i, 3).toString());
-               CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-               AgregarProducto(); 
+               pos.BusquedaCodigoBarras(TablaDetalles.getValueAt(i, 0).toString());
+               pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
+               pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+               pos.AgregarProducto(); 
                
             }
         }
         ModificarCotizacion(1);
         if(VerificarCheckEnVenta == true){
-            CheckIngresoAutomatico.setSelected(true);    
+            pos.CheckIngresoAutomatico.setSelected(true);    
         }
     }
         }

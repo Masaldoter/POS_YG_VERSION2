@@ -9,6 +9,7 @@ import Modelo.CAJA;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 /**
  *
  * @author aldoy
@@ -51,5 +52,43 @@ public class CajaDao extends ConexionesSQL{
         }
     }
     
-    
+    public boolean EDITAR_CIERRES_DE_CAJA(CAJA pro){
+        ps = null;
+        cn = Unionsis2.getConnection();
+        
+        String sql="update caja set ESTADO_DE_CAJA=?, FECHA_HORA_CIERRE_CAJA=?, USUARIO_CERRO_CAJA=?, ARQUEO_DE_CAJA=?, Total_Compras_CAJA=?, Total_Ventas_CAJA=?,  Total_Gastos_CAJA=?,"
+                + "Total_Efectivo_CAJA=?, Total_Transferencia_CAJA=?, Total_Cheque_CAJA=?, Total_Tarjeta_CAJA=?"
+                + " where idcaja=?";       
+        try {
+            ps=cn.prepareStatement(sql);
+            ps.setString(1, pro.getESTADO_DE_CAJA());
+              ps.setString(2, pro.getFECHA_HORA_CIERRE_CAJA());
+                ps.setInt(3, pro.getUSUARIO_CERRO_CAJA());
+                ps.setString(4, pro.getARQUEO_DE_CAJA());
+                ps.setFloat(5, pro.getTotal_Ventas_CAJA());
+                ps.setFloat(6, pro.getTotal_Compras_CAJA());
+                ps.setFloat(7, pro.getTotal_Gastos_CAJA());
+                ps.setFloat(8, pro.getTotal_Efectivo_CAJA());
+                ps.setFloat(9, pro.getTotal_Transferencia_CAJA());
+                ps.setFloat(10, pro.getTotal_Cheque_CAJA());
+                ps.setFloat(11, pro.getTotal_Tarjeta_CAJA());
+                ps.setInt(12,pro.getIdcaja());
+            
+            ps.executeUpdate(); 
+            
+            
+                DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+                DesktopNotify.showDesktopMessage("GUARDADO ÉXITOSO", "¡CAJA #"+pro.getIdcaja()+" CERRADA ÉXITOSAMENTE!", DesktopNotify.SUCCESS, 10000L);
+                return true;
+                
+        } catch (SQLException e) {
+            System.err.println("Error,"+e);
+            DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+                DesktopNotify.showDesktopMessage("ERROR", "¡HUBO UN ERROR AL CERRAR LA CAJA!\n"+e, DesktopNotify.SUCCESS, 10000L);
+            return false;
+        }finally {
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+    }
 }

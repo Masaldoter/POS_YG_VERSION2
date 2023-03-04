@@ -1,12 +1,11 @@
+package Vista.POS;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vista.POS;
 
-import static Vista.POS.POS.ObservacionVenta;
-import Vista.Principal;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -18,11 +17,13 @@ import javax.swing.JFrame;
  * @author Masaldoter
  */
 public class Observaciones extends javax.swing.JFrame {
+    POS pos;
     public Observaciones() {
     }
     
-    public Observaciones(String Observacion) {
+    public Observaciones(String Observacion, POS pos) {
         initComponents();
+        this.pos = pos;
         this.setLocationRelativeTo(null);
         jTextArea1.setText(Observacion);
         Cerrar();
@@ -74,17 +75,18 @@ public class Observaciones extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        ObservacionVenta.setText(jTextArea1.getText());
-        POS.VentanaObservacion = false;
+        this.pos.ObservacionVenta.setText(jTextArea1.getText());
+       this.pos.VentanaObservacion = false;
         this.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -94,7 +96,7 @@ public class Observaciones extends javax.swing.JFrame {
             addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    POS.VentanaObservacion = false;
+                    pos.VentanaObservacion = false;
                     dispose();
                 }
             });

@@ -107,7 +107,7 @@ public class ClientesDao extends ConexionesSQL{
         return clientes;
     }
     
-    public List BuscarClienteLista(){
+    public List BuscarClienteLista(String NIT_CUI){
         List<Clientes> Listaclientes = new ArrayList();
             cn = Unionsis2.getConnection();
             ps = null;

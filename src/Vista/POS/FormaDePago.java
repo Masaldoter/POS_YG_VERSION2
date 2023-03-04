@@ -7,8 +7,6 @@ package Vista.POS;
 
 import Controlador.Eventos;
 import Controlador.FullSelectorListener;
-import static Vista.POS.POS.RellenarMetodoPago;
-import Vista.Principal;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -21,11 +19,17 @@ import javax.swing.border.LineBorder;
 
 public class FormaDePago extends javax.swing.JFrame {
         Float IVA;
+        
+    POS pos;
     
     public FormaDePago() {
+    }
+    
+    public FormaDePago(POS pos) {
         initComponents();
         this.setLocationRelativeTo(null);
         Cerrar();
+        this.pos = pos;
     }
 
     @SuppressWarnings("unchecked")
@@ -786,27 +790,28 @@ public class FormaDePago extends javax.swing.JFrame {
     
     public void Totales(){
         retornarValoresFinales();
-        if(Double.parseDouble(this.TotalPagado.getText()) >= Double.parseDouble(labeltotal.getText())){
-            RellenarMetodoPago(TotalPagado.getText(), cambio.getText(), EfectivoPagado.getText(), DepositoPagado.getText(), TarjetaPagado.getText(), ChequePagado.getText()
-                    , NTransacciones.getText(), SeleccionNombre.getText(), SeleccionId.getText(), TotalIva.getText(), SubTotal.getText());
-            POS.VentanaFormaPago = false;
+        if(Double.parseDouble(this.TotalPagado.getText()) >= Double.parseDouble(this.labeltotal.getText())){
+            this.pos.RellenarMetodoPago(this.TotalPagado.getText(), this.cambio.getText(), this.EfectivoPagado.getText(), this.DepositoPagado.getText(), 
+                    this.TarjetaPagado.getText(), this.ChequePagado.getText(), this.NTransacciones.getText(), this.SeleccionNombre.getText(), 
+                    this.SeleccionId.getText(), this.TotalIva.getText(), this.SubTotal.getText());
+            this.pos.VentanaFormaPago = false;
                     this.setVisible(false);
         }else{
             int Seleccion = JOptionPane.showConfirmDialog(null, "AÚN NO HA TERMINADO EL PROCESO.\n¿ESTÁ SEGURO DE TERMINAR?","ALERTA", JOptionPane.WARNING_MESSAGE);
             if(Seleccion == 0){
-                RellenarMetodoPago(TotalPagado.getText(), cambio.getText(), EfectivoPagado.getText(), DepositoPagado.getText(), TarjetaPagado.getText(), ChequePagado.getText()
-                    , NTransacciones.getText(), SeleccionNombre.getText(), SeleccionId.getText(), TotalIva.getText(), SubTotal.getText()); 
-                POS.VentanaFormaPago = false;
+                this.pos.RellenarMetodoPago(this.TotalPagado.getText(), this.cambio.getText(), this.EfectivoPagado.getText(), this.DepositoPagado.getText(), this.TarjetaPagado.getText(), this.ChequePagado.getText()
+                    , this.NTransacciones.getText(), this.SeleccionNombre.getText(), this.SeleccionId.getText(), this.TotalIva.getText(), this.SubTotal.getText()); 
+                this.pos.VentanaFormaPago = false;
                 this.setVisible(false);
             }
         }
     }
     
-    public static void TOTALES_SIN_INTERACCION(){
+    public void TOTALES_SIN_INTERACCION(){
         retornarValoresFinales();
-            RellenarMetodoPago(FormaDePago.TotalPagado.getText(), FormaDePago.cambio.getText(), FormaDePago.EfectivoPagado.getText(), FormaDePago.DepositoPagado.getText(),
-                    FormaDePago.TarjetaPagado.getText(), FormaDePago.ChequePagado.getText()
-                    , FormaDePago.NTransacciones.getText(), FormaDePago.SeleccionNombre.getText(), FormaDePago.SeleccionId.getText(), FormaDePago.TotalIva.getText(), FormaDePago.SubTotal.getText());  
+            this.pos.RellenarMetodoPago(this.TotalPagado.getText(), this.cambio.getText(), this.EfectivoPagado.getText(), this.DepositoPagado.getText(),
+                    TarjetaPagado.getText(), this.ChequePagado.getText()
+                    , this.NTransacciones.getText(), this.SeleccionNombre.getText(), this.SeleccionId.getText(), this.TotalIva.getText(), this.SubTotal.getText());  
         
     }
         
@@ -882,71 +887,71 @@ public class FormaDePago extends javax.swing.JFrame {
     
     public void TotalPagado(){
         Double Pagado = 0.00;
-        Double Efectivo = Double.parseDouble(EfectivoPagado.getText());
+        Double Efectivo = Double.parseDouble(this.EfectivoPagado.getText());
         if(Efectivo == null){
-            EfectivoPagado.setText("0.00");
+            this.EfectivoPagado.setText("0.00");
         }
-        Double Tarjeta = Double.parseDouble(TarjetaPagado.getText());
+        Double Tarjeta = Double.parseDouble(this.TarjetaPagado.getText());
         if(Tarjeta == null){
-            TarjetaPagado.setText("0.00");
+            this.TarjetaPagado.setText("0.00");
         }
-        Double Deposito = Double.parseDouble(DepositoPagado.getText());
+        Double Deposito = Double.parseDouble(this.DepositoPagado.getText());
         if(Deposito == null){
-            DepositoPagado.setText("0.00");
+            this.DepositoPagado.setText("0.00");
         }
-        Double Cheque = Double.parseDouble(ChequePagado.getText());
+        Double Cheque = Double.parseDouble(this.ChequePagado.getText());
         if(Cheque == null){
-            ChequePagado.setText("0.00");
+            this.ChequePagado.setText("0.00");
         }
         
         Pagado = Efectivo + Tarjeta + Deposito + Cheque;
         
         
-        if(Pagado >= Double.parseDouble(labeltotal.getText())){
-            TotalPagado.setForeground(Color.GREEN);
-        }else if(Pagado <= Double.parseDouble(labeltotal.getText())){
-            TotalPagado.setForeground(Color.RED);
+        if(Pagado >= Double.parseDouble(this.labeltotal.getText())){
+            this.TotalPagado.setForeground(Color.GREEN);
+        }else if(Pagado <= Double.parseDouble(this.labeltotal.getText())){
+            this.TotalPagado.setForeground(Color.RED);
         }
         
-        TotalPagado.setText(String.format("%.2f",Pagado));
+        this.TotalPagado.setText(String.format("%.2f",Pagado));
     }
     
     
     
      public void Cambio() {
-        if (!"".equals(labeltotal.getText())) {
+        if (!"".equals(this.labeltotal.getText())) {
             Double Pagado = 0.00;
             Double TotalSemifinal = 0.00;
             Double TotalFinal = 0.00;
             
-        Double Efectivo = Double.parseDouble(EfectivoPagado.getText());
+        Double Efectivo = Double.parseDouble(this.EfectivoPagado.getText());
         if(Efectivo == null){
-            EfectivoPagado.setText("0.00");
+            this.EfectivoPagado.setText("0.00");
             Efectivo = 0.00;
         }
-        Double Tarjeta = Double.parseDouble(TarjetaPagado.getText());
+        Double Tarjeta = Double.parseDouble(this.TarjetaPagado.getText());
         if(Tarjeta == null){
-            TarjetaPagado.setText("0.00");
+            this.TarjetaPagado.setText("0.00");
             Tarjeta = 0.00;
         }
-        Double Deposito = Double.parseDouble(DepositoPagado.getText());
+        Double Deposito = Double.parseDouble(this.DepositoPagado.getText());
         if(Deposito == null){
-            DepositoPagado.setText("0.00");
+            this.DepositoPagado.setText("0.00");
             Deposito = 0.00;
         }
-        Double Cheque = Double.parseDouble(ChequePagado.getText());
+        Double Cheque = Double.parseDouble(this.ChequePagado.getText());
         if(Cheque == null){
-            ChequePagado.setText("0.00");
+            this.ChequePagado.setText("0.00");
             Cheque = 0.00;
         }
         
         Pagado = Tarjeta + Deposito + Cheque;
-        Double Total = Double.parseDouble(labeltotal.getText());
+        Double Total = Double.parseDouble(this.labeltotal.getText());
         
         TotalSemifinal = Total - Pagado;
         
         TotalFinal = Efectivo - TotalSemifinal; 
-           cambio.setText(String.format("%.2f",TotalFinal));
+           this.cambio.setText(String.format("%.2f",TotalFinal));
         }
     }
     
@@ -984,17 +989,17 @@ public class FormaDePago extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private static javax.swing.JTextField ChequePagado;
-    private static javax.swing.JTextField DepositoPagado;
-    private static javax.swing.JTextField EfectivoPagado;
-    private static javax.swing.JTextArea NTransacciones;
+    private javax.swing.JTextField ChequePagado;
+    private javax.swing.JTextField DepositoPagado;
+    private javax.swing.JTextField EfectivoPagado;
+    private javax.swing.JTextArea NTransacciones;
     private static javax.swing.JLabel SeleccionId;
-    private static javax.swing.JLabel SeleccionNombre;
-    private static javax.swing.JLabel SubTotal;
-    private static javax.swing.JTextField TarjetaPagado;
-    private static javax.swing.JLabel TotalIva;
-    private static javax.swing.JLabel TotalPagado;
-    private static javax.swing.JLabel cambio;
+    private javax.swing.JLabel SeleccionNombre;
+    private javax.swing.JLabel SubTotal;
+    private javax.swing.JTextField TarjetaPagado;
+    private javax.swing.JLabel TotalIva;
+    private javax.swing.JLabel TotalPagado;
+    private javax.swing.JLabel cambio;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -1006,10 +1011,10 @@ public class FormaDePago extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private static javax.swing.JLabel labeltotal;
+    private javax.swing.JLabel labeltotal;
     // End of variables declaration//GEN-END:variables
 
-    public static PagosTotales retornarValoresFinales(){
+    public PagosTotales retornarValoresFinales(){
         ObtenerTotales OT= new ObtenerTotales();
         
         PagosTotales PT= new PagosTotales();

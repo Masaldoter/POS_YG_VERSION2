@@ -445,7 +445,6 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="TablaCotizaciones">
               <Properties>
-                <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="14" style="0"/>
                 </Property>

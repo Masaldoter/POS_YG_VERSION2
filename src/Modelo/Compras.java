@@ -12,24 +12,27 @@ import java.util.Date;
  * @author Masaldoter
  */
 public class Compras {
-    private int idcompras, Proveedor, USUARIO_REGISTRO_COMPRA, USUARIO_MODIFICO_COMPRA;
-    private String TipoDocumento, NumeroDocumento, SerieDocumento, DESCRIPCION_COMPRAS, FECHA_HORA_COMPRA;
+    private int idcompras, Proveedor, USUARIO_REGISTRO_COMPRA, USUARIO_MODIFICO_COMPRA, idCAJA;
+    private String TipoDocumento, NumeroDocumento, SerieDocumento, DESCRIPCION_COMPRAS, FECHA_HORA_COMPRA, FECHA, TIPO_COMPRA;
     private Float TOTAL_COMPRA;
     
     public Compras(){
         
     }
 
-    public Compras(int idcompras, int Proveedor, int USUARIO_REGISTRO_COMPRA, int USUARIO_MODIFICO_COMPRA, String TipoDocumento, String NumeroDocumento, String SerieDocumento, String DESCRIPCION_COMPRAS, String FECHA_HORA_COMPRA, Float TOTAL_COMPRA) {
+    public Compras(int idcompras, int Proveedor, int USUARIO_REGISTRO_COMPRA, int USUARIO_MODIFICO_COMPRA, int idCAJA, String TipoDocumento, String NumeroDocumento, String SerieDocumento, String DESCRIPCION_COMPRAS, String FECHA_HORA_COMPRA, String FECHA, String TIPO_COMPRA, Float TOTAL_COMPRA) {
         this.idcompras = idcompras;
         this.Proveedor = Proveedor;
         this.USUARIO_REGISTRO_COMPRA = USUARIO_REGISTRO_COMPRA;
         this.USUARIO_MODIFICO_COMPRA = USUARIO_MODIFICO_COMPRA;
+        this.idCAJA = idCAJA;
         this.TipoDocumento = TipoDocumento;
         this.NumeroDocumento = NumeroDocumento;
         this.SerieDocumento = SerieDocumento;
         this.DESCRIPCION_COMPRAS = DESCRIPCION_COMPRAS;
         this.FECHA_HORA_COMPRA = FECHA_HORA_COMPRA;
+        this.FECHA = FECHA;
+        this.TIPO_COMPRA = TIPO_COMPRA;
         this.TOTAL_COMPRA = TOTAL_COMPRA;
     }
 
@@ -63,6 +66,14 @@ public class Compras {
 
     public void setUSUARIO_MODIFICO_COMPRA(int USUARIO_MODIFICO_COMPRA) {
         this.USUARIO_MODIFICO_COMPRA = USUARIO_MODIFICO_COMPRA;
+    }
+
+    public int getIdCAJA() {
+        return idCAJA;
+    }
+
+    public void setIdCAJA(int idCAJA) {
+        this.idCAJA = idCAJA;
     }
 
     public String getTipoDocumento() {
@@ -103,6 +114,22 @@ public class Compras {
 
     public void setFECHA_HORA_COMPRA(String FECHA_HORA_COMPRA) {
         this.FECHA_HORA_COMPRA = FECHA_HORA_COMPRA;
+    }
+
+    public String getFECHA() {
+        return FECHA;
+    }
+
+    public void setFECHA(String FECHA) {
+        this.FECHA = FECHA;
+    }
+
+    public String getTIPO_COMPRA() {
+        return TIPO_COMPRA;
+    }
+
+    public void setTIPO_COMPRA(String TIPO_COMPRA) {
+        this.TIPO_COMPRA = TIPO_COMPRA;
     }
 
     public Float getTOTAL_COMPRA() {

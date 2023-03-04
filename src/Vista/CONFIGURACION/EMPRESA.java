@@ -859,6 +859,7 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     private void BtnGenerarTokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGenerarTokenActionPerformed
         ObtenerToken OT = new ObtenerToken();
         OT.ObtenerToken();
+        CajaToken.setText(PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR);
     }//GEN-LAST:event_BtnGenerarTokenActionPerformed
 
     private void botonseleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonseleccionarActionPerformed

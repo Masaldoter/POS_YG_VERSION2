@@ -125,20 +125,20 @@ public class METODOS_GLOBALES {
         }
     }
     
-    public static void GenerarToken() {
-        Runnable runnable = new Runnable() {
+    public void GenerarToken() {
+       /* Runnable runnable = new Runnable() {
             @Override
-            public void run() {
+            public void run() {*/
                 try {
                     ObtenerToken OT = new ObtenerToken();
                     OT.ObtenerToken();
                 } catch (Exception e) {
-                }
+                }/*
             }
         };
         Thread hilo = new Thread(runnable);
         hilo.start();
-
+*/
     }
     
     public static String OBTENER_EXTENSION_ARCHIVO(String RUTA){

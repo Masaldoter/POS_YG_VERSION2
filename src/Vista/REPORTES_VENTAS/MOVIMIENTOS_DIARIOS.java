@@ -13,6 +13,7 @@ import Controlador.ProductosDao;
 import Modelo.ComboUsuarios;
 import Modelo.Usuarios;
 import Vista.Detalles;
+import Vista.Principal;
 import java.util.List;
 import javax.swing.JButton;
 
@@ -23,9 +24,14 @@ import javax.swing.JButton;
 public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
 
     static ProductosDao proDao = new ProductosDao();
-    
+    Principal principal;
     public MOVIMIENTOS_DIARIOS() {
         initComponents();
+    }
+    
+    public MOVIMIENTOS_DIARIOS(Principal principal) {
+        initComponents();
+        this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         
@@ -601,7 +607,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
                 String Id = VD.getValueAt(fila, 0).toString();
                 CajaIdVenta.setText(Id);
                 JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 1);
+                Detalles de= new Detalles(codigo, 1, 1, this.principal.P_O_S);
                 de.setVisible(true);
 
             }
@@ -621,7 +627,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
                 ((JButton)value).doClick();
                 String Id = TablaVentasNombreProductos1.getValueAt(fila, 0).toString();
                 JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 0);
+                Detalles de= new Detalles(codigo, 1, 0, this.principal.P_O_S);
                 de.setVisible(true);
             }
         }

@@ -5,7 +5,6 @@
  */
 package Vista.POS;
 
-import CLASES_GLOBALES.ATAJOSDETECLADO;
 import static CLASES_GLOBALES.METODOS_GLOBALES.INSERTAR_IMAGEN_TABLA;
 import Controlador.ProductosDao;
 import Controlador.ProveedoresDao;
@@ -19,10 +18,8 @@ import Modelo.Proveedor;
 import Modelo.Ubicacion;
 import Tablas.ActualizarTablaVentas;
 import Tablas.RenderTablasJLabel;
-import static Vista.POS.POS.BuscarProductoVenta;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -37,7 +34,6 @@ import java.util.List;
 import java.util.Properties;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -45,6 +41,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Masaldoter
  */
+
 public class JFRAME_BUSCAR_PRODUCTO extends javax.swing.JFrame {
     static ProductosDao proDao = new ProductosDao();
     ActualizarTablaVentas tablasVentas = new ActualizarTablaVentas();
@@ -52,9 +49,15 @@ public class JFRAME_BUSCAR_PRODUCTO extends javax.swing.JFrame {
     DefaultTableModel modelo = new DefaultTableModel();
     static int BusquedaHecha=1;
     Boolean Resultado= false;
+    POS pos;
     
-    public JFRAME_BUSCAR_PRODUCTO() {
+   public JFRAME_BUSCAR_PRODUCTO() {
         initComponents();
+    }
+    
+    public JFRAME_BUSCAR_PRODUCTO(POS pos) {
+        initComponents();
+        this.pos = pos;
         this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height-200);
         this.setLocationRelativeTo(null);
         VaciarYllenarCategoria();
@@ -554,7 +557,7 @@ public class JFRAME_BUSCAR_PRODUCTO extends javax.swing.JFrame {
        
        if (evt.getClickCount()> 1)
 {
-    BuscarProductoVenta(jLabel3.getText());
+    this.pos.BuscarProductoVenta(jLabel3.getText());
 }
     }//GEN-LAST:event_TablaVentas1MouseClicked
 

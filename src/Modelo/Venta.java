@@ -4,7 +4,7 @@ import javax.swing.JButton;
 
 
 public class Venta {
-    private int IdRegistro;
+    private int IdRegistro, id_CAJA_registro;
     private String Cliente, IDENTIFICACION_CLIENTE, TIPO_IDENTIFICACION_CLIENTE, DireccionCliente;
     private Float Total, pagocon, cambio;
     private String FormaPago, NumeroTransaccion, TotalEnLetras, NoFactura;
@@ -19,8 +19,9 @@ public class Venta {
         
     }
 
-    public Venta(int IdRegistro, String Cliente, String IDENTIFICACION_CLIENTE, String TIPO_IDENTIFICACION_CLIENTE, String DireccionCliente, Float Total, Float pagocon, Float cambio, String FormaPago, String NumeroTransaccion, String TotalEnLetras, String NoFactura, String Fecha, String Hora, int Usuario, String Observacion, String NombreCertificador, String NitCertificador, String FechaAutorizacion, String NumeroAutorizacion, String NumeroDocumento, String SerieDocumento, String TipoDocumentoFel, String Estado, String NitEmisor, String NUMERO_INTERNO, JButton Detalles, JButton Anular) {
+    public Venta(int IdRegistro, int id_CAJA_registro, String Cliente, String IDENTIFICACION_CLIENTE, String TIPO_IDENTIFICACION_CLIENTE, String DireccionCliente, Float Total, Float pagocon, Float cambio, String FormaPago, String NumeroTransaccion, String TotalEnLetras, String NoFactura, String Fecha, String Hora, int Usuario, String Observacion, String NombreCertificador, String NitCertificador, String FechaAutorizacion, String NumeroAutorizacion, String NumeroDocumento, String SerieDocumento, String TipoDocumentoFel, String Estado, String NitEmisor, String NUMERO_INTERNO, JButton Detalles, JButton Anular) {
         this.IdRegistro = IdRegistro;
+        this.id_CAJA_registro = id_CAJA_registro;
         this.Cliente = Cliente;
         this.IDENTIFICACION_CLIENTE = IDENTIFICACION_CLIENTE;
         this.TIPO_IDENTIFICACION_CLIENTE = TIPO_IDENTIFICACION_CLIENTE;
@@ -56,6 +57,14 @@ public class Venta {
 
     public void setIdRegistro(int IdRegistro) {
         this.IdRegistro = IdRegistro;
+    }
+
+    public int getId_CAJA_registro() {
+        return id_CAJA_registro;
+    }
+
+    public void setId_CAJA_registro(int id_CAJA_registro) {
+        this.id_CAJA_registro = id_CAJA_registro;
     }
 
     public String getCliente() {

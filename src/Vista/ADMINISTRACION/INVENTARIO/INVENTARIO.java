@@ -21,8 +21,7 @@ import Modelo.Proveedor;
 import Modelo.Ubicacion;
 import Tablas.Actualizartablas;
 import Tablas.RenderTablasJLabel;
-import static Vista.POS.POS.AgregarProducto;
-import static Vista.POS.POS.BusquedaCodigoBarras;
+import Vista.POS.POS;
 import Vista.Principal;
 import static Vista.Principal.ABRIR_VENTANAS;
 import static Vista.Principal.VentanaAdministracionDeProductos;
@@ -50,16 +49,19 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     ParametrosCodigosDeBarras ParametrosCodigosBarras = new ParametrosCodigosDeBarras();
     static ProductosDao proDao;
     private static int TIPO_BUSQUEDA_FINAL_INVENTARIO;
-
-    public INVENTARIO() {
+    POS pos;
+    Principal principal;
+    public INVENTARIO(POS pos, Principal principal) {
         initComponents();
+        this.pos = pos;
+        this.principal=principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         LIMPIAR_CAJAS_PRODUCTOS();
         DINAMICA_BOTONES_PRODUCTOS();
     }
     
-    public static void CARGAR_REGISTROS(){
+    public void CARGAR_REGISTROS(){
        // new java.util.Timer().schedule(new java.util.TimerTask() {
        //  @Override
        //  public void run() {
@@ -1031,25 +1033,25 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     private void AgregarpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarpActionPerformed
         if(VentanaAdministracionDeProductos==false){
             VentanaAdministracionDeProductos=true;
-            Principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
-            Principal.AdminProduct.setVisible(true);
+            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+            principal.AdminProduct.setVisible(true);
         }else{
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
-            Principal.AdminProduct.toFront();
+            principal.AdminProduct.toFront();
         }
     }//GEN-LAST:event_AgregarpActionPerformed
 
     private void EditarpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarpActionPerformed
         if(VentanaAdministracionDeProductos==false){
             VentanaAdministracionDeProductos=true;
-            Principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
-            Principal.AdminProduct.InsertarDatos(Id.getText());
-            Principal.AdminProduct.setVisible(true);
+            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+            principal.AdminProduct.InsertarDatos(Id.getText());
+            principal.AdminProduct.setVisible(true);
         }else{
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
-            Principal.AdminProduct.toFront();
+            principal.AdminProduct.toFront();
         }
     }//GEN-LAST:event_EditarpActionPerformed
 
@@ -1205,20 +1207,20 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
 
                     if (VentanaAdministracionDeProductos == false) {
                         VentanaAdministracionDeProductos=true;
-                        Principal.AdminProduct = new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
-                        Principal.AdminProduct.InsertarDatos(codigo);
-                        Principal.AdminProduct.setVisible(true);
+                        principal.AdminProduct = new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+                        principal.AdminProduct.InsertarDatos(codigo);
+                        principal.AdminProduct.setVisible(true);
                     } else {
                         DesktopNotify.setDefaultTheme(NotifyTheme.Light);
                         DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
-                        Principal.AdminProduct.toFront();
+                        principal.AdminProduct.toFront();
                     }
                 }
                 if (boton.getName().equals("delete")) {
 
-                    Boolean ESTADO = BusquedaCodigoBarras(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
+                    Boolean ESTADO = pos.BusquedaCodigoBarras(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
                     if (ESTADO == true) {
-                        Boolean ESTADO_AGREGAR =AgregarProducto();
+                        Boolean ESTADO_AGREGAR =pos.AgregarProducto();
                         if(ESTADO_AGREGAR==true){
                             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
                             DesktopNotify.showDesktopMessage("ÉXITO", "SE AGREGÓ AL CARRITO 1  " + String.valueOf(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 1).toString()), DesktopNotify.SUCCESS, 10000L);
@@ -1252,13 +1254,13 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
 
                 if(VentanaAdministracionDeProductos==false){
                     VentanaAdministracionDeProductos=true;
-                    Principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
-                    Principal.AdminProduct.InsertarDatos(codigo);
-                    Principal.AdminProduct.setVisible(true);
+                    principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+                    principal.AdminProduct.InsertarDatos(codigo);
+                    principal.AdminProduct.setVisible(true);
                 }else{
                     DesktopNotify.setDefaultTheme(NotifyTheme.Light);
                     DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
-                    Principal.AdminProduct.toFront();
+                    principal.AdminProduct.toFront();
                 }
             }
         }else{
@@ -1335,13 +1337,13 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
         String Codigo = tablaProductos.getValueAt(Fila, 0).toString();
         if(VentanaAdministracionDeProductos==false){
             VentanaAdministracionDeProductos=true;
-            Principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
-            Principal.AdminProduct.InsertarDatos(Codigo);
-            Principal.AdminProduct.setVisible(true);
+            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+            principal.AdminProduct.InsertarDatos(Codigo);
+            principal.AdminProduct.setVisible(true);
         }else{
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
-            Principal.AdminProduct.toFront();
+            principal.AdminProduct.toFront();
         }
 
     }//GEN-LAST:event_infoActionPerformed

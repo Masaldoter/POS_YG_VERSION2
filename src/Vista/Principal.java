@@ -3,6 +3,7 @@ import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
 import CLASES_GLOBALES.PARAMETROS_BASE_DE_DATOS;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
+import CLASES_GLOBALES.PARAMETROS_VENTAS;
 import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import CONTROL_DE_ACTUALIZACIÓNES.CONTROL_DE_ACTUALIZACIÓNES;
 import Vista.ADMINISTRACION.INVENTARIO.Ubicaciones;
@@ -28,14 +29,16 @@ import Vista.ADMINISTRACION.INVENTARIO.INVENTARIO;
 import Vista.ADMINISTRACION.INVENTARIO.ImportarExcel;
 import Vista.ADMINISTRACION.INVENTARIO.KARDEX;
 import static Vista.ADMINISTRACION.INVENTARIO.KARDEX.REFRESCAR_KARDEX;
+import Vista.ADMINISTRACION.PROVEEDORES.GASTOS_NUEVO;
 import Vista.POS.MODO_ESPERA;
 import Vista.POS.POS;
-import static Vista.POS.POS.TablaVentas;
 import static Vista.POS.POS.VentanaBuscarProducto;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_DIARIOS;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_GENERALES;
 import Vista.SESION.SESION;
 import Vista.VENTAS.CAJA.INTERNAL_CAJA_PRINCIPAL;
+import Vista.VENTAS.CAJA.VER_CAJAS;
+import WebServiceDigifact.ObtenerToken;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -81,25 +84,25 @@ public final class Principal extends javax.swing.JFrame {
     public static boolean VentanaDetalleDeVenta = false;
     
     //VENTANAS
-    MOVIMIENTOS_GENERALES MG= new MOVIMIENTOS_GENERALES();
+    MOVIMIENTOS_GENERALES MG= new MOVIMIENTOS_GENERALES(this);
     USUARIOS_INTERNOS UI= new USUARIOS_INTERNOS();
     CLIENTES C= new CLIENTES();
     PROVEEDORES P= new PROVEEDORES();
     SESION S= new SESION();
     DASHBOARD D= new DASHBOARD();
     EMPRESA E = new EMPRESA();
-    CotizacionesGenerales CG = new CotizacionesGenerales();
-    MOVIMIENTOS_DIARIOS MD= new MOVIMIENTOS_DIARIOS();
-    INVENTARIO I = new INVENTARIO();
+    CotizacionesGenerales CG = new CotizacionesGenerales(this);
+    MOVIMIENTOS_DIARIOS MD= new MOVIMIENTOS_DIARIOS(this);
+    public POS P_O_S = new POS(this);
+    INVENTARIO I = new INVENTARIO(P_O_S, this);
     //POS P_O_S= new POS();
     INTERNAL_CAJA_PRINCIPAL INTERNAL_CAJA_P = new INTERNAL_CAJA_PRINCIPAL();
-    POS P_O_S = new POS();
     MODO_ESPERA M_E= new MODO_ESPERA();
     KARDEX K= new KARDEX();
     //VENTANAS EMERGENTES
     public static ADMINISTRACION_DE_USUARIOS ADMIN_USUARIOS;
     //NUMERO INTERNO DE VENTA
-    
+    public ObtenerToken OT = new ObtenerToken();       
     
     public Principal(){
         
@@ -118,7 +121,8 @@ public final class Principal extends javax.swing.JFrame {
         DatosEmpresaDao datosDao= new DatosEmpresaDao();
         datosDao.VerDatos();
         datosDao.VerDatosCertificador();
-        MoverEntreSistema();
+        OT.ObtenerToken();
+        //MoverEntreSistema();
         HORA_FECHA();
         CARGAR_INICIO();
         if (PARAMETROS_USUARIOS.ROL_USUARIO.equals("Usuario")) {
@@ -134,8 +138,10 @@ public final class Principal extends javax.swing.JFrame {
             jSeparator24.setVisible(false);
             jMenu9.setVisible(false);
             jMenu6.setVisible(false);
-            jMenu13.setVisible(false);
+            jMenuItem28.setVisible(false);
             jSeparator1.setVisible(false);
+            jMenuItem14.setVisible(false);
+            jSeparator3.setVisible(false);
         } else {
         }
         AlIniciarSesion();
@@ -167,7 +173,7 @@ public final class Principal extends javax.swing.JFrame {
     }
     
     public void ConfirmarSalida(){
-        if(TablaVentas.getRowCount() > 0){
+        if(P_O_S.TablaVentas.getRowCount() > 0){
             JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTA PENDIENTE, TERMINELA O CANCELELA!");
         }else if(VentanaAdministracionDeProductos==true){
             JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN ABIERTA, TERMÍNELA O CIÉRRELA!");
@@ -202,7 +208,7 @@ public final class Principal extends javax.swing.JFrame {
                 Date objDate = new Date();
                 String strDateFormat = "dd-MMM-yyyy"; // El formato de fecha está especificado  
                 SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-                lblFecha_Principal.setText(objSDF.format(objDate));
+                //lblFecha_Principal.setText(objSDF.format(objDate));
                 while (true) {
                     try {
                 Thread.sleep(500);
@@ -248,10 +254,10 @@ public final class Principal extends javax.swing.JFrame {
         jSeparator30 = new javax.swing.JSeparator();
         lblURL_Principal = new javax.swing.JLabel();
         jSeparator35 = new javax.swing.JSeparator();
-        jLabel5 = new javax.swing.JLabel();
-        lblFecha_Principal = new javax.swing.JLabel();
         lblHora_Principal = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem12 = new javax.swing.JMenuItem();
@@ -268,14 +274,9 @@ public final class Principal extends javax.swing.JFrame {
         ItemVentas = new javax.swing.JMenuItem();
         jSeparator23 = new javax.swing.JPopupMenu.Separator();
         jMenuItem20 = new javax.swing.JMenuItem();
-        jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem14 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenu13 = new javax.swing.JMenu();
-        jMenuItem23 = new javax.swing.JMenuItem();
-        jSeparator55 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem29 = new javax.swing.JMenuItem();
-        jSeparator33 = new javax.swing.JPopupMenu.Separator();
         jMenuItem28 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         ItemInventario = new javax.swing.JMenuItem();
@@ -418,19 +419,18 @@ public final class Principal extends javax.swing.JFrame {
 
         jSeparator35.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setText("FECHA:");
-
-        lblFecha_Principal.setBackground(new java.awt.Color(255, 255, 255));
-        lblFecha_Principal.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        lblFecha_Principal.setForeground(new java.awt.Color(255, 255, 255));
-
         lblHora_Principal.setBackground(new java.awt.Color(255, 255, 255));
         lblHora_Principal.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblHora_Principal.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("HORA:");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("CAJA:");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -440,19 +440,19 @@ public final class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblNombre_BD_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblNombre_BD_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblURL_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(lblURL_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(jSeparator35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
+                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblFecha_Principal, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -461,10 +461,10 @@ public final class Principal extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lblFecha_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lblHora_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel8)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(lblURL_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lblNombre_BD_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
@@ -474,6 +474,8 @@ public final class Principal extends javax.swing.JFrame {
                     .addComponent(jSeparator30, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
                     .addComponent(jSeparator35)))
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jMenu1.setText("DASHBOARD");
@@ -560,34 +562,17 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem20);
-        jMenu2.add(jSeparator6);
+        jMenu2.add(jSeparator3);
 
-        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
-        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/product_document_file_1512.png"))); // NOI18N
-        jMenuItem8.setText("VALES");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/GASTOS_32PX.png"))); // NOI18N
+        jMenuItem14.setText("GASTOS");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
+                jMenuItem14ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem8);
+        jMenu2.add(jMenuItem14);
         jMenu2.add(jSeparator1);
-
-        jMenu13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CAJA_32PX.png"))); // NOI18N
-        jMenu13.setText("CAJA");
-
-        jMenuItem23.setText("CAJA PRINCIPAL");
-        jMenuItem23.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem23ActionPerformed(evt);
-            }
-        });
-        jMenu13.add(jMenuItem23);
-        jMenu13.add(jSeparator55);
-
-        jMenuItem29.setText("APERTURA DE CAJA");
-        jMenu13.add(jMenuItem29);
-        jMenu13.add(jSeparator33);
 
         jMenuItem28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CAJA_32PX.png"))); // NOI18N
         jMenuItem28.setText("CAJA");
@@ -596,9 +581,7 @@ public final class Principal extends javax.swing.JFrame {
                 jMenuItem28ActionPerformed(evt);
             }
         });
-        jMenu13.add(jMenuItem28);
-
-        jMenu2.add(jMenu13);
+        jMenu2.add(jMenuItem28);
 
         jMenuBar2.add(jMenu2);
 
@@ -988,11 +971,25 @@ public final class Principal extends javax.swing.JFrame {
         MoverEntreSistema();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    
+    
     public void MoverEntreSistema() {
-        
-         ABRIR_VENTANAS(P_O_S, true);
-        P_O_S.IdVenta.requestFocus();
-         
+        if (jLabel4.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", JOptionPane.WARNING_MESSAGE);
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
+                CA.setVisible(true);
+            } else {
+                ABRIR_VENTANAS(P_O_S, true);
+                P_O_S.IdVenta.requestFocus();
+                P_O_S.ListarProductosPOS_NOMBRE();
+            }
+        } else {
+            ABRIR_VENTANAS(P_O_S, true);
+            P_O_S.IdVenta.requestFocus();
+            P_O_S.ListarProductosPOS_NOMBRE();
+        }
     }
 
     private void ItemProveedores1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemProveedores1ActionPerformed
@@ -1002,7 +999,7 @@ public final class Principal extends javax.swing.JFrame {
  
     private void ItemInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemInventarioActionPerformed
         ABRIR_VENTANAS(I, true);
-        INVENTARIO.CARGAR_REGISTROS();
+        I.CARGAR_REGISTROS();
     }//GEN-LAST:event_ItemInventarioActionPerformed
 
     private void ItemUsuariosSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemUsuariosSistemaActionPerformed
@@ -1015,8 +1012,19 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemUsuariosActionPerformed
 
     private void ItemVentasGeneralesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemVentasGeneralesActionPerformed
-        ABRIR_VENTANAS(MG, true);
+        if(jLabel4.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", JOptionPane.WARNING_MESSAGE);
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
+            } else {
+                ABRIR_VENTANAS(MG, true);
+                MOVIMIENTOS_GENERALES.CARGAR_REGISTROS();
+            }
+        } else {
+            ABRIR_VENTANAS(MG, true);
         MOVIMIENTOS_GENERALES.CARGAR_REGISTROS();
+        }
     }//GEN-LAST:event_ItemVentasGeneralesActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -1048,7 +1056,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemProveedoresActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        if(TablaVentas.getRowCount() > 0){
+        if(P_O_S.TablaVentas.getRowCount() > 0){
             JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTA PENDIENTE, TERMINELA O CANCELELA!");
             
         }else{
@@ -1096,8 +1104,19 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void ItemVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemVentasActionPerformed
-        ABRIR_VENTANAS(MD, true);
-        MOVIMIENTOS_DIARIOS.CARGAR_REGISTROS();
+        if (jLabel4.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", JOptionPane.WARNING_MESSAGE);
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
+            } else {
+                ABRIR_VENTANAS(MD, true);
+                MD.CARGAR_REGISTROS();
+            }
+        } else {
+            ABRIR_VENTANAS(MD, true);
+            MD.CARGAR_REGISTROS();
+        }
     }//GEN-LAST:event_ItemVentasActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
@@ -1168,14 +1187,15 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem22ActionPerformed
 
     private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
-        ABRIR_VENTANAS(CG, true);
-        CotizacionesGenerales.ActualizarTablaEstado();
+        if(jLabel4.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", JOptionPane.WARNING_MESSAGE);
+            VER_CAJAS CA= new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+        }else{
+            ABRIR_VENTANAS(CG, true);
+        CG.ActualizarTablaEstado();
+        }
     }//GEN-LAST:event_jMenuItem20ActionPerformed
-
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-
-        JOptionPane.showMessageDialog(null, "¡ESPERAMOS QUE ESTA OPCIÓN ESTÉ DISPONIBLE MUY PRONTO!", "¡ÁREA EN MANTENIMIENTO!", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void ItemUsuarios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemUsuarios1ActionPerformed
         ReporteVentas();
@@ -1225,6 +1245,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void jMenuItem28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem28ActionPerformed
         ABRIR_VENTANAS(INTERNAL_CAJA_P, true);
+        INTERNAL_CAJA_P.ACTUALIZAR_CAJAS();
     }//GEN-LAST:event_jMenuItem28ActionPerformed
 
     private void jMenuItem30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem30ActionPerformed
@@ -1238,13 +1259,26 @@ public final class Principal extends javax.swing.JFrame {
 
     private void jMenuItem31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem31ActionPerformed
         ABRIR_VENTANAS(K, true);
-        INVENTARIO.CARGAR_REGISTROS();
+        I.CARGAR_REGISTROS();
         REFRESCAR_KARDEX();
     }//GEN-LAST:event_jMenuItem31ActionPerformed
 
-    private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem23ActionPerformed
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        if (jLabel4.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "NECESITAS SELECCIONAR UNA CAJA", "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURE UNA :)", JOptionPane.WARNING_MESSAGE);
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
+                CA.setVisible(true);
+            } else {
+                GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
+        G_N.setVisible(true);
+            }
+        } else {
+            GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
+        G_N.setVisible(true);
+        }
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     public static void CAMBIAR_ICONO(){
         ImageIcon icono = new ImageIcon(ObtenerRutaImagen(1)); // carga el icono desde archivo
@@ -1409,14 +1443,14 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem filtroproveedores;
     private javax.swing.JCheckBoxMenuItem filtrousuario;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
+    public javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu12;
-    private javax.swing.JMenu jMenu13;
     private javax.swing.JMenu jMenu14;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -1432,6 +1466,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
@@ -1441,13 +1476,11 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem22;
-    private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem24;
     private javax.swing.JMenuItem jMenuItem25;
     private javax.swing.JMenuItem jMenuItem26;
     private javax.swing.JMenuItem jMenuItem27;
     private javax.swing.JMenuItem jMenuItem28;
-    private javax.swing.JMenuItem jMenuItem29;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem30;
     private javax.swing.JMenuItem jMenuItem31;
@@ -1455,7 +1488,6 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel62;
@@ -1482,10 +1514,10 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator27;
     private javax.swing.JPopupMenu.Separator jSeparator28;
     private javax.swing.JPopupMenu.Separator jSeparator29;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JSeparator jSeparator30;
     private javax.swing.JPopupMenu.Separator jSeparator31;
     private javax.swing.JPopupMenu.Separator jSeparator32;
-    private javax.swing.JPopupMenu.Separator jSeparator33;
     private javax.swing.JPopupMenu.Separator jSeparator34;
     private javax.swing.JSeparator jSeparator35;
     private javax.swing.JPopupMenu.Separator jSeparator36;
@@ -1495,14 +1527,11 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JSeparator jSeparator43;
     private javax.swing.JPopupMenu.Separator jSeparator5;
-    private javax.swing.JPopupMenu.Separator jSeparator55;
     private javax.swing.JPopupMenu.Separator jSeparator56;
-    private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JLabel lblFecha_Principal;
     private javax.swing.JLabel lblHora_Principal;
     private javax.swing.JLabel lblNombre_BD_Principal;
     private javax.swing.JLabel lblURL_Principal;

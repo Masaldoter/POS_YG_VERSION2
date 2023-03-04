@@ -32,16 +32,7 @@ import Modelo.Detalle;
 import Modelo.Kardex;
 import Modelo.Productos;
 import Tablas.ActualizarTablaVentasDiariasYGenerales;
-import static Vista.POS.POS.AgregarProducto;
-import static Vista.POS.POS.BusquedaCodigoBarras;
-import static Vista.POS.POS.CantidadVenta;
-import static Vista.POS.POS.CheckIngresoAutomatico;
-import static Vista.POS.POS.ConsultarNit_CUIFinal;
-import static Vista.POS.POS.Final;
-import static Vista.POS.POS.IdVenta;
-import static Vista.POS.POS.NombreVenta;
-import static Vista.Principal.pro;
-import static Vista.Principal.proDao;
+import Vista.POS.POS;
 import WebServiceDigifact.AnularFactura;
 import WebServiceDigifact.CertificarFactura;
 import WebServiceDigifact.ConsultarDTE;
@@ -64,7 +55,6 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_DIARIOS;
-import static Vista.POS.POS.LIMPIAR_CAJA_CONSULTA_PRODUCTOS;
 import java.util.List;
 
 public final class Detalles extends javax.swing.JFrame {
@@ -78,12 +68,13 @@ public final class Detalles extends javax.swing.JFrame {
     private String NombreCliente, NitCliente, DireccionCliente, CodigoPostalCliente, MunicipioCliente, DepartamentoCliente, PaisCliente;
     private static String NUMERO_INTERNO_FACTURA_ELECTRONICA="";
     private static AVISOS VENTANA_AVISO;
-    
+    POS pos;
     public Detalles() { 
     }
     
-    public Detalles(String NumeroFactura, int ModoAbierto, int TipoDeVista) {
+    public Detalles(String NumeroFactura, int ModoAbierto, int TipoDeVista, POS pos) {
         initComponents();
+        this.pos = pos;
         //TablaDetalles.setShowHorizontalLines(true);
         this.setLocationRelativeTo(null);
         CargarTodosLosDetalles(NumeroFactura);
@@ -1247,35 +1238,36 @@ public final class Detalles extends javax.swing.JFrame {
        int Seleccion = JOptionPane.showConfirmDialog(null, """
                                                             ESTA ACCI\u00d3N REABRIRA LA VENTA, POR LO TANTO ESTA SE ANULAR\u00c1
                                                             TENGA EN CUENTA QUE SI TIENE PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTAR\u00c1""", "¿ESTÁ SEGURO DE RE-ABRIR LA VENTA?", JOptionPane.YES_NO_OPTION);
-        Boolean VerificarCheckEnVenta = CheckIngresoAutomatico.isSelected();
+        Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
         if (Seleccion == 0) {
             Boolean Anular = AnularTodaLaVenta();
             if (Anular == true) {
-                //Principal.MoverEntreSistema();
+                pos.principal.MoverEntreSistema();
                 if (VerificarCheckEnVenta == true) {
-                    CheckIngresoAutomatico.setSelected(false);
+                    pos.CheckIngresoAutomatico.setSelected(false);
                 }
-                ConsultarNit_CUIFinal(CajaNit.getText());
                 for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
-                    LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
+                    pos.LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
                     if (Integer.parseInt(TablaDetalles.getValueAt(i, 8).toString()) == 0) {
-                        NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
-                        IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
-                        CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-                        Final.setText(TablaDetalles.getValueAt(i, 6).toString());
-                        AgregarProducto();
+                        pos.NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
+                        pos.IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
+                        pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+                        pos.Final.setText(TablaDetalles.getValueAt(i, 6).toString());
+                        pos.AgregarProducto();
                     } else {
-                        BusquedaCodigoBarras(TablaDetalles.getValueAt(i, 0).toString());
-                        CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-                        Final.setText(TablaDetalles.getValueAt(i, 6).toString());
-                        AgregarProducto();
+                        pos.BusquedaCodigoBarras(TablaDetalles.getValueAt(i, 0).toString());
+                        pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+                        pos.Final.setText(TablaDetalles.getValueAt(i, 6).toString());
+                        pos.AgregarProducto();
 
                     }
                 }
                 if (VerificarCheckEnVenta == true) {
-                    CheckIngresoAutomatico.setSelected(true);
+                    pos.CheckIngresoAutomatico.setSelected(true);
                 }
-                LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
+                pos.ConsultarNit_CUIFinal(CajaNit.getText());
+                pos.ConsultarNit_CUIFinal(CajaNit.getText());
+                pos.LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
                 this.dispose();  
             }
         }
@@ -1530,8 +1522,8 @@ public final class Detalles extends javax.swing.JFrame {
             if (Integer.parseInt(TablaDetalles.getValueAt(i, 8).toString()) == 1) {
                 String cod = TablaDetalles.getValueAt(i, 0).toString();
                 Float cant = Float.parseFloat(TablaDetalles.getValueAt(i, 2).toString());
-                pro = new Productos();
-                proDao = new ProductosDao();
+                Productos pro = new Productos();
+                ProductosDao proDao = new ProductosDao();
                 pro = proDao.BuscarPro(cod);
                 Float StockActual = pro.getCantidad() + cant;
                 Boolean ResultadoAumento = VentaDao.ActualizarStock(StockActual, cod);
@@ -1599,7 +1591,7 @@ public final class Detalles extends javax.swing.JFrame {
             public void run() {
                
         if (PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR.equals("")) {
-            METODOS_GLOBALES.GenerarToken();
+            pos.OT.ObtenerToken();
         } else {
             GenerarXML GenerarXMLFactura = new GenerarXML();
             EnvioDatosFacturar EDF = new EnvioDatosFacturar();

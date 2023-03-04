@@ -3,6 +3,7 @@ package Vista.Cotizaciones;
 import Modelo.Cotizaciones;
 import Tablas.ConsultasCotizacion;
 import Tablas.RenderTablas;
+import Vista.Principal;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JTable;
@@ -13,8 +14,13 @@ import javax.swing.table.DefaultTableModel;
  * @author Masaldoter
  */
 public class CotizacionesGenerales extends javax.swing.JInternalFrame {
-
+    Principal principal;
     public CotizacionesGenerales() {
+        initComponents();
+    }
+    
+    public CotizacionesGenerales(Principal principal) {
+        this.principal = principal;
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -302,7 +308,6 @@ public class CotizacionesGenerales extends javax.swing.JInternalFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        TablaCotizaciones.setAutoCreateRowSorter(true);
         TablaCotizaciones.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         TablaCotizaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -384,7 +389,7 @@ public class CotizacionesGenerales extends javax.swing.JInternalFrame {
                 ((JButton)value).doClick();
                 String Id = TablaCotizaciones.getValueAt(fila, 0).toString();
                 JButton boton = (JButton) value;
-                DetalleCotizacion de= new DetalleCotizacion(codigo, 1, 0);
+                DetalleCotizacion de= new DetalleCotizacion(codigo, 1, 0, this.principal.P_O_S);
                 de.setVisible(true);
             }
         }

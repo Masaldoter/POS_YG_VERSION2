@@ -25,7 +25,6 @@ import Modelo.Ubicacion;
 import Tablas.ActualizarTablaVentas;
 import static Vista.ADMINISTRACION.INVENTARIO.INVENTARIO.ActualizarTablaCentral;
 import static Vista.ADMINISTRACION.INVENTARIO.INVENTARIO.REFRESCAR_INVENTARIO;
-import static Vista.POS.POS.ListarProductosPOS_NOMBRE;
 import Vista.Principal;
 import static Vista.Principal.Ub;
 import static Vista.Principal.VentanaCategoria;
@@ -527,7 +526,6 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 if (ResultadoIngreso == true) {
                     Ingreso_Kardex();
                     limpiarCajas();
-                    ListarProductosPOS_NOMBRE();
                     REFRESCAR_INVENTARIO();
                 }
 
@@ -585,7 +583,6 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 Id.requestFocus();
                 Principal.VentanaAdministracionDeProductos=false;
                 this.dispose();
-                ListarProductosPOS_NOMBRE();
                 REFRESCAR_INVENTARIO();
             }
             }

@@ -8,16 +8,15 @@ import CLASES_GLOBALES.ATAJOSDETECLADO;
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.CargarDatosRutas;
 import static CLASES_GLOBALES.METODOS_GLOBALES.Fecha;
-import static CLASES_GLOBALES.METODOS_GLOBALES.GenerarToken;
 import static CLASES_GLOBALES.METODOS_GLOBALES.Hora;
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
 import static CLASES_GLOBALES.METODOS_GLOBALES.PintarImagen;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
+import CLASES_GLOBALES.PARAMETROS_VENTAS;
 import static CLASES_GLOBALES.PARAMETROS_VENTAS.CheckBoxImpresionRapida;
 import static CLASES_GLOBALES.PARAMETROS_VENTAS.CheckBoxModoStockCero;
 import static CLASES_GLOBALES.PARAMETROS_VENTAS.CheckPermitirProductosPersonalizados;
-import CONSULTAS.CONSULTAS_CAJA;
 import Configuraciones.Ventas;
 import Controlador.ClientesDao;
 import Controlador.CotizacionesDao;
@@ -28,7 +27,6 @@ import Controlador.ProductosDao;
 import Controlador.TextPrompt;
 import Controlador.VentaDao;
 import FEL.XML_DTE.GenerarXML;
-import Modelo.CAJA;
 import Modelo.Clientes;
 import Modelo.Cotizaciones;
 import Modelo.Detalle;
@@ -46,9 +44,11 @@ import Tablas.RenderTablas;
 import Vista.Cotizaciones.DetalleCotizacion;
 import Vista.Detalles;
 import Vista.Principal;
+import Vista.VENTAS.CAJA.VER_CAJAS;
 import WebServiceDigifact.CertificarFactura;
 import WebServiceDigifact.ConsultarCUIWebService;
 import WebServiceDigifact.ConsultarNitWebService;
+import WebServiceDigifact.ObtenerToken;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import ds.desktop.notify.DesktopNotify;
@@ -76,7 +76,7 @@ public class POS extends javax.swing.JInternalFrame {
     private static String NumeroInternoFinal;
     Venta v = new Venta();
     static ClientesDao cliDao = new ClientesDao();
-    static FormaDePago Pagos = new FormaDePago();
+    FormaDePago Pagos = new FormaDePago(this);
     public JFRAME_BUSCAR_PRODUCTO BP;
     Detalles de;
     Observaciones observaciones;
@@ -86,10 +86,17 @@ public class POS extends javax.swing.JInternalFrame {
     Cotizaciones CotizacionesParametros;
     CotizacionesDao CotizacionDao;
     Ventas ConfigVentas = new Ventas();
-    public static Boolean VentanaFormaPago= false;
+    public Boolean VentanaFormaPago= false;
     public static Boolean VentanaObservacion= false;
-    public POS() {
+    public Principal principal;
+    POS pos;
+    PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();
+             public ObtenerToken OT = new ObtenerToken();       
+    
+    public POS(Principal principal) {
         initComponents();
+        this.pos = this;
+        this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         ATAJOSDETECLADO.clickOnKey(jButton8, "LimpiarCajas2", KeyEvent.VK_F5);
@@ -131,14 +138,12 @@ public class POS extends javax.swing.JInternalFrame {
         TextoEnCajas();
         PaisCliente.setSelectedItem("GUATEMALA");
         SiglaPais();
-        GenerarToken();
+        OT.ObtenerToken();
         OBTENERSERIES();
         IdVenta.requestFocus();
+        
     }
-    
-    
-    
-    public static void TextoEnCajas(){
+    public void TextoEnCajas(){
         TextPrompt hold;
         hold= new TextPrompt("ID*", IdCliente);
         hold= new TextPrompt("NIT*", Caja_IDENTIFICACION);
@@ -168,7 +173,7 @@ public class POS extends javax.swing.JInternalFrame {
     }
     
     //Limpiar cajas de Venta
-    public static void LIMPIAR_CAJA_CONSULTA_PRODUCTOS() {
+    public void LIMPIAR_CAJA_CONSULTA_PRODUCTOS() {
         IdVenta.setText(null);
         NombreVenta.setText(null);
         PrecioPublico.setText(null);
@@ -229,7 +234,7 @@ public class POS extends javax.swing.JInternalFrame {
         CodigoPostalCliente.setText(null);
     }
     
-    public static void ImagenAmigoVenta(){
+    public void ImagenAmigoVenta(){
         Image retValue = Toolkit.getDefaultToolkit().
          getImage(METODOS_GLOBALES.ObtenerRutaImagen(0));
         ImageIcon bl = new ImageIcon(retValue);
@@ -237,7 +242,7 @@ public class POS extends javax.swing.JInternalFrame {
         METODOS_GLOBALES.PintarImagen2(lblImagenVenta, bl);
     }
     
-    public static void ListarProductosPOS_NOMBRE() {
+    public void ListarProductosPOS_NOMBRE() {
         try {
             /*TextAutoCompleter AutoCompletador_PRODUCTOS=null;
             AutoCompletador_PRODUCTOS = new TextAutoCompleter(Parametro, new AutoCompleterCallback() {
@@ -266,7 +271,7 @@ public class POS extends javax.swing.JInternalFrame {
 
         try {
             AUTOCOMPLETADOR_CLIENTES_NOMBRE.removeAllItems();
-            List<Clientes> ListarCliente = cliDao.BuscarClienteLista();
+            List<Clientes> ListarCliente = cliDao.BuscarClienteLista(COMBO_TIPO_IDENTIFICACION.getSelectedItem().toString());  
             AUTOCOMPLETADOR_CLIENTES_NOMBRE.setMode(0);
             Object[] ob = new Object[1];
             for (int i = 0; i < ListarCliente.size(); i++) {
@@ -281,7 +286,7 @@ public class POS extends javax.swing.JInternalFrame {
 
     public void LISTAR_CLIENTES_CAJAS_NIT() {
         AUTOCOMPLETADOR_CLIENTE_NIT.removeAllItems();
-        List<Clientes> ListarCliente = cliDao.BuscarClienteLista();
+        List<Clientes> ListarCliente = cliDao.BuscarClienteLista(COMBO_TIPO_IDENTIFICACION.getSelectedItem().toString());
         AUTOCOMPLETADOR_CLIENTE_NIT.setMode(0);
         Object[] ob = new Object[1];
         for (int i = 0; i < ListarCliente.size(); i++) {
@@ -290,7 +295,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
     
-    public static void IngresoClientes(String Nombre, String IDENTIFICACION, String TIPO_IDENTIFICACION, String Direccion, String Municipio, String Departamento, String Pais, String CodigoPostal) {
+    public void IngresoClientes(String Nombre, String IDENTIFICACION, String TIPO_IDENTIFICACION, String Direccion, String Municipio, String Departamento, String Pais, String CodigoPostal) {
         ClientesDao clDao = new ClientesDao();
         Clientes cl = new Clientes();
         if (Nombre.equals("")) {
@@ -316,7 +321,7 @@ public class POS extends javax.swing.JInternalFrame {
 
     }
 
-    public static void BUSCAR_CLIENTE_NOMBRE(String Parametro){
+    public void BUSCAR_CLIENTE_NOMBRE(String Parametro){
         Clientes cli = new Clientes();
         if (Parametro.equals("")) {
             JOptionPane.showMessageDialog(null, "¡DEBE INGRESAR UN NOMBRE DE CLIENTE");
@@ -336,22 +341,23 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
     
-    public static void ConsultarNit_CUIFinal(String Nit){
+    public void ConsultarNit_CUIFinal(String Nit){
         cliDao = new ClientesDao();
               boolean ESTADO_CONSULTA_NIT = ObtenerCliente(Nit);
              if(ESTADO_CONSULTA_NIT==false){
-                 if (PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR.equals("")) {
-                            GenerarToken();
+                 System.out.println(P_E.TOKEN_CERTIFICADOR);
+                 if (P_E.TOKEN_CERTIFICADOR.equals("")) {
+                            OT.ObtenerToken();
                         }
                         DatosPersonaCliente DPC = new DatosPersonaCliente();
                         DPC.setNIT_CUI(Nit);
                         DatosUsuario DU = new DatosUsuario();
-                        DU.setNit(PARAMETROS_EMPRESA.NIT_EMPRESA);
-                        DU.setUsuario(PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
-                        DU.setContrasenia(PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR);
+                        DU.setNit(P_E.NIT_EMPRESA);
+                        DU.setUsuario(P_E.USUARIO_CERTIFICADOR);
+                        DU.setContrasenia(P_E.CONTRASENIA_CERTIFICADOR);
                  if(COMBO_TIPO_IDENTIFICACION.getSelectedItem().equals("NIT")){
                      ConsultarNitWebService CNWS = new ConsultarNitWebService();
-                     DPC = CNWS.ObtenerCliente(DPC, DU, PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR);
+                     DPC = CNWS.ObtenerCliente(DPC, DU, P_E.TOKEN_CERTIFICADOR);
                      nombre.setText(DPC.getNombre());
                         Caja_IDENTIFICACION.setText(Nit);
                         direccion.setText(DPC.getDireccion());
@@ -362,7 +368,7 @@ public class POS extends javax.swing.JInternalFrame {
                         IngresoClientes(nombre.getText(), Caja_IDENTIFICACION.getText(), String.valueOf(COMBO_TIPO_IDENTIFICACION.getSelectedItem()), direccion.getText(), MunicipioCliente.getText(), DepartamentoCliente.getText(), PaisCliente.getSelectedItem().toString(), CodigoPostalCliente.getText());
                  }else{
                      ConsultarCUIWebService CCWS = new ConsultarCUIWebService();
-                     DPC = CCWS.ObtenerCliente(DPC, DU, PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR);
+                     DPC = CCWS.ObtenerCliente(DPC, DU, P_E.TOKEN_CERTIFICADOR);
                      nombre.setText(DPC.getNombre());
                         Caja_IDENTIFICACION.setText(Nit);
                         direccion.setText(DPC.getDireccion());
@@ -376,7 +382,7 @@ public class POS extends javax.swing.JInternalFrame {
              }
     }
     
-    public static Boolean ObtenerCliente(String Nit) {
+    public Boolean ObtenerCliente(String Nit) {
         Clientes cliente = new Clientes();
         cliente = ClientesDao.BuscarClie(Nit);
         Boolean Existe = cliente.getResutaldoConsulta();
@@ -397,7 +403,7 @@ public class POS extends javax.swing.JInternalFrame {
         return Existe;
     }
 
-    public synchronized static boolean AgregarProducto() {
+    public synchronized boolean AgregarProducto() {
         Boolean ESTADO_PRODUCTO_AGREGADO=false;
         if (EstadoProducto.getText().equals("INGRESADO")) {
             if (CheckBoxModoStockCero==true) {
@@ -426,7 +432,7 @@ public class POS extends javax.swing.JInternalFrame {
         return ESTADO_PRODUCTO_AGREGADO;
     }
 
-    public synchronized static void EditarProductoPOS() {
+    public synchronized void EditarProductoPOS() {
 
         if (EstadoProducto.getText().equals("INGRESADO")) {
             if (CheckBoxModoStockCero==true) {
@@ -457,7 +463,7 @@ public class POS extends javax.swing.JInternalFrame {
 
     }
     
-    public static void SUMAR_TABLA(){
+    public void SUMAR_TABLA(){
         Float CANTIDAD, PRECIO_NORMAL, DESCUENTO, PRECIO_CON_DESCUENTO, TOTAL;
         for (int i = 0; i < TablaVentas.getRowCount(); i++) {
             CANTIDAD = Float.parseFloat(TablaVentas.getValueAt(i, 2).toString());
@@ -469,7 +475,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
     
-    public static void APLICAR_DESCUENTO_TABLA(Float DESCUENTO_PORCENTAJE){
+    public void APLICAR_DESCUENTO_TABLA(Float DESCUENTO_PORCENTAJE){
         Float PRECIO_NORMAL, DESCUENTO = 0F;
         for (int i = 0; i < TablaVentas.getRowCount(); i++) {
             if(TablaVentas.getValueAt(i, 7).toString().equals("true")){
@@ -483,7 +489,7 @@ public class POS extends javax.swing.JInternalFrame {
         TotalPagar();
     }
     
-    public static void VERIFICAR_DESCUENTO(JComboBox COMBO){
+    public void VERIFICAR_DESCUENTO(JComboBox COMBO){
         if(COMBO.getSelectedIndex()==0){
             APLICAR_DESCUENTO_TABLA(0f);
         }else{
@@ -491,7 +497,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
 
-    public synchronized static void AgregarProductoSinExistenciaEnTabla() {
+    public synchronized void AgregarProductoSinExistenciaEnTabla() {
         Productos pro = new Productos();
         ProductosDao proDao = new ProductosDao();
         float EnStock = 0;
@@ -581,7 +587,7 @@ public class POS extends javax.swing.JInternalFrame {
     }
 
     @SuppressWarnings("unchecked")
-    public synchronized static void AgregarProductoConExistenciaEnTabla() {
+    public synchronized void AgregarProductoConExistenciaEnTabla() {
         float EnStock = 0;
 
         TablaVentas.setDefaultRenderer(Object.class, new RenderTablas());
@@ -672,7 +678,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
 
-    public synchronized static void AgregarProductoSinBD() {
+    public synchronized void AgregarProductoSinBD() {
         TablaVentas.setDefaultRenderer(Object.class, new RenderTablas());
 
         JButton btn1 = new JButton("ELIMINAR");
@@ -741,7 +747,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
 
-    public synchronized static void EliminarVenta() {
+    public synchronized void EliminarVenta() {
         var modelo = new DefaultTableModel();
         AumentarStockUnidad();
         int fila1 = TablaVentas.getSelectedRow();
@@ -762,7 +768,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
 
-    public synchronized static void EliminarVentaSinAumentarStock() {
+    public synchronized void EliminarVentaSinAumentarStock() {
         DefaultTableModel modelo = new DefaultTableModel();
         int fila1 = TablaVentas.getSelectedRow();
         String fila = String.valueOf(fila1);
@@ -782,7 +788,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
     
-    public static void BAJAR_SCROLL(javax.swing.JScrollPane Scroll){
+    public void BAJAR_SCROLL(javax.swing.JScrollPane Scroll){
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 Scroll.getVerticalScrollBar().setValue(Scroll.getVerticalScrollBar().getMaximum());
@@ -790,7 +796,7 @@ public class POS extends javax.swing.JInternalFrame {
         });
     }
     
-    private synchronized static void TotalPagar() {
+    private synchronized void TotalPagar() {
         TotalPagar = 0.00;
         int numFila = TablaVentas.getRowCount();
         for (int i = 0; i < numFila; i++) {
@@ -802,7 +808,7 @@ public class POS extends javax.swing.JInternalFrame {
         labeltotalenfacturacion.setText(String.format("%.2f",TotalPagar));
     }
     
-    public static Boolean VALIDAR_CAJAS_CLIENTE_POS(){
+    public Boolean VALIDAR_CAJAS_CLIENTE_POS(){
         Boolean Estado = false;
         if (nombre.getText().equals("") || Caja_IDENTIFICACION.getText().equals("") || direccion.getText().equals("")
                 || MunicipioCliente.getText().equals("") || DepartamentoCliente.getText().equals("")
@@ -842,7 +848,7 @@ public class POS extends javax.swing.JInternalFrame {
     public String TIPO_NUMERO_INTERNO(){
         String NUMERO_INTERNO = null;
         
-        if(TipoDocumento.getSelectedIndex()==0){
+        if(TipoDocumento.getSelectedIndex()==0 || TipoDocumento.getSelectedIndex()==1){
            NUMERO_INTERNO = NumeroInternoFinal ;
         }else if(TipoDocumento.getSelectedIndex()==3){
            generarserie_SALIDAS();
@@ -863,6 +869,7 @@ public class POS extends javax.swing.JInternalFrame {
         v.setCambio(Float.parseFloat(cambio.getText()));
         v.setUsuario(PARAMETROS_USUARIOS.ID_USUARIO);
         v.setNoFactura(TIPO_NUMERO_INTERNO());
+        v.setId_CAJA_registro(Integer.parseInt(PARAMETROS_VENTAS.NUMERO_CAJA));
         String FormaPago;
         if (ComboFormaPago.getText() == null) {
             FormaPago = "EFECTIVO";
@@ -874,15 +881,15 @@ public class POS extends javax.swing.JInternalFrame {
         v.setTotalEnLetras(TotalLetras.getText());
 
         v.setObservacion(ObservacionVenta.getText());
-        v.setNombreCertificador(PARAMETROS_EMPRESA.NOMBRE_CERTIFICADOR);
-        v.setNitCertificador(PARAMETROS_EMPRESA.NIT_CERTIFICADOR);
+        v.setNombreCertificador(P_E.NOMBRE_CERTIFICADOR);
+        v.setNitCertificador(P_E.NIT_CERTIFICADOR);
         v.setFechaAutorizacion(CajaFechaAutorizacion.getText());
         v.setNumeroAutorizacion(CajaNumeroAutorizacion.getText());
         v.setNumeroDocumento(CajaNumeroDocumento.getText());
         v.setSerieDocumento(CajaSerieCertificacion.getText());
         v.setTipoDocumentoFel(TipoDocumento.getSelectedItem().toString());
         v.setNUMERO_INTERNO(NUMERO_INTERNO_FACTURA_ELECTRONICA);
-        v.setNitEmisor(PARAMETROS_EMPRESA.NIT_EMPRESA);
+        v.setNitEmisor(P_E.NIT_EMPRESA);
         Boolean ESTADO_REGISTRO_VENTA = Vdao.RegistrarVenta(v);
         if (ESTADO_REGISTRO_VENTA == true) {
             GUARDAR_KARDEX();
@@ -965,7 +972,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
 
-    public synchronized static void RestarStock() {
+    public synchronized void RestarStock() {
         pro = new Productos();
         proDao = new ProductosDao();
         String cod = IdVenta.getText();
@@ -993,7 +1000,7 @@ public class POS extends javax.swing.JInternalFrame {
 
     }
 
-    public synchronized static void AumentarStockUnidad() {
+    public synchronized void AumentarStockUnidad() {
         pro = new Productos();
         proDao = new ProductosDao();
         int x = TablaVentas.getSelectedRow();
@@ -1086,7 +1093,7 @@ public void GenerarVenta() {
                     }else{
                         VentanaFormaPago = true;
                         Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
-                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), PARAMETROS_EMPRESA.IVA_EMPRESA, SubTotal.getText());
+                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), P_E.IVA_EMPRESA, SubTotal.getText());
                         Pagos.setVisible(true);
                     }
                 }
@@ -1106,8 +1113,10 @@ public void GenerarVenta() {
                             Pagos.toFront();
                         }else{
                             VentanaFormaPago = true;
-                            Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
-                                    , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), PARAMETROS_EMPRESA.IVA_EMPRESA, SubTotal.getText());
+                            Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(this.labeltotal.getText(), this.pagocon.getText(), this.cambio.getText(), this.Efectivo.getText(), 
+                                    this.Tarjeta.getText(), this.Deposito.getText(), this.Cheque.getText(), this.CajaNumeroTransacción.getText(), this.ComboFormaPago.getText(), 
+                                    Integer.parseInt(this.MetodoPagoEntero.getText()), this.TotalIva.getText(), 
+                                    P_E.IVA_EMPRESA, this.SubTotal.getText());
                             Pagos.setVisible(true);    
                         }
                     }
@@ -1148,7 +1157,7 @@ public void GenerarVenta() {
         }
         
         if(!"".equals(NumeroDeFactura)){
-            de= new Detalles(NumeroDeFactura, 0, 0);
+            de= new Detalles(NumeroDeFactura, 0, 0, this.principal.P_O_S);
             
             if(AbrirVentana== 0){
              new java.util.Timer().schedule(new java.util.TimerTask() {
@@ -1183,7 +1192,8 @@ public void GenerarVenta() {
     
     public void VerDetalleCotizacion(String NumeroDeFactura, int AbrirVentana){
         if(!"".equals(NumeroDeFactura)){
-            DetalleCotizacion de= new DetalleCotizacion(NumeroDeFactura, 0, 0);
+            //DetalleCotizacion de= new DetalleCotizacion(NumeroDeFactura, 0, 0 this.principal.P_O_S);
+            DetalleCotizacion de = new DetalleCotizacion(NumeroDeFactura, 0, 0, this.principal.P_O_S);
             if(AbrirVentana== 0){
              new java.util.Timer().schedule(new java.util.TimerTask() {
          @Override
@@ -1217,7 +1227,7 @@ public void GenerarVenta() {
     }
     public static Boolean VentanaBuscarProducto = false;
 
-    public static void SumarProductos() {
+    public void SumarProductos() {
         int nu = TablaVentas.getRowCount();
         Double TotalStock23 = 0.00;
         if (nu != 0) {
@@ -1231,7 +1241,7 @@ public void GenerarVenta() {
         }
     }
 
-    public static void BuscarProductoVenta_ID_VENTA(String Codigo) {
+    public void BuscarProductoVenta_ID_VENTA(String Codigo) {
 
         if (!"".equals(Codigo)) {
             PrecioRe.setSelected(false);
@@ -1249,7 +1259,7 @@ public void GenerarVenta() {
         }
     }
 
-    public static void BuscarProductoVenta(String Codigo) {
+    public void BuscarProductoVenta(String Codigo) {
 
         if (!"".equals(Codigo)) {
             PrecioRe.setSelected(false);
@@ -1267,7 +1277,7 @@ public void GenerarVenta() {
         }
     }
 
-    public static Boolean Busqueda_ID_VENTA(String Codigo) {
+    public Boolean Busqueda_ID_VENTA(String Codigo) {
         Boolean ESTADO_BUSQUEDA=false;
         pro = new Productos();
         proDao = new ProductosDao();
@@ -1326,7 +1336,7 @@ public void GenerarVenta() {
         return ESTADO_BUSQUEDA;
     }
     
-    public static Boolean BusquedaCodigoBarras(String Codigo) {
+    public Boolean BusquedaCodigoBarras(String Codigo) {
         Boolean ESTADO_BUSQUEDA=false;
         pro = new Productos();
         proDao = new ProductosDao();
@@ -1385,7 +1395,7 @@ public void GenerarVenta() {
         return ESTADO_BUSQUEDA;
     }
 
-    public static void BuscarProductoVentaPorNombre(String Nombre) {
+    public void BuscarProductoVentaPorNombre(String Nombre) {
         PrecioPublico.setFont(new Font("Consolas", Font.BOLD, 18));
         PrecioRe.setFont(new Font("Consolas", Font.BOLD, 16));
         PrecioEs.setFont(new Font("Consolas", Font.BOLD, 16));
@@ -1501,12 +1511,12 @@ public void GenerarVenta() {
         }
     }
        
-    public synchronized static void CargarPaises(){
+    public synchronized void CargarPaises(){
         cliDao.Pais(PaisCliente);
         SiglaPais();
     }
     
-    public synchronized static void SiglaPais(){
+    public synchronized void SiglaPais(){
         SiglaPais.setText(cliDao.ConsultaSiglaPais(PaisCliente));
     }
     
@@ -1529,8 +1539,8 @@ public void GenerarVenta() {
     }
 
     public void EnviarParametrosAXML() {
-        if (PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR.equals("")) {
-            GenerarToken();
+        if (P_E.TOKEN_CERTIFICADOR.equals("")) {
+            OT.ObtenerToken();
         }
         try {
 
@@ -1546,16 +1556,16 @@ public void GenerarVenta() {
             EDF.setCodigoMoneda("GTQ");
             EDF.setTipoDocumento("FACT");
 
-            EDF.setNITEmisor(PARAMETROS_EMPRESA.NIT_EMPRESA);
-            EDF.setNombreEmisor(PARAMETROS_EMPRESA.PROPIETARIO_EMPRESA);
-            EDF.setCodigoEstablecimiento(PARAMETROS_EMPRESA.CODIGOESTABLECIMIENTO_EMPRESA);
-            EDF.setNombreComercial(PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
-            EDF.setAfiliacionIVA(PARAMETROS_EMPRESA.AFILICACIONIVA_EMPRESA);
-            EDF.setDireccionEmisor(PARAMETROS_EMPRESA.DIRECCION_EMPRESA);
-            EDF.setCodigoPostalEmisor(PARAMETROS_EMPRESA.CODIGOPOSTAL_EMPRESA);
-            EDF.setMunicipioEmisor(PARAMETROS_EMPRESA.MUNICIPIO_EMPRESA);
-            EDF.setDepartamentoEmisor(PARAMETROS_EMPRESA.DEPARTAMENTO_EMPRESA);
-            EDF.setPaisEmisor(PARAMETROS_EMPRESA.PAIS_EMPRESA);
+            EDF.setNITEmisor(P_E.NIT_EMPRESA);
+            EDF.setNombreEmisor(P_E.PROPIETARIO_EMPRESA);
+            EDF.setCodigoEstablecimiento(P_E.CODIGOESTABLECIMIENTO_EMPRESA);
+            EDF.setNombreComercial(P_E.NOMBRE_EMPRESA);
+            EDF.setAfiliacionIVA(P_E.AFILICACIONIVA_EMPRESA);
+            EDF.setDireccionEmisor(P_E.DIRECCION_EMPRESA);
+            EDF.setCodigoPostalEmisor(P_E.CODIGOPOSTAL_EMPRESA);
+            EDF.setMunicipioEmisor(P_E.MUNICIPIO_EMPRESA);
+            EDF.setDepartamentoEmisor(P_E.DEPARTAMENTO_EMPRESA);
+            EDF.setPaisEmisor(P_E.PAIS_EMPRESA);
 
             if(COMBO_TIPO_IDENTIFICACION.getSelectedItem().equals("CUI")){
              EDF.setTipo_Especial("CUI");   
@@ -1603,11 +1613,11 @@ public void GenerarVenta() {
             Boolean Resultado = GenerarXMLFactura.GenerarXMLFactura(EDF, TablaVentas, String.valueOf(COMBO_TIPO_IDENTIFICACION.getSelectedItem()));
             if (Resultado == true) {
                 DatosUsuario DU = new DatosUsuario();
-                DU.setNit(PARAMETROS_EMPRESA.NIT_EMPRESA);
-                DU.setUsuario(PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
-                DU.setContrasenia(PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR);
+                DU.setNit(P_E.NIT_EMPRESA);
+                DU.setUsuario(P_E.USUARIO_CERTIFICADOR);
+                DU.setContrasenia(P_E.CONTRASENIA_CERTIFICADOR);
 
-                CFACTMODEL = CFact.CertificarFactura(DU, PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR);
+                CFACTMODEL = CFact.CertificarFactura(DU, P_E.TOKEN_CERTIFICADOR);
                 CajaFechaAutorizacion.setText(CFACTMODEL.getFecha_de_certificacion());
                 CajaNumeroAutorizacion.setText(CFACTMODEL.getAutorizacion());
                 CajaSerieCertificacion.setText(CFACTMODEL.getSerie());
@@ -1632,15 +1642,15 @@ public void GenerarVenta() {
         //EnviarParametrosNotaDeCreditoXML();
     }
     
-    public static void FORMA_DE_PAGO(){
+    public void FORMA_DE_PAGO(){
                 Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), 
                         Tarjeta.getText(), Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
-                Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), PARAMETROS_EMPRESA.IVA_EMPRESA, SubTotal.getText());
-            FormaDePago.TOTALES_SIN_INTERACCION();
+                Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), P_E.IVA_EMPRESA, SubTotal.getText());
+            Pagos.TOTALES_SIN_INTERACCION();
         
     }
     
-    public static void RellenarMetodoPago(String Pago, String Cambio, String EfectivoPagado, String DepositoPagado, String TarjetaPagada, String ChequePagado, String NumeroTransacciones, String Metodo, String MetodoPagoHecho, 
+    public void RellenarMetodoPago(String Pago, String Cambio, String EfectivoPagado, String DepositoPagado, String TarjetaPagada, String ChequePagado, String NumeroTransacciones, String Metodo, String MetodoPagoHecho, 
             String TotalIvaPagado, String SubTotalPagado){
         pagocon.setText(Pago);
         cambio.setText(Cambio);
@@ -3146,7 +3156,7 @@ public void GenerarVenta() {
                         }else{
                             VentanaFormaPago = true;
                             Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
-                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), PARAMETROS_EMPRESA.IVA_EMPRESA, SubTotal.getText());
+                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), P_E.IVA_EMPRESA, SubTotal.getText());
                             Pagos.setVisible(true);
                         }
                     }
@@ -3184,7 +3194,7 @@ public void GenerarVenta() {
                 if(VentanaBuscarProducto == false) {
                     VentanaBuscarProducto = true;
                     BtnBuscarProductoPOS.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-                    BP = new JFRAME_BUSCAR_PRODUCTO();
+                    BP = new JFRAME_BUSCAR_PRODUCTO(pos);
                     BP.setVisible(true);
                     BtnBuscarProductoPOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
                 } else {
@@ -3208,7 +3218,7 @@ public void GenerarVenta() {
             }else{
                 VentanaFormaPago = true;
                 Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
-                    , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), PARAMETROS_EMPRESA.IVA_EMPRESA, SubTotal.getText());
+                    , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), P_E.IVA_EMPRESA, SubTotal.getText());
                 Pagos.setVisible(true);
             }
         }
@@ -3217,7 +3227,7 @@ public void GenerarVenta() {
     private void BtnAgregarObservacionPOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarObservacionPOSActionPerformed
         if(VentanaObservacion == false){
             VentanaObservacion = true;
-            observaciones= new Observaciones(ObservacionVenta.getText());
+            observaciones= new Observaciones(ObservacionVenta.getText(), pos);
             observaciones.setVisible(true);
         }else{
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
@@ -3258,7 +3268,7 @@ public void GenerarVenta() {
         cliDao = new ClientesDao();
         Clientes cli = new Clientes();
         TextAutoCompleter AutoCompletador = new TextAutoCompleter(IdCliente);
-        List<Clientes> ListarCliente =cliDao. BuscarClienteLista();
+        List<Clientes> ListarCliente =cliDao. BuscarClienteLista(COMBO_TIPO_IDENTIFICACION.getSelectedItem().toString());
         Object[] ob= new Object[1];
         for (int i = 0; i < ListarCliente.size(); i++) {
             ob[0] = ListarCliente.get(i).getIdclientes();
@@ -3381,65 +3391,65 @@ public void GenerarVenta() {
     private javax.swing.JButton BtnCancelarVentaPOS;
     private javax.swing.JButton BtnGenerarVentaPOS;
     private javax.swing.JButton BtnNuevoClientePOS;
-    private static javax.swing.JComboBox<String> COMBO_TIPO_IDENTIFICACION;
+    private javax.swing.JComboBox<String> COMBO_TIPO_IDENTIFICACION;
     public static javax.swing.JTextField CajaFechaAutorizacion;
     public static javax.swing.JTextField CajaNumeroAutorizacion;
     public static javax.swing.JTextField CajaNumeroDocumento;
     public static javax.swing.JTextArea CajaNumeroTransacción;
     public static javax.swing.JTextField CajaSerieCertificacion;
-    private static javax.swing.JTextField Caja_IDENTIFICACION;
-    public static javax.swing.JTextField Cantidad2;
-    public static javax.swing.JTextField CantidadVenta;
+    private javax.swing.JTextField Caja_IDENTIFICACION;
+    public javax.swing.JTextField Cantidad2;
+    public javax.swing.JTextField CantidadVenta;
     private javax.swing.JCheckBox CheckImprimir;
-    public static javax.swing.JCheckBox CheckIngresoAutomatico;
+    public javax.swing.JCheckBox CheckIngresoAutomatico;
     private javax.swing.JCheckBox CheckVistaPreviaVenta;
     public static javax.swing.JLabel Cheque;
-    private static javax.swing.JTextField CodigoPostalCliente;
+    private javax.swing.JTextField CodigoPostalCliente;
     public static javax.swing.JLabel ComboFormaPago;
     private static javax.swing.JTextArea DESCRIPCION;
-    private static javax.swing.JTextField DepartamentoCliente;
+    private javax.swing.JTextField DepartamentoCliente;
     public static javax.swing.JLabel Deposito;
-    public static javax.swing.JTextArea DescripcionProductoVenta;
+    public javax.swing.JTextArea DescripcionProductoVenta;
     public static javax.swing.JLabel Efectivo;
     public static javax.swing.JLabel EstadoProducto;
     private javax.swing.JTabbedPane Facturacion;
-    public static javax.swing.JTextField Final;
+    public javax.swing.JTextField Final;
     private static javax.swing.JLabel ID_PRODUCTO;
     private javax.swing.JLabel IMAGEN;
-    private static javax.swing.JTextField IdCliente;
-    public static transient javax.swing.JTextField IdVenta;
+    private javax.swing.JTextField IdCliente;
+    public javax.swing.JTextField IdVenta;
     public static javax.swing.JLabel MetodoPagoEntero;
-    private static javax.swing.JTextField MunicipioCliente;
-    public static javax.swing.JTextField NombreVenta;
+    private javax.swing.JTextField MunicipioCliente;
+    public javax.swing.JTextField NombreVenta;
     public static javax.swing.JTextArea ObservacionVenta;
     private javax.swing.JPanel PANELPRODUCTOS;
-    private static javax.swing.JComboBox<String> PaisCliente;
+    private javax.swing.JComboBox<String> PaisCliente;
     private javax.swing.JPanel PanelBotonesPOS;
     private javax.swing.JPanel PanelClientePOS;
     private javax.swing.JPanel PanelTotalVentaPOS;
     private javax.swing.JPanel PanleDatosProductoPOS;
-    public static javax.swing.JRadioButton PrecioEs;
-    public static javax.swing.JRadioButton PrecioPublico;
-    public static javax.swing.JRadioButton PrecioRe;
-    private static javax.swing.JTextField SiglaPais;
+    public javax.swing.JRadioButton PrecioEs;
+    public javax.swing.JRadioButton PrecioPublico;
+    public javax.swing.JRadioButton PrecioRe;
+    private javax.swing.JTextField SiglaPais;
     public static javax.swing.JLabel SubTotal;
     private static javax.swing.JLabel TOTAL_INGRESADO;
-    public static javax.swing.JTable TablaVentas;
+    public javax.swing.JTable TablaVentas;
     public static javax.swing.JLabel Tarjeta;
-    private static javax.swing.JComboBox<String> TipoDocumento;
+    private javax.swing.JComboBox<String> TipoDocumento;
     public static javax.swing.JLabel TotalDeProductosVendidos;
     public static javax.swing.JLabel TotalIva;
     public static javax.swing.JTextArea TotalLetras;
-    public static javax.swing.JLabel TotalTipoDeProductosPOS;
+    public javax.swing.JLabel TotalTipoDeProductosPOS;
     private javax.swing.JTextField Vale;
     private javax.swing.JPanel Venta;
-    public static javax.swing.JLabel cambio;
-    private static javax.swing.JTextField direccion;
+    public javax.swing.JLabel cambio;
+    private javax.swing.JTextField direccion;
     private javax.swing.JTextField factura;
-    private static javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private static javax.swing.JCheckBox jCheckBox1;
-    private static javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -3449,7 +3459,7 @@ public void GenerarVenta() {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
-    private static javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel99;
@@ -3474,20 +3484,20 @@ public void GenerarVenta() {
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     public static javax.swing.JLabel labeltotal;
-    public static javax.swing.JLabel labeltotalenfacturacion;
+    public javax.swing.JLabel labeltotalenfacturacion;
     private javax.swing.JLabel lblCantidadPOS;
     private javax.swing.JLabel lblCodigoPOS;
-    public static javax.swing.JLabel lblImagenVenta;
+    public javax.swing.JLabel lblImagenVenta;
     private javax.swing.JLabel lblNombrePOS;
     private javax.swing.JTextField lblNumeroSerieCotizacion;
     private javax.swing.JLabel lblNumeroTransacción;
     private javax.swing.JLabel lblPrecioFinalPOS;
-    private static javax.swing.JTextField lblSerie_Salidas;
+    private javax.swing.JTextField lblSerie_Salidas;
     public static javax.swing.JLabel lblVentaPrecio1;
     public static javax.swing.JLabel lblVentaPrecio2;
     public static javax.swing.JLabel lblVentaPrecio3;
     private javax.swing.JLabel lbl_CANTIDAD_DESCUENTO;
     private static rojerusan.RSMetroTextFullPlaceHolder nombre;
-    public static javax.swing.JLabel pagocon;
+    public javax.swing.JLabel pagocon;
     // End of variables declaration//GEN-END:variables
 }

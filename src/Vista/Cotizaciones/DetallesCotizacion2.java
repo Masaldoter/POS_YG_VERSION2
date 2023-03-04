@@ -18,20 +18,12 @@ import FEL.DocumentoFel;
 import Gmail.InterfazGmail;
 import Modelo.DatosEmpresaGeneral;
 import Modelo.Productos;
-import ModeloWebService.DatosUsuario;
 import ReportesImpresion.DatosClienteYFactura;
 import ReportesImpresion.Documentos;
 import Conexiones.ConexionesSQL;
 import static Vista.Cotizaciones.CotizacionesGenerales.ActualizarTablaEstado;
 import Vista.Detalles;
-import static Vista.POS.POS.AgregarProducto;
-import static Vista.POS.POS.BusquedaCodigoBarras;
-import static Vista.POS.POS.CantidadVenta;
-import static Vista.POS.POS.CheckIngresoAutomatico;
-import static Vista.POS.POS.ConsultarNit_CUIFinal;
-import static Vista.POS.POS.Final;
-import static Vista.POS.POS.IdVenta;
-import static Vista.POS.POS.NombreVenta;
+import Vista.POS.POS;
 import Vista.Principal;
 import java.awt.Desktop;
 import java.awt.Image;
@@ -65,15 +57,13 @@ public class DetallesCotizacion2 extends javax.swing.JInternalFrame {
         String strDateFormat = "YYYY-MM-dd";
         SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
         String fecha=objSDF.format(fech);
-        DatosUsuario DU;
-        Principal p;
-            
+        POS pos;
     public DetallesCotizacion2() {
         
     }
-    public DetallesCotizacion2(String NumeroFactura, int ModoAbierto, int TipoDeVista) {
+    public DetallesCotizacion2(String NumeroFactura, int ModoAbierto, int TipoDeVista, POS pos) {
         initComponents();
-        this.
+        this.pos = pos;
         CargarTodosLosDetalles(NumeroFactura);
         v.CargarDatosFormatoImpresion(jComboBox1);
         DiariasGenerales= TipoDeVista;
@@ -899,33 +889,33 @@ public class DetallesCotizacion2 extends javax.swing.JInternalFrame {
         prin.Mov.Tabla(prin.tablamadre, prin.tablamadre.getSelectedIndex());*/
         int Seleccion= JOptionPane.showConfirmDialog(null, "ESTA ACCIÓN ELIMINARA ESTA COTIZACIÓN Y LA PASARA\n A LA SECCIÓN DE VENTAS.\nTENGA EN CUENTA QUE SI TIENE"
                 + " PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTARÁ", "¿ESTÁ SEGURO DE REALIZAR LA VENTA?", JOptionPane.YES_NO_OPTION);
-        Boolean VerificarCheckEnVenta = CheckIngresoAutomatico.isSelected();
+        Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
         if(Seleccion==0){
             //MoverEntreSistema();
             //MoverEntreSistema();
             if(VerificarCheckEnVenta == true){
-            CheckIngresoAutomatico.setSelected(false);    
+            pos.CheckIngresoAutomatico.setSelected(false);    
             }
-        ConsultarNit_CUIFinal(CajaNit.getText());
+        this.pos.ConsultarNit_CUIFinal(CajaNit.getText());
         for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
             if(Integer.parseInt(TablaDetalles.getValueAt(i, 6).toString())==0){
                 
-                NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
-                IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
-                CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-                Final.setText(TablaDetalles.getValueAt(i, 3).toString());
-                AgregarProducto(); 
+                pos.NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
+                pos.IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
+                pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+                pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
+                pos.AgregarProducto(); 
             }else{
-               BusquedaCodigoBarras(TablaDetalles.getValueAt(i, 0).toString());
-               Final.setText(TablaDetalles.getValueAt(i, 3).toString());
-               CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-               AgregarProducto(); 
+               this.pos.BusquedaCodigoBarras(TablaDetalles.getValueAt(i, 0).toString());
+               pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
+               pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+               this.pos.AgregarProducto(); 
                
             }
         }
         ModificarCotizacion(1);
         if(VerificarCheckEnVenta == true){
-            CheckIngresoAutomatico.setSelected(true);    
+            pos.CheckIngresoAutomatico.setSelected(true);    
         }
     }
         }

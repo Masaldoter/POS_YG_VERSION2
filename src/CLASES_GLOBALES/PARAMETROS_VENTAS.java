@@ -22,7 +22,7 @@ import javax.swing.JComboBox;
 public class PARAMETROS_VENTAS {
     public static Boolean CheckBoxImpresionRapida, CheckImprimir, CheckBoxModoStockCero, CheckPermitirProductosPersonalizados;
     public static String NumeroInterno_VENTAS, NumeroInterno_VENTAS_FINAL, NumeroInterno_COTIZACIONES, NumeroInterno_FINAL, 
-            NumeroInterno_VALES, NumeroInterno_VALES_FINAL, NumeroInterno_ADMINISTRACION, NumeroInterno_ADMINISTRACION_FINAL;
+            NumeroInterno_VALES, NumeroInterno_VALES_FINAL, NumeroInterno_ADMINISTRACION, NumeroInterno_ADMINISTRACION_FINAL, NUMERO_CAJA;
     
     
     static Properties properties;

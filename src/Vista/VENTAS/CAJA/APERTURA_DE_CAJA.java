@@ -214,6 +214,7 @@ public class APERTURA_DE_CAJA extends javax.swing.JDialog {
         caja.setFECHA(Fecha());
         caja.setARQUEO_DE_CAJA("FALTANTE");
         CDao.REGISTRAR_APERTURAS_CIERRES_CAJA(caja);
+        this.dispose();
     }
     /**
      * @param args the command line arguments
