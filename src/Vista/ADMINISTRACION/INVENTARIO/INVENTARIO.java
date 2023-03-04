@@ -59,6 +59,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         LIMPIAR_CAJAS_PRODUCTOS();
         DINAMICA_BOTONES_PRODUCTOS();
+        jCheckBox2.setEnabled(false);
     }
     
     public void CARGAR_REGISTROS(){

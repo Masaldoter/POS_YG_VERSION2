@@ -67,6 +67,7 @@ public class JFRAME_BUSCAR_PRODUCTO extends javax.swing.JFrame {
         BusquedaHecha=1;
         Cerrar();
         jTextField1.requestFocus();
+        jCheckBox2.setEnabled(false);
     }
     
     public final void Cerrar() {
