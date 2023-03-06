@@ -7,7 +7,6 @@ package WebServiceDigifact;
 
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import ModeloWebService.RespuestaCertificacion;
-import ModeloWebService.DatosUsuario;
 import com.github.underscore.lodash.U;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;

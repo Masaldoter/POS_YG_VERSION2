@@ -1609,7 +1609,7 @@ public final class Detalles extends javax.swing.JFrame {
             ObtenerCliente(CajaNit.getText());
             
             if(jLabel6.getText().equals("CUI")){
-             EDF.setNombreReceptor("CUI");   
+             EDF.setTipo_Especial("CUI");   
             }
 
             EDF.setNombreReceptor(NombreCliente);
