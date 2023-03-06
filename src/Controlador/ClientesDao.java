@@ -64,7 +64,7 @@ public class ClientesDao extends ConexionesSQL{
         return clientes;
     }
     
-    public static Clientes BuscarClieNombre(String NOMBRE){
+    public Clientes BuscarClieNombre(String NOMBRE){
         
             cn = Unionsis2.getConnection();
             ps = null;

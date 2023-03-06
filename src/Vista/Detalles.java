@@ -1254,12 +1254,12 @@ public final class Detalles extends javax.swing.JFrame {
                         pos.NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
                         pos.IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
                         pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-                        pos.Final.setText(TablaDetalles.getValueAt(i, 6).toString());
+                        pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
                         pos.AgregarProducto();
                     } else {
                         pos.BusquedaCodigoBarras(TablaDetalles.getValueAt(i, 0).toString());
                         pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-                        pos.Final.setText(TablaDetalles.getValueAt(i, 6).toString());
+                        pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
                         pos.AgregarProducto();
 
                     }

@@ -285,4 +285,29 @@ public class METODOS_GLOBALES {
         Thread hilo = new Thread(runnable);
         hilo.start();
     }
+
+    public static void CREAR_CARPETA(String RUTA) {
+
+        // Crear objeto File
+        File carpeta = new File(RUTA);
+
+        // Comprobar si la carpeta ya existe
+        if (!carpeta.exists()) {
+
+            // Crear la carpeta usando mkdir() o mkdirs()
+            if (carpeta.mkdir()) {
+            } else {
+                System.out.println("Error al crear la carpeta.");
+            }
+
+            /*
+            // Si quieres crear varias carpetas en una sola llamada, utiliza mkdirs():
+            if (carpeta.mkdirs()) {
+                System.out.println("Carpetas creadas correctamente.");
+            } else {
+                System.out.println("Error al crear las carpetas.");
+            }
+             */
+        }
+    }
 }

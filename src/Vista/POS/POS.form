@@ -1852,13 +1852,13 @@
                           <Group type="102" attributes="0">
                               <Component id="IdCliente" min="-2" pref="40" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="nombre" pref="0" max="32767" attributes="0"/>
+                              <Component id="nombre" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="Caja_IDENTIFICACION" max="32767" attributes="0"/>
+                              <Component id="Caja_IDENTIFICACION" pref="65" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel8" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
@@ -1892,7 +1892,6 @@
                               <EmptySpace min="0" pref="5" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="IdCliente" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="nombre" alignment="0" pref="0" max="32767" attributes="0"/>
                                   <Component id="Caja_IDENTIFICACION" alignment="1" max="32767" attributes="0"/>
                                   <Component id="direccion" alignment="1" max="32767" attributes="0"/>
                                   <Group type="102" alignment="1" attributes="0">
@@ -1900,6 +1899,7 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="COMBO_TIPO_IDENTIFICACION" min="-2" pref="23" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="nombre" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -1996,38 +1996,6 @@
                 <Property name="editable" type="boolean" value="false"/>
               </Properties>
             </Component>
-            <Component class="rojerusan.RSMetroTextFullPlaceHolder" name="nombre">
-              <Properties>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-                    <EtchetBorder/>
-                  </Border>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
-                <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="c0" green="70" red="0" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="12" style="0"/>
-                </Property>
-                <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                  <Insets value="[0, 0, 0, 0]"/>
-                </Property>
-                <Property name="mayusculas" type="boolean" value="true"/>
-                <Property name="phColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="0" type="rgb"/>
-                </Property>
-                <Property name="placeholder" type="java.lang.String" value="NOMBRE DEL CLIENTE*"/>
-              </Properties>
-              <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombreKeyPressed"/>
-              </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
-              </AuxValues>
-            </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
                 <Property name="text" type="java.lang.String" value="NIT | CUI"/>
@@ -2051,6 +2019,8 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JTextField" name="nombre">
             </Component>
           </SubComponents>
         </Container>

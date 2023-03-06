@@ -86,9 +86,9 @@ public final class Principal extends javax.swing.JFrame {
     SESION S= new SESION();
     DASHBOARD D= new DASHBOARD(this);
     EMPRESA E = new EMPRESA(this);
-    CotizacionesGenerales CG = new CotizacionesGenerales(this);
-    MOVIMIENTOS_DIARIOS MD= new MOVIMIENTOS_DIARIOS(this);
     public POS P_O_S = new POS(this);
+    CotizacionesGenerales CG = new CotizacionesGenerales(P_O_S);
+    MOVIMIENTOS_DIARIOS MD= new MOVIMIENTOS_DIARIOS(this);
     INVENTARIO I = new INVENTARIO(P_O_S, this);
     //POS P_O_S= new POS();
     INTERNAL_CAJA_PRINCIPAL INTERNAL_CAJA_P = new INTERNAL_CAJA_PRINCIPAL(this);

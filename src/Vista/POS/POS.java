@@ -40,6 +40,7 @@ import Controlador.KardexDao;
 import Controlador.ProductosDao;
 import Controlador.TextPrompt;
 import Controlador.VentaDao;
+import Excel.Excel;
 import FEL.XML_DTE.GenerarXML;
 import Modelo.Clientes;
 import Modelo.Cotizaciones;
@@ -93,7 +94,7 @@ public class POS extends javax.swing.JInternalFrame {
     private String NUMERO_INTERNO_FACTURA_ELECTRONICA="";
     private String NumeroInternoFinal;
     Venta v = new Venta();
-    static ClientesDao cliDao = new ClientesDao();
+    ClientesDao cliDao = new ClientesDao();
     FormaDePago Pagos = new FormaDePago(this);
     public JFRAME_BUSCAR_PRODUCTO BP;
     Detalles de;
@@ -135,13 +136,16 @@ public class POS extends javax.swing.JInternalFrame {
                 BuscarProductoVentaPorNombre(String.valueOf(selectedItem));
             }
         });
-
-        AUTOCOMPLETADOR_CLIENTES_NOMBRE = new TextAutoCompleter(nombre, new AutoCompleterCallback() {
-            @Override
-            public void callback(Object o) {
-                BUSCAR_CLIENTE_NOMBRE(String.valueOf(o));
-            }
-        });
+        try {
+            AUTOCOMPLETADOR_CLIENTES_NOMBRE = new TextAutoCompleter(nombre, new AutoCompleterCallback() {
+                @Override
+                public void callback(Object o) {
+                    BUSCAR_CLIENTE_NOMBRE(String.valueOf(o));
+                }
+            });
+        } catch (Exception e) {
+            System.out.println(e.fillInStackTrace());
+        }
         AUTOCOMPLETADOR_CLIENTE_NIT = new TextAutoCompleter(Caja_IDENTIFICACION, new AutoCompleterCallback() {
             @Override
             public void callback(Object o) {
@@ -175,6 +179,7 @@ public class POS extends javax.swing.JInternalFrame {
     private void TextoEnCajas() {
         TextPrompt hold;
         hold = new TextPrompt("ID*", IdCliente);
+        hold = new TextPrompt("NOMBRE DEL CLIENTE*", nombre);
         hold = new TextPrompt("NIT*", Caja_IDENTIFICACION);
         hold = new TextPrompt("DIRECCIÓN DE CLIENTE*", direccion);
         hold = new TextPrompt("MUNICIPIO*", MunicipioCliente);
@@ -295,16 +300,17 @@ public class POS extends javax.swing.JInternalFrame {
 
         try {
             AUTOCOMPLETADOR_CLIENTES_NOMBRE.removeAllItems();
-            List<Clientes> ListarCliente = cliDao.BuscarClienteLista(COMBO_TIPO_IDENTIFICACION.getSelectedItem().toString());  
+            
             AUTOCOMPLETADOR_CLIENTES_NOMBRE.setMode(0);
             Object[] ob = new Object[1];
+            List<Clientes> ListarCliente = cliDao.BuscarClienteLista(COMBO_TIPO_IDENTIFICACION.getSelectedItem().toString());  
             for (int i = 0; i < ListarCliente.size(); i++) {
                 ob[0] = ListarCliente.get(i).getNombre();
                 AUTOCOMPLETADOR_CLIENTES_NOMBRE.addItems(ob);
             }
         } catch (Exception e) {
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-            DesktopNotify.showDesktopMessage("FATAL", "ÉRROR AL ACTUALIZAR LOS PRODUCTOS", DesktopNotify.FAIL, 10000L);
+            DesktopNotify.showDesktopMessage("FATAL", "ÉRROR AL ACTUALIZAR LOS NOMBRES DE LOS CLIENTES", DesktopNotify.FAIL, 10000L);
         }
     }
 
@@ -346,10 +352,11 @@ public class POS extends javax.swing.JInternalFrame {
     }
 
     public void BUSCAR_CLIENTE_NOMBRE(String Parametro){
-        Clientes cli = new Clientes();
+        Clientes cli;
         if (Parametro.equals("")) {
             JOptionPane.showMessageDialog(null, "¡DEBE INGRESAR UN NOMBRE DE CLIENTE");
         } else {
+            cli = new Clientes();
             cli = cliDao.BuscarClieNombre(Parametro);
             Caja_IDENTIFICACION.setText(cli.getIDENTIFICACION());
             COMBO_TIPO_IDENTIFICACION.setSelectedItem(cli.getTIPO_IDENTIFICACION());
@@ -1803,9 +1810,9 @@ public void GenerarVenta() {
         PaisCliente = new javax.swing.JComboBox<>();
         CodigoPostalCliente = new javax.swing.JTextField();
         SiglaPais = new javax.swing.JTextField();
-        nombre = new rojerusan.RSMetroTextFullPlaceHolder();
         jLabel8 = new javax.swing.JLabel();
         COMBO_TIPO_IDENTIFICACION = new javax.swing.JComboBox<>();
+        nombre = new javax.swing.JTextField();
 
         Facturacion.setBackground(new java.awt.Color(231, 140, 90));
 
@@ -2800,20 +2807,6 @@ public void GenerarVenta() {
 
         SiglaPais.setEditable(false);
 
-        nombre.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        nombre.setForeground(new java.awt.Color(0, 0, 0));
-        nombre.setCaretColor(new java.awt.Color(0, 112, 192));
-        nombre.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        nombre.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        nombre.setMayusculas(true);
-        nombre.setPhColor(new java.awt.Color(0, 0, 0));
-        nombre.setPlaceholder("NOMBRE DEL CLIENTE*");
-        nombre.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                nombreKeyPressed(evt);
-            }
-        });
-
         jLabel8.setText("NIT | CUI");
 
         COMBO_TIPO_IDENTIFICACION.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
@@ -2838,11 +2831,11 @@ public void GenerarVenta() {
                     .addGroup(PanelClientePOSLayout.createSequentialGroup()
                         .addComponent(IdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(nombre)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelClientePOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelClientePOSLayout.createSequentialGroup()
-                        .addComponent(Caja_IDENTIFICACION)
+                        .addComponent(Caja_IDENTIFICACION, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(PanelClientePOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2869,13 +2862,13 @@ public void GenerarVenta() {
                         .addGap(0, 5, Short.MAX_VALUE)
                         .addGroup(PanelClientePOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(IdCliente, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(Caja_IDENTIFICACION, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(direccion, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelClientePOSLayout.createSequentialGroup()
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(COMBO_TIPO_IDENTIFICACION, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(COMBO_TIPO_IDENTIFICACION, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(nombre))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(PanelClientePOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(MunicipioCliente)
@@ -3305,6 +3298,8 @@ public void GenerarVenta() {
 
     private void BtnNuevoClientePOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoClientePOSActionPerformed
        LIMPIAR_CLIENTE_POS();
+       /*Excel EX= new Excel();
+       EX.exportarExcel_JTABLE(TablaVentas, PARAMETROS_USUARIOS.NOMBRE_USUARIO);*/
     }//GEN-LAST:event_BtnNuevoClientePOSActionPerformed
 
     private void BtnAgregarClientePOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarClientePOSActionPerformed
@@ -3333,12 +3328,6 @@ public void GenerarVenta() {
         Eventos event = new Eventos();
         event.numberKeyPress(evt);
     }//GEN-LAST:event_CodigoPostalClienteKeyTyped
-
-    private void nombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            BUSCAR_CLIENTE_NOMBRE(nombre.getText());
-        }
-    }//GEN-LAST:event_nombreKeyPressed
 
     private void COMBO_TIPO_IDENTIFICACIONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMBO_TIPO_IDENTIFICACIONActionPerformed
         String IDENTIFICACION = Caja_IDENTIFICACION.getText();
@@ -3510,7 +3499,7 @@ public void GenerarVenta() {
     public static javax.swing.JLabel lblVentaPrecio1;
     public static javax.swing.JLabel lblVentaPrecio2;
     public static javax.swing.JLabel lblVentaPrecio3;
-    private static rojerusan.RSMetroTextFullPlaceHolder nombre;
+    private javax.swing.JTextField nombre;
     public javax.swing.JLabel pagocon;
     // End of variables declaration//GEN-END:variables
 }

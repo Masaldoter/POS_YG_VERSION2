@@ -3,6 +3,7 @@ package Vista.Cotizaciones;
 import Modelo.Cotizaciones;
 import Tablas.ConsultasCotizacion;
 import Tablas.RenderTablas;
+import Vista.POS.POS;
 import Vista.Principal;
 import java.util.List;
 import javax.swing.JButton;
@@ -14,13 +15,13 @@ import javax.swing.table.DefaultTableModel;
  * @author Masaldoter
  */
 public class CotizacionesGenerales extends javax.swing.JInternalFrame {
-    Principal principal;
+    POS pos;
     public CotizacionesGenerales() {
         initComponents();
     }
     
-    public CotizacionesGenerales(Principal principal) {
-        this.principal = principal;
+    public CotizacionesGenerales(POS pos) {
+        this.pos = pos;
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -389,7 +390,7 @@ public class CotizacionesGenerales extends javax.swing.JInternalFrame {
                 ((JButton)value).doClick();
                 String Id = TablaCotizaciones.getValueAt(fila, 0).toString();
                 JButton boton = (JButton) value;
-                DetalleCotizacion de= new DetalleCotizacion(codigo, 1, 0, this.principal.P_O_S);
+                DetalleCotizacion de= new DetalleCotizacion(codigo, 1, 0, pos);
                 de.setVisible(true);
             }
         }

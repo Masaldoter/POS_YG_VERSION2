@@ -1,4 +1,5 @@
 package Excel;
+import CLASES_GLOBALES.METODOS_GLOBALES;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import java.awt.Desktop;
 import java.io.File;
@@ -16,6 +17,7 @@ import Conexiones.ConexionesSQL;
 import Vista.Principal;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
@@ -1672,4 +1674,87 @@ public class Excel extends ConexionesSQL {
             }
         
     }
+    
+    public void exportarExcel_JTABLE(JTable t, String Usuario) throws NumberFormatException {
+        METODOS_GLOBALES.CREAR_CARPETA("C://DATOS EN POS YG");
+        LocalDate date = LocalDate.now();
+        int month = date.getMonthValue();
+        int year = date.getYear();
+        METODOS_GLOBALES.CREAR_CARPETA("DATOS EN POS YG//"+month+" "+year);
+        Date fech = new Date();
+        login l = new login();
+        String strDateFormat = "dd-MM-YYYY";
+        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+        String fecha = objSDF.format(fech);
+        String ruta = "DATOS EN POS YG//"+month+" "+year+fecha+"_"+Usuario+"xlsx";
+            try {
+                File archivoXLSX = new File(ruta);
+                if (archivoXLSX.exists()) {
+                    archivoXLSX.delete();
+                }
+                archivoXLSX.createNewFile();
+                Workbook libro = new XSSFWorkbook();
+                FileOutputStream archivo = new FileOutputStream(archivoXLSX);
+                Sheet hoja = libro.createSheet(""+Usuario);
+                hoja.setDisplayGridlines(true);
+                
+                CellStyle headerStyle = libro.createCellStyle();
+                headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+                headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                headerStyle.setBorderBottom(BorderStyle.THIN);
+                headerStyle.setBorderLeft(BorderStyle.THIN);
+                headerStyle.setBorderRight(BorderStyle.THIN);
+                headerStyle.setBorderBottom(BorderStyle.THIN);
+                
+                
+                Font font = libro.createFont();
+                font.setFontName("Arial");
+                font.setBold(true);
+                font.setColor(IndexedColors.WHITE.getIndex());
+                font.setFontHeightInPoints((short) 12);
+                headerStyle.setFont(font);
+                
+                CellStyle datosEstilo = libro.createCellStyle();
+                datosEstilo.setBorderBottom(BorderStyle.THIN);
+                datosEstilo.setBorderLeft(BorderStyle.THIN);
+                datosEstilo.setBorderRight(BorderStyle.THIN);
+                datosEstilo.setBorderBottom(BorderStyle.THIN);
+                
+                for (int f = 0; f < t.getRowCount(); f++) {
+                    Row fila = hoja.createRow(f);
+                    //t.getColumnCount()
+                    for (int c = 0; c < t.getColumnCount(); c++) {
+                        Cell celda = fila.createCell(c);
+                        if (f == 0) {
+                            celda.setCellValue(t.getColumnName(c));
+                        }
+                    }
+                }
+                int filaInicio = 1;
+                for (int f = 0; f < t.getRowCount(); f++) {
+                    Row fila = hoja.createRow(filaInicio);
+                    filaInicio++;
+                    //t.getColumnCount()
+                    for (int c = 0; c < t.getColumnCount(); c++) {
+                        Cell celda = fila.createCell(c);
+                            celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
+                        
+                    }
+                }
+                FileOutputStream fileOut = new FileOutputStream(archivoXLSX);
+                libro.write(fileOut);
+                fileOut.close();
+                //archivo.close();
+                Desktop.getDesktop().open(archivoXLSX);
+            } catch (IOException | NumberFormatException e) {
+            try {
+                throw e;
+            } catch (IOException ex) {
+                Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
+        
+    }
+    
+    
 }
