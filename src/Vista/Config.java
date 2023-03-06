@@ -423,7 +423,7 @@ public class Config extends javax.swing.JFrame {
  * 3. Tanto los directorios como los archivos pueden ser JFileChooser.FILES_AND_DIRECTORIES
          */
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
+        chooser.setCurrentDirectory(new File(RutaBusqueda.getText()));
         // Guardar el directorio seleccionado chooser.showSaveDialog (parent);
         Component parent = null;
         int returnVal = chooser.showSaveDialog(parent);

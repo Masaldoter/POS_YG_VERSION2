@@ -280,6 +280,9 @@ public final class Principal extends javax.swing.JFrame {
         CheckBoxModoStockCero = new javax.swing.JCheckBoxMenuItem();
         jSeparator31 = new javax.swing.JPopupMenu.Separator();
         CheckBoxImpresionRapida = new javax.swing.JCheckBoxMenuItem();
+        jSeparator33 = new javax.swing.JPopupMenu.Separator();
+        jMenu13 = new javax.swing.JMenu();
+        jMenuItem29 = new javax.swing.JMenuItem();
         jSeparator22 = new javax.swing.JPopupMenu.Separator();
         ItemVentas = new javax.swing.JMenuItem();
         jSeparator23 = new javax.swing.JPopupMenu.Separator();
@@ -630,6 +633,19 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jMenu5.add(CheckBoxImpresionRapida);
+        jMenu5.add(jSeparator33);
+
+        jMenu13.setText("EXCEL");
+
+        jMenuItem29.setText("EXPORTAR");
+        jMenuItem29.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem29ActionPerformed(evt);
+            }
+        });
+        jMenu13.add(jMenuItem29);
+
+        jMenu5.add(jMenu13);
 
         jMenu2.add(jMenu5);
         jMenu2.add(jSeparator22);
@@ -1388,12 +1404,12 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if(jLabel4.getText().equals("")){
-            VER_CAJAS CA= new VER_CAJAS(this, true, this);
+        if (jLabel4.getText().equals("")) {
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
-        }else{
+        } else {
             ABRIR_VENTANAS(CG, true);
-        CG.ActualizarTablaEstado();
+            CG.ActualizarTablaEstado();
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -1403,11 +1419,11 @@ public final class Principal extends javax.swing.JFrame {
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
             } else {
-                GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
+                GASTOS_NUEVO G_N = new GASTOS_NUEVO(this, true);
                 G_N.setVisible(true);
             }
         } else {
-            GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
+            GASTOS_NUEVO G_N = new GASTOS_NUEVO(this, true);
             G_N.setVisible(true);
         }
     }//GEN-LAST:event_jMenuItem14ActionPerformed
@@ -1418,11 +1434,11 @@ public final class Principal extends javax.swing.JFrame {
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
             } else {
-                GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
+                GASTOS_NUEVO G_N = new GASTOS_NUEVO(this, true);
                 G_N.setVisible(true);
             }
         } else {
-            GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
+            GASTOS_NUEVO G_N = new GASTOS_NUEVO(this, true);
             G_N.setVisible(true);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -1456,7 +1472,48 @@ public final class Principal extends javax.swing.JFrame {
         hilo.start();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
-    public static void CAMBIAR_ICONO(){
+    private void jMenuItem29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem29ActionPerformed
+        if (jLabel4.getText().equals("")) {
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
+
+            } else {
+                EXPORTAR();
+            }
+        } else {
+            EXPORTAR();
+        }
+    }//GEN-LAST:event_jMenuItem29ActionPerformed
+
+    public void EXPORTAR() {
+        if (P_O_S.TablaVentas.getRowCount() < 1) {
+            JOptionPane.showMessageDialog(this, "AÚN NO HAY NADA EN EL CARRITO", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+
+                    Runnable runnable2 = new Runnable() {
+                        @Override
+                        public void run() {
+                            Excel EX = new Excel();
+                            EX.exportarExcel_JTABLE(P_O_S.TablaVentas, PARAMETROS_USUARIOS.NOMBRE_USUARIO);
+                        }
+                    };
+                    Thread hilo2 = new Thread(runnable2);
+                    hilo2.start();
+
+                }
+            };
+            Thread hilo = new Thread(runnable);
+            hilo.start();
+
+        }
+
+    }
+    
+    public static void CAMBIAR_ICONO() {
         ImageIcon icono = new ImageIcon(ObtenerRutaImagen(1)); // carga el icono desde archivo
 
         // crea una imagen en blanco del mismo tamaño que el icono
@@ -1633,6 +1690,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu12;
+    private javax.swing.JMenu jMenu13;
     private javax.swing.JMenu jMenu14;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -1663,6 +1721,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem26;
     private javax.swing.JMenuItem jMenuItem27;
     private javax.swing.JMenuItem jMenuItem28;
+    private javax.swing.JMenuItem jMenuItem29;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem30;
     private javax.swing.JMenuItem jMenuItem31;
@@ -1701,6 +1760,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator30;
     private javax.swing.JPopupMenu.Separator jSeparator31;
     private javax.swing.JPopupMenu.Separator jSeparator32;
+    private javax.swing.JPopupMenu.Separator jSeparator33;
     private javax.swing.JPopupMenu.Separator jSeparator34;
     private javax.swing.JSeparator jSeparator35;
     private javax.swing.JPopupMenu.Separator jSeparator36;

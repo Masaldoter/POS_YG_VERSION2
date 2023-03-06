@@ -14,14 +14,27 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import Modelo.login;
 import Conexiones.ConexionesSQL;
+import Tablas.RenderTablas;
+import Vista.POS.POS;
 import Vista.Principal;
+import ds.desktop.notify.DesktopNotify;
+import ds.desktop.notify.NotifyTheme;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -39,12 +52,13 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Excel extends ConexionesSQL {
 
     String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
-
+    int item;
     public void reporte() throws URISyntaxException {
         Principal p = new Principal();
         Workbook book = new XSSFWorkbook();
@@ -1518,9 +1532,7 @@ public class Excel extends ConexionesSQL {
  
     }
     
-    
-
-    public void exportarExcelProductosNoBD(JTable t) throws IOException {
+        public void exportarExcelProductosNoBD(JTable t) throws IOException {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("ARCHIVO EXCEL", "xlsx");
         chooser.setFileFilter(filter);
@@ -1538,7 +1550,7 @@ public class Excel extends ConexionesSQL {
                 FileOutputStream archivo = new FileOutputStream(archivoXLSX);
                 Sheet hoja = libro.createSheet("PRODUCTOS SIN INGRESO A BD");
                 hoja.setDisplayGridlines(true);
-                
+
                 CellStyle headerStyle = libro.createCellStyle();
                 headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
                 headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -1546,21 +1558,20 @@ public class Excel extends ConexionesSQL {
                 headerStyle.setBorderLeft(BorderStyle.THIN);
                 headerStyle.setBorderRight(BorderStyle.THIN);
                 headerStyle.setBorderBottom(BorderStyle.THIN);
-                
-                
+
                 Font font = libro.createFont();
                 font.setFontName("Arial");
                 font.setBold(true);
                 font.setColor(IndexedColors.WHITE.getIndex());
                 font.setFontHeightInPoints((short) 12);
                 headerStyle.setFont(font);
-                
+
                 CellStyle datosEstilo = libro.createCellStyle();
                 datosEstilo.setBorderBottom(BorderStyle.THIN);
                 datosEstilo.setBorderLeft(BorderStyle.THIN);
                 datosEstilo.setBorderRight(BorderStyle.THIN);
                 datosEstilo.setBorderBottom(BorderStyle.THIN);
-                
+
                 for (int f = 0; f < t.getRowCount(); f++) {
                     Row fila = hoja.createRow(f);
                     //t.getColumnCount()
@@ -1581,7 +1592,7 @@ public class Excel extends ConexionesSQL {
                         if (t.getValueAt(f, c) instanceof String) {
                             celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
                         } else if (t.getValueAt(f, c) instanceof String) {
-                            celda.setCellValue(String.valueOf( t.getValueAt(f, c)));
+                            celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
                         } else {
                             celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
                         }
@@ -1597,158 +1608,239 @@ public class Excel extends ConexionesSQL {
             }
         }
     }
-    
+
     public void exportarExcelProductosNoBDAutomatico(JTable t, String Usuario) throws IOException {
         Date fech = new Date();
-    login l= new login();
-    String strDateFormat = "dd-MM-YYYY";
-    SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-    String fecha = objSDF.format(fech );
-            String ruta = fecha+"_"+Usuario+"xlsx";
-            try {
-                File archivoXLSX = new File(ruta);
-                if (archivoXLSX.exists()) {
-                    archivoXLSX.delete();
-                }
-                archivoXLSX.createNewFile();
-                Workbook libro = new XSSFWorkbook();
-                FileOutputStream archivo = new FileOutputStream(archivoXLSX);
-                Sheet hoja = libro.createSheet("PRODUCTOS SIN INGRESO A BD");
-                hoja.setDisplayGridlines(true);
-                
-                CellStyle headerStyle = libro.createCellStyle();
-                headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-                headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-                headerStyle.setBorderBottom(BorderStyle.THIN);
-                headerStyle.setBorderLeft(BorderStyle.THIN);
-                headerStyle.setBorderRight(BorderStyle.THIN);
-                headerStyle.setBorderBottom(BorderStyle.THIN);
-                
-                
-                Font font = libro.createFont();
-                font.setFontName("Arial");
-                font.setBold(true);
-                font.setColor(IndexedColors.WHITE.getIndex());
-                font.setFontHeightInPoints((short) 12);
-                headerStyle.setFont(font);
-                
-                CellStyle datosEstilo = libro.createCellStyle();
-                datosEstilo.setBorderBottom(BorderStyle.THIN);
-                datosEstilo.setBorderLeft(BorderStyle.THIN);
-                datosEstilo.setBorderRight(BorderStyle.THIN);
-                datosEstilo.setBorderBottom(BorderStyle.THIN);
-                
-                for (int f = 0; f < t.getRowCount(); f++) {
-                    Row fila = hoja.createRow(f);
-                    //t.getColumnCount()
-                    for (int c = 0; c < 15; c++) {
-                        Cell celda = fila.createCell(c);
-                        if (f == 0) {
-                            celda.setCellValue(t.getColumnName(c));
-                        }
-                    }
-                }
-                int filaInicio = 1;
-                for (int f = 0; f < t.getRowCount(); f++) {
-                    Row fila = hoja.createRow(filaInicio);
-                    filaInicio++;
-                    //t.getColumnCount()
-                    for (int c = 0; c < 15; c++) {
-                        Cell celda = fila.createCell(c);
-                        if (t.getValueAt(f, c) instanceof Double) {
-                            celda.setCellValue(Double.parseDouble(t.getValueAt(f, c).toString()));
-                        } else if (t.getValueAt(f, c) instanceof Float) {
-                            celda.setCellValue(Float.parseFloat((String) t.getValueAt(f, c)));
-                        } else {
-                            celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
-                        }
-                    }
-                }
-                FileOutputStream fileOut = new FileOutputStream(archivoXLSX);
-                libro.write(fileOut);
-                fileOut.close();
-                //archivo.close();
-                Desktop.getDesktop().open(archivoXLSX);
-            } catch (IOException | NumberFormatException e) {
-                throw e;
+        login l = new login();
+        String strDateFormat = "dd-MM-YYYY";
+        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+        String fecha = objSDF.format(fech);
+        String ruta = fecha + "_" + Usuario + "xlsx";
+        try {
+            File archivoXLSX = new File(ruta);
+            if (archivoXLSX.exists()) {
+                archivoXLSX.delete();
             }
+            archivoXLSX.createNewFile();
+            Workbook libro = new XSSFWorkbook();
+            FileOutputStream archivo = new FileOutputStream(archivoXLSX);
+            Sheet hoja = libro.createSheet("PRODUCTOS SIN INGRESO A BD");
+            hoja.setDisplayGridlines(true);
+
+            CellStyle headerStyle = libro.createCellStyle();
+            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+
+            Font font = libro.createFont();
+            font.setFontName("Arial");
+            font.setBold(true);
+            font.setColor(IndexedColors.WHITE.getIndex());
+            font.setFontHeightInPoints((short) 12);
+            headerStyle.setFont(font);
+
+            CellStyle datosEstilo = libro.createCellStyle();
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+            datosEstilo.setBorderLeft(BorderStyle.THIN);
+            datosEstilo.setBorderRight(BorderStyle.THIN);
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+
+            for (int f = 0; f < t.getRowCount(); f++) {
+                Row fila = hoja.createRow(f);
+                //t.getColumnCount()
+                for (int c = 0; c < 15; c++) {
+                    Cell celda = fila.createCell(c);
+                    if (f == 0) {
+                        celda.setCellValue(t.getColumnName(c));
+                    }
+                }
+            }
+            int filaInicio = 1;
+            for (int f = 0; f < t.getRowCount(); f++) {
+                Row fila = hoja.createRow(filaInicio);
+                filaInicio++;
+                //t.getColumnCount()
+                for (int c = 0; c < 15; c++) {
+                    Cell celda = fila.createCell(c);
+                    if (t.getValueAt(f, c) instanceof Double) {
+                        celda.setCellValue(Double.parseDouble(t.getValueAt(f, c).toString()));
+                    } else if (t.getValueAt(f, c) instanceof Float) {
+                        celda.setCellValue(Float.parseFloat((String) t.getValueAt(f, c)));
+                    } else {
+                        celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
+                    }
+                }
+            }
+            FileOutputStream fileOut = new FileOutputStream(archivoXLSX);
+            libro.write(fileOut);
+            fileOut.close();
+            //archivo.close();
+            Desktop.getDesktop().open(archivoXLSX);
+        } catch (IOException | NumberFormatException e) {
+            throw e;
+        }
+
+    }
+
+    public void exportarExcel_JTABLE(JTable t, String Usuario) {
+
+        try {
+            LocalDate date = LocalDate.now();
+            int month = date.getMonthValue();
+            int year = date.getYear();
+            int day = date.getDayOfMonth();
+            METODOS_GLOBALES.CREAR_CARPETA("C://DATOS PERDIDOS EN POS YG");
+
+            METODOS_GLOBALES.CREAR_CARPETA("C://DATOS PERDIDOS EN POS YG//" + month + "-" + year);
+            String ruta = "C://DATOS PERDIDOS EN POS YG//" + month + "-" + year + "//" + Usuario + "-" + day +"-"+ String.valueOf(new Random().nextLong()).substring(15) + ".xlsx";
+            File archivoXLSX = new File(ruta);
+            if (archivoXLSX.exists()) {
+                archivoXLSX.delete();
+            }
+            archivoXLSX.createNewFile();
+            Workbook libro = new XSSFWorkbook();
+            FileOutputStream archivo = new FileOutputStream(archivoXLSX);
+            Sheet hoja = libro.createSheet("" + Usuario);
+            hoja.setDisplayGridlines(true);
+
+            CellStyle headerStyle = libro.createCellStyle();
+            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+
+            Font font = libro.createFont();
+            font.setFontName("Arial");
+            font.setBold(true);
+            font.setColor(IndexedColors.WHITE.getIndex());
+            font.setFontHeightInPoints((short) 12);
+            headerStyle.setFont(font);
+
+            CellStyle datosEstilo = libro.createCellStyle();
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+            datosEstilo.setBorderLeft(BorderStyle.THIN);
+            datosEstilo.setBorderRight(BorderStyle.THIN);
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+
+            for (int f = 0; f < t.getRowCount(); f++) {
+                Row fila = hoja.createRow(f);
+                //t.getColumnCount()
+                for (int c = 0; c < t.getColumnCount()-1; c++) {
+                    Cell celda = fila.createCell(c);
+                    if (f == 0) {
+                        celda.setCellValue(t.getColumnName(c));
+                    }
+                }
+            }
+            int filaInicio = 1;
+            for (int f = 0; f < t.getRowCount(); f++) {
+                Row fila = hoja.createRow(filaInicio);
+                filaInicio++;
+                //t.getColumnCount()
+                for (int c = 0; c < t.getColumnCount()-1; c++) {
+                    Cell celda = fila.createCell(c);
+                    celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
+
+                }
+            }
+            FileOutputStream fileOut = new FileOutputStream(archivoXLSX);
+            libro.write(fileOut);
+            fileOut.close();
+            //archivo.close();
+            DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+            DesktopNotify.showDesktopMessage("¡ÉXITO!", "¡DATOS GUARDADOS!\nRUTA: " + ruta, DesktopNotify.SUCCESS, 14000L);
+        } catch (IOException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void ImportarExcel_JTABLE(POS P_OS) {
         
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo = (DefaultTableModel) P_OS.TablaVentas.getModel();
+        try {
+            LocalDate date = LocalDate.now();
+            int month = date.getMonthValue();
+            int year = date.getYear();
+            int day = date.getDayOfMonth();
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("EXCEL XLSX(*.XLSX;)", "XLSX");
+            JFileChooser archivo_File = new JFileChooser();
+            archivo_File.addChoosableFileFilter(filtro);
+            archivo_File.setFileFilter(filtro);
+            archivo_File.setCurrentDirectory(new File("C://DATOS PERDIDOS EN POS YG//" + month + "-" + year));
+            archivo_File.setDialogTitle("SELECCIONE UN ARCHIVO EXCEL");
+            int ventana = archivo_File.showOpenDialog(null);
+            if (ventana == JFileChooser.APPROVE_OPTION) {
+                File file = archivo_File.getSelectedFile();
+                FileInputStream archivo = new FileInputStream(file);
+                XSSFWorkbook libroLectura = new XSSFWorkbook(archivo);
+                XSSFSheet hojaLectura = libroLectura.getSheetAt(0);
+
+                int NumeroFilas = hojaLectura.getLastRowNum();
+                
+                for (int i = 1; i <= NumeroFilas; i++) {
+                    JButton btn1 = new JButton("ELIMINAR");
+
+                    Image retValue = Toolkit.getDefaultToolkit().
+                            getImage(ClassLoader.getSystemResource("Imagenes/eliminar.png"));
+                    ImageIcon ro = new ImageIcon(retValue);
+
+                    btn1.setIcon(ro);
+                    Row fila = hojaLectura.getRow(i);
+
+                    P_OS.TablaVentas.setDefaultRenderer(Object.class, new RenderTablas());
+
+                    item = item + 1;
+                    
+                    ArrayList lista = new ArrayList();
+                    lista.add(item);
+                    lista.add(fila.getCell(0).toString());
+                    lista.add(fila.getCell(1).toString());
+                    lista.add(fila.getCell(2).toString());
+                    lista.add(fila.getCell(3).toString());
+                    lista.add(fila.getCell(4).toString());
+                    lista.add(fila.getCell(5).toString());
+                    lista.add(fila.getCell(6).toString());
+                    lista.add(fila.getCell(7).toString());
+                    lista.add(fila.getCell(8).toString());
+                    lista.add(btn1);
+                    Object[] O = new Object[10];
+                    O[0] = lista.get(1);
+                    O[1] = lista.get(2);
+                    O[2] = lista.get(3);
+                    O[3] = lista.get(4);
+                    O[4] = lista.get(5);
+                    O[5] = lista.get(6);
+                    O[6] = lista.get(7);
+                    O[7] = lista.get(8);
+                    O[8] = lista.get(9);
+                    O[9] = lista.get(10);
+                    modelo.addRow(O);
+                }
+                P_OS.TablaVentas.setModel(modelo);
+                ELIMINAR_EXCEL(archivo_File.getSelectedFile());
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Importar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Importar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
     
-    public void exportarExcel_JTABLE(JTable t, String Usuario) throws NumberFormatException {
-        METODOS_GLOBALES.CREAR_CARPETA("C://DATOS PERDIDOS EN POS YG");
-        LocalDate date = LocalDate.now();
-        int month = date.getMonthValue();
-        int year = date.getYear();
-        METODOS_GLOBALES.CREAR_CARPETA("C://DATOS PERDIDOS EN POS YG//"+month+" "+year);
-        login l = new login();
-        String ruta = "C://DATOS PERDIDOS EN POS YG//"+month+" "+year+"//"+Usuario+METODOS_GLOBALES.Fecha()+" "+METODOS_GLOBALES.Hora()+""+".xlsx";
-            try {
-                File archivoXLSX = new File(ruta);
-                if (archivoXLSX.exists()) {
-                    archivoXLSX.delete();
-                }
-                archivoXLSX.createNewFile();
-                Workbook libro = new XSSFWorkbook();
-                FileOutputStream archivo = new FileOutputStream(archivoXLSX);
-                Sheet hoja = libro.createSheet(""+Usuario);
-                hoja.setDisplayGridlines(true);
-                
-                CellStyle headerStyle = libro.createCellStyle();
-                headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-                headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-                headerStyle.setBorderBottom(BorderStyle.THIN);
-                headerStyle.setBorderLeft(BorderStyle.THIN);
-                headerStyle.setBorderRight(BorderStyle.THIN);
-                headerStyle.setBorderBottom(BorderStyle.THIN);
-                
-                
-                Font font = libro.createFont();
-                font.setFontName("Arial");
-                font.setBold(true);
-                font.setColor(IndexedColors.WHITE.getIndex());
-                font.setFontHeightInPoints((short) 12);
-                headerStyle.setFont(font);
-                
-                CellStyle datosEstilo = libro.createCellStyle();
-                datosEstilo.setBorderBottom(BorderStyle.THIN);
-                datosEstilo.setBorderLeft(BorderStyle.THIN);
-                datosEstilo.setBorderRight(BorderStyle.THIN);
-                datosEstilo.setBorderBottom(BorderStyle.THIN);
-                
-                for (int f = 0; f < t.getRowCount(); f++) {
-                    Row fila = hoja.createRow(f);
-                    //t.getColumnCount()
-                    for (int c = 0; c < t.getColumnCount(); c++) {
-                        Cell celda = fila.createCell(c);
-                        if (f == 0) {
-                            celda.setCellValue(t.getColumnName(c));
-                        }
-                    }
-                }
-                int filaInicio = 1;
-                for (int f = 0; f < t.getRowCount(); f++) {
-                    Row fila = hoja.createRow(filaInicio);
-                    filaInicio++;
-                    //t.getColumnCount()
-                    for (int c = 0; c < t.getColumnCount(); c++) {
-                        Cell celda = fila.createCell(c);
-                            celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
-                        
-                    }
-                }
-                FileOutputStream fileOut = new FileOutputStream(archivoXLSX);
-                libro.write(fileOut);
-                fileOut.close();
-                //archivo.close();
-            } catch (IOException | NumberFormatException e) {
-            try {
-                throw e;
-            } catch (IOException ex) {
-                Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            }
-        
+    public void ELIMINAR_EXCEL(File archivo){
+        // Verificar si el archivo existe
+        if (archivo.exists()) {
+            // Eliminar archivo
+            archivo.delete();
+            System.out.println("El archivo ha sido eliminado");
+        }
     }
     
     
