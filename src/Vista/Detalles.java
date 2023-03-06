@@ -1634,11 +1634,6 @@ public final class Detalles extends javax.swing.JFrame {
             EDF.setVALIDAR_REFERENCIA_INTERNA("VALIDAR");
             Boolean Resultado = GenerarXMLFactura.GenerarXMLFactura(EDF, TablaDetalles, jLabel6.getText());
             if (Resultado == true) {
-                DatosUsuario DU = new DatosUsuario();
-                DU.setNit(PARAMETROS_EMPRESA.NIT_EMPRESA);
-                DU.setUsuario(PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
-                DU.setContrasenia(PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR);
-
                 CFACTMODEL = CFact.CertificarFactura();
                 FechaCertificacion.setText(CFACTMODEL.getFecha_de_certificacion());
                 CajaNumeroAutorizacion.setText(CFACTMODEL.getAutorizacion());

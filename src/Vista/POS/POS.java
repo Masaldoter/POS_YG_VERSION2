@@ -494,7 +494,7 @@ public class POS extends javax.swing.JInternalFrame {
 
     }
     
-    public void SUMAR_TABLA(){
+    /*public void SUMAR_TABLA(){
         Float CANTIDAD, PRECIO_NORMAL, DESCUENTO, PRECIO_CON_DESCUENTO, TOTAL;
         for (int i = 0; i < TablaVentas.getRowCount(); i++) {
             CANTIDAD = Float.parseFloat(TablaVentas.getValueAt(i, 2).toString());
@@ -504,7 +504,7 @@ public class POS extends javax.swing.JInternalFrame {
             PRECIO_CON_DESCUENTO = Float.parseFloat(TablaVentas.getValueAt(i, 5).toString());
             TablaVentas.setValueAt(String.valueOf(CANTIDAD*PRECIO_CON_DESCUENTO), i, 6);
         }
-    }
+    }*/
     
     public void APLICAR_DESCUENTO_TABLA(Float DESCUENTO_PORCENTAJE){
         Float PRECIO_NORMAL, DESCUENTO = 0F;
@@ -516,7 +516,7 @@ public class POS extends javax.swing.JInternalFrame {
             TablaVentas.setValueAt(String.valueOf(DESCUENTO), i, 4);   
             }
             }
-        SUMAR_TABLA();
+        //SUMAR_TABLA();
         TotalPagar();
     }
     
@@ -556,6 +556,7 @@ public class POS extends javax.swing.JInternalFrame {
                 if(PRECIO_FINAL<=PrecioNormal){
                     TotalDescuento=PrecioNormal - PRECIO_FINAL;
                 }
+                float TOTAL = cantidad*PRECIO_FINAL;
                     pro = proDao.VerStock(cod);
                     EnStock = pro.getCantidad();
                 
@@ -574,9 +575,9 @@ public class POS extends javax.swing.JInternalFrame {
                         lista.add(descripcion);
                         lista.add(cantidad);
                         lista.add(String.format("%.4f", PRECIO_FINAL));
-                        lista.add(String.format("%.4f", 0.0));
-                        lista.add(0);
-                        lista.add(0);
+                        lista.add(String.format("%.4f", TotalDescuento));
+                        lista.add(String.format("%.4f", PRECIO_FINAL));
+                        lista.add(String.format("%.4f", TOTAL));
                         lista.add(jCheckBox1.isSelected());
                         lista.add("1");
                         lista.add(btn1);
@@ -595,7 +596,7 @@ public class POS extends javax.swing.JInternalFrame {
                         O[9] = lista.get(10);
                         modelo.addRow(O);
                         TablaVentas.setModel(modelo);
-                        SUMAR_TABLA();
+                       // SUMAR_TABLA();
                         RestarStock();
                         SumarProductos();
                         TotalPagar();
@@ -646,6 +647,7 @@ public class POS extends javax.swing.JInternalFrame {
                 if(PRECIO_FINAL<=PrecioNormal){
                     TotalDescuento=PrecioNormal - PRECIO_FINAL;
                 }
+                float TOTAL = cantidad*PRECIO_FINAL;
 
                     pro100 = proDao100.VerStock(cod);
                     EnStock = pro100.getCantidad()+Float.parseFloat(TOTAL_INGRESADO.getText());
@@ -667,8 +669,8 @@ public class POS extends javax.swing.JInternalFrame {
                         lista.add(cantidad);
                         lista.add(String.format("%.4f", PRECIO_FINAL));
                         lista.add(String.format("%.4f", TotalDescuento));
-                        lista.add(0);
-                        lista.add(0);
+                        lista.add(String.format("%.4f", PRECIO_FINAL));
+                        lista.add(String.format("%.4f", TOTAL));
                         lista.add(jCheckBox1.isSelected());
                         lista.add("1");
                         lista.add(btn1);
@@ -687,7 +689,7 @@ public class POS extends javax.swing.JInternalFrame {
                         O[9] = lista.get(10);
                         modelo.addRow(O);
                         TablaVentas.setModel(modelo);
-                        SUMAR_TABLA();
+                        //SUMAR_TABLA();
                         RestarStock();
                         SumarProductos();
                         TotalPagar();
@@ -740,8 +742,8 @@ public class POS extends javax.swing.JInternalFrame {
                     lista.add(Float.parseFloat(CantidadVenta.getText()));
                     lista.add(String.format("%.4f", Float.parseFloat(Final.getText())));
                     lista.add(0);
-                    lista.add(0);
-                    lista.add(0);
+                    lista.add(String.format("%.4f", Float.parseFloat(Final.getText())));
+                    lista.add(String.format("%.4f", total));
                     lista.add(jCheckBox1.isSelected());
                     lista.add("0");
                     lista.add(btn1);
@@ -760,7 +762,7 @@ public class POS extends javax.swing.JInternalFrame {
                     O[9] = lista.get(10);
                     modelo.addRow(O);
                     TablaVentas.setModel(modelo);
-                    SUMAR_TABLA();
+                    //SUMAR_TABLA();
                     SumarProductos();
                     VERIFICAR_DESCUENTO(jComboBox1);
                     TotalPagar();

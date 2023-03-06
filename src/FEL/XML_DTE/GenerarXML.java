@@ -300,8 +300,8 @@ public class GenerarXML {
                         UnidadMedida.setTextContent("UN");
                         Descripcion.setTextContent(TablaVentas.getValueAt(i, 1).toString());
                         PrecioUnitario.setTextContent(TablaVentas.getValueAt(i, 3).toString());
-                        Precio.setTextContent(TablaVentas.getValueAt(i, 3).toString());
-                        Descuento.setTextContent(TablaVentas.getValueAt(i, 4).toString());
+                        Precio.setTextContent(TablaVentas.getValueAt(i, 6).toString());
+                        Descuento.setTextContent("0.00");
 
                         CalcularImpuestoMontoGravable = Double.parseDouble(TablaVentas.getValueAt(i, 6).toString()) / 1.12;
                         CalcularImpuestoMontoImpuesto = Double.parseDouble(TablaVentas.getValueAt(i, 6).toString()) - CalcularImpuestoMontoGravable;
