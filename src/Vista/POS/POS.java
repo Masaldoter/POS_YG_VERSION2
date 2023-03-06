@@ -2425,8 +2425,6 @@ public void GenerarVenta() {
                 .addContainerGap())
         );
 
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-
         TablaVentas.setBackground(new java.awt.Color(242, 242, 242));
         TablaVentas.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         TablaVentas.setModel(new javax.swing.table.DefaultTableModel(
