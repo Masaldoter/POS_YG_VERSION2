@@ -18,6 +18,7 @@ import java.text.DecimalFormat;
  * @author aldoy
  */
 public class APERTURA_DE_CAJA extends javax.swing.JDialog {
+    INTERNAL_CAJA_PRINCIPAL CAJA_PRINCIPAL;
     /**
      * Creates new form APERTURA_DE_CAJA
      * @param parent
@@ -25,7 +26,12 @@ public class APERTURA_DE_CAJA extends javax.swing.JDialog {
      */
     public APERTURA_DE_CAJA(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+    }
+    
+    public APERTURA_DE_CAJA(java.awt.Frame parent, boolean modal, INTERNAL_CAJA_PRINCIPAL CAJA_PRINCIPAL) {
+        super(parent, modal);
         initComponents();
+        this.CAJA_PRINCIPAL = CAJA_PRINCIPAL;
         METODOS_GLOBALES.HORA_FECHA(jLabel5);
         jTextField1.addFocusListener(new FullSelectorListener());
         this.setLocationRelativeTo(null);
@@ -214,6 +220,8 @@ public class APERTURA_DE_CAJA extends javax.swing.JDialog {
         caja.setFECHA(Fecha());
         caja.setARQUEO_DE_CAJA("FALTANTE");
         CDao.REGISTRAR_APERTURAS_CIERRES_CAJA(caja);
+        CAJA_PRINCIPAL.ACTUALIZAR_CAJAS();
+        CAJA_PRINCIPAL.VALIDAR_BOTONES(1);
         this.dispose();
     }
     /**

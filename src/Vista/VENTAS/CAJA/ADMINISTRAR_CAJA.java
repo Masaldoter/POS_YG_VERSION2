@@ -14,6 +14,7 @@ import Controlador.CajaDao;
 import Controlador.Eventos;
 import Controlador.FullSelectorListener;
 import Modelo.CAJA;
+import Vista.ADMINISTRACION.PROVEEDORES.HISTORIAL_GASTOS;
 import java.awt.Color;
 import java.util.Objects;
 import javax.swing.JLabel;
@@ -101,6 +102,8 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(701, 647));
@@ -279,6 +282,11 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
 
         jTextField10.setEditable(false);
         jTextField10.setText("0.00");
+        jTextField10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField10ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -449,6 +457,18 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         jMenu2.add(jMenuItem1);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu1.setText("DETALLES");
+
+        jMenuItem3.setText("VER DETALLES DE ENTRADAS Y SALIDAS");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -749,6 +769,15 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         event.numberDecimalKeyPress(evt, jTextField4);
     }//GEN-LAST:event_jTextField4KeyTyped
 
+    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
+        
+    }//GEN-LAST:event_jTextField10ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        HISTORIAL_GASTOS H_G = new HISTORIAL_GASTOS(null, true, Integer.parseInt(NUMERO_CAJA));
+        H_G.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -808,10 +837,12 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

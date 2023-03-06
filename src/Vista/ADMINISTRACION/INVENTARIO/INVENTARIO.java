@@ -1446,8 +1446,8 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
 
     public void CodigoBarrasMediano(JTable tabla){
          int Seleccion= tabla.getSelectedRow();
-        ParametrosCodigosBarras.setCodigoDeBarrasOId(Id.getText());
-         ParametrosCodigosBarras.setNombreproducto(Nombreproducto.getText());
+        ParametrosCodigosBarras.setCodigoDeBarrasOId(tabla.getValueAt(Seleccion, 0).toString());
+         ParametrosCodigosBarras.setNombreproducto(tabla.getValueAt(Seleccion, 1).toString());
          ParametrosCodigosBarras.setPrecioPublico(tabla.getValueAt(Seleccion, 5).toString());
          ParametrosCodigosBarras.setCostoLetras(tabla.getValueAt(Seleccion, 4).toString());
         CodigosBarras.CodigoBarrasMediano(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA);
@@ -1455,17 +1455,17 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     
      public void CodigoBarrasGrande(JTable tabla){
           int Seleccion= tabla.getSelectedRow();
-         ParametrosCodigosBarras.setCodigoDeBarrasOId(Id.getText());
-         ParametrosCodigosBarras.setNombreproducto(Nombreproducto.getText());
+         ParametrosCodigosBarras.setCodigoDeBarrasOId(tabla.getValueAt(Seleccion, 0).toString());
+         ParametrosCodigosBarras.setNombreproducto(tabla.getValueAt(Seleccion, 1).toString());
          ParametrosCodigosBarras.setPrecioPublico(tabla.getValueAt(Seleccion, 5).toString());
-         ParametrosCodigosBarras.setCostoLetras(tabla.getValueAt(Seleccion, 5).toString());
+         ParametrosCodigosBarras.setCostoLetras(tabla.getValueAt(Seleccion, 4).toString());
         CodigosBarras.CodigoBarrasGrande(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA, PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
     }
      
      public void CodigoBarras3x1(JTable tabla){
          int Seleccion = tabla.getSelectedRow();
-        ParametrosCodigosBarras.setCodigoDeBarrasOId(Id.getText());
-         ParametrosCodigosBarras.setNombreproducto(Nombreproducto.getText());
+        ParametrosCodigosBarras.setCodigoDeBarrasOId(tabla.getValueAt(Seleccion, 0).toString());
+         ParametrosCodigosBarras.setNombreproducto(tabla.getValueAt(Seleccion, 1).toString());
          ParametrosCodigosBarras.setPrecioPublico(tabla.getValueAt(Seleccion, 5).toString());
          ParametrosCodigosBarras.setCostoLetras(tabla.getValueAt(Seleccion, 4).toString());
         CodigosBarras.CodigoBarras3x1(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA);

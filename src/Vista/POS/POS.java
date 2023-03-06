@@ -3298,8 +3298,6 @@ public void GenerarVenta() {
 
     private void BtnNuevoClientePOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoClientePOSActionPerformed
        LIMPIAR_CLIENTE_POS();
-       /*Excel EX= new Excel();
-       EX.exportarExcel_JTABLE(TablaVentas, PARAMETROS_USUARIOS.NOMBRE_USUARIO);*/
     }//GEN-LAST:event_BtnNuevoClientePOSActionPerformed
 
     private void BtnAgregarClientePOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarClientePOSActionPerformed

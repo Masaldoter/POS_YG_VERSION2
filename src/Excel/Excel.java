@@ -1676,17 +1676,13 @@ public class Excel extends ConexionesSQL {
     }
     
     public void exportarExcel_JTABLE(JTable t, String Usuario) throws NumberFormatException {
-        METODOS_GLOBALES.CREAR_CARPETA("C://DATOS EN POS YG");
+        METODOS_GLOBALES.CREAR_CARPETA("C://DATOS PERDIDOS EN POS YG");
         LocalDate date = LocalDate.now();
         int month = date.getMonthValue();
         int year = date.getYear();
-        METODOS_GLOBALES.CREAR_CARPETA("DATOS EN POS YG//"+month+" "+year);
-        Date fech = new Date();
+        METODOS_GLOBALES.CREAR_CARPETA("C://DATOS PERDIDOS EN POS YG//"+month+" "+year);
         login l = new login();
-        String strDateFormat = "dd-MM-YYYY";
-        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-        String fecha = objSDF.format(fech);
-        String ruta = "DATOS EN POS YG//"+month+" "+year+fecha+"_"+Usuario+"xlsx";
+        String ruta = "C://DATOS PERDIDOS EN POS YG//"+month+" "+year+"//"+Usuario+METODOS_GLOBALES.Fecha()+" "+METODOS_GLOBALES.Hora()+""+".xlsx";
             try {
                 File archivoXLSX = new File(ruta);
                 if (archivoXLSX.exists()) {
@@ -1745,7 +1741,6 @@ public class Excel extends ConexionesSQL {
                 libro.write(fileOut);
                 fileOut.close();
                 //archivo.close();
-                Desktop.getDesktop().open(archivoXLSX);
             } catch (IOException | NumberFormatException e) {
             try {
                 throw e;

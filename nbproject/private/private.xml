@@ -3,11 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/FEL/XML_DTE/GenerarXML.java</file>
             <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Principal.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/CodigosDeBarras/CodigosDeBarras.java</file>
             <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/CLASES_GLOBALES/PARAMETROS_USUARIOS.java</file>
             <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Excel/Excel.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/ADMINISTRACION/INVENTARIO/INVENTARIO.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/ADMINISTRACION/PROVEEDORES/HISTORIAL_GASTOS.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/ADMINISTRACION/PROVEEDORES/HISTORIAL_GASTO_PANEL.java</file>
             <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/POS/POS.java</file>
             <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/CLASES_GLOBALES/METODOS_GLOBALES.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/ReportesImpresion/Documentos.java</file>
         </group>
     </open-files>
 </project-private>

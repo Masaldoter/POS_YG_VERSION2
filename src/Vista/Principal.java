@@ -27,6 +27,7 @@ import Vista.ADMINISTRACION.INVENTARIO.INVENTARIO;
 import Vista.ADMINISTRACION.INVENTARIO.ImportarExcel;
 import Vista.ADMINISTRACION.INVENTARIO.KARDEX;
 import Vista.ADMINISTRACION.PROVEEDORES.GASTOS_NUEVO;
+import Vista.ADMINISTRACION.PROVEEDORES.HISTORIAL_GASTOS;
 import Vista.POS.MODO_ESPERA;
 import Vista.POS.POS;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_DIARIOS;
@@ -107,6 +108,13 @@ public final class Principal extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(Principal.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                Excel EX = new Excel();
+                EX.exportarExcel_JTABLE(P_O_S.TablaVentas, PARAMETROS_USUARIOS.NOMBRE_USUARIO);
+            }
+        });
         CARGAR_TITULO();
         Ventas.CargarDatosImpresionRapida(CheckBoxImpresionRapida);
         ConfigVentas.CargarDatosModoReinventario(CheckBoxModoStockCero);

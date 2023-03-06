@@ -194,7 +194,7 @@ public class INTERNAL_CAJA_PRINCIPAL extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //if(ACTUALIZAR_CAJAS()[1] == null){
-            APERTURA_DE_CAJA c= new APERTURA_DE_CAJA(null, true);
+            APERTURA_DE_CAJA c= new APERTURA_DE_CAJA(null, true, this);
             c.setVisible(true);
        // }
     }//GEN-LAST:event_jButton1ActionPerformed

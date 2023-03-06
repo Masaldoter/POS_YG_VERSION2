@@ -16,7 +16,10 @@ import static Conexiones.ConexionesSQL.ps;
 import static Conexiones.ConexionesSQL.rs;
 import Conexiones.conexion;
 import Modelo.CAJA;
+import Modelo.Compras;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -185,6 +188,37 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         }
        
        return Total_Final;
+    }
+    
+    public List Total_ENTRADAS_SALIDAS_DETALLES(int CAJA, String PARAMETRO){
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        Compras c;
+        List<Compras> Lista = new ArrayList();
+        try {
+             ps = cn.prepareStatement("select idcompras, TOTAL, DESCRIPCION_COMPRA, FECHA_HORA_COMPRA, USUARIO_REGISTRO from compras where TIPO_COMPRA='"+PARAMETRO+"' AND id_CAJA="+CAJA);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                c= new Compras();
+                c.setIdCAJA(rs.getInt("idcompras"));
+                c.setTOTAL_COMPRA(rs.getFloat("TOTAL"));
+                c.setDESCRIPCION_COMPRAS(rs.getString("DESCRIPCION_COMPRA"));
+                c.setFECHA_HORA_COMPRA(rs.getString("FECHA_HORA_COMPRA"));
+                c.setUSUARIO_REGISTRO_COMPRA(rs.getInt("USUARIO_REGISTRO"));
+                Lista.add(c);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error TOTAL EN ENTRADAS, " + e);
+        } finally {
+            RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Lista;
     }
     
     public Float Total_Ventas_EFECTIVO(String Fecha, int CAJA){

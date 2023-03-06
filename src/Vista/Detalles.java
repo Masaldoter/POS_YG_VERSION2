@@ -794,7 +794,7 @@ public final class Detalles extends javax.swing.JFrame {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                true, true, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -807,6 +807,9 @@ public final class Detalles extends javax.swing.JFrame {
         });
         TablaDetalles.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(TablaDetalles);
+        if (TablaDetalles.getColumnModel().getColumnCount() > 0) {
+            TablaDetalles.getColumnModel().getColumn(1).setPreferredWidth(150);
+        }
 
         jPanel12.setBackground(new java.awt.Color(153, 204, 255));
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "TOTALES"));
