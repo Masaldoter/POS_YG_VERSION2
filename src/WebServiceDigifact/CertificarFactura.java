@@ -105,8 +105,10 @@ public class CertificarFactura {
             }   catch (MalformedURLException ex) {
             Logger.getLogger(CertificarFactura.class.getName()).log(Level.SEVERE, null, ex);
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-                DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "¡NO SE PUDO REALIZAR LA CERTIFICACIÓN!\n", DesktopNotify.ERROR, 10000L);
+                DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "¡EL ARCHIVO ESTA MAL ESTRUCTURADO!\n"+ex.fillInStackTrace(), DesktopNotify.ERROR, 10000L);
         } catch (IOException | TransformerException | ParserConfigurationException | SAXException ex) {
+            DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+                DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "¡NO TIENES CONEXION A LA RED!\n"+ex.fillInStackTrace(), DesktopNotify.ERROR, 10000L);
             Logger.getLogger(CertificarFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
         return CFACT;
