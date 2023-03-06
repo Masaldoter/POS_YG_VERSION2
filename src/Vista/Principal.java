@@ -34,6 +34,7 @@ import Vista.REPORTES_VENTAS.MOVIMIENTOS_GENERALES;
 import Vista.SESION.SESION;
 import Vista.VENTAS.CAJA.INTERNAL_CAJA_PRINCIPAL;
 import Vista.VENTAS.CAJA.VER_CAJAS;
+import WebServiceDigifact.ObtenerToken;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -347,6 +348,8 @@ public final class Principal extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         jMenuItem19 = new javax.swing.JMenuItem();
+        jSeparator6 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem8 = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jPanel62Layout = new javax.swing.GroupLayout(jPanel62);
         jPanel62.setLayout(jPanel62Layout);
@@ -1025,6 +1028,16 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jMenu3.add(jMenuItem19);
+        jMenu3.add(jSeparator6);
+
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/ActualiarNaranja.png"))); // NOI18N
+        jMenuItem8.setText("ACTUALIZAR TOKEN");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem8);
 
         jMenuBar2.add(jMenu3);
 
@@ -1411,6 +1424,30 @@ public final class Principal extends javax.swing.JFrame {
         INTERNAL_CAJA_P.ACTUALIZAR_CAJAS();
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                AVISOS AV = new AVISOS("CARGANDO DATOS", "POR FAVOR, ESPERE");
+                AV.setVisible(true);
+
+                Runnable runnable2 = new Runnable() {
+                    @Override
+                    public void run() {
+                        ObtenerToken OT = new ObtenerToken();
+                        OT.ObtenerToken();
+                        AV.dispose();
+                    }
+                };
+                Thread hilo2 = new Thread(runnable2);
+                hilo2.start();
+
+            }
+        };
+        Thread hilo = new Thread(runnable);
+        hilo.start();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
     public static void CAMBIAR_ICONO(){
         ImageIcon icono = new ImageIcon(ObtenerRutaImagen(1)); // carga el icono desde archivo
 
@@ -1625,6 +1662,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel62;
@@ -1665,6 +1703,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator43;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator56;
+    private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
