@@ -2,9 +2,7 @@
 package WebServiceDigifact;
 
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
-import ModeloWebService.DatosUsuario;
 import ModeloWebService.RespuestaDatosAnularFactura;
-import ModeloWebService.TokenParametros;
 import com.github.underscore.lodash.U;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
@@ -45,14 +43,13 @@ import org.xml.sax.SAXException;
  * @author Masaldoter
  */
 public class AnularFactura {
-    
-    public RespuestaDatosAnularFactura AnularFactura(DatosUsuario DU){
+    public RespuestaDatosAnularFactura AnularFactura(){
         RespuestaDatosAnularFactura RDAF = new RespuestaDatosAnularFactura();
             try {
                 ObtenerToken OT = new ObtenerToken();
                 OT.ObtenerToken();
 
-                URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/FelRequestV2?NIT=0000"+DU.getNit()+"&TIPO=ANULAR_FEL_TOSIGN&FORMAT=XML&USERNAME=" + DU.getUsuario());
+                URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/FelRequestV2?NIT=0000"+PARAMETROS_EMPRESA.NIT_EMPRESA+"&TIPO=ANULAR_FEL_TOSIGN&FORMAT=XML&USERNAME=" + PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
                 http.setRequestMethod("POST");
                 http.setDoOutput(true);

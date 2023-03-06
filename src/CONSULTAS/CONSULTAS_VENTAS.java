@@ -3,10 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package CONSULTAS;
-
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
-import static CLASES_GLOBALES.PARAMETROS_EMPRESA.SIGNO_MONEDA;
-import static CLASES_GLOBALES.PARAMETROS_EMPRESA.formatea;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import Modelo.Venta;
 import Tablas.ActualizarTablaVentasDiariasYGenerales;

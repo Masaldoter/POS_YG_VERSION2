@@ -19,10 +19,9 @@ public class SESION extends javax.swing.JInternalFrame {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        CARGAR_DATOS_USUARIO();
     }
 
-    public static void CARGAR_DATOS_USUARIO() {
+    public void CARGAR_DATOS_USUARIO() {
         user.setText(PARAMETROS_USUARIOS.NOMBRE_USUARIO);
         NombreUsuarioVista.setText(PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
         txtRol.setText(PARAMETROS_USUARIOS.ROL_USUARIO);

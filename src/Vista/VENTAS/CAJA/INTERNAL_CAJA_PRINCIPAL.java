@@ -8,6 +8,7 @@ import static CLASES_GLOBALES.METODOS_GLOBALES.Fecha;
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
 import Modelo.CAJA;
 import Tablas.ACTUALIZA_CAJA;
+import Vista.Principal;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,11 +18,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class INTERNAL_CAJA_PRINCIPAL extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form PANEL_PRINCIPAL_CAJA
-     */
-    public INTERNAL_CAJA_PRINCIPAL() {
+    Principal principal;
+    public INTERNAL_CAJA_PRINCIPAL(Principal principal) {
         initComponents();
+        this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         VALIDAR_BOTONES(1);
@@ -206,7 +206,7 @@ public class INTERNAL_CAJA_PRINCIPAL extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ADMINISTRAR_CAJA A_C = new ADMINISTRAR_CAJA(null, true, jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString(), 
-                jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString(), jTable1.getValueAt(jTable1.getSelectedRow(), 8).toString(), true);
+                jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString(), jTable1.getValueAt(jTable1.getSelectedRow(), 8).toString(), true, this);
             
         A_C.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -221,7 +221,7 @@ public class INTERNAL_CAJA_PRINCIPAL extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         ADMINISTRAR_CAJA A_C = new ADMINISTRAR_CAJA(null, true, jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString(), 
-                jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString(), jTable1.getValueAt(jTable1.getSelectedRow(), 8).toString(), false);
+                jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString(), jTable1.getValueAt(jTable1.getSelectedRow(), 8).toString(), false, this);
             
         A_C.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed

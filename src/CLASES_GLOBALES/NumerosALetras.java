@@ -7,7 +7,6 @@ MANFREDITO
 package CLASES_GLOBALES;
 
 public class NumerosALetras {
-    
     public String Convertir(String Valor){
         String Resultado="";
         for (int i = 0; i < Valor.length(); i++) {

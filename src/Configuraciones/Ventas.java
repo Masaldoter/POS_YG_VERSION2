@@ -262,12 +262,14 @@ public class Ventas {
                  properties= new Properties();
             properties.setProperty("modoreinventario", Estado);
             properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\MODOREINVENTARIO.properties").getAbsolutePath()), "CONFIGURACIÓN DE ModoReinventario");
-             }else{
+            CLASES_GLOBALES.PARAMETROS_VENTAS.CheckBoxModoStockCero=true; 
+            }else{
                  Estado = "false";
                  properties= new Properties();
             properties.setProperty("modoreinventario", Estado);
             properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\MODOREINVENTARIO.properties").getAbsolutePath()), "CONFIGURACIÓN DE ModoReinventario");
-             }
+            CLASES_GLOBALES.PARAMETROS_VENTAS.CheckBoxModoStockCero=false;    
+            }
             
             
         } catch (IOException e) {
@@ -303,12 +305,14 @@ public class Ventas {
                  properties= new Properties();
             properties.setProperty("ProductosPersonalizados", Estado);
             properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\MODOPRODUCTOSPERSONALIZADOS.properties").getAbsolutePath()), "CONFIGURACIÓN DE MODO PRODUCTOS PERSONALIZADOS");
-             }else{
+            CLASES_GLOBALES.PARAMETROS_VENTAS.CheckPermitirProductosPersonalizados = true; 
+            }else{
                  Estado = "false";
                  properties= new Properties();
             properties.setProperty("ProductosPersonalizados", Estado);
             properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\MODOPRODUCTOSPERSONALIZADOS.properties").getAbsolutePath()), "CONFIGURACIÓN DE MODO PRODUCTOS PERSONALIZADOS");
-             }
+            CLASES_GLOBALES.PARAMETROS_VENTAS.CheckPermitirProductosPersonalizados = false;
+            }
             
             
         } catch (IOException e) {

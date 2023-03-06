@@ -195,7 +195,7 @@ public class VentaDao extends ConexionesSQL {
             ps.setString(3, v.getTIPO_IDENTIFICACION_CLIENTE());
             ps.setString(4, v.getDireccionCliente());
             ps.setDouble(5, v.getTotal());
-            ps.setString(6, METODOS_GLOBALES.Fecha());
+            ps.setString(6, v.getFecha());
             ps.setString(7, METODOS_GLOBALES.Hora());
             ps.setFloat(8, v.getPagocon());
             ps.setFloat(9, v.getCambio());

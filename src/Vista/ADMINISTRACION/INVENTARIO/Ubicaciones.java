@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
  * @author aldoy
  */
 public class Ubicaciones extends javax.swing.JDialog {
-
+    Principal principal;
     /**
      * Creates new form Ubicaciones1
      * @param parent
@@ -39,9 +39,10 @@ public class Ubicaciones extends javax.swing.JDialog {
         super(parent, modal);
     }
     
-    public Ubicaciones(java.awt.Frame parent, boolean modal, int Rol) {
+    public Ubicaciones(java.awt.Frame parent, boolean modal, int Rol, Principal principal) {
         super(parent, modal);
         initComponents();
+        this.principal = principal;
         this.setLocationRelativeTo(null);
         this.setTitle("ADMINISTRACIÓN DE ÚBICACIÓNES");
         ActualizarTablaUbicaciones();
@@ -98,7 +99,7 @@ public class Ubicaciones extends javax.swing.JDialog {
     }
     
     public void ConfirmarSalida() {
-        Principal.VentanaUbicaciones=false;
+        principal.VentanaUbicaciones=false;
         this.dispose();
     }
     

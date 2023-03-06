@@ -27,14 +27,18 @@ import javax.swing.JFrame;
  * @author Masaldoter
  */
 public class Config extends javax.swing.JFrame {
-
+    Principal principal;
      Properties properties= new Properties();
      Properties propertie3= new Properties();
      Properties properties2= new Properties();
     InputStream entrada = null;
     
     public Config() {
+    }
+    
+    public Config(Principal principal) {
         initComponents();
+        this.principal = principal;
         ObtenerImpresoras();
         CargarDatosImpresoras();
         CargarDatosRutas();
@@ -57,7 +61,7 @@ public class Config extends javax.swing.JFrame {
     }
     
     public void ConfirmarSalida() {
-        Principal.VentanaConfiguraciones=false;
+        principal.VentanaConfiguraciones=false;
         this.dispose();
     }
     
@@ -151,6 +155,8 @@ public class Config extends javax.swing.JFrame {
         ImpresorasHojaCarta = new javax.swing.JComboBox<>();
         jSeparator2 = new javax.swing.JSeparator();
         ImpresorasEtiquetas = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel7 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -311,6 +317,32 @@ public class Config extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("IMPRESORAS", jPanel9);
 
+        jCheckBox1.setText("CAMBIAR FECHA DE VENTA");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jCheckBox1)
+                .addContainerGap(549, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jCheckBox1)
+                .addContainerGap(209, Short.MAX_VALUE))
+        );
+
+        jTabbedPane2.addTab("POS", jPanel1);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -448,6 +480,14 @@ public class Config extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        if(jCheckBox1.isSelected()){
+            principal.P_O_S.Fecha_Movimiento.setEnabled(true);
+        }else{
+            principal.P_O_S.Fecha_Movimiento.setEnabled(false);
+        }
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -493,11 +533,13 @@ public class Config extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel7;

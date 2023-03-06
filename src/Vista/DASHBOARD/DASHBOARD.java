@@ -10,7 +10,7 @@ import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import Modelo.InterfazPrincipal;
 import Tablas.REPORTESGRAFICOS;
 import Vista.ADMINISTRACION.INVENTARIO.CategoriaVista;
-import static Vista.Principal.VentanaCategoria;
+import Vista.Principal;
 import Vista.UsuariosEnLinea;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
@@ -20,19 +20,18 @@ import ds.desktop.notify.NotifyTheme;
  * @author aldoy
  */
 public class DASHBOARD extends javax.swing.JInternalFrame {
+    Principal principal;
+    REPORTESGRAFICOS ReportesGraficos = new REPORTESGRAFICOS();
 
-    static REPORTESGRAFICOS ReportesGraficos = new REPORTESGRAFICOS();
-
-    /**
-     * Creates new form DASHBOARD
-     */
-    public DASHBOARD() {
+    PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA(); 
+    public DASHBOARD(Principal principal) {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        this.principal = principal;
     }
     
-    public static void CARGAR_DASHBOARD(){
+    public void CARGAR_DASHBOARD(){
         
         labelnombre.setText("Bienvenido " + PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
         ReportesGraficos.Registros();
@@ -63,7 +62,7 @@ public class DASHBOARD extends javax.swing.JInternalFrame {
         MasVendidos();
     }
     
-    public static void CARGAR_RESUMEN_REGISTROS(){
+    public void CARGAR_RESUMEN_REGISTROS(){
         InterfazPrincipal IP = new InterfazPrincipal();
         IP = ReportesGraficos.Registros();
         jLabel5.setText(IP.getProductosRegistrados()+ " REGISTROS");
@@ -72,21 +71,21 @@ public class DASHBOARD extends javax.swing.JInternalFrame {
                 jLabel21.setText(IP.getCategorias()+ " REGISTROS");
     }
     
-    public static void MasVendidos(){
+    public void MasVendidos(){
         LIMPIAR_TABLA(TABLAMASVENDIDOS);
         ReportesGraficos.ProductosMasVendidos(TABLAMASVENDIDOS);
     }
     
-    public static void AvisoStock(){
+    public void AvisoStock(){
         LIMPIAR_TABLA(TABLAAVISODESTOCK);
         ReportesGraficos.AvisoDeStock(TABLAAVISODESTOCK);
     }
-    public static void GraficarVentasGenerales(){
+    public void GraficarVentasGenerales(){
         Panel2.removeAll();
         ReportesGraficos.RegistrosGeneral(PARAMETROS_USUARIOS.ID_USUARIO, Panel2);
     }
     
-    public static void GraficarVentas(){
+    public void GraficarVentas(){
         Panel1.removeAll();
         ReportesGraficos.Registros(PARAMETROS_USUARIOS.ID_USUARIO, Panel1);
     }
@@ -470,17 +469,17 @@ public class DASHBOARD extends javax.swing.JInternalFrame {
     private void jPanel57MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel57MouseClicked
         CategoriaVista Cat = null;
         if(PARAMETROS_USUARIOS.ROL_USUARIO.equals("Administrador")){
-            if(VentanaCategoria==false){
-                VentanaCategoria=true;
-                Cat= new CategoriaVista(null, true, 0);
+            if(principal.VentanaCategoria==false){
+                principal.VentanaCategoria=true;
+                Cat= new CategoriaVista(null, true, 0, principal);
                 CategoriaVista.ActualizarTablaCategorias(false);
             }else{
                 Cat.toFront();
             }
         }else{
-            if(VentanaCategoria==false){
-                VentanaCategoria=true;
-                Cat= new CategoriaVista(null, true, 1);
+            if(principal.VentanaCategoria==false){
+                principal.VentanaCategoria=true;
+                Cat= new CategoriaVista(null, true, 1, principal);
                 CategoriaVista.ActualizarTablaCategorias(false);
             }else{
                 Cat.toFront();

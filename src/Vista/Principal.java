@@ -3,7 +3,6 @@ import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
 import CLASES_GLOBALES.PARAMETROS_BASE_DE_DATOS;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
-import CLASES_GLOBALES.PARAMETROS_VENTAS;
 import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import CONTROL_DE_ACTUALIZACIÓNES.CONTROL_DE_ACTUALIZACIÓNES;
 import Vista.ADMINISTRACION.INVENTARIO.Ubicaciones;
@@ -20,7 +19,6 @@ import Vista.ADMINISTRACION.CLIENTES.CLIENTES;
 import Vista.ADMINISTRACION.PROVEEDORES.PROVEEDORES;
 import Vista.ADMINISTRACION.USUARIOS.ADMINISTRACION_DE_USUARIOS;
 import Vista.ADMINISTRACION.USUARIOS.USUARIOS_INTERNOS;
-import static Vista.ADMINISTRACION.USUARIOS.USUARIOS_INTERNOS.Usuarios;
 import Vista.CONFIGURACION.EMPRESA;
 import Vista.Cotizaciones.CotizacionesGenerales;
 import Vista.DASHBOARD.DASHBOARD;
@@ -28,17 +26,14 @@ import Vista.ADMINISTRACION.INVENTARIO.ADMINISTRARPRODUCTO;
 import Vista.ADMINISTRACION.INVENTARIO.INVENTARIO;
 import Vista.ADMINISTRACION.INVENTARIO.ImportarExcel;
 import Vista.ADMINISTRACION.INVENTARIO.KARDEX;
-import static Vista.ADMINISTRACION.INVENTARIO.KARDEX.REFRESCAR_KARDEX;
 import Vista.ADMINISTRACION.PROVEEDORES.GASTOS_NUEVO;
 import Vista.POS.MODO_ESPERA;
 import Vista.POS.POS;
-import static Vista.POS.POS.VentanaBuscarProducto;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_DIARIOS;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_GENERALES;
 import Vista.SESION.SESION;
 import Vista.VENTAS.CAJA.INTERNAL_CAJA_PRINCIPAL;
 import Vista.VENTAS.CAJA.VER_CAJAS;
-import WebServiceDigifact.ObtenerToken;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -62,45 +57,45 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public final class Principal extends javax.swing.JFrame {
-    static ProductosDao proDao;
-    static Productos pro = new Productos();
-
+    ProductosDao proDao;
+    Productos pro = new Productos();
+    PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();;
     Ventas ConfigVentas = new Ventas();
 
     Reportes Re = new Reportes();
     
     loginDao logina = new loginDao();
-    public static ADMINISTRARPRODUCTO AdminProduct;
-    public static CategoriaVista Cat;
-    public static Ubicaciones Ub;
+    public ADMINISTRARPRODUCTO AdminProduct;
+    public CategoriaVista Cat;
+    public Ubicaciones Ub;
     Config conf;
-    public static int ContabilizadorDeVentanasCliente = 0;
-    public static boolean VentanaAdministracionDeProductos = false;
-    public static boolean VENTANA_ADMINISTRACION_DE_USUARIOS = false;
-    public static boolean VentanaBusquedaProducto = false;
-    public static boolean VentanaCategoria = false;
-    public static boolean VentanaUbicaciones = false;
-    public static boolean VentanaConfiguraciones = false;
-    public static boolean VentanaDetalleDeVenta = false;
+    public int ContabilizadorDeVentanasCliente = 0;
+    public boolean VentanaAdministracionDeProductos = false;
+    public boolean VENTANA_ADMINISTRACION_DE_USUARIOS = false;
+    public boolean VentanaBusquedaProducto = false;
+    public boolean VentanaCategoria = false;
+    public boolean VentanaUbicaciones = false;
+    public boolean VentanaConfiguraciones = false;
+    public boolean VentanaDetalleDeVenta = false;
     
     //VENTANAS
     MOVIMIENTOS_GENERALES MG= new MOVIMIENTOS_GENERALES(this);
-    USUARIOS_INTERNOS UI= new USUARIOS_INTERNOS();
-    CLIENTES C= new CLIENTES();
+    USUARIOS_INTERNOS UI= new USUARIOS_INTERNOS(this);
+    public CLIENTES C= new CLIENTES(this);
     PROVEEDORES P= new PROVEEDORES();
     SESION S= new SESION();
-    DASHBOARD D= new DASHBOARD();
-    EMPRESA E = new EMPRESA();
+    DASHBOARD D= new DASHBOARD(this);
+    EMPRESA E = new EMPRESA(this);
     CotizacionesGenerales CG = new CotizacionesGenerales(this);
     MOVIMIENTOS_DIARIOS MD= new MOVIMIENTOS_DIARIOS(this);
     public POS P_O_S = new POS(this);
     INVENTARIO I = new INVENTARIO(P_O_S, this);
     //POS P_O_S= new POS();
-    INTERNAL_CAJA_PRINCIPAL INTERNAL_CAJA_P = new INTERNAL_CAJA_PRINCIPAL();
+    INTERNAL_CAJA_PRINCIPAL INTERNAL_CAJA_P = new INTERNAL_CAJA_PRINCIPAL(this);
     MODO_ESPERA M_E= new MODO_ESPERA();
     KARDEX K= new KARDEX();
     //VENTANAS EMERGENTES
-    public static ADMINISTRACION_DE_USUARIOS ADMIN_USUARIOS;
+    public ADMINISTRACION_DE_USUARIOS ADMIN_USUARIOS;
     //NUMERO INTERNO DE VENTA    
     
     public Principal(){
@@ -111,16 +106,10 @@ public final class Principal extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(Principal.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
-        this.setTitle(PARAMETROS_VERSION_SISTEMA.NOMBRE_SISTEMA+" "+PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA+
-        " | "+PARAMETROS_EMPRESA.NOMBRE_EMPRESA.toUpperCase()+ " | "+PARAMETROS_USUARIOS.NOMBRE_USUARIO+ 
-        " | "+PARAMETROS_USUARIOS.ROL_USUARIO.toUpperCase());
+        CARGAR_TITULO();
         Ventas.CargarDatosImpresionRapida(CheckBoxImpresionRapida);
         ConfigVentas.CargarDatosModoReinventario(CheckBoxModoStockCero);
         ConfigVentas.CargarDatosProductosPersonalizados(CheckPermitirProductosPersonalizados);
-        DatosEmpresaDao datosDao= new DatosEmpresaDao();
-        datosDao.VerDatos();
-        datosDao.VerDatosCertificador();
-        //MoverEntreSistema();
         HORA_FECHA();
         CARGAR_INICIO();
         if (PARAMETROS_USUARIOS.ROL_USUARIO.equals("Usuario")) {
@@ -140,10 +129,18 @@ public final class Principal extends javax.swing.JFrame {
             jSeparator1.setVisible(false);
             jMenuItem14.setVisible(false);
             jSeparator3.setVisible(false);
+            jButton5.setVisible(false);
+            jButton6.setVisible(false);
         } else {
         }
         AlIniciarSesion();
         Cerrar();
+    }
+    
+    public void CARGAR_TITULO(){
+        this.setTitle(PARAMETROS_VERSION_SISTEMA.NOMBRE_SISTEMA+" "+PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA+
+        " | "+PARAMETROS_EMPRESA.NOMBRE_EMPRESA.toUpperCase()+ " | "+PARAMETROS_USUARIOS.NOMBRE_USUARIO+ 
+        " | "+PARAMETROS_USUARIOS.ROL_USUARIO.toUpperCase());
     }
 
     @Override
@@ -245,6 +242,12 @@ public final class Principal extends javax.swing.JFrame {
         filtrousuario = new javax.swing.JCheckBoxMenuItem();
         jSeparator43 = new javax.swing.JSeparator();
         DESKTOP_PRINCIPAL = new javax.swing.JDesktopPane();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblNombre_BD_Principal = new javax.swing.JLabel();
@@ -385,15 +388,95 @@ public final class Principal extends javax.swing.JFrame {
 
         DESKTOP_PRINCIPAL.setAutoscrolls(true);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/data-connection_icon-icons.com_52841.png"))); // NOI18N
+        jButton1.setText("DASHBOARD");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/shoppingcart_77968.png"))); // NOI18N
+        jButton2.setText("POINT OF SALE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/business_salesreport_salesreport_negocio_2353.png"))); // NOI18N
+        jButton3.setText("MOVIMIENTOS");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Detalle.png"))); // NOI18N
+        jButton4.setText("COTIZACIÓNES");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/ENTRADAS_SALIDAS_32PX.png"))); // NOI18N
+        jButton5.setText("ENTRADAS Y SALIDAS");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CAJA_32PX.png"))); // NOI18N
+        jButton6.setText("CAJA");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        DESKTOP_PRINCIPAL.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        DESKTOP_PRINCIPAL.setLayer(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        DESKTOP_PRINCIPAL.setLayer(jButton3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        DESKTOP_PRINCIPAL.setLayer(jButton4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        DESKTOP_PRINCIPAL.setLayer(jButton5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        DESKTOP_PRINCIPAL.setLayer(jButton6, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout DESKTOP_PRINCIPALLayout = new javax.swing.GroupLayout(DESKTOP_PRINCIPAL);
         DESKTOP_PRINCIPAL.setLayout(DESKTOP_PRINCIPALLayout);
         DESKTOP_PRINCIPALLayout.setHorizontalGroup(
             DESKTOP_PRINCIPALLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(DESKTOP_PRINCIPALLayout.createSequentialGroup()
+                .addContainerGap(63, Short.MAX_VALUE)
+                .addGroup(DESKTOP_PRINCIPALLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(DESKTOP_PRINCIPALLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(DESKTOP_PRINCIPALLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         DESKTOP_PRINCIPALLayout.setVerticalGroup(
             DESKTOP_PRINCIPALLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(DESKTOP_PRINCIPALLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(DESKTOP_PRINCIPALLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(DESKTOP_PRINCIPALLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(15, 15, 15)
+                .addGroup(DESKTOP_PRINCIPALLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(DESKTOP_PRINCIPALLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel1.setBackground(new java.awt.Color(51, 153, 255));
@@ -438,14 +521,14 @@ public final class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblNombre_BD_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                .addComponent(lblNombre_BD_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblURL_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addComponent(lblURL_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
@@ -562,8 +645,8 @@ public final class Principal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem20);
         jMenu2.add(jSeparator3);
 
-        jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/GASTOS_32PX.png"))); // NOI18N
-        jMenuItem14.setText("GASTOS");
+        jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/ENTRADAS_SALIDAS_32PX.png"))); // NOI18N
+        jMenuItem14.setText("ENTRADAS/SALIDAS");
         jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem14ActionPerformed(evt);
@@ -973,7 +1056,6 @@ public final class Principal extends javax.swing.JFrame {
     
     public void MoverEntreSistema() {
         if (jLabel4.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
@@ -1001,7 +1083,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemInventarioActionPerformed
 
     private void ItemUsuariosSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemUsuariosSistemaActionPerformed
-        Usuarios();
+        UI.Usuarios();
         ABRIR_VENTANAS(UI, true);
     }//GEN-LAST:event_ItemUsuariosSistemaActionPerformed
 
@@ -1011,17 +1093,16 @@ public final class Principal extends javax.swing.JFrame {
 
     private void ItemVentasGeneralesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemVentasGeneralesActionPerformed
         if(jLabel4.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
             } else {
                 ABRIR_VENTANAS(MG, true);
-                MOVIMIENTOS_GENERALES.CARGAR_REGISTROS();
+                MG.CARGAR_REGISTROS();
             }
         } else {
             ABRIR_VENTANAS(MG, true);
-        MOVIMIENTOS_GENERALES.CARGAR_REGISTROS();
+        MG.CARGAR_REGISTROS();
         }
     }//GEN-LAST:event_ItemVentasGeneralesActionPerformed
 
@@ -1032,14 +1113,15 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        int Seleccion= JOptionPane.showConfirmDialog(null, "(SI)REPORTE PARA POS\n(NO)REPORTE PARA CERTIFICADOR");
+        int Seleccion = JOptionPane.showConfirmDialog(null, "(SI)REPORTE PARA POS\n(NO)REPORTE PARA CERTIFICADOR");
         try {
-            if(Seleccion==0){
-            Excel.reporte();    
-            }else{
-                Excel.reporteACertificador();
+            Excel Ex = new Excel();
+            if (Seleccion == 0) {
+                Ex.reporte();
+            } else {
+                Ex.reporteACertificador();
             }
-            
+
         } catch (URISyntaxException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1059,13 +1141,13 @@ public final class Principal extends javax.swing.JFrame {
             
         }else{
             if(VentanaCategoria==true){
-        Cat.dispose(); 
+        Cat.toFront(); 
         }else if(VentanaUbicaciones==true){
-            Ub.dispose();
-        }else if(VentanaBuscarProducto==true){
-           // POS.BP.dispose();
+            Ub.toFront();
+        }else if(P_O_S.VentanaBuscarProducto==true){
+            P_O_S.BP.toFront();
         }else if(VentanaConfiguraciones==true){
-            conf.dispose();
+            conf.toFront();
         }else if(VentanaAdministracionDeProductos==true){
             JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN ABIERTA, TERMÍNELA O CIÉRRELA!");
             AdminProduct.toFront();
@@ -1082,7 +1164,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        SESION.CARGAR_DATOS_USUARIO();
+        S.CARGAR_DATOS_USUARIO();
         ABRIR_VENTANAS(S, true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -1090,7 +1172,7 @@ public final class Principal extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         if(VentanaCategoria==false){
             VentanaCategoria=true;
-        Cat= new CategoriaVista(this, true, 0);
+        Cat= new CategoriaVista(this, true, 0, this);
         CategoriaVista.ActualizarTablaCategorias(false);     
         }else{
             Cat.toFront();
@@ -1103,7 +1185,6 @@ public final class Principal extends javax.swing.JFrame {
 
     private void ItemVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemVentasActionPerformed
         if (jLabel4.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
@@ -1134,7 +1215,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        DASHBOARD.CARGAR_DASHBOARD();
+        D.CARGAR_DASHBOARD();
         ABRIR_VENTANAS(D, true);
     }//GEN-LAST:event_jMenuItem12ActionPerformed
     
@@ -1142,12 +1223,12 @@ public final class Principal extends javax.swing.JFrame {
        /* tablamadre.setSelectedIndex(9);
         Movimientos.Tabla(tablamadre, tablamadre.getSelectedIndex());*/
         ABRIR_VENTANAS(C, true);
-        CLIENTES.CARGAR_CLIENTES();
+        C.CARGAR_CLIENTES();
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
         ABRIR_VENTANAS(E, true);
-        EMPRESA.CargarDatosEmpresa();
+        E.CargarDatosEmpresa();
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     
@@ -1159,7 +1240,7 @@ public final class Principal extends javax.swing.JFrame {
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
         if(VentanaConfiguraciones==false){
             VentanaConfiguraciones=true;
-            conf= new Config();
+            conf= new Config(this);
           conf.setVisible(true);
         conf.setLocationRelativeTo(null);  
         }else{
@@ -1227,7 +1308,7 @@ public final class Principal extends javax.swing.JFrame {
     private void jMenuItem27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem27ActionPerformed
         if(VentanaUbicaciones==false){
             VentanaUbicaciones=true;
-            Ub= new Ubicaciones(this, true, 0);
+            Ub= new Ubicaciones(this, true, 0, this);
         }else{
             Ub.toFront();
         }
@@ -1258,25 +1339,77 @@ public final class Principal extends javax.swing.JFrame {
     private void jMenuItem31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem31ActionPerformed
         ABRIR_VENTANAS(K, true);
         I.CARGAR_REGISTROS();
-        REFRESCAR_KARDEX();
+        K.REFRESCAR_KARDEX();
     }//GEN-LAST:event_jMenuItem31ActionPerformed
 
-    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        D.CARGAR_DASHBOARD();
+        ABRIR_VENTANAS(D, true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        MoverEntreSistema();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (jLabel4.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
-                CA.setVisible(true);
+            } else {
+                ABRIR_VENTANAS(MD, true);
+                MD.CARGAR_REGISTROS();
+            }
+        } else {
+            ABRIR_VENTANAS(MD, true);
+            MD.CARGAR_REGISTROS();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if(jLabel4.getText().equals("")){
+            VER_CAJAS CA= new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+        }else{
+            ABRIR_VENTANAS(CG, true);
+        CG.ActualizarTablaEstado();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        if (jLabel4.getText().equals("")) {
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
             } else {
                 GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
-        G_N.setVisible(true);
+                G_N.setVisible(true);
             }
         } else {
             GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
-        G_N.setVisible(true);
+            G_N.setVisible(true);
         }
     }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if (jLabel4.getText().equals("")) {
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
+            } else {
+                GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
+                G_N.setVisible(true);
+            }
+        } else {
+            GASTOS_NUEVO G_N= new GASTOS_NUEVO(this, true);
+            G_N.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        ABRIR_VENTANAS(INTERNAL_CAJA_P, true);
+        INTERNAL_CAJA_P.ACTUALIZAR_CAJAS();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     public static void CAMBIAR_ICONO(){
         ImageIcon icono = new ImageIcon(ObtenerRutaImagen(1)); // carga el icono desde archivo
@@ -1440,6 +1573,12 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem filtroid;
     private javax.swing.JCheckBoxMenuItem filtroproveedores;
     private javax.swing.JCheckBoxMenuItem filtrousuario;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

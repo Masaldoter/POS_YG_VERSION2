@@ -5,8 +5,7 @@
 package Vista.REPORTES_VENTAS;
 
 import static CLASES_GLOBALES.METODOS_GLOBALES.Fecha;
-import static CLASES_GLOBALES.PARAMETROS_EMPRESA.SIGNO_MONEDA;
-import static CLASES_GLOBALES.PARAMETROS_EMPRESA.formatea;
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import CONSULTAS.CONSULTAS_VENTAS;
 import Controlador.ProductosDao;
@@ -22,8 +21,7 @@ import javax.swing.JButton;
  * @author aldoy
  */
 public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
-
-    static ProductosDao proDao = new ProductosDao();
+    ProductosDao proDao = new ProductosDao();
     Principal principal;
     public MOVIMIENTOS_DIARIOS() {
         initComponents();
@@ -45,7 +43,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         }
     }
     
-    public static void CARGAR_TOTALES(){
+    public void CARGAR_TOTALES(){
         Double TotalPagar2 = 0.00;
         int numFila = VD.getRowCount();
         for (int i = 0; i < numFila; i++) {
@@ -53,7 +51,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
             TotalPagar2 = TotalPagar2 + cal;
 
         }
-        TP.setText(SIGNO_MONEDA+formatea.format(TotalPagar2));
+        TP.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA+PARAMETROS_EMPRESA.formatea.format(TotalPagar2));
         
         double pago= 0.00;
         for (int i = 0; i < numFila; i++) {
@@ -61,7 +59,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
             pago = pago + cal2;
 
         }
-        Pago.setText(SIGNO_MONEDA+formatea.format(pago));
+        Pago.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA+PARAMETROS_EMPRESA.formatea.format(pago));
         
         double pago3= 0.00;
         for (int i = 0; i < numFila; i++) {
@@ -69,10 +67,10 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
             pago3 = pago3 + cal3;
 
         }
-        CambiosVentasDiarias.setText(SIGNO_MONEDA+formatea.format(pago3));
+        CambiosVentasDiarias.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA+PARAMETROS_EMPRESA.formatea.format(pago3));
     }
     
-    public static void CARGAR_REGISTROS(){
+    public void CARGAR_REGISTROS(){
         fechas.setText(Fecha());
         ListaUsuarios.removeAllItems();
         VaciarYllenarUsuariosVenta();
@@ -80,7 +78,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         CARGAR_TOTALES();
     }
     
-    private static void VaciarYllenarUsuariosVenta(){
+    private void VaciarYllenarUsuariosVenta(){
         ListaUsuarios.removeAllItems();
         List<Usuarios> lista = proDao.Usuarios();
         for (int i = 0; i < lista.size(); i++) {
@@ -91,7 +89,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
     }
     
     
-    public static void REFRESCAR_VENTAS_DIARIAS(){
+    public void REFRESCAR_VENTAS_DIARIAS(){
         if(!PARAMETROS_USUARIOS.ROL_USUARIO.equals("Administrador")){
             Sele.setText(PARAMETROS_USUARIOS.NOMBRE_USUARIO);
         ListaUsuarios.setSelectedItem(PARAMETROS_USUARIOS.NOMBRE_USUARIO);    
@@ -607,7 +605,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
                 String Id = VD.getValueAt(fila, 0).toString();
                 CajaIdVenta.setText(Id);
                 JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 1, this.principal.P_O_S);
+                Detalles de= new Detalles(codigo, 1, 1, principal.P_O_S, principal);
                 de.setVisible(true);
 
             }
@@ -627,7 +625,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
                 ((JButton)value).doClick();
                 String Id = TablaVentasNombreProductos1.getValueAt(fila, 0).toString();
                 JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 0, this.principal.P_O_S);
+                Detalles de= new Detalles(codigo, 1, 0, this.principal.P_O_S, principal);
                 de.setVisible(true);
             }
         }

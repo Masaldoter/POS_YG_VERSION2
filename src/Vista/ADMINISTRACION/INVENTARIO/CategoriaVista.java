@@ -32,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
  * @author aldoy
  */
 public class CategoriaVista extends javax.swing.JDialog {
-
+    Principal principal;
     /**
      * Creates new form CategoriaVista2
      */
@@ -41,9 +41,10 @@ public class CategoriaVista extends javax.swing.JDialog {
         initComponents();
     }
 
-    public CategoriaVista(java.awt.Frame parent, boolean modal, int Rol) {
+    public CategoriaVista(java.awt.Frame parent, boolean modal, int Rol, Principal principal) {
         super(parent, modal);
         initComponents();
+        this.principal = principal;
         this.setLocationRelativeTo(null);
         this.setTitle("ADMINISTRACIÓN DE CATEGORÍAS");
         ActualizarTablaCategorias(false);
@@ -104,7 +105,7 @@ public class CategoriaVista extends javax.swing.JDialog {
     }
 
     public void ConfirmarSalida() {
-        Principal.VentanaCategoria = false;
+        principal.VentanaCategoria = false;
         this.dispose();
     }
 

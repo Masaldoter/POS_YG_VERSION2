@@ -7,7 +7,6 @@ package Vista.ADMINISTRACION.CLIENTES;
 import static CONSULTAS.CONSULTAS_TABLAS.ListarClientes;
 import Controlador.TextPrompt;
 import Vista.Principal;
-import static Vista.Principal.ContabilizadorDeVentanasCliente;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import javax.swing.JButton;
@@ -18,34 +17,36 @@ import javax.swing.JButton;
  */
 public class CLIENTES extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form CLIENTES
-     */
+    Principal principal;
     public CLIENTES() {
+    }
+    
+    public CLIENTES(Principal principal) {
         initComponents();
+        this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
     
-    public static void TextoEnCajaCliente() {
+    public void TextoEnCajaCliente() {
         TextPrompt hold;
         hold = new TextPrompt("NIT-CUI/ID/NOMBRE", nombre1);
     }
     
-    public static void CARGAR_CLIENTES(){
+    public void CARGAR_CLIENTES(){
         ListarClientes(TablaClientes, TIPO_BUSQUEDA_MODULO_CLIENTES.getText(), nombre1.getText());
         nombre1.requestFocus();
     }
     
-    public static void ACTUALIZAR_CLIENTES(){
+    public void ACTUALIZAR_CLIENTES(){
         TIPO_BUSQUEDA_MODULO_CLIENTES.setText("TODOS");
         nombre1.setText(null);
         ListarClientes(TablaClientes, TIPO_BUSQUEDA_MODULO_CLIENTES.getText(), nombre1.getText());
     }
     
-    public static boolean VentanasAbiertasAdministracionClientes(){
+    public boolean VentanasAbiertasAdministracionClientes(){
         Boolean AbrirVentana= true;
-       if(ContabilizadorDeVentanasCliente<1){
+       if(principal.ContabilizadorDeVentanasCliente<1){
         AbrirVentana = true; 
        }else{
            AbrirVentana = false;
@@ -201,8 +202,8 @@ public class CLIENTES extends javax.swing.JInternalFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if(VentanasAbiertasAdministracionClientes() == true){
-            Principal.ContabilizadorDeVentanasCliente = 1;
-            AdministracionDeCliente ADC = new AdministracionDeCliente(0, 0);
+            principal.ContabilizadorDeVentanasCliente = 1;
+            AdministracionDeCliente ADC = new AdministracionDeCliente(0, 0, principal);
             ADC.setVisible(true);
         }
 
@@ -223,8 +224,8 @@ public class CLIENTES extends javax.swing.JInternalFrame {
                 ((JButton) value).doClick();
 
                 if (VentanasAbiertasAdministracionClientes() == true) {
-                    ContabilizadorDeVentanasCliente = 1;
-                    AdministracionDeCliente ADC = new AdministracionDeCliente(1, Integer.parseInt(TablaClientes.getValueAt(fila, 0).toString()));
+                    principal.ContabilizadorDeVentanasCliente = 1;
+                    AdministracionDeCliente ADC = new AdministracionDeCliente(1, Integer.parseInt(TablaClientes.getValueAt(fila, 0).toString()), principal);
                     ADC.setVisible(true);
                 }
             }
@@ -234,12 +235,12 @@ public class CLIENTES extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel TIPO_BUSQUEDA_MODULO_CLIENTES;
-    private static javax.swing.JTable TablaClientes;
+    private javax.swing.JTable TablaClientes;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel52;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane14;
-    public static javax.swing.JTextField nombre1;
+    public javax.swing.JTextField nombre1;
     // End of variables declaration//GEN-END:variables
 }

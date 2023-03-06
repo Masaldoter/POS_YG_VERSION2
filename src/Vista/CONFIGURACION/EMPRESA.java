@@ -11,6 +11,8 @@ import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import Controlador.DatosEmpresaDao;
 import FEL.DatosCertificador;
 import Modelo.DatosEmpresaGeneral;
+import Vista.AVISOS;
+import Vista.Principal;
 import WebServiceDigifact.ObtenerToken;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
@@ -28,14 +30,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author aldoy
  */
 public class EMPRESA extends javax.swing.JInternalFrame {
-    //static Principal prin= new Principal();
-    public EMPRESA() {
+    PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();
+    Principal principal;
+    public EMPRESA(Principal principal) {
         initComponents();
+        this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
     
-    public static void CargarDatosEmpresa(){
+    public void CargarDatosEmpresa(){
         DatosEmpresaDao datosDao= new DatosEmpresaDao();
         datosDao.VerDatos();
         datosDao.VerDatosCertificador();
@@ -811,7 +815,7 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-        DatosEmpresaDao datosDao = null;
+        DatosEmpresaDao datosDao = new DatosEmpresaDao();
         DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
         DaEm.setNombreEmpresa(NombreEmpresa.getText());
         DaEm.setNit(NitEmpresa.getText());
@@ -848,8 +852,8 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         DesktopNotify.setDefaultTheme(NotifyTheme.Light);
         DesktopNotify.showDesktopMessage("¡PROCESO EXITOSO!", "LOS DATOS SE ACTUALIZARON CORRECTAMENTE",DesktopNotify.INFORMATION, 14000L);
         
-       // prin.setTitle(PARAMETROS_VERSION_SISTEMA.NOMBRE_SISTEMA+" "+PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA+" | "+PARAMETROS_EMPRESA.NOMBRE_EMPRESA.toUpperCase()+ " | "+PARAMETROS_USUARIOS.NOMBRE_USUARIO+ " | "+PARAMETROS_USUARIOS.ROL_USUARIO.toUpperCase());
-    
+        principal.CARGAR_TITULO();
+
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void IvaEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IvaEmpresaActionPerformed
@@ -857,9 +861,29 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_IvaEmpresaActionPerformed
 
     private void BtnGenerarTokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGenerarTokenActionPerformed
-        ObtenerToken OT = new ObtenerToken();
-        OT.ObtenerToken();
-        CajaToken.setText(PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR);
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                AVISOS AV = new AVISOS("CARGANDO DATOS", "POR FAVOR, ESPERE");
+                AV.setVisible(true);
+
+                Runnable runnable2 = new Runnable() {
+                    @Override
+                    public void run() {
+                        ObtenerToken OT = new ObtenerToken();
+                        OT.ObtenerToken();
+                        AV.dispose();
+                        CajaToken.setText(PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR);
+                    }
+                };
+                Thread hilo2 = new Thread(runnable2);
+                hilo2.start();
+
+            }
+        };
+        Thread hilo = new Thread(runnable);
+        hilo.start();
     }//GEN-LAST:event_BtnGenerarTokenActionPerformed
 
     private void botonseleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonseleccionarActionPerformed

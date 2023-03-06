@@ -252,6 +252,15 @@ public class METODOS_GLOBALES {
         return fecha;
     }
     
+    public static Date Fecha_DATE(){
+        Date fech = new Date();
+        String strDateFormat1 = "YYYY-MM-dd";
+        SimpleDateFormat Fechas = new SimpleDateFormat(strDateFormat1);
+        Fechas.format(fech);
+        
+        return fech;
+    }
+    
     public static void HORA_FECHA(JLabel ETIQUETA){
         Runnable runnable = new Runnable() {
             @Override

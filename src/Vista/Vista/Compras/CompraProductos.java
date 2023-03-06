@@ -1586,7 +1586,7 @@ LimpiarTablaVenta(jTable1);*/
          ParametrosCodigosBarras.setNombreproducto(Nombreproducto);
          ParametrosCodigosBarras.setPrecioPublico(Publico);
          ParametrosCodigosBarras.setCostoLetras(Letras);
-        CodigosBarras.CodigoBarrasMediano(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA);
+        //CodigosBarras.CodigoBarrasMediano(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA);
     }
     
      public void CodigoBarras3(String Id, String Nombreproducto, String Publico, String Letras){
@@ -1594,7 +1594,7 @@ LimpiarTablaVenta(jTable1);*/
          ParametrosCodigosBarras.setNombreproducto(Nombreproducto);
          ParametrosCodigosBarras.setPrecioPublico(Publico);
          ParametrosCodigosBarras.setCostoLetras(Letras);
-        CodigosBarras.CodigoBarrasGrande(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA, PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
+        //CodigosBarras.CodigoBarrasGrande(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA, PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
     }
      
      public void CodigoBarras4(String Id, String Nombreproducto, String Publico, String Letras){
@@ -1602,7 +1602,7 @@ LimpiarTablaVenta(jTable1);*/
          ParametrosCodigosBarras.setNombreproducto(Nombreproducto);
          ParametrosCodigosBarras.setPrecioPublico(Publico);
          ParametrosCodigosBarras.setCostoLetras(Letras);
-        CodigosBarras.CodigoBarras3x1(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA);
+        //CodigosBarras.CodigoBarras3x1(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA);
     }
      
      public void CodigoBarrasPequeño(String Id, String Nombreproducto, String Publico, String Letras){
@@ -1610,7 +1610,7 @@ LimpiarTablaVenta(jTable1);*/
          ParametrosCodigosBarras.setNombreproducto(Nombreproducto);
          ParametrosCodigosBarras.setPrecioPublico(Publico);
          ParametrosCodigosBarras.setCostoLetras(Letras);
-        CodigosBarras.CodigoBarrasPequeño(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA);
+        //CodigosBarras.CodigoBarrasPequeño(ParametrosCodigosBarras, PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA);
     }
      
      

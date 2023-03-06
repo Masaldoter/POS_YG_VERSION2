@@ -4,7 +4,6 @@ package Vista.ADMINISTRACION.CLIENTES;
 import Controlador.ClientesDao;
 import Controlador.Eventos;
 import Modelo.Clientes;
-import static Vista.ADMINISTRACION.CLIENTES.CLIENTES.ACTUALIZAR_CLIENTES;
 import Vista.Principal;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -18,16 +17,16 @@ import ds.desktop.notify.NotifyTheme;
  * @author Masaldoter
  */
 public final class AdministracionDeCliente extends javax.swing.JFrame {
-
-    static Clientes cli;
-    static ClientesDao cliDao;    
+    Principal principal;
+    Clientes cli;
+    ClientesDao cliDao;    
     
     public AdministracionDeCliente() {
     }
     
-    public AdministracionDeCliente(int FormaInicio, int ValorBusqueda) {
+    public AdministracionDeCliente(int FormaInicio, int ValorBusqueda, Principal principal) {
         initComponents();
-        
+        this.principal = principal;
         if(FormaInicio==0){
           CargarPaises();  
             LimpiarCajasClientes();
@@ -54,7 +53,7 @@ public final class AdministracionDeCliente extends javax.swing.JFrame {
         }
     }
     public void ConfirmarSalida() {
-                Principal.ContabilizadorDeVentanasCliente =0;
+                principal.ContabilizadorDeVentanasCliente =0;
                 this.dispose();
     }
 
@@ -75,7 +74,7 @@ public final class AdministracionDeCliente extends javax.swing.JFrame {
         ComboPais.setSelectedItem("GUATEMALA");
     }
     
-    public static void BuscarCliente(int ID){
+    public void BuscarCliente(int ID){
         cli= new Clientes();
         cliDao = new ClientesDao();   
         cli.setIdclientes(ID);
@@ -139,7 +138,7 @@ public final class AdministracionDeCliente extends javax.swing.JFrame {
             cl.setIDENTIFICACION(IDENTIFICACION);
             cl.setIdclientes(Integer.parseInt(CajaId.getText()));
             clDao.EliminarCliente(cl);
-            ACTUALIZAR_CLIENTES();
+            principal.C.ACTUALIZAR_CLIENTES();
         }
     }
    
@@ -518,7 +517,7 @@ public final class AdministracionDeCliente extends javax.swing.JFrame {
                 cli.setTelefono(CajaTelefono.getText());
                 cli.setCorreo(CajaCorreo.getText());
                 cliDao.EditarCliente(cli);
-                ACTUALIZAR_CLIENTES();
+                principal.C.ACTUALIZAR_CLIENTES();
                 ConfirmarSalida();
             }
 
@@ -581,21 +580,21 @@ public final class AdministracionDeCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private static javax.swing.JButton BtnAgregarCliente;
-    private static javax.swing.JButton BtnEditar;
-    private static javax.swing.JButton BtnEliminar;
-    public static javax.swing.JTextField CajaCodigoPostal;
-    public static javax.swing.JTextField CajaCorreo;
-    public static javax.swing.JTextField CajaDepartamento;
-    public static javax.swing.JTextField CajaDireccion;
+    private javax.swing.JButton BtnAgregarCliente;
+    private javax.swing.JButton BtnEditar;
+    private javax.swing.JButton BtnEliminar;
+    public javax.swing.JTextField CajaCodigoPostal;
+    public javax.swing.JTextField CajaCorreo;
+    public javax.swing.JTextField CajaDepartamento;
+    public javax.swing.JTextField CajaDireccion;
     public static javax.swing.JTextField CajaId;
-    public static javax.swing.JTextField CajaMunicipio;
-    public static javax.swing.JTextField CajaNit;
-    public static javax.swing.JTextField CajaNombre;
-    public static javax.swing.JTextField CajaTelefono;
-    public static javax.swing.JComboBox<String> ComboPais;
-    private static javax.swing.JComboBox<String> Combo_TIPO_IDENTIFICACION;
-    private static javax.swing.JButton jButton22;
+    public javax.swing.JTextField CajaMunicipio;
+    public javax.swing.JTextField CajaNit;
+    public javax.swing.JTextField CajaNombre;
+    public javax.swing.JTextField CajaTelefono;
+    public javax.swing.JComboBox<String> ComboPais;
+    private javax.swing.JComboBox<String> Combo_TIPO_IDENTIFICACION;
+    private javax.swing.JButton jButton22;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -610,7 +609,7 @@ public final class AdministracionDeCliente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel57;
     // End of variables declaration//GEN-END:variables
 
-    public static void CargarPaises(){
+    public void CargarPaises(){
         cliDao = new ClientesDao();
         ComboPais.removeAll();
         cliDao.Pais(ComboPais);

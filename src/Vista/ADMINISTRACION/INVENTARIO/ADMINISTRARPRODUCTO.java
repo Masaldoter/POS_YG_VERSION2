@@ -23,12 +23,7 @@ import Modelo.Proveedor;
 import Modelo.SubCategoria;
 import Modelo.Ubicacion;
 import Tablas.ActualizarTablaVentas;
-import static Vista.ADMINISTRACION.INVENTARIO.INVENTARIO.ActualizarTablaCentral;
-import static Vista.ADMINISTRACION.INVENTARIO.INVENTARIO.REFRESCAR_INVENTARIO;
 import Vista.Principal;
-import static Vista.Principal.Ub;
-import static Vista.Principal.VentanaCategoria;
-import static Vista.Principal.VentanaUbicaciones;
 import com.groupdocs.conversion.filetypes.ImageFileType;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import ds.desktop.notify.DesktopNotify;
@@ -65,10 +60,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
-    public static String ESTADO_PRODUCTO = null;
-    private static Float STOCK_INGRESADO;
+    Principal principal;
+    INVENTARIO inventario;
+    PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();
+    public String ESTADO_PRODUCTO = null;
+    private Float STOCK_INGRESADO;
     String DestinoPath;
-    public static String RutaDeImagen = "";
+    public String RutaDeImagen = "";
     private TextAutoCompleter AutoCompletador;
     private static ImageIcon imagenI;
     private static Icon icono;
@@ -82,7 +80,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             getImage(ObtenerRutaImagen(0));
     ImageIcon bl = new ImageIcon(retValue);
 
-    public static boolean VentanaBusquedaProducto = false;
+    public boolean VentanaBusquedaProducto = false;
     public ADMINISTRARPRODUCTO() {
 
     }
@@ -98,8 +96,10 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         return retValue;
     }
 
-    public ADMINISTRARPRODUCTO(String IDUSUARIO, String NOMBREUSUARIO) {
+    public ADMINISTRARPRODUCTO(String IDUSUARIO, String NOMBREUSUARIO, Principal principal, INVENTARIO inventario) {
         initComponents();
+        this.principal = principal;
+        this.inventario = inventario;
         DRAG_AND_DROP_IMAGEN();
         VaciarYllenarCategoria(ComboCategorias);
         VaciarYllenarProveedor();
@@ -131,14 +131,14 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         
         if (Id.getText().equals("") && Nombreproducto.getText().equals("") && Cantidad.getText().equals("") && Costo.getText().equals("") && Publico.getText().equals("")) {
             
-            Principal.VentanaAdministracionDeProductos=false;
+            principal.VentanaAdministracionDeProductos=false;
             this.dispose();
             
         } else {
             if (EstadoProducto.getText().equals("NO INGRESADO")) {
                 int seleccion = JOptionPane.showConfirmDialog(null, "TIENE UN ARTÍCULO SIN INGRESAR, ¿ESTÁ SEGURO DE SALIR?", "ADMINISTRACIÓN DE PRODUCTOS", JOptionPane.YES_NO_OPTION);
                 if (seleccion == 0) {
-                    Principal.VentanaAdministracionDeProductos=false;
+                    principal.VentanaAdministracionDeProductos=false;
                     this.dispose();
                 }
 
@@ -147,16 +147,16 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 if(Estado2 == true){
                 int seleccion = JOptionPane.showConfirmDialog(null, "TIENE UN ARTÍCULO EDITANDO, ¿ESTÁ SEGURO DE SALIR?", "ADMINISTRACIÓN DE PRODUCTOS", JOptionPane.YES_NO_OPTION);
                 if (seleccion == 0) {
-                    Principal.VentanaAdministracionDeProductos=false;
+                    principal.VentanaAdministracionDeProductos=false;
                     this.dispose();
                 }    
                 }else{
-                    Principal.VentanaAdministracionDeProductos=false;
+                    principal.VentanaAdministracionDeProductos=false;
                     this.dispose();
                 }
                 
             }else {
-                Principal.VentanaAdministracionDeProductos=false;
+                principal.VentanaAdministracionDeProductos=false;
                 this.dispose();
             }
         }
@@ -267,7 +267,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         }
     }
 
-    public static void PintarImagen(JLabel lbl, String ruta) {
+    public void PintarImagen(JLabel lbl, String ruta) {
         ADMINISTRARPRODUCTO.imagenI = new ImageIcon(ruta);
         ADMINISTRARPRODUCTO.icono = new ImageIcon(ADMINISTRARPRODUCTO.imagenI.getImage().getScaledInstance(
                 lbl.getWidth(),
@@ -304,7 +304,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         ValidarBotones();
     }
     
-    public static void ValidarBotones(){
+    public void ValidarBotones(){
         if(EstadoProducto.getText().equals("INGRESADO")){
             Cantidad.setEditable(false);
          Agregarp.setVisible(false);
@@ -418,7 +418,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         
     }
     
-    public static void InsertarProductosPorNombre(String Valor){
+    public void InsertarProductosPorNombre(String Valor){
         Productos pro = new Productos();
         ProductosDao proDao = new ProductosDao();
                 pro = proDao.BuscarProNombre(Valor);
@@ -491,10 +491,10 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             String NombreExistente = proDao.RetornarProductosDuplicados(2, Nombreproducto.getText());
             if (!"".equals(BarrasExistente)) {
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-                DesktopNotify.showDesktopMessage("REGISTRO TRUNCADO", "EL CÓDIGO DE BARRAS YA ESTÁ REGISTRADO\nESTADO: "+ESTADO_PRODUCTO, DesktopNotify.ERROR, 14000L);
+                DesktopNotify.showDesktopMessage("REGISTRO TRUNCADO", "EL CÓDIGO DE BARRAS YA ESTÁ REGISTRADO", DesktopNotify.ERROR, 14000L);
             } else if (!"".equals(NombreExistente)) {
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-                DesktopNotify.showDesktopMessage("REGISTRO TRUNCADO", "EL NOMBRE YA ESTÁ REGISTRADO\nESTADO: "+ESTADO_PRODUCTO, DesktopNotify.ERROR, 14000L);
+                DesktopNotify.showDesktopMessage("REGISTRO TRUNCADO", "EL NOMBRE YA ESTÁ REGISTRADO", DesktopNotify.ERROR, 14000L);
 
             } else {
                 
@@ -526,7 +526,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 if (ResultadoIngreso == true) {
                     Ingreso_Kardex();
                     limpiarCajas();
-                    REFRESCAR_INVENTARIO();
+                    inventario.REFRESCAR_INVENTARIO();
                 }
 
             }
@@ -540,9 +540,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             pro.setIdProductos(Integer.parseInt(idbodega.getText()));
             Boolean ResultadoEliminacion = proDao.EliminarProducto(pro);
             if (ResultadoEliminacion == true) {
-                Principal.VentanaAdministracionDeProductos=false;
+                principal.VentanaAdministracionDeProductos=false;
                 this.dispose();
-                REFRESCAR_INVENTARIO();
+                inventario.REFRESCAR_INVENTARIO();
 
             }
 
@@ -581,9 +581,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 pro.setAPLICAR_DESCUENTO(jCheckBox1.isSelected());
                 proDao.EditarProductoSinImagen(pro);
                 Id.requestFocus();
-                Principal.VentanaAdministracionDeProductos=false;
+                principal.VentanaAdministracionDeProductos=false;
                 this.dispose();
-                REFRESCAR_INVENTARIO();
+                inventario.REFRESCAR_INVENTARIO();
             }
             }
     }
@@ -1521,9 +1521,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private void EditarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarItemActionPerformed
         if (!"".equals(Id.getText())) {
                     EditarProducto();
-                    Principal.VentanaAdministracionDeProductos=false;
+                    principal.VentanaAdministracionDeProductos=false;
                     this.dispose();
-                    ActualizarTablaCentral();
+                    inventario.ActualizarTablaCentral();
             
         } else {
             JOptionPane.showMessageDialog(null, "¡DEBE SELECCIONAR UN PRODUCTO!");
@@ -1830,21 +1830,21 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if(VentanaCategoria==false){
-            VentanaCategoria=true;
-        Principal.Cat= new CategoriaVista(this, true, 0);
+        if(principal.VentanaCategoria==false){
+            principal.VentanaCategoria=true;
+        principal.Cat= new CategoriaVista(this, true, 0, principal);
         CategoriaVista.ActualizarTablaCategorias(false);     
         }else{
-            Principal.Cat.toFront();
+            principal.Cat.toFront();
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-         if(VentanaUbicaciones==false){
-            VentanaUbicaciones=true;
-            Ub= new Ubicaciones(this, true, 0);
+         if(principal.VentanaUbicaciones==false){
+            principal.VentanaUbicaciones=true;
+            principal.Ub= new Ubicaciones(this, true, 0, principal);
         }else{
-            Ub.toFront();
+            principal.Ub.toFront();
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 

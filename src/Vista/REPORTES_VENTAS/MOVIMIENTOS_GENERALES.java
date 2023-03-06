@@ -4,13 +4,8 @@
  */
 package Vista.REPORTES_VENTAS;
 
-import static CLASES_GLOBALES.PARAMETROS_EMPRESA.SIGNO_MONEDA;
-import static CLASES_GLOBALES.PARAMETROS_EMPRESA.formatea;
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CONSULTAS.CONSULTAS_VENTAS;
-import static CONSULTAS.CONSULTAS_VENTAS.ActualizarRegistroPorNombreDetalleProductos;
-import static CONSULTAS.CONSULTAS_VENTAS.ActualizarRegistroVenta;
-import static CONSULTAS.CONSULTAS_VENTAS.ActualizarRegistroVentaPorDocumento;
-import Tablas.ActualizarTablaVentasDiariasYGenerales;
 import Vista.Detalles;
 import Vista.Principal;
 import java.awt.event.KeyEvent;
@@ -21,7 +16,7 @@ import javax.swing.JButton;
  * @author aldoy
  */
 public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
-    
+    CONSULTAS_VENTAS C_V = new CONSULTAS_VENTAS();
     Principal principal;
     public MOVIMIENTOS_GENERALES() {
         initComponents();
@@ -35,6 +30,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }
     
     public void CARGAR_TOTALES(){
+        PARAMETROS_EMPRESA P_E =new PARAMETROS_EMPRESA();
         Double TotalPagar2 = 0.00;
         int numFila = TablaReporteVentas.getRowCount();
         for (int i = 0; i < numFila; i++) {
@@ -42,7 +38,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             TotalPagar2 = TotalPagar2 + cal;
 
         }
-        TotalVentaGeneral.setText(SIGNO_MONEDA+formatea.format(TotalPagar2));
+        TotalVentaGeneral.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA+PARAMETROS_EMPRESA.formatea.format(TotalPagar2));
 
         double pago = 0.00;
         for (int i = 0; i < numFila; i++) {
@@ -50,7 +46,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             pago = pago + cal2;
 
         }
-        EfectivoPagadoVentaGeneral.setText(SIGNO_MONEDA+formatea.format(pago));
+        EfectivoPagadoVentaGeneral.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA+PARAMETROS_EMPRESA.formatea.format(pago));
 
         double pago3 = 0.00;
         for (int i = 0; i < numFila; i++) {
@@ -58,11 +54,11 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             pago3 = pago3 + cal3;
 
         }
-        CambiosVentaGeneral.setText(SIGNO_MONEDA+formatea.format(pago3));
+        CambiosVentaGeneral.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA+PARAMETROS_EMPRESA.formatea.format(pago3));
     }
     
-    public static void CARGAR_REGISTROS(){
-        ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral);
+    public void CARGAR_REGISTROS(){
+        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral);
     }
     
     /**
@@ -490,7 +486,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
-        ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral);
+        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral);
         jTabbedPane3.setSelectedIndex(0);
         fechabus.setDate(null);
         lblTipoBusquedaVentasGenerales.setText("TODAS LAS VENTAS");
@@ -506,7 +502,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             Sele.setText(String.valueOf(proDao.ConsultaIdUsuario(ListaUsuarios)));
             RegistrosUsuario();
         }*/
-        ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral);
+        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral);
         CARGAR_TOTALES();
     }//GEN-LAST:event_EstadoVentaGeneralActionPerformed
 
@@ -514,7 +510,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jTabbedPane3.setSelectedIndex(0);
             lblTipoBusquedaVentasGenerales.setText("POR DOCUMENTO");
-            ActualizarRegistroVentaPorDocumento(jTextField1, false, TablaReporteVentas);
+            C_V.ActualizarRegistroVentaPorDocumento(jTextField1, false, TablaReporteVentas);
             CARGAR_TOTALES();
         }
     }//GEN-LAST:event_jTextField1KeyPressed
@@ -522,7 +518,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         jTabbedPane3.setSelectedIndex(0);
         lblTipoBusquedaVentasGenerales.setText("POR DOCUMENTO");
-        ActualizarRegistroVentaPorDocumento(jTextField1, false, TablaReporteVentas);
+        C_V.ActualizarRegistroVentaPorDocumento(jTextField1, false, TablaReporteVentas);
         CARGAR_TOTALES();
     }//GEN-LAST:event_jTextField1KeyReleased
 
@@ -530,7 +526,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
             jTabbedPane3.setSelectedIndex(1);
-            ActualizarRegistroPorNombreDetalleProductos(false, jTextField4, TablaVentasNombreProductos);
+            C_V.ActualizarRegistroPorNombreDetalleProductos(false, jTextField4, TablaVentasNombreProductos);
             CARGAR_TOTALES();
         }
     }//GEN-LAST:event_jTextField4KeyPressed
@@ -538,7 +534,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
         jTabbedPane3.setSelectedIndex(1);
         lblTipoBusquedaVentasGenerales.setText("CODIGO O NOMBRE");
-        ActualizarRegistroPorNombreDetalleProductos(false, jTextField4, TablaVentasNombreProductos);
+        C_V.ActualizarRegistroPorNombreDetalleProductos(false, jTextField4, TablaVentasNombreProductos);
         CARGAR_TOTALES();
     }//GEN-LAST:event_jTextField4KeyReleased
 
@@ -577,7 +573,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 ((JButton)value).doClick();
                 String Id = TablaReporteVentas.getValueAt(fila, 0).toString();
                 JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 0, this.principal.P_O_S);
+                Detalles de= new Detalles(codigo, 1, 0, principal.P_O_S, principal);
                 de.setVisible(true);
             }
         }
@@ -596,7 +592,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 ((JButton)value).doClick();
                 String Id = TablaVentasNombreProductos.getValueAt(fila, 0).toString();
                 JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 0, this.principal.P_O_S);
+                Detalles de= new Detalles(codigo, 1, 0, principal.P_O_S, principal);
                 de.setVisible(true);
             }
         }

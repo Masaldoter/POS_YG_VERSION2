@@ -9,7 +9,7 @@ package CLASES_GLOBALES;
  * @author aldoy
  */
 public class PARAMETROS_VERSION_SISTEMA {
-    public static String NOMBRE_SISTEMA = "SISTEMA PUNTO DE VENTA";
+    public static String NOMBRE_SISTEMA = "POS YG";
     public static String VERSION_SISTEMA = "3.3.4";
     public static String NOMBRE_DESARROLLADOR = "ALDO GUTIÉRREZ";
     public static String TELEFONO_DESARROLLADOR = "50240805837";

@@ -34,16 +34,15 @@ import org.xml.sax.SAXException;
  * @author Masaldoter
  */
 public class ConsultarCUIWebService {
-    //static DatosPersonaCliente DPC;
-
-    public DatosPersonaCliente ObtenerCliente(DatosPersonaCliente DPCEntrada, DatosUsuario DU, String Token) {
+    public DatosPersonaCliente ObtenerCliente(DatosPersonaCliente DPCEntrada) {
+        PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();
         DatosPersonaCliente DPC = new DatosPersonaCliente();
                 try {
                     ObtenerToken OT = new ObtenerToken();
                     OT.ObtenerToken();
                     URL url = null;
-                        url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/sharedInfo?NIT=0000" + DU.getNit()
-                                + "&DATA1=SHARED_GETINFOCUI&DATA2=CUI|" + DPCEntrada.getNIT_CUI() + "&USERNAME=" + DU.getUsuario());
+                        url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/sharedInfo?NIT=0000" + PARAMETROS_EMPRESA.NIT_EMPRESA
+                                + "&DATA1=SHARED_GETINFOCUI&DATA2=CUI|" + DPCEntrada.getNIT_CUI() + "&USERNAME=" + PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
 
                     HttpURLConnection http = (HttpURLConnection) url.openConnection();
                     http.setRequestMethod("GET");

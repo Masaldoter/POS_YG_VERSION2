@@ -559,6 +559,7 @@ public class JFRAME_BUSCAR_PRODUCTO extends javax.swing.JFrame {
        if (evt.getClickCount()> 1)
 {
     this.pos.BuscarProductoVenta(jLabel3.getText());
+    this.toFront();
 }
     }//GEN-LAST:event_TablaVentas1MouseClicked
 

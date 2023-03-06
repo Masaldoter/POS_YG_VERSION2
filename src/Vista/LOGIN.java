@@ -3,10 +3,12 @@ package Vista;
 
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
+import Controlador.DatosEmpresaDao;
 import Controlador.TextPrompt;
 import Modelo.login;
 import Controlador.loginDao;
 import Modelo.DatosEmpresaGeneral;
+import WebServiceDigifact.ObtenerToken;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.awt.Image;
@@ -19,23 +21,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 public class LOGIN extends javax.swing.JFrame {
     private Icon icono;
     Properties properties;
     InputStream entrada = null;
     FondoPanel fondo = new FondoPanel();
-
+    PARAMETROS_EMPRESA P_E;
     @Override
     public Image getIconImage() {
         DatosEmpresaGeneral DE = new DatosEmpresaGeneral();
@@ -47,7 +44,8 @@ public class LOGIN extends javax.swing.JFrame {
     }
     login lg = new login();
     loginDao login = new loginDao();
-
+    AVISOS AV;
+    
     public LOGIN() {
         setContentPane(fondo);
         initComponents();
@@ -128,6 +126,7 @@ public class LOGIN extends javax.swing.JFrame {
     }
 
     public final void CargarImagen() {
+        P_E = new PARAMETROS_EMPRESA();
         DatosEmpresaGeneral DE = new DatosEmpresaGeneral();
         DE = login.VerDatosEmpresaEnLogin();
         NombreEmpresa.setText("<html>" + DE.getNombreEmpresa() + "</html>");
@@ -462,6 +461,30 @@ public class LOGIN extends javax.swing.JFrame {
                 if (lg.getNombre() != null && lg.getContraseña() != null) {
                     Principal Aldo = new Principal("g");
                     Aldo.setVisible(true);
+                    Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                AV = new AVISOS("CARGANDO DATOS", "POR FAVOR, ESPERE");
+                AV.setVisible(true);
+
+                Runnable runnable2 = new Runnable() {
+                    @Override
+                    public void run() {
+                        DatosEmpresaDao D_E = new DatosEmpresaDao();
+                        D_E.VerDatos();
+                        D_E.VerDatosCertificador();
+                        ObtenerToken OT = new ObtenerToken();
+                        OT.ObtenerToken();
+                        AV.dispose();
+                    }
+                };
+                Thread hilo2 = new Thread(runnable2);
+                hilo2.start();
+
+            }
+        };
+        Thread hilo = new Thread(runnable);
+        hilo.start();
                     this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "¡UPSS, HAS INGRESADO DATOS INCORRECTOS, POR FAVOR VERIFICA!", "DATOS INCORRECTOS", JOptionPane.WARNING_MESSAGE);

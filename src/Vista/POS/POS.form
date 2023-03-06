@@ -713,16 +713,16 @@
                                   </Group>
                                   <Component id="jPanel73" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lblCantidadPOS" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="CantidadVenta" min="-2" pref="92" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="Final" pref="0" max="32767" attributes="0"/>
-                                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Component id="jCheckBox1" min="-2" pref="31" max="-2" attributes="0"/>
+                                  <Component id="CantidadVenta" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblPrecioFinalPOS" min="-2" pref="49" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jCheckBox1" min="-2" pref="37" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="lblPrecioFinalPOS" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="Final" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
@@ -783,14 +783,14 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="NombreVenta" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="lblPrecioFinalPOS" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="Final" pref="32" max="32767" attributes="0"/>
-                                  <Component id="jCheckBox1" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblPrecioFinalPOS" alignment="3" pref="24" max="32767" attributes="0"/>
+                                  <Component id="jCheckBox1" alignment="3" max="32767" attributes="0"/>
                               </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="Final" min="-2" pref="32" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblCantidadPOS" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
@@ -940,7 +940,7 @@
             <Component class="javax.swing.JTextField" name="Final">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Dialog" size="18" style="0"/>
+                  <Font name="Times New Roman" size="18" style="0"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="0" red="ff" type="rgb"/>
@@ -1006,9 +1006,9 @@
             <Component class="javax.swing.JLabel" name="lblPrecioFinalPOS">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="11" style="1"/>
+                  <Font name="Times New Roman" size="11" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="PRECIO FINAL"/>
+                <Property name="text" type="java.lang.String" value="PRECIO:"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="jPanel29">
@@ -1215,9 +1215,6 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="jCheckBox1">
               <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="10" style="0"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="%"/>
               </Properties>
               <AuxValues>
@@ -1287,6 +1284,9 @@
           </Layout>
           <SubComponents>
             <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+              <Properties>
+                <Property name="horizontalScrollBarPolicy" type="int" value="32"/>
+              </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -1494,7 +1494,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel1" min="-2" pref="55" max="-2" attributes="0"/>
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="BtnBuscarProductoPOS" pref="82" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -1502,7 +1502,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="BtnAgregarObservacionPOS" min="-2" pref="35" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="TipoDocumento" pref="45" max="32767" attributes="0"/>
+                      <Component id="TipoDocumento" pref="47" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="BtnCancelarVentaPOS" min="-2" pref="38" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -1624,16 +1624,11 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lbl_CANTIDAD_DESCUENTO" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="jComboBox1" alignment="1" pref="150" max="32767" attributes="0"/>
+                              <Component id="jComboBox1" max="32767" attributes="0"/>
+                              <Component id="Fecha_Movimiento" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1642,12 +1637,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel5" alignment="3" max="32767" attributes="0"/>
-                              <Component id="lbl_CANTIDAD_DESCUENTO" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="Fecha_Movimiento" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1656,9 +1647,8 @@
                 <Component class="javax.swing.JComboBox" name="jComboBox1">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="2">
+                      <StringArray count="1">
                         <StringItem index="0" value="--SIN PROMOCI&#xd3;N--"/>
-                        <StringItem index="1" value="DIA DEL PADRE | 5%"/>
                       </StringArray>
                     </Property>
                   </Properties>
@@ -1669,22 +1659,16 @@
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel5">
+                <Component class="com.toedter.calendar.JDateChooser" name="Fecha_Movimiento">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="TOTAL %:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lbl_CANTIDAD_DESCUENTO">
-                  <Properties>
+                    <Property name="dateFormatString" type="java.lang.String" value=" y-MM-dd"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="14" style="0"/>
+                      <Font name="Segoe UI" size="16" style="0"/>
                     </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
-                    <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="5"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>

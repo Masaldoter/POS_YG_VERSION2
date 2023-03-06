@@ -4,8 +4,7 @@
  */
 package Vista.ADMINISTRACION.INVENTARIO;
 
-import static CLASES_GLOBALES.PARAMETROS_EMPRESA.SIGNO_MONEDA;
-import static Vista.Principal.ABRIR_VENTANAS;
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import java.text.DecimalFormat;
 import javax.swing.JTable;
 
@@ -15,16 +14,13 @@ import javax.swing.JTable;
  */
 public class TOTALES extends javax.swing.JInternalFrame {
     
-    /**
-     * Creates new form TOTALES
-     */
     public TOTALES() {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
 
-    public static void TOTALES_INVENTARIO(JTable TABLA) {
+    public void TOTALES_INVENTARIO(JTable TABLA) {
         DecimalFormat formatea = new DecimalFormat("###,###.##");
         int nu = TABLA.getRowCount();
 
@@ -47,7 +43,7 @@ public class TOTALES extends javax.swing.JInternalFrame {
             TotalCosto = TotalCosto + cal * todo;
 
         }
-        TotalCostos.setText(SIGNO_MONEDA + formatea.format(TotalCosto));
+        TotalCostos.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA + formatea.format(TotalCosto));
 
         for (int i = 0; i < nu; i++) {
             double cal = Double.parseDouble(String.valueOf(TABLA.getModel().getValueAt(i, 5)));
@@ -55,9 +51,9 @@ public class TOTALES extends javax.swing.JInternalFrame {
             TotalPublicosAmigo = TotalPublicosAmigo + cal * todo;
 
         }
-        TotalPublicos.setText(SIGNO_MONEDA + formatea.format(TotalPublicosAmigo));
+        TotalPublicos.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA + formatea.format(TotalPublicosAmigo));
         Double TotalGanancias = TotalPublicosAmigo - TotalCosto;
-        TotalGananciasNumeros.setText(SIGNO_MONEDA + formatea.format(TotalGanancias));
+        TotalGananciasNumeros.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA + formatea.format(TotalGanancias));
         TotalGananciasPorcentaje.setText(PorcentajesTotal(TotalCosto, TotalPublicosAmigo));
     }
     

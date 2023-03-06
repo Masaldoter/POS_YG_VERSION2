@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package WebServiceDigifact;
 
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import ModeloWebService.DatosConsultarDTE;
-import ModeloWebService.DatosUsuario;
-import ModeloWebService.TokenParametros;
 import com.github.underscore.lodash.U;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
@@ -33,21 +26,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 /**
  *
  * @author Masaldoter
  */
 public class ConsultarDTE {
-    
-    public DatosConsultarDTE ObtenerDTE(DatosConsultarDTE DCDTE, DatosUsuario DU) {
+
+    public DatosConsultarDTE ObtenerDTE(DatosConsultarDTE DCDTE) {
         DatosConsultarDTE DPC = new DatosConsultarDTE();
         try {
             //ObtenerToken
             ObtenerToken OT = new ObtenerToken();
             OT.ObtenerToken();
 
-            URL url = new URL("https://felgtaws.digifact.com.gt/felapiv2/api/sharedInfo?NIT=0000"+DU.getNit()+"&DATA1=SHARED_GETDTEINFO&DATA2=AUTHNUMBER|"+DCDTE.getGUID()+"&USERNAME="+DU.getUsuario());
+            URL url = new URL("https://felgtaws.digifact.com.gt/felapiv2/api/sharedInfo?NIT=0000" + PARAMETROS_EMPRESA.NIT_EMPRESA + "&DATA1=SHARED_GETDTEINFO&DATA2=AUTHNUMBER|" + DCDTE.getGUID() + "&USERNAME=" + PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod("GET");
             http.setRequestProperty("Authorization", PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR);
@@ -71,24 +63,24 @@ public class ConsultarDTE {
             } else {
                 DPC.setEstado(false);
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-                DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER LOS DATOS DEL DTE:"+DCDTE.getGUID()+"\n+"+http.getResponseCode(), DesktopNotify.ERROR, 10000L);
+                DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER LOS DATOS DEL DTE:" + DCDTE.getGUID() + "\n+" + http.getResponseCode(), DesktopNotify.ERROR, 10000L);
             }
 
         } catch (MalformedURLException ex) {
             Logger.getLogger(CertificarFactura.class.getName()).log(Level.SEVERE, null, ex);
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-                DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER LOS DATOS DEL DTE:"+DCDTE.getGUID()+"\n"+ex, DesktopNotify.ERROR, 10000L);
+            DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER LOS DATOS DEL DTE:" + DCDTE.getGUID() + "\n" + ex, DesktopNotify.ERROR, 10000L);
         } catch (IOException ex) {
             Logger.getLogger(CertificarFactura.class.getName()).log(Level.SEVERE, null, ex);
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-                DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER LOS DATOS DEL DTE:"+DCDTE.getGUID()+"\n"+ex, DesktopNotify.ERROR, 10000L);
+            DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER LOS DATOS DEL DTE:" + DCDTE.getGUID() + "\n" + ex, DesktopNotify.ERROR, 10000L);
         }
         return DPC;
-            }
-    
-    public static void writeFile(String yourXML){
-    BufferedWriter out = null;
-    try { 
+    }
+
+    public static void writeFile(String yourXML) {
+        BufferedWriter out = null;
+        try {
             out = new BufferedWriter(new FileWriter("C:\\Sistema Punto de Venta YG\\DocumentosGeneradosAutomaticamente\\ConsultaDTE.xml"));
             try {
                 out.write(yourXML);
@@ -96,22 +88,22 @@ public class ConsultarDTE {
             } finally {
                 out.close();
             }
-    } catch (IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(CertificarFactura.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
+        } finally {
             try {
                 out.close();
             } catch (IOException ex) {
                 Logger.getLogger(CertificarFactura.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
     }
-}
-   
-   public static DatosConsultarDTE Lectura(){
-       DatosConsultarDTE DPC = new DatosConsultarDTE();
-       try {
-           
-           Reader reader = new InputStreamReader(new FileInputStream("C:\\Sistema Punto de Venta YG\\DocumentosGeneradosAutomaticamente\\ConsultaDTE.xml"),"UTF-8");
+
+    public static DatosConsultarDTE Lectura() {
+        DatosConsultarDTE DPC = new DatosConsultarDTE();
+        try {
+
+            Reader reader = new InputStreamReader(new FileInputStream("C:\\Sistema Punto de Venta YG\\DocumentosGeneradosAutomaticamente\\ConsultaDTE.xml"), "UTF-8");
             InputSource is = new InputSource(reader);
             is.setEncoding("UTF-8");
             DocumentBuilder docBuilder;
@@ -135,11 +127,10 @@ public class ConsultarDTE {
                     DPC.setReferenciaInterna(eElement.getElementsByTagName("ReferenciaInterna").item(0).getTextContent());
                 }
             }
-        }
-        catch(IOException | SAXException | ParserConfigurationException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
-                DesktopNotify.showDesktopMessage("ERRÓR AL LEER DTE CERTIFICADO", "NO SE PUDO OBTENER LOS DATOS DEL DTE CERTIFICADO \n"+e, DesktopNotify.ERROR, 10000L);
-        } 
+            DesktopNotify.showDesktopMessage("ERRÓR AL LEER DTE CERTIFICADO", "NO SE PUDO OBTENER LOS DATOS DEL DTE CERTIFICADO \n" + e, DesktopNotify.ERROR, 10000L);
+        }
         return DPC;
-   }
+    }
 }

@@ -5,6 +5,7 @@
  */
 package WebServiceDigifact;
 
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import ModeloWebService.RespuestaCertificacion;
 import ModeloWebService.DatosUsuario;
 import com.github.underscore.lodash.U;
@@ -47,7 +48,7 @@ import org.xml.sax.SAXException;
  */
 public class CertificarFactura {
 
-    public RespuestaCertificacion CertificarFactura(DatosUsuario DU, String Token){
+    public RespuestaCertificacion CertificarFactura(){
         RespuestaCertificacion CFACT = new RespuestaCertificacion();
             try {
                /* TokenParametros TP = new TokenParametros();
@@ -57,13 +58,13 @@ public class CertificarFactura {
                 TP = OT.ObtenerToken(TP);*/
 
                 //URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/FelRequestV2?NIT=0000"+DU.getNit()+"&TIPO=CERTIFICATE_DTE_XML_TOSIGN&FORMAT=XML&USERNAME="+DU.getUsuario());
-                URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/FelRequestV2?NIT=000047896272&TIPO=CERTIFICATE_DTE_XML_TOSIGN&FORMAT=XML&USERNAME=47896272");
+                URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/FelRequestV2?NIT=0000"+PARAMETROS_EMPRESA.NIT_EMPRESA+"&TIPO=CERTIFICATE_DTE_XML_TOSIGN&FORMAT=XML&USERNAME="+PARAMETROS_EMPRESA.NIT_EMPRESA);
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
                 http.setRequestMethod("POST");
                 http.setDoOutput(true);
                 http.setRequestProperty("Content-Type", "application/json");
                 http.setRequestProperty("Accept", "application/json");
-                http.setRequestProperty("Authorization", Token);
+                http.setRequestProperty("Authorization", PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR);
                 
                  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();

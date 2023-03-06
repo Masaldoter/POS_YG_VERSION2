@@ -7,27 +7,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import Conexiones.conexion;
-import Modelo.Productos;
 import Modelo.login;
 import Conexiones.ConexionesSQL;
 import Vista.Principal;
-import java.awt.Image;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -46,22 +38,21 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
- 
-public class Excel extends ConexionesSQL{
-            
-    public static void reporte() throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+
+public class Excel extends ConexionesSQL {
+
+    String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
+
+    public void reporte() throws URISyntaxException {
+        Principal p = new Principal();
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN TIENDA");
- 
+
         try {
-            
+
             //String imag= "C:\\Imágenes de Sistema de Ferretería El Amigo\\FerreteríaPequeño.png";
-            String rutaimagen= System.getProperty("user.dir") + System.getProperty("file.separator")+"src"+System.getProperty("file.separator")+"imagenes"+System.getProperty("file.separator")+
-            System.getProperty("file.separator")+"FerreteríaPequeño"+".png";
+            String rutaimagen = System.getProperty("user.dir") + System.getProperty("file.separator") + "src" + System.getProperty("file.separator") + "imagenes" + System.getProperty("file.separator")
+                    + System.getProperty("file.separator") + "FerreteríaPequeño" + ".png";
             String directorio2 = new File ("/Sistema Punto de Venta YG/FerreteríaPequeño.png").getAbsolutePath();
             InputStream is = new FileInputStream(directorio2);
             byte[] bytes = IOUtils.toByteArray(is);
@@ -205,11 +196,7 @@ public class Excel extends ConexionesSQL{
  
     }
     
-    public static void reporteACertificador() throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+    public void reporteACertificador() throws URISyntaxException {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN TIENDA");
  
@@ -308,11 +295,7 @@ public class Excel extends ConexionesSQL{
  
     }
     
-    public static void reporteSinBD(JTable tabla) throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+    public void reporteSinBD(JTable tabla) throws URISyntaxException {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS");
         ps = null;
@@ -468,11 +451,7 @@ public class Excel extends ConexionesSQL{
  
     }
     
-    public static void reporteBodega() throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+    public void reporteBodega() throws URISyntaxException {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN BODEGA");
  
@@ -625,11 +604,7 @@ public class Excel extends ConexionesSQL{
     }
     
     
-    public static void reporteCategorias() throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+    public void reporteCategorias() throws URISyntaxException {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN TIENDA");
  
@@ -781,11 +756,7 @@ public class Excel extends ConexionesSQL{
  
     }
     
-    public static void reporteProveedores() throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+    public void reporteProveedores() throws URISyntaxException {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN TIENDA");
  
@@ -937,11 +908,7 @@ public class Excel extends ConexionesSQL{
  
     }
     
-    public static void Usuarios() throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+    public void Usuarios() throws URISyntaxException {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN TIENDA");
  
@@ -1093,11 +1060,7 @@ public class Excel extends ConexionesSQL{
  
     }
     
-    public static void reporteVentas() throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+    public void reporteVentas() throws URISyntaxException {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN TIENDA");
  
@@ -1249,11 +1212,7 @@ public class Excel extends ConexionesSQL{
  
     }
     
-    public static void reporteDetalleVenta() throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+    public void reporteDetalleVenta() throws URISyntaxException {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN TIENDA");
  
@@ -1405,11 +1364,7 @@ public class Excel extends ConexionesSQL{
  
     }
     
-    public static void reporteNumeroFactura() throws URISyntaxException {
-        
-        Principal p= new Principal();
-        String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
- 
+    public void reporteNumeroFactura() throws URISyntaxException {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN TIENDA");
  
@@ -1562,15 +1517,7 @@ public class Excel extends ConexionesSQL{
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     public void exportarExcelProductosNoBD(JTable t) throws IOException {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("ARCHIVO EXCEL", "xlsx");

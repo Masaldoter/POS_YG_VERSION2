@@ -30,8 +30,6 @@ public class Eventos {
         char car = evt.getKeyChar();
         if ((car < '0' || car > '9') && (car != (char) KeyEvent.VK_BACK_SPACE) && (car != (char) KeyEvent.VK_ENTER)) {
             evt.consume();
-            DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-            DesktopNotify.showDesktopMessage("ERROR, CARACTÉR INVÁLIDO", "DEBE INGRESAR ÚNICAMENTE NÚMEROS",DesktopNotify.ERROR, 14000L);
         }
     }
 

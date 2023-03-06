@@ -11,6 +11,7 @@ import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import CodigosDeBarras.CodigosDeBarras;
 import CodigosDeBarras.ParametrosCodigosDeBarras;
+import Controlador.Eventos;
 import Controlador.ProductosDao;
 import Controlador.ProveedoresDao;
 import Modelo.Categoria;
@@ -23,8 +24,6 @@ import Tablas.Actualizartablas;
 import Tablas.RenderTablasJLabel;
 import Vista.POS.POS;
 import Vista.Principal;
-import static Vista.Principal.ABRIR_VENTANAS;
-import static Vista.Principal.VentanaAdministracionDeProductos;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.awt.Color;
@@ -44,6 +43,7 @@ import javax.swing.table.DefaultTableModel;
  * @author aldoy
  */
 public class INVENTARIO extends javax.swing.JInternalFrame {
+    PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();
     TOTALES T = new TOTALES();
     CodigosDeBarras CodigosBarras = new CodigosDeBarras();
     ParametrosCodigosDeBarras ParametrosCodigosBarras = new ParametrosCodigosDeBarras();
@@ -1020,8 +1020,8 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_IdKeyReleased
 
     private void IdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IdKeyTyped
-        /* Eventos event = new Eventos();
-        event.numberKeyPress(evt);*/
+        Eventos event = new Eventos();
+        event.numberKeyPress(evt);
     }//GEN-LAST:event_IdKeyTyped
 
     private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
@@ -1032,9 +1032,9 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_ActualizarActionPerformed
 
     private void AgregarpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarpActionPerformed
-        if(VentanaAdministracionDeProductos==false){
-            VentanaAdministracionDeProductos=true;
-            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+        if(principal.VentanaAdministracionDeProductos==false){
+            principal.VentanaAdministracionDeProductos=true;
+            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
             principal.AdminProduct.setVisible(true);
         }else{
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
@@ -1044,9 +1044,9 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_AgregarpActionPerformed
 
     private void EditarpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarpActionPerformed
-        if(VentanaAdministracionDeProductos==false){
-            VentanaAdministracionDeProductos=true;
-            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+        if(principal.VentanaAdministracionDeProductos==false){
+            principal.VentanaAdministracionDeProductos=true;
+            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
             principal.AdminProduct.InsertarDatos(Id.getText());
             principal.AdminProduct.setVisible(true);
         }else{
@@ -1082,8 +1082,8 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2MouseReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ABRIR_VENTANAS(T, true);
-        TOTALES.TOTALES_INVENTARIO(tablaProductos);
+        principal.ABRIR_VENTANAS(T, true);
+        T.TOTALES_INVENTARIO(tablaProductos);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1206,9 +1206,9 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
                 JButton boton = jButton;
                 if (boton.getName().equals("edit")) {
 
-                    if (VentanaAdministracionDeProductos == false) {
-                        VentanaAdministracionDeProductos=true;
-                        principal.AdminProduct = new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+                    if (principal.VentanaAdministracionDeProductos == false) {
+                        principal.VentanaAdministracionDeProductos=true;
+                        principal.AdminProduct = new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
                         principal.AdminProduct.InsertarDatos(codigo);
                         principal.AdminProduct.setVisible(true);
                     } else {
@@ -1253,9 +1253,9 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
 
             if(info.isSelected()){
 
-                if(VentanaAdministracionDeProductos==false){
-                    VentanaAdministracionDeProductos=true;
-                    principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+                if(principal.VentanaAdministracionDeProductos==false){
+                    principal.VentanaAdministracionDeProductos=true;
+                    principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
                     principal.AdminProduct.InsertarDatos(codigo);
                     principal.AdminProduct.setVisible(true);
                 }else{
@@ -1328,17 +1328,17 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_codigoActionPerformed
 
     private void totalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalesActionPerformed
-        ABRIR_VENTANAS(T, true);
-        TOTALES.TOTALES_INVENTARIO(tablaProductos);
+        principal.ABRIR_VENTANAS(T, true);
+        T.TOTALES_INVENTARIO(tablaProductos);
     }//GEN-LAST:event_totalesActionPerformed
 
     private void infoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoActionPerformed
 
         int Fila = tablaProductos.getSelectedRow();
         String Codigo = tablaProductos.getValueAt(Fila, 0).toString();
-        if(VentanaAdministracionDeProductos==false){
-            VentanaAdministracionDeProductos=true;
-            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+        if(principal.VentanaAdministracionDeProductos==false){
+            principal.VentanaAdministracionDeProductos=true;
+            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
             principal.AdminProduct.InsertarDatos(Codigo);
             principal.AdminProduct.setVisible(true);
         }else{
@@ -1352,7 +1352,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     private void barrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrasActionPerformed
         if(!"".equals(barras.getText())){
 
-            int seleccion= JOptionPane.showOptionDialog(null, "¡Por Favor elija un tamaño! ", //contenido de la ventana
+            int seleccion= JOptionPane.showOptionDialog(principal, "¡Por Favor elija un tamaño! ", //contenido de la ventana
                 "Etiquetas" , //titulo de la ventana
                 JOptionPane.YES_NO_CANCEL_OPTION, //para 3 botones si/no/cancel
                 JOptionPane.QUESTION_MESSAGE, //tipo de ícono
@@ -1370,7 +1370,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
                 CodigoBarrasGrande(tablaProductos);
             }
         }else{
-            JOptionPane.showMessageDialog(null, "Debe seleccionar un producto para realizar la etiqueta!");
+            JOptionPane.showMessageDialog(principal, "Debe seleccionar un producto para realizar la etiqueta!");
         }
     }//GEN-LAST:event_barrasActionPerformed
 

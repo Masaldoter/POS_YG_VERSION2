@@ -20,11 +20,15 @@ import javax.swing.JOptionPane;
  * @author aldoy
  */
 public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
-
-    static loginDao logDao;
-    static login log;
+    Principal principal;
+    loginDao logDao;
+    login log;
     public ADMINISTRACION_DE_USUARIOS() {
+    }
+    
+    public ADMINISTRACION_DE_USUARIOS(Principal principal) {
         initComponents();
+        this.principal = principal;
         VaciarUsuario();
         Cerrar();
         this.setLocationRelativeTo(null);
@@ -258,11 +262,11 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
     }
     
     public void ConfirmarSalida() {
-            Principal.VENTANA_ADMINISTRACION_DE_USUARIOS=false;
+            principal.VENTANA_ADMINISTRACION_DE_USUARIOS=false;
             this.dispose();
     }
     
-    public static void VaciarUsuario(){
+    public void VaciarUsuario(){
         CajaNombre.setText(null);
         CajaContraseña.setText(null);
         ComboRol.setSelectedItem(null);
@@ -273,7 +277,7 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
         jButton48.setVisible(false);
     }
     
-    public static Boolean VALIDAR_CAMPOS(){
+    public Boolean VALIDAR_CAMPOS(){
         Boolean Estado=false;
         if(CajaNombre.getText().equals("")){
             Estado=false;
@@ -297,7 +301,7 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
         return Estado;
     }
     
-    public static void BUSCAR_USUARIO(String ID_USUARIO){
+    public void BUSCAR_USUARIO(String ID_USUARIO){
         logDao = new loginDao();
         log = new login();
         log.setIdlogin1(Integer.parseInt(ID_USUARIO));
@@ -331,7 +335,7 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
                 logina.Registrar(lg);
                 VaciarUsuario();
                 Usuarios();
-                Principal.VENTANA_ADMINISTRACION_DE_USUARIOS=false;
+                principal.VENTANA_ADMINISTRACION_DE_USUARIOS=false;
             }
         }
     }
@@ -352,7 +356,7 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
                     logina.EditarUsuarios(lg);
                     VaciarUsuario();
                     Usuarios();
-                    Principal.VENTANA_ADMINISTRACION_DE_USUARIOS=false;
+                    principal.VENTANA_ADMINISTRACION_DE_USUARIOS=false;
                     this.dispose();
                 }
             }
@@ -373,7 +377,7 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
             logina.EliminarUsuario(lg);
             VaciarUsuario();
             Usuarios();
-            Principal.VENTANA_ADMINISTRACION_DE_USUARIOS=false;
+            principal.VENTANA_ADMINISTRACION_DE_USUARIOS=false;
             this.dispose();
         }
     }
@@ -432,15 +436,15 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private static javax.swing.JTextField CajaContraseña;
-    private static javax.swing.JTextField CajaId;
-    private static javax.swing.JTextField CajaNombre;
-    private static javax.swing.JComboBox<String> ComboRol;
-    private static javax.swing.JTextField NombreUsuario;
-    private static javax.swing.JButton jButton45;
+    private javax.swing.JTextField CajaContraseña;
+    private javax.swing.JTextField CajaId;
+    private javax.swing.JTextField CajaNombre;
+    private javax.swing.JComboBox<String> ComboRol;
+    private javax.swing.JTextField NombreUsuario;
+    private javax.swing.JButton jButton45;
     private javax.swing.JButton jButton46;
-    private static javax.swing.JButton jButton47;
-    private static javax.swing.JButton jButton48;
+    private javax.swing.JButton jButton47;
+    private javax.swing.JButton jButton48;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel60;
@@ -451,7 +455,7 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel49;
     private javax.swing.JPanel jPanel58;
     private javax.swing.JSeparator jSeparator1;
-    private static javax.swing.JTextField jTextField2;
-    private static javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

@@ -139,13 +139,37 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
        return Total_Final;
     }
     
-    public Float Total_Gastos(String Fecha, int CAJA){
+    public Float Total_ENTRADAS(String Fecha, int CAJA){
         cn = Unionsis2.getConnection();
         ps= null;
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("select SUM(TOTAL) from compras where FECHA = '" + Fecha + "' AND TIPO_COMPRA='GASTOS' AND id_CAJA="+CAJA);
+             ps = cn.prepareStatement("select SUM(TOTAL) from compras where FECHA = '" + Fecha + "' AND TIPO_COMPRA='SALIDA' AND id_CAJA="+CAJA);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Total_Final = rs.getFloat("SUM(TOTAL)");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error TOTAL EN COMPRAS, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
+    public Float Total_SALIDAS(String Fecha, int CAJA){
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("select SUM(TOTAL) from compras where FECHA = '" + Fecha + "' AND TIPO_COMPRA='ENTRADA' AND id_CAJA="+CAJA);
             rs = ps.executeQuery();
 
             if (rs.next()) {

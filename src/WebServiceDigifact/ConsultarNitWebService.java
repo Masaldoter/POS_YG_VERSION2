@@ -36,7 +36,8 @@ import org.xml.sax.SAXException;
 public class ConsultarNitWebService {
     //static DatosPersonaCliente DPC;
 
-    public DatosPersonaCliente ObtenerCliente(DatosPersonaCliente DPCEntrada, DatosUsuario DU, String Token) {
+    public DatosPersonaCliente ObtenerCliente(DatosPersonaCliente DPCEntrada) {
+        PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();
         DatosPersonaCliente DPC = new DatosPersonaCliente();
                 try {
                     ObtenerToken OT = new ObtenerToken();
@@ -44,8 +45,8 @@ public class ConsultarNitWebService {
                     URL url = null;
                        /* url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/SHAREDINFO?NIT=0000" + DU.getNit()
                                 + "&DATA1=SHARED_GETINFONITcom&DATA2=NIT|" + DPCEntrada.getNIT_CUI() + "&USERNAME=" + DU.getUsuario());*/
-                        url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/SHAREDINFO?NIT=000047896272&DATA1=SHARED_GETINFONITcom&DATA2=NIT|"
-                                + "" + DPCEntrada.getNIT_CUI() + "&USERNAME=47896272");
+                        url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/SHAREDINFO?NIT=0000"+PARAMETROS_EMPRESA.NIT_EMPRESA+"&DATA1=SHARED_GETINFONITcom&DATA2=NIT|"
+                                + "" + DPCEntrada.getNIT_CUI() + "&USERNAME="+PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
 
                     HttpURLConnection http = (HttpURLConnection) url.openConnection();
                     http.setRequestMethod("GET");

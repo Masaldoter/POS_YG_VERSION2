@@ -7,11 +7,25 @@ package Vista.POS;
 import CLASES_GLOBALES.ATAJOSDETECLADO;
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.CargarDatosRutas;
-import static CLASES_GLOBALES.METODOS_GLOBALES.Fecha;
 import static CLASES_GLOBALES.METODOS_GLOBALES.Hora;
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
 import static CLASES_GLOBALES.METODOS_GLOBALES.PintarImagen;
-import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.AFILICACIONIVA_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.CODIGOESTABLECIMIENTO_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.CODIGOPOSTAL_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.DEPARTAMENTO_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.DIRECCION_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.IVA_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.MUNICIPIO_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.NIT_CERTIFICADOR;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.NIT_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.NOMBRE_CERTIFICADOR;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.PAIS_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.PROPIETARIO_EMPRESA;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR;
+import static CLASES_GLOBALES.PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import CLASES_GLOBALES.PARAMETROS_VENTAS;
 import static CLASES_GLOBALES.PARAMETROS_VENTAS.CheckBoxImpresionRapida;
@@ -44,7 +58,6 @@ import Tablas.RenderTablas;
 import Vista.Cotizaciones.DetalleCotizacion;
 import Vista.Detalles;
 import Vista.Principal;
-import Vista.VENTAS.CAJA.VER_CAJAS;
 import WebServiceDigifact.CertificarFactura;
 import WebServiceDigifact.ConsultarCUIWebService;
 import WebServiceDigifact.ConsultarNitWebService;
@@ -58,7 +71,12 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import javax.swing.ImageIcon;
@@ -69,30 +87,29 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class POS extends javax.swing.JInternalFrame {
-    static TextAutoCompleter AutoCompletador_PRODUCTOS, AUTOCOMPLETADOR_CLIENTES_NOMBRE, AUTOCOMPLETADOR_CLIENTE_NIT;
-    static double TotalPagar = 0.00;
-    static int item;
-    private static String NUMERO_INTERNO_FACTURA_ELECTRONICA="";
-    private static String NumeroInternoFinal;
+    TextAutoCompleter AutoCompletador_PRODUCTOS, AUTOCOMPLETADOR_CLIENTES_NOMBRE, AUTOCOMPLETADOR_CLIENTE_NIT;
+    double TotalPagar = 0.00;
+    int item;
+    private String NUMERO_INTERNO_FACTURA_ELECTRONICA="";
+    private String NumeroInternoFinal;
     Venta v = new Venta();
     static ClientesDao cliDao = new ClientesDao();
     FormaDePago Pagos = new FormaDePago(this);
     public JFRAME_BUSCAR_PRODUCTO BP;
     Detalles de;
     Observaciones observaciones;
-    static ProductosDao proDao ;
-    static Productos pro;
-    static VentaDao Vdao = new VentaDao();
+    ProductosDao proDao ;
+    Productos pro;
+    VentaDao Vdao = new VentaDao();
     Cotizaciones CotizacionesParametros;
     CotizacionesDao CotizacionDao;
     Ventas ConfigVentas = new Ventas();
     public Boolean VentanaFormaPago= false;
-    public static Boolean VentanaObservacion= false;
+    public static Boolean VentanaObservacion = false;
     public Principal principal;
     POS pos;
-    PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();
-             public ObtenerToken OT = new ObtenerToken();       
-    
+    public ObtenerToken OT;
+
     public POS(Principal principal) {
         initComponents();
         this.pos = this;
@@ -108,13 +125,17 @@ public class POS extends javax.swing.JInternalFrame {
         ConfigVentas.CargarDatosVistaPreviaVenta(CheckVistaPreviaVenta);
         ConfigVentas.CargarDatosImprimir(CheckImprimir);
         ConfigVentas.CargarDatosTipoDocumento(TipoDocumento);
+        CARGAR_POS();
+    }
+
+    public void CARGAR_POS() {
         AutoCompletador_PRODUCTOS = new TextAutoCompleter(NombreVenta, new AutoCompleterCallback() {
             @Override
             public void callback(Object selectedItem) {
                 BuscarProductoVentaPorNombre(String.valueOf(selectedItem));
             }
         });
-        
+
         AUTOCOMPLETADOR_CLIENTES_NOMBRE = new TextAutoCompleter(nombre, new AutoCompleterCallback() {
             @Override
             public void callback(Object o) {
@@ -131,41 +152,44 @@ public class POS extends javax.swing.JInternalFrame {
         LISTAR_CLIENTES_CAJAS_NOMBRES();
         LISTAR_CLIENTES_CAJAS_NIT();
         LIMPIAR_DATOS_RESUMEN_VENTA();
-        CargarPaises();       
+        CargarPaises();
         Pagos.setVisible(false);
         Pagos.setVisible(false);
         VentanaFormaPago = false;
         TextoEnCajas();
         PaisCliente.setSelectedItem("GUATEMALA");
         SiglaPais();
-        OT.ObtenerToken();
         OBTENERSERIES();
         IdVenta.requestFocus();
-        
-    }
-    public void TextoEnCajas(){
-        TextPrompt hold;
-        hold= new TextPrompt("ID*", IdCliente);
-        hold= new TextPrompt("NIT*", Caja_IDENTIFICACION);
-        hold= new TextPrompt("DIRECCIÓN DE CLIENTE*", direccion);
-        hold= new TextPrompt("MUNICIPIO*", MunicipioCliente);
-        hold= new TextPrompt("DEPARTAMENTO*", DepartamentoCliente);
-        hold= new TextPrompt("CÓDIGO POSTAL*", CodigoPostalCliente);
-        hold= new TextPrompt("CÓDIGO*", SiglaPais);
+        Fecha_Movimiento.setDate(METODOS_GLOBALES.Fecha_DATE());
+        Fecha_Movimiento.setEnabled(false);
     }
     
+    public String OBTENER_FECHA(){
+        Date date = Fecha_Movimiento.getDate();
+        String strDateFormat = "YYYY-MM-dd";
+        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+        return objSDF.format(date);
+    }
+
+    private void TextoEnCajas() {
+        TextPrompt hold;
+        hold = new TextPrompt("ID*", IdCliente);
+        hold = new TextPrompt("NIT*", Caja_IDENTIFICACION);
+        hold = new TextPrompt("DIRECCIÓN DE CLIENTE*", direccion);
+        hold = new TextPrompt("MUNICIPIO*", MunicipioCliente);
+        hold = new TextPrompt("DEPARTAMENTO*", DepartamentoCliente);
+        hold = new TextPrompt("CÓDIGO POSTAL*", CodigoPostalCliente);
+        hold = new TextPrompt("CÓDIGO*", SiglaPais);
+    }
+
     public void ObtenerNumeroInterno() {
         generarserie();
-        if(TipoDocumento.getSelectedIndex()==0){
-         NumeroInternoFinal = factura.getText()+"-FAC-"+String.valueOf(new Random().nextLong()).substring(15);   
-        }else if(TipoDocumento.getSelectedIndex()==1){
-            NumeroInternoFinal = factura.getText()+"-PROF-"+String.valueOf(new Random().nextLong()).substring(15);   
-        }
-        
+         NumeroInternoFinal = factura.getText()+"-"+String.valueOf(new Random().nextLong()).substring(15);   
         Vdao.numeroserieIncrementarFactura(Integer.parseInt(factura.getText()));
     }
     
-    public void OBTENERSERIES(){
+    private void OBTENERSERIES(){
         generarserie();
         generarserieCotizacion();
         generarserieVale();
@@ -208,7 +232,7 @@ public class POS extends javax.swing.JInternalFrame {
                 ImagenAmigoVenta();
     }
     
-    public void LIMPIAR_DATOS_RESUMEN_VENTA(){
+    private void LIMPIAR_DATOS_RESUMEN_VENTA(){
        TotalLetras.setText("CERO QUETZALES");
        pagocon.setText("0.00");
        cambio.setText("0.00");
@@ -267,7 +291,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
 
-    public void LISTAR_CLIENTES_CAJAS_NOMBRES() {
+    private void LISTAR_CLIENTES_CAJAS_NOMBRES() {
 
         try {
             AUTOCOMPLETADOR_CLIENTES_NOMBRE.removeAllItems();
@@ -284,7 +308,7 @@ public class POS extends javax.swing.JInternalFrame {
         }
     }
 
-    public void LISTAR_CLIENTES_CAJAS_NIT() {
+    private void LISTAR_CLIENTES_CAJAS_NIT() {
         AUTOCOMPLETADOR_CLIENTE_NIT.removeAllItems();
         List<Clientes> ListarCliente = cliDao.BuscarClienteLista(COMBO_TIPO_IDENTIFICACION.getSelectedItem().toString());
         AUTOCOMPLETADOR_CLIENTE_NIT.setMode(0);
@@ -345,19 +369,19 @@ public class POS extends javax.swing.JInternalFrame {
         cliDao = new ClientesDao();
               boolean ESTADO_CONSULTA_NIT = ObtenerCliente(Nit);
              if(ESTADO_CONSULTA_NIT==false){
-                 System.out.println(P_E.TOKEN_CERTIFICADOR);
-                 if (P_E.TOKEN_CERTIFICADOR.equals("")) {
+                 if (TOKEN_CERTIFICADOR.equals("")) {
+                            OT = new ObtenerToken();
                             OT.ObtenerToken();
                         }
                         DatosPersonaCliente DPC = new DatosPersonaCliente();
                         DPC.setNIT_CUI(Nit);
                         DatosUsuario DU = new DatosUsuario();
-                        DU.setNit(P_E.NIT_EMPRESA);
-                        DU.setUsuario(P_E.USUARIO_CERTIFICADOR);
-                        DU.setContrasenia(P_E.CONTRASENIA_CERTIFICADOR);
+                        DU.setNit(NIT_EMPRESA);
+                        DU.setUsuario(USUARIO_CERTIFICADOR);
+                        DU.setContrasenia(CONTRASENIA_CERTIFICADOR);
                  if(COMBO_TIPO_IDENTIFICACION.getSelectedItem().equals("NIT")){
                      ConsultarNitWebService CNWS = new ConsultarNitWebService();
-                     DPC = CNWS.ObtenerCliente(DPC, DU, P_E.TOKEN_CERTIFICADOR);
+                     DPC = CNWS.ObtenerCliente(DPC);
                      nombre.setText(DPC.getNombre());
                         Caja_IDENTIFICACION.setText(Nit);
                         direccion.setText(DPC.getDireccion());
@@ -368,7 +392,7 @@ public class POS extends javax.swing.JInternalFrame {
                         IngresoClientes(nombre.getText(), Caja_IDENTIFICACION.getText(), String.valueOf(COMBO_TIPO_IDENTIFICACION.getSelectedItem()), direccion.getText(), MunicipioCliente.getText(), DepartamentoCliente.getText(), PaisCliente.getSelectedItem().toString(), CodigoPostalCliente.getText());
                  }else{
                      ConsultarCUIWebService CCWS = new ConsultarCUIWebService();
-                     DPC = CCWS.ObtenerCliente(DPC, DU, P_E.TOKEN_CERTIFICADOR);
+                     DPC = CCWS.ObtenerCliente(DPC);
                      nombre.setText(DPC.getNombre());
                         Caja_IDENTIFICACION.setText(Nit);
                         direccion.setText(DPC.getDireccion());
@@ -424,7 +448,7 @@ public class POS extends javax.swing.JInternalFrame {
                 AgregarProductoSinBD();
                 ESTADO_PRODUCTO_AGREGADO=true;
             } else {
-                JOptionPane.showMessageDialog(null, "EL PRODUCTO NO EXISTE");
+                JOptionPane.showMessageDialog(principal, "EL PRODUCTO NO EXISTE");
                 ESTADO_PRODUCTO_AGREGADO=false;
             }
 
@@ -456,7 +480,7 @@ public class POS extends javax.swing.JInternalFrame {
                 EliminarVentaSinAumentarStock();
                 AgregarProductoSinBD();
             } else {
-                JOptionPane.showMessageDialog(null, "EL PRODUCTO NO EXISTE");
+                JOptionPane.showMessageDialog(principal, "EL PRODUCTO NO EXISTE");
             }
 
         }
@@ -531,7 +555,7 @@ public class POS extends javax.swing.JInternalFrame {
 
                 if (EnStock >= cantidad) {
                     if (cantidad <= 0) {
-                        JOptionPane.showMessageDialog(null, "¡NO PUEDE INGRESAR UNA CANTIDAD MENOR A 1!");
+                        JOptionPane.showMessageDialog(principal, "¡NO PUEDE INGRESAR UNA CANTIDAD MENOR A 1!");
                     } else {
                         
                         item = item + 1;
@@ -575,11 +599,11 @@ public class POS extends javax.swing.JInternalFrame {
                         BAJAR_SCROLL(jScrollPane2);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "¡STOCK NO DISPONIBLE!\n EN STOCK: " + EnStock, "STOCK INSUFICIENTE", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(principal, "¡STOCK NO DISPONIBLE!\n EN STOCK: " + EnStock, "STOCK INSUFICIENTE", JOptionPane.ERROR_MESSAGE);
                 }
 
             } else {
-                JOptionPane.showMessageDialog(null, "INGRESE LA CANTIDAD DE PRODUCTOS A VENDER");
+                JOptionPane.showMessageDialog(principal, "INGRESE LA CANTIDAD DE PRODUCTOS A VENDER");
             }
         } else {
             // JOptionPane.showMessageDialog(null, "¡DEBE SELECCIONAR O INGRESAR UN PRECIO!");
@@ -622,7 +646,7 @@ public class POS extends javax.swing.JInternalFrame {
 
                 if (EnStock >= cantidad ) {
                     if (cantidad <= 0) {
-                        JOptionPane.showMessageDialog(null, "¡NO PUEDE INGRESAR UNA CANTIDAD MENOR A 1!");
+                        JOptionPane.showMessageDialog(principal, "¡NO PUEDE INGRESAR UNA CANTIDAD MENOR A 1!");
                     } else {
                         EliminarVenta();
 
@@ -667,11 +691,11 @@ public class POS extends javax.swing.JInternalFrame {
                         BAJAR_SCROLL(jScrollPane2);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "¡STOCK NO DISPONIBLE!\n EN STOCK: " + EnStock, "STOCK INSUFICIENTE", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(principal, "¡STOCK NO DISPONIBLE!\n EN STOCK: " + EnStock, "STOCK INSUFICIENTE", JOptionPane.ERROR_MESSAGE);
                 }
 
             } else {
-                JOptionPane.showMessageDialog(null, "INGRESE LA CANTIDAD DE PRODUCTOS A VENDER");
+                JOptionPane.showMessageDialog(principal, "INGRESE LA CANTIDAD DE PRODUCTOS A VENDER");
             }
         } else {
             //   JOptionPane.showMessageDialog(null, "¡DEBE SELECCIONAR O INGRESAR UN PRECIO!");
@@ -696,7 +720,7 @@ public class POS extends javax.swing.JInternalFrame {
                 float precio = Float.parseFloat(Final.getText());
                 float total = Float.parseFloat(CantidadVenta.getText()) * precio;
                 if (Float.parseFloat(CantidadVenta.getText()) <= 0) {
-                    JOptionPane.showMessageDialog(null, "¡NO PUEDE INGRESAR UNA CANTIDAD MENOR A 1!");
+                    JOptionPane.showMessageDialog(principal, "¡NO PUEDE INGRESAR UNA CANTIDAD MENOR A 1!");
                 } else {
 
                     item = item + 1;
@@ -740,10 +764,10 @@ public class POS extends javax.swing.JInternalFrame {
                     
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "INGRESE LA CANTIDAD DE PRODUCTOS A VENDER");
+                JOptionPane.showMessageDialog(principal, "INGRESE LA CANTIDAD DE PRODUCTOS A VENDER");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "¡DEBE SELECCIONAR O INGRESAR UN PRECIO!");
+            JOptionPane.showMessageDialog(principal, "¡DEBE SELECCIONAR O INGRESAR UN PRECIO!");
         }
     }
 
@@ -784,7 +808,7 @@ public class POS extends javax.swing.JInternalFrame {
             ID_PRODUCTO.setText("");
             IdVenta.requestFocus();
         } else {
-            JOptionPane.showMessageDialog(null, "DEBE SELECCIONAR UN PRODUCTO");
+            JOptionPane.showMessageDialog(principal, "DEBE SELECCIONAR UN PRODUCTO");
         }
     }
     
@@ -869,6 +893,7 @@ public class POS extends javax.swing.JInternalFrame {
         v.setCambio(Float.parseFloat(cambio.getText()));
         v.setUsuario(PARAMETROS_USUARIOS.ID_USUARIO);
         v.setNoFactura(TIPO_NUMERO_INTERNO());
+        v.setFecha(String.valueOf(OBTENER_FECHA()));
         v.setId_CAJA_registro(Integer.parseInt(PARAMETROS_VENTAS.NUMERO_CAJA));
         String FormaPago;
         if (ComboFormaPago.getText() == null) {
@@ -881,15 +906,15 @@ public class POS extends javax.swing.JInternalFrame {
         v.setTotalEnLetras(TotalLetras.getText());
 
         v.setObservacion(ObservacionVenta.getText());
-        v.setNombreCertificador(P_E.NOMBRE_CERTIFICADOR);
-        v.setNitCertificador(P_E.NIT_CERTIFICADOR);
+        v.setNombreCertificador(NOMBRE_CERTIFICADOR);
+        v.setNitCertificador(NIT_CERTIFICADOR);
         v.setFechaAutorizacion(CajaFechaAutorizacion.getText());
         v.setNumeroAutorizacion(CajaNumeroAutorizacion.getText());
         v.setNumeroDocumento(CajaNumeroDocumento.getText());
         v.setSerieDocumento(CajaSerieCertificacion.getText());
         v.setTipoDocumentoFel(TipoDocumento.getSelectedItem().toString());
         v.setNUMERO_INTERNO(NUMERO_INTERNO_FACTURA_ELECTRONICA);
-        v.setNitEmisor(P_E.NIT_EMPRESA);
+        v.setNitEmisor(NIT_EMPRESA);
         Boolean ESTADO_REGISTRO_VENTA = Vdao.RegistrarVenta(v);
         if (ESTADO_REGISTRO_VENTA == true) {
             GUARDAR_KARDEX();
@@ -1093,7 +1118,8 @@ public void GenerarVenta() {
                     }else{
                         VentanaFormaPago = true;
                         Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
-                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), P_E.IVA_EMPRESA, SubTotal.getText());
+                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
+                                Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
                         Pagos.setVisible(true);
                     }
                 }
@@ -1116,7 +1142,7 @@ public void GenerarVenta() {
                             Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(this.labeltotal.getText(), this.pagocon.getText(), this.cambio.getText(), this.Efectivo.getText(), 
                                     this.Tarjeta.getText(), this.Deposito.getText(), this.Cheque.getText(), this.CajaNumeroTransacción.getText(), this.ComboFormaPago.getText(), 
                                     Integer.parseInt(this.MetodoPagoEntero.getText()), this.TotalIva.getText(), 
-                                    P_E.IVA_EMPRESA, this.SubTotal.getText());
+                                    IVA_EMPRESA, this.SubTotal.getText());
                             Pagos.setVisible(true);    
                         }
                     }
@@ -1157,7 +1183,7 @@ public void GenerarVenta() {
         }
         
         if(!"".equals(NumeroDeFactura)){
-            de= new Detalles(NumeroDeFactura, 0, 0, this.principal.P_O_S);
+            de= new Detalles(NumeroDeFactura, 0, 0, principal.P_O_S, principal);
             
             if(AbrirVentana== 0){
              new java.util.Timer().schedule(new java.util.TimerTask() {
@@ -1511,12 +1537,12 @@ public void GenerarVenta() {
         }
     }
        
-    public synchronized void CargarPaises(){
+    private void CargarPaises(){
         cliDao.Pais(PaisCliente);
         SiglaPais();
     }
     
-    public synchronized void SiglaPais(){
+    private void SiglaPais(){
         SiglaPais.setText(cliDao.ConsultaSiglaPais(PaisCliente));
     }
     
@@ -1539,7 +1565,8 @@ public void GenerarVenta() {
     }
 
     public void EnviarParametrosAXML() {
-        if (P_E.TOKEN_CERTIFICADOR.equals("")) {
+        if (TOKEN_CERTIFICADOR.equals("")) {
+            OT = new ObtenerToken();
             OT.ObtenerToken();
         }
         try {
@@ -1552,20 +1579,20 @@ public void GenerarVenta() {
             CertificarFactura CFact = new CertificarFactura();
             RespuestaCertificacion CFACTMODEL = new RespuestaCertificacion();
 
-            EDF.setFechaHoraEmision(Fecha() + "T" + Hora());
+            EDF.setFechaHoraEmision(OBTENER_FECHA()+"T" + Hora());
             EDF.setCodigoMoneda("GTQ");
             EDF.setTipoDocumento("FACT");
 
-            EDF.setNITEmisor(P_E.NIT_EMPRESA);
-            EDF.setNombreEmisor(P_E.PROPIETARIO_EMPRESA);
-            EDF.setCodigoEstablecimiento(P_E.CODIGOESTABLECIMIENTO_EMPRESA);
-            EDF.setNombreComercial(P_E.NOMBRE_EMPRESA);
-            EDF.setAfiliacionIVA(P_E.AFILICACIONIVA_EMPRESA);
-            EDF.setDireccionEmisor(P_E.DIRECCION_EMPRESA);
-            EDF.setCodigoPostalEmisor(P_E.CODIGOPOSTAL_EMPRESA);
-            EDF.setMunicipioEmisor(P_E.MUNICIPIO_EMPRESA);
-            EDF.setDepartamentoEmisor(P_E.DEPARTAMENTO_EMPRESA);
-            EDF.setPaisEmisor(P_E.PAIS_EMPRESA);
+            EDF.setNITEmisor(NIT_EMPRESA);
+            EDF.setNombreEmisor(PROPIETARIO_EMPRESA);
+            EDF.setCodigoEstablecimiento(CODIGOESTABLECIMIENTO_EMPRESA);
+            EDF.setNombreComercial(NOMBRE_EMPRESA);
+            EDF.setAfiliacionIVA(AFILICACIONIVA_EMPRESA);
+            EDF.setDireccionEmisor(DIRECCION_EMPRESA);
+            EDF.setCodigoPostalEmisor(CODIGOPOSTAL_EMPRESA);
+            EDF.setMunicipioEmisor(MUNICIPIO_EMPRESA);
+            EDF.setDepartamentoEmisor(DEPARTAMENTO_EMPRESA);
+            EDF.setPaisEmisor(PAIS_EMPRESA);
 
             if(COMBO_TIPO_IDENTIFICACION.getSelectedItem().equals("CUI")){
              EDF.setTipo_Especial("CUI");   
@@ -1608,16 +1635,12 @@ public void GenerarVenta() {
             EDF.setGranTotalTotales(labeltotalenfacturacion.getText());
             NUMERO_INTERNO_FACTURA_ELECTRONICA = "0000"+factura.getText();
             EDF.setREFERENCIA_INTERNA(NUMERO_INTERNO_FACTURA_ELECTRONICA);
-            EDF.setFECHA_REFERENCIA(Fecha() + "T" + Hora());
+            EDF.setFECHA_REFERENCIA(OBTENER_FECHA()+"T" + Hora());
             EDF.setVALIDAR_REFERENCIA_INTERNA("VALIDAR");
             Boolean Resultado = GenerarXMLFactura.GenerarXMLFactura(EDF, TablaVentas, String.valueOf(COMBO_TIPO_IDENTIFICACION.getSelectedItem()));
             if (Resultado == true) {
-                DatosUsuario DU = new DatosUsuario();
-                DU.setNit(P_E.NIT_EMPRESA);
-                DU.setUsuario(P_E.USUARIO_CERTIFICADOR);
-                DU.setContrasenia(P_E.CONTRASENIA_CERTIFICADOR);
 
-                CFACTMODEL = CFact.CertificarFactura(DU, P_E.TOKEN_CERTIFICADOR);
+                CFACTMODEL = CFact.CertificarFactura();
                 CajaFechaAutorizacion.setText(CFACTMODEL.getFecha_de_certificacion());
                 CajaNumeroAutorizacion.setText(CFACTMODEL.getAutorizacion());
                 CajaSerieCertificacion.setText(CFACTMODEL.getSerie());
@@ -1645,7 +1668,7 @@ public void GenerarVenta() {
     public void FORMA_DE_PAGO(){
                 Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), 
                         Tarjeta.getText(), Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
-                Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), P_E.IVA_EMPRESA, SubTotal.getText());
+                Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
             Pagos.TOTALES_SIN_INTERACCION();
         
     }
@@ -1762,8 +1785,7 @@ public void GenerarVenta() {
         TipoDocumento = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
-        lbl_CANTIDAD_DESCUENTO = new javax.swing.JLabel();
+        Fecha_Movimiento = new com.toedter.calendar.JDateChooser();
         PanelTotalVentaPOS = new javax.swing.JPanel();
         jLabel44 = new javax.swing.JLabel();
         cambio = new javax.swing.JLabel();
@@ -2132,7 +2154,7 @@ public void GenerarVenta() {
                 .addGap(0, 0, 0))
         );
 
-        Final.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        Final.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         Final.setForeground(new java.awt.Color(255, 0, 51));
         Final.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -2177,8 +2199,8 @@ public void GenerarVenta() {
             }
         });
 
-        lblPrecioFinalPOS.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblPrecioFinalPOS.setText("PRECIO FINAL");
+        lblPrecioFinalPOS.setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
+        lblPrecioFinalPOS.setText("PRECIO:");
 
         jPanel29.setBackground(new java.awt.Color(239, 118, 0));
 
@@ -2300,7 +2322,6 @@ public void GenerarVenta() {
 
         TOTAL_INGRESADO.setText("0.0");
 
-        jCheckBox1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jCheckBox1.setText("%");
 
         javax.swing.GroupLayout PanleDatosProductoPOSLayout = new javax.swing.GroupLayout(PanleDatosProductoPOS);
@@ -2318,15 +2339,15 @@ public void GenerarVenta() {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Cantidad2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jPanel73, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(PanleDatosProductoPOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblCantidadPOS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(CantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanleDatosProductoPOSLayout.createSequentialGroup()
-                                .addComponent(Final, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(CantidadVenta)
+                            .addGroup(PanleDatosProductoPOSLayout.createSequentialGroup()
+                                .addComponent(lblPrecioFinalPOS, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblPrecioFinalPOS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Final)))
                     .addGroup(PanleDatosProductoPOSLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(PanleDatosProductoPOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -2373,13 +2394,13 @@ public void GenerarVenta() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(NombreVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanleDatosProductoPOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanleDatosProductoPOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanleDatosProductoPOSLayout.createSequentialGroup()
-                        .addComponent(lblPrecioFinalPOS)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(PanleDatosProductoPOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Final, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addGroup(PanleDatosProductoPOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblPrecioFinalPOS, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
                             .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Final, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblCantidadPOS)
                         .addGap(8, 8, 8)
@@ -2396,6 +2417,8 @@ public void GenerarVenta() {
                 .addComponent(jScrollPane20, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         TablaVentas.setBackground(new java.awt.Color(242, 242, 242));
         TablaVentas.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -2584,32 +2607,24 @@ public void GenerarVenta() {
 
         jPanel1.setBackground(new java.awt.Color(51, 153, 255));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--SIN PROMOCIÓN--", "DIA DEL PADRE | 5%" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--SIN PROMOCIÓN--" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("TOTAL %:");
-
-        lbl_CANTIDAD_DESCUENTO.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lbl_CANTIDAD_DESCUENTO.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_CANTIDAD_DESCUENTO.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_CANTIDAD_DESCUENTO.setText("5");
+        Fecha_Movimiento.setDateFormatString(" y-MM-dd");
+        Fecha_Movimiento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbl_CANTIDAD_DESCUENTO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, 150, Short.MAX_VALUE))
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Fecha_Movimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -2617,11 +2632,8 @@ public void GenerarVenta() {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbl_CANTIDAD_DESCUENTO))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Fecha_Movimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout PanelBotonesPOSLayout = new javax.swing.GroupLayout(PanelBotonesPOS);
@@ -2646,7 +2658,7 @@ public void GenerarVenta() {
             PanelBotonesPOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBotonesPOSLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BtnBuscarProductoPOS, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2654,7 +2666,7 @@ public void GenerarVenta() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BtnAgregarObservacionPOS, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TipoDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                .addComponent(TipoDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BtnCancelarVentaPOS, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -3070,7 +3082,7 @@ public void GenerarVenta() {
     }//GEN-LAST:event_DescripcionProductoVentaMouseReleased
 
     private void TablaVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaVentasMouseClicked
-        
+     
         Boolean EstadoIngresoAutomatico = CheckIngresoAutomatico.isSelected();
         if(EstadoIngresoAutomatico == true){
             CheckIngresoAutomatico.setSelected(false);
@@ -3085,7 +3097,7 @@ public void GenerarVenta() {
             EstadoProducto.setText("INGRESADO");
             BuscarProductoVenta(TablaVentas.getValueAt(Seleccion, 0).toString());
             CantidadVenta.setText(TablaVentas.getValueAt(Seleccion, 2).toString());
-            Final.setText(TablaVentas.getValueAt(Seleccion, 5).toString());
+            Final.setText(TablaVentas.getValueAt(Seleccion, 3).toString());
             CantidadVenta.requestFocus();
             CantidadVenta.addFocusListener(new FullSelectorListener());
             jButton7.setText("EDITAR");
@@ -3096,7 +3108,7 @@ public void GenerarVenta() {
             IdVenta.setText(TablaVentas.getValueAt(Seleccion, 0).toString());
             NombreVenta.setText(String.valueOf(TablaVentas.getValueAt(Seleccion, 1)));
             CantidadVenta.setText(String.valueOf(TablaVentas.getValueAt(Seleccion, 2)));
-            Final.setText(String.valueOf(TablaVentas.getValueAt(Seleccion, 5)));
+            Final.setText(String.valueOf(TablaVentas.getValueAt(Seleccion, 3)));
             CantidadVenta.requestFocus();
             CantidadVenta.addFocusListener(new FullSelectorListener());
 
@@ -3156,7 +3168,8 @@ public void GenerarVenta() {
                         }else{
                             VentanaFormaPago = true;
                             Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
-                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), P_E.IVA_EMPRESA, SubTotal.getText());
+                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
+                                Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
                             Pagos.setVisible(true);
                         }
                     }
@@ -3218,7 +3231,8 @@ public void GenerarVenta() {
             }else{
                 VentanaFormaPago = true;
                 Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
-                    , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), P_E.IVA_EMPRESA, SubTotal.getText());
+                    , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
+                    Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
                 Pagos.setVisible(true);
             }
         }
@@ -3413,6 +3427,7 @@ public void GenerarVenta() {
     public static javax.swing.JLabel Efectivo;
     public static javax.swing.JLabel EstadoProducto;
     private javax.swing.JTabbedPane Facturacion;
+    public com.toedter.calendar.JDateChooser Fecha_Movimiento;
     public javax.swing.JTextField Final;
     private static javax.swing.JLabel ID_PRODUCTO;
     private javax.swing.JLabel IMAGEN;
@@ -3460,7 +3475,6 @@ public void GenerarVenta() {
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel44;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel99;
     private javax.swing.JLayeredPane jLayeredPane1;
@@ -3496,7 +3510,6 @@ public void GenerarVenta() {
     public static javax.swing.JLabel lblVentaPrecio1;
     public static javax.swing.JLabel lblVentaPrecio2;
     public static javax.swing.JLabel lblVentaPrecio3;
-    private javax.swing.JLabel lbl_CANTIDAD_DESCUENTO;
     private static rojerusan.RSMetroTextFullPlaceHolder nombre;
     public javax.swing.JLabel pagocon;
     // End of variables declaration//GEN-END:variables

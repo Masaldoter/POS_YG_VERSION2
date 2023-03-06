@@ -16,21 +16,21 @@ import javax.swing.JOptionPane;
  *
  * @author Masaldoter
  */
-public class DatosEmpresaDao extends ConexionesSQL{
-    
-    public DatosEmpresaGeneral VerDatos(){
+public class DatosEmpresaDao extends ConexionesSQL {
+
+    public DatosEmpresaGeneral VerDatos() {
         DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
-        String sql="SELECT NombreEmpresa, Direccion, Nit, Tel, Eslogan, Politicas, Correo, ContraseniaCorreo, Iva, NombreEtiquetas, "
+        String sql = "SELECT NombreEmpresa, Direccion, Nit, Tel, Eslogan, Politicas, Correo, ContraseniaCorreo, Iva, NombreEtiquetas, "
                 + "Municipio, Departamento, Pais, CodigoPostal, CajaAfilicacionEmpresa, CodigoEstablecimiento, Propietario, rutaimagenlogo, rutaimagensistema FROM datosempresa";
         ps = null;
-        rs= null;
+        rs = null;
         cn = Unionsis2.getConnection();
-    
+
         try {
-            ps= cn.prepareStatement(sql);
+            ps = cn.prepareStatement(sql);
             rs = ps.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 DaEm.setNombreEmpresa(rs.getString("NombreEmpresa"));
                 DaEm.setDireccion(rs.getString("Direccion"));
                 DaEm.setNit(rs.getString("Nit"));
@@ -50,36 +50,36 @@ public class DatosEmpresaDao extends ConexionesSQL{
                 DaEm.setPropietario(rs.getString("Propietario"));
                 DaEm.setRutaimagenlogo(rs.getString("rutaimagenlogo"));
                 DaEm.setRutaimagensistema(rs.getString("rutaimagensistema"));
-                
-                PARAMETROS_EMPRESA.NOMBRE_EMPRESA=rs.getString("NombreEmpresa");
-                PARAMETROS_EMPRESA.DIRECCION_EMPRESA=rs.getString("Direccion");
-                PARAMETROS_EMPRESA.NIT_EMPRESA=rs.getString("Nit");
-                PARAMETROS_EMPRESA.TEL_EMPRESA=rs.getString("Tel");
-                PARAMETROS_EMPRESA.ESLOGAN_EMPRESA=rs.getString("Eslogan");
-                PARAMETROS_EMPRESA.POLITICAS_EMPRESA=rs.getString("Politicas");
-                PARAMETROS_EMPRESA.CONTRASENIA_EMPRESA=rs.getString("ContraseniaCorreo");
-                PARAMETROS_EMPRESA.CORREO_EMPRESA=rs.getString("Correo");
-                PARAMETROS_EMPRESA.IVA_EMPRESA=rs.getString("Iva");
-                PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA=rs.getString("NombreEtiquetas");
-                PARAMETROS_EMPRESA.MUNICIPIO_EMPRESA=rs.getString("Municipio");
-                PARAMETROS_EMPRESA.DEPARTAMENTO_EMPRESA=rs.getString("Departamento");
-                PARAMETROS_EMPRESA.PAIS_EMPRESA=rs.getString("Pais");
-                PARAMETROS_EMPRESA.CODIGOPOSTAL_EMPRESA=rs.getString("CodigoPostal");
-                PARAMETROS_EMPRESA.AFILICACIONIVA_EMPRESA=rs.getString("CajaAfilicacionEmpresa");
-                PARAMETROS_EMPRESA.CODIGOESTABLECIMIENTO_EMPRESA=rs.getString("CodigoEstablecimiento");
-                PARAMETROS_EMPRESA.PROPIETARIO_EMPRESA=rs.getString("Propietario");
-                PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA=rs.getString("rutaimagenlogo");
-                PARAMETROS_EMPRESA.RUTADEIMAGEN_SISTEMA_EMPRESA=rs.getString("rutaimagensistema");
+
+                PARAMETROS_EMPRESA.NOMBRE_EMPRESA = rs.getString("NombreEmpresa");
+                PARAMETROS_EMPRESA.DIRECCION_EMPRESA = rs.getString("Direccion");
+                PARAMETROS_EMPRESA.NIT_EMPRESA = rs.getString("Nit");
+                PARAMETROS_EMPRESA.TEL_EMPRESA = rs.getString("Tel");
+                PARAMETROS_EMPRESA.ESLOGAN_EMPRESA = rs.getString("Eslogan");
+                PARAMETROS_EMPRESA.POLITICAS_EMPRESA = rs.getString("Politicas");
+                PARAMETROS_EMPRESA.CONTRASENIA_EMPRESA = rs.getString("ContraseniaCorreo");
+                PARAMETROS_EMPRESA.CORREO_EMPRESA = rs.getString("Correo");
+                PARAMETROS_EMPRESA.IVA_EMPRESA = rs.getString("Iva");
+                PARAMETROS_EMPRESA.NOMBRE_EN_ETIQUETA_EMPRESA = rs.getString("NombreEtiquetas");
+                PARAMETROS_EMPRESA.MUNICIPIO_EMPRESA = rs.getString("Municipio");
+                PARAMETROS_EMPRESA.DEPARTAMENTO_EMPRESA = rs.getString("Departamento");
+                PARAMETROS_EMPRESA.PAIS_EMPRESA = rs.getString("Pais");
+                PARAMETROS_EMPRESA.CODIGOPOSTAL_EMPRESA = rs.getString("CodigoPostal");
+                PARAMETROS_EMPRESA.AFILICACIONIVA_EMPRESA = rs.getString("CajaAfilicacionEmpresa");
+                PARAMETROS_EMPRESA.CODIGOESTABLECIMIENTO_EMPRESA = rs.getString("CodigoEstablecimiento");
+                PARAMETROS_EMPRESA.PROPIETARIO_EMPRESA = rs.getString("Propietario");
+                PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA = rs.getString("rutaimagenlogo");
+                PARAMETROS_EMPRESA.RUTADEIMAGEN_SISTEMA_EMPRESA = rs.getString("rutaimagensistema");
             }
-            
+
         } catch (SQLException e) {
-            javax.swing.JOptionPane.showMessageDialog(null, e, "Error Con base de Datos", JOptionPane.ERROR_MESSAGE);
-        }finally{
+            javax.swing.JOptionPane.showMessageDialog(null, e, "Error con base de Datos", JOptionPane.ERROR_MESSAGE);
+        } finally {
             PsClose(ps);
             RsClose(rs);
             ConnectionClose(cn);
         }
-      
+
         return DaEm;
     }
     
@@ -102,9 +102,8 @@ public class DatosEmpresaDao extends ConexionesSQL{
                 DaCert.setUsuarioToken(rs.getString("UsuarioToken"));
                 DaCert.setContraseniaToken(rs.getString("ContraseniaToken"));
                 DaCert.setToken(rs.getString("Token"));
-                
-                PARAMETROS_EMPRESA.NOMBRE_CERTIFICADOR=rs.getString("NombreEmpresaCertificadora");
-                PARAMETROS_EMPRESA.NIT_CERTIFICADOR=rs.getString("NitCertificador");
+                PARAMETROS_EMPRESA.NOMBRE_CERTIFICADOR = rs.getString("NombreEmpresaCertificadora");
+                PARAMETROS_EMPRESA.NIT_CERTIFICADOR = rs.getString("NitCertificador");
                 PARAMETROS_EMPRESA.TELEFONO_CERTIFICADOR=rs.getString("TelefonoCertificador");
                 PARAMETROS_EMPRESA.CORREO_CERTIFICADOR=rs.getString("CorreoCertificador");
                 PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR=rs.getString("UsuarioToken");

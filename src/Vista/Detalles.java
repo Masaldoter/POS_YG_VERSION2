@@ -59,6 +59,8 @@ import java.util.List;
 
 public final class Detalles extends javax.swing.JFrame {
     Ventas v= new Ventas();
+    Principal principal;
+    PARAMETROS_EMPRESA P_E;
     int DiariasGenerales;
     Date fech = new Date();
         String strDateFormat = "YYYY-MM-dd";
@@ -66,14 +68,15 @@ public final class Detalles extends javax.swing.JFrame {
         String fecha=objSDF.format(fech);
         DatosUsuario DU;
     private String NombreCliente, NitCliente, DireccionCliente, CodigoPostalCliente, MunicipioCliente, DepartamentoCliente, PaisCliente;
-    private static String NUMERO_INTERNO_FACTURA_ELECTRONICA="";
-    private static AVISOS VENTANA_AVISO;
+    private String NUMERO_INTERNO_FACTURA_ELECTRONICA="";
+    private AVISOS VENTANA_AVISO;
     POS pos;
     public Detalles() { 
     }
     
-    public Detalles(String NumeroFactura, int ModoAbierto, int TipoDeVista, POS pos) {
+    public Detalles(String NumeroFactura, int ModoAbierto, int TipoDeVista, POS pos, Principal principal) {
         initComponents();
+        this.principal = principal;
         this.pos = pos;
         //TablaDetalles.setShowHorizontalLines(true);
         this.setLocationRelativeTo(null);
@@ -88,7 +91,7 @@ public final class Detalles extends javax.swing.JFrame {
              Cerrar();
          }
      },
-             20000
+             50000
      );    
         }else{
           new java.util.Timer().schedule(new java.util.TimerTask() {
@@ -97,7 +100,7 @@ public final class Detalles extends javax.swing.JFrame {
              Cerrar();
          }
      },
-             90000
+             2000000
      );  
         }
     }
@@ -1165,8 +1168,7 @@ public final class Detalles extends javax.swing.JFrame {
         }else{
             AnularVenta();
         }
-        
-        MOVIMIENTOS_DIARIOS.CARGAR_REGISTROS();
+        principal.MD.CARGAR_REGISTROS();
         this.dispose();
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -1442,12 +1444,7 @@ public final class Detalles extends javax.swing.JFrame {
         Boolean ResultadoXML = XMLAF.GenerarXMLAnularFactura(EDAF);
 
         if (ResultadoXML == true) {
-            DU = new DatosUsuario();
-            DU.setNit(PARAMETROS_EMPRESA.NIT_EMPRESA);
-            DU.setUsuario(PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
-            DU.setContrasenia(PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR);
-
-            RDAF = AF.AnularFactura(DU);
+            RDAF = AF.AnularFactura();
 
             if (RDAF.getESTADO() == true) {
                 AnularVenta();
@@ -1501,11 +1498,7 @@ public final class Detalles extends javax.swing.JFrame {
         DU = new DatosUsuario();
 
         DCDTE.setGUID(CajaNumeroAutorizacion.getText());
-        DatosUsuario DU = new DatosUsuario();
-        DU.setNit(PARAMETROS_EMPRESA.NIT_EMPRESA);
-        DU.setUsuario(PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
-        DU.setContrasenia(PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR);
-        DCDTE = CDTE.ObtenerDTE(DCDTE, DU);
+        DCDTE = CDTE.ObtenerDTE(DCDTE);
         if (DCDTE.getEstado() == true) {
             VENTANA_AVISO.dispose();
             JOptionPane.showMessageDialog(null, "ESTADO: " + DCDTE.getESTATUS() + "\nTIPO DE DTE: " + DCDTE.getTIPO_DTE() + "\nAUTH: " + DCDTE.getGUID() + "\nSERIE: " + DCDTE.getSERIE() + "\nNIT CLIENTE: " + DCDTE.getNIT_COMPRADOR()
@@ -1589,10 +1582,10 @@ public final class Detalles extends javax.swing.JFrame {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-               
         if (PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR.equals("")) {
             pos.OT.ObtenerToken();
         } else {
+            
             GenerarXML GenerarXMLFactura = new GenerarXML();
             EnvioDatosFacturar EDF = new EnvioDatosFacturar();
             CertificarFactura CFact = new CertificarFactura();
@@ -1646,7 +1639,7 @@ public final class Detalles extends javax.swing.JFrame {
                 DU.setUsuario(PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR);
                 DU.setContrasenia(PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR);
 
-                CFACTMODEL = CFact.CertificarFactura(DU, PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR);
+                CFACTMODEL = CFact.CertificarFactura();
                 FechaCertificacion.setText(CFACTMODEL.getFecha_de_certificacion());
                 CajaNumeroAutorizacion.setText(CFACTMODEL.getAutorizacion());
                 CajaSerieCertificacion.setText(CFACTMODEL.getSerie());

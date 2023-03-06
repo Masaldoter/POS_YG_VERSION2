@@ -31,24 +31,22 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class ObtenerToken {
-    PARAMETROS_EMPRESA P_E;
     public void ObtenerToken(){
             try {
-                P_E = new PARAMETROS_EMPRESA();
               //URL url = new URL("https://felgttestaws.digifact.com.gt/gt.com.fel.api.v3/api/login/get_token?Username=GT.000044653948.FELTEST48&Password=Aldo_40805837");
                 //URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/login/get_token?Username=GT.0000" + PARAMETROS_EMPRESA.NIT_EMPRESA + "." + PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR+"&Password="+PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR);
-                /*URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/login/get_token?Username="+
-                        "GT.0000"+P_E.NIT_EMPRESA+"."+P_E.USUARIO_CERTIFICADOR+"&Password="+P_E.CONTRASENIA_CERTIFICADOR);*/
                 URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/login/get_token?Username="+
-                        "GT.000047896272.47896272&Password=EPyg_1980");
+                        "GT.0000"+PARAMETROS_EMPRESA.NIT_EMPRESA+"."+PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR+"&Password="+PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR+"");
+                /*URL url = new URL("https://felgtaws.digifact.com.gt/gt.com.fel.api.v3/api/login/get_token?Username="+
+                        "GT.000047896272.47896272&Password=EPyg_1980");*/
                 HttpURLConnection http = (HttpURLConnection) url.openConnection();
                 http.setRequestMethod("POST");
                 http.setDoOutput(true);
                 http.setRequestProperty("Content-Type", "application/json");
                 http.setRequestProperty("Accept", "application/json");
                 String data = "{\n" +
-                "\"Username\":\""+"GT.000047896272.47896272\",\n" +
-                "\"Password\":\"EPyg_1980\"\n" +        
+                "\"Username\":\""+"GT.0000"+PARAMETROS_EMPRESA.USUARIO_CERTIFICADOR+"."+PARAMETROS_EMPRESA.NIT_EMPRESA+"\",\n" +
+                "\"Password\":\""+PARAMETROS_EMPRESA.CONTRASENIA_CERTIFICADOR+"\"\n" +        
                 "}";
                 byte[] out = data.getBytes(StandardCharsets.UTF_8);
                 
@@ -70,21 +68,20 @@ public class ObtenerToken {
 
                     TokenParametros TP = new TokenParametros();
                     TP = Lectura();
-                    P_E.TOKEN_CERTIFICADOR = TP.getTokenGenerado();
+                    PARAMETROS_EMPRESA.TOKEN_CERTIFICADOR = TP.getTokenGenerado();
                 } else {
-                    System.out.println("jijijija");
                     DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-                    DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER EL TOKEN", DesktopNotify.ERROR, 10000L);
+                    DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER EL TOKEN\nMOTIVO: "+http.getResponseMessage(), DesktopNotify.ERROR, 10000L);
                 }
 
             } catch (MalformedURLException ex) {
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-                DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER EL TOKEN\n VERIFICA TU CONEXIÓN A LA RED", DesktopNotify.ERROR, 10000L);
+                DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "TUS PARAMETROS NO ESTAN BIEN ESTRUCTURADOS", DesktopNotify.ERROR, 10000L);
             Logger.getLogger(ObtenerToken.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ObtenerToken.class.getName()).log(Level.SEVERE, null, ex);
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-            DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER EL TOKEN\n VERIFICA TU CONEXIÓN A LA RED", DesktopNotify.ERROR, 10000L);
+            DesktopNotify.showDesktopMessage("ERRÓR EN LA CONEXIÓN CON CERTIFICADOR", "NO SE PUDO OBTENER EL TOKEN\nNO TIENES CONEXIÓN A LA RED", DesktopNotify.ERROR, 10000L);
         }
     }
     

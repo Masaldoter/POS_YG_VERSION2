@@ -25,7 +25,7 @@ public class ACTUALIZA_CAJA extends ConexionesSQL{
             rs = null;
             ps = null;
             CAJA caja;
-             ps = cn.prepareStatement("SELECT idcaja, ESTADO_DE_CAJA, Total_inicial_CAJA, FECHA_HORA_APERTURA_CAJA, FECHA_HORA_CIERRE_CAJA, USUARIO_APERTURO_CAJA, USUARIO_CERRO_CAJA, ARQUEO_DE_CAJA, FECHA from caja WHERE FECHA= '"+Fecha+"'");
+             ps = cn.prepareStatement("SELECT idcaja, ESTADO_DE_CAJA, Total_inicial_CAJA, FECHA_HORA_APERTURA_CAJA, FECHA_HORA_CIERRE_CAJA, USUARIO_APERTURO_CAJA, USUARIO_CERRO_CAJA, ARQUEO_DE_CAJA, FECHA from caja WHERE FECHA= '"+Fecha+"' ORDER BY idcaja DESC");
              rs = ps.executeQuery();
              while (rs.next()) {
                 caja= new CAJA();

@@ -7,13 +7,6 @@ import Modelo.Productos;
 import Modelo.Categoria;
 import Modelo.Usuarios;
 import Conexiones.ConexionesSQL;
-import static Conexiones.ConexionesSQL.ConnectionClose;
-import static Conexiones.ConexionesSQL.PsClose;
-import static Conexiones.ConexionesSQL.RsClose;
-import static Conexiones.ConexionesSQL.Unionsis2;
-import static Conexiones.ConexionesSQL.cn;
-import static Conexiones.ConexionesSQL.ps;
-import static Conexiones.ConexionesSQL.rs;
 import Modelo.SubCategoria;
 import Modelo.Ubicacion;
 import Vista.ADMINISTRACION.INVENTARIO.ADMINISTRARPRODUCTO;
@@ -69,7 +62,6 @@ public class ProductosDao extends ConexionesSQL{
                 ps.setString(1, Parametro);
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    ADMINISTRARPRODUCTO.ESTADO_PRODUCTO=rs.getString("Estado_Productos");
                     if (Metodo == 1) {
                         Datos = rs.getString("CodigoBarras");
                     } else {

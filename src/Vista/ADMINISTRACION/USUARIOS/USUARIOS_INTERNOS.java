@@ -7,7 +7,6 @@ package Vista.ADMINISTRACION.USUARIOS;
 import Controlador.Eventos;
 import Tablas.ActualizarTablaUsuarios;
 import Vista.Principal;
-import static Vista.Principal.VENTANA_ADMINISTRACION_DE_USUARIOS;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import javax.swing.JOptionPane;
@@ -17,9 +16,13 @@ import javax.swing.JOptionPane;
  * @author aldoy
  */
 public class USUARIOS_INTERNOS extends javax.swing.JInternalFrame {
-
+    Principal principal;
     public USUARIOS_INTERNOS() {
+    }
+    
+    public USUARIOS_INTERNOS(Principal principal) {
         initComponents();
+        this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
@@ -183,28 +186,28 @@ public class USUARIOS_INTERNOS extends javax.swing.JInternalFrame {
         if(UsuarioVista.getText().equals("")){
             JOptionPane.showMessageDialog(this, "¡DEBE SELECCIONAR UN USUARIO!");
         }else{
-            if (VENTANA_ADMINISTRACION_DE_USUARIOS == false) {
-                VENTANA_ADMINISTRACION_DE_USUARIOS = true;
-                Principal.ADMIN_USUARIOS = new ADMINISTRACION_DE_USUARIOS();
-                Principal.ADMIN_USUARIOS.setVisible(true);
-                ADMINISTRACION_DE_USUARIOS.BUSCAR_USUARIO(UsuarioVista.getText());
+            if (principal.VENTANA_ADMINISTRACION_DE_USUARIOS == false) {
+                principal.VENTANA_ADMINISTRACION_DE_USUARIOS = true;
+                principal.ADMIN_USUARIOS = new ADMINISTRACION_DE_USUARIOS();
+                principal.ADMIN_USUARIOS.setVisible(true);
+                principal.ADMIN_USUARIOS.BUSCAR_USUARIO(UsuarioVista.getText());
             } else {
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);
                 DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE USUARIOS", DesktopNotify.ERROR, 10000L);
-                Principal.ADMIN_USUARIOS.toFront();
+                principal.ADMIN_USUARIOS.toFront();
             }
         }
     }//GEN-LAST:event_jButton19ActionPerformed
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
-        if (VENTANA_ADMINISTRACION_DE_USUARIOS == false) {
-            VENTANA_ADMINISTRACION_DE_USUARIOS = true;
-            Principal.ADMIN_USUARIOS = new ADMINISTRACION_DE_USUARIOS();
-            Principal.ADMIN_USUARIOS.setVisible(true);
+        if (principal.VENTANA_ADMINISTRACION_DE_USUARIOS == false) {
+            principal.VENTANA_ADMINISTRACION_DE_USUARIOS = true;
+            principal.ADMIN_USUARIOS = new ADMINISTRACION_DE_USUARIOS();
+            principal.ADMIN_USUARIOS.setVisible(true);
         } else {
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE USUARIOS", DesktopNotify.ERROR, 10000L);
-            Principal.ADMIN_USUARIOS.toFront();
+            principal.ADMIN_USUARIOS.toFront();
         }
     }//GEN-LAST:event_jButton17ActionPerformed
 

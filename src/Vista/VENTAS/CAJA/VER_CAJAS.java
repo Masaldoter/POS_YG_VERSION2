@@ -11,7 +11,6 @@ import Modelo.CAJA;
 import Tablas.ACTUALIZA_CAJA;
 import Vista.Principal;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -63,7 +62,9 @@ public class VER_CAJAS extends javax.swing.JDialog {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("SELECCIONE UNA CAJA");
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -83,6 +84,7 @@ public class VER_CAJAS extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setRowHeight(40);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -107,7 +109,6 @@ public class VER_CAJAS extends javax.swing.JDialog {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         PARAMETROS_VENTAS.NUMERO_CAJA = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
         principal.jLabel4.setText(PARAMETROS_VENTAS.NUMERO_CAJA);
-        JOptionPane.showMessageDialog(this, "CAJA #"+PARAMETROS_VENTAS.NUMERO_CAJA+" SELECCIONADO");
         this.dispose();
     }//GEN-LAST:event_jTable1MouseClicked
 
