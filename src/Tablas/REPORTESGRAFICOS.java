@@ -8,6 +8,7 @@ package Tablas;
 import Conexiones.ConexionesSQL;
 import Modelo.InterfazPrincipal;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
@@ -117,22 +119,28 @@ public class REPORTESGRAFICOS extends ConexionesSQL {
         
          try {
             String sql = "SELECT rg.Total,lg.Nombre AS Usuario , rg.Hora FROM registro AS rg INNER JOIN login1 As lg ON(rg.Usuario= lg.idlogin1) WHERE Usuario=? AND Fecha=? LIMIT 10";
-            ps = cn.prepareStatement(sql);
-            ps.setInt(1, Usuario);
-            ps.setString(2, fecha);
-            rs = ps.executeQuery();
-            //DefaultPieDataset dateset = new DefaultPieDataset();
-            DefaultCategoryDataset Datos= new DefaultCategoryDataset();
-            while(rs.next()){
-                //dateset.setValue(rs.getString("Total"), rs.getFloat("Total"));
-                Datos.setValue(rs.getDouble("Total"), rs.getString("Usuario"), rs.getString("Hora"));
-            }
-            JFreeChart Barras = ChartFactory.createLineChart("Ventas del Día", "Usuario", "Ventas", Datos, PlotOrientation.VERTICAL, true, true, false);
-            //JFreeChart jf = ChartFactory.createPieChart("VENTAS DEL DÍA", (PieDataset) Datos);
+             ps = cn.prepareStatement(sql);
+             ps.setInt(1, Usuario);
+             ps.setString(2, fecha);
+             rs = ps.executeQuery();
+             //DefaultPieDataset dateset = new DefaultPieDataset();
+             DefaultCategoryDataset Datos = new DefaultCategoryDataset();
+             while (rs.next()) {
+                 //dateset.setValue(rs.getString("Total"), rs.getFloat("Total"));
+                 Datos.setValue(rs.getDouble("Total"), rs.getString("Usuario"), rs.getString("Hora"));
+             }
+             JFreeChart Barras = ChartFactory.createLineChart("Ventas del Día", "Usuario", "Ventas", Datos, PlotOrientation.VERTICAL, true, true, false);
+             //JFreeChart jf = ChartFactory.createPieChart("VENTAS DEL DÍA", (PieDataset) Datos);
+
+             //DISEÑO
+            //
+            
              panel.setLayout(new java.awt.BorderLayout());
              ChartPanel CP = new ChartPanel(Barras);
              panel.add(CP, BorderLayout.CENTER);
              panel.validate();
+             
+             
         } catch (SQLException e) {
             System.out.println(e.toString());
         }finally{

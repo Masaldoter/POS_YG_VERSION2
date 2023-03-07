@@ -6,6 +6,7 @@ package Vista.ADMINISTRACION.INVENTARIO;
 
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
+import Controlador.FullSelectorListener;
 import Controlador.KardexDao;
 import Controlador.ProductosDao;
 import Controlador.VentaDao;
@@ -33,6 +34,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
         InsertarDatos(Codigo);
         VENTANA_INDEPENDIENTE = Independiente;
         OPERACION();
+        VALIDAR_BOTON();
     }
     
     public static void limpiarCajas() {
@@ -62,6 +64,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
             NUEVO_AJUSTE.setText("0");
             ValidarBotones();
             CANTIDAD_A_AJUSTAR.requestFocus(); 
+        CANTIDAD_A_AJUSTAR.addFocusListener(new FullSelectorListener());
         } else if (proo.getNombre() == null) {
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("VERIFIQUE EL CÓDIGO", codigo + " NO EXISTE!", DesktopNotify.ERROR, 14000L);
@@ -170,6 +173,14 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
             }
         }
     }
+    
+    public void VALIDAR_BOTON(){
+        if(Float.parseFloat(CANTIDAD_A_AJUSTAR.getText())<=0 || MOTIVO_AJUSTE.getSelectedIndex()<=0 || TIPO_AJUSTE.getSelectedIndex()<=0){
+            jButton1.setEnabled(false);
+        }else{
+            jButton1.setEnabled(true);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -256,7 +267,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
 
         STOCK_ACTUAL.setEditable(false);
 
-        TIPO_AJUSTE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AUMENTAR", "DISMINUIR" }));
+        TIPO_AJUSTE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--SELECCIONE UNA OPCIÓN--", "AUMENTAR", "DISMINUIR" }));
         TIPO_AJUSTE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TIPO_AJUSTEActionPerformed(evt);
@@ -267,6 +278,11 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
 
         jLabel6.setText("CANTIDAD:");
 
+        CANTIDAD_A_AJUSTAR.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CANTIDAD_A_AJUSTARMouseClicked(evt);
+            }
+        });
         CANTIDAD_A_AJUSTAR.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 CANTIDAD_A_AJUSTARKeyReleased(evt);
@@ -276,10 +292,17 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
         jLabel7.setText("NUEVO STOCK:");
 
         NUEVO_AJUSTE.setEditable(false);
+        NUEVO_AJUSTE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        NUEVO_AJUSTE.setForeground(new java.awt.Color(255, 0, 0));
 
         jLabel8.setText("MOTIVO AJUSTE:");
 
-        MOTIVO_AJUSTE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "RECONTEO FISICO", "TRASLADO DE PRODUCTO", "PRODUCTO INEXISTENTE" }));
+        MOTIVO_AJUSTE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--SELECCIONE UNA OPCIÓN--", "NUEVO INGRESO", "RECONTEO FISICO", "TRASLADO DE PRODUCTO", "PRODUCTO INEXISTENTE" }));
+        MOTIVO_AJUSTE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MOTIVO_AJUSTEActionPerformed(evt);
+            }
+        });
 
         ID.setEditable(false);
 
@@ -389,6 +412,11 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CANCELAR_32PX.png"))); // NOI18N
         jButton2.setText("CANCELAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/NUEVO_32PX.png"))); // NOI18N
         jButton4.setText("LIMPIAR TODO");
@@ -469,10 +497,12 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
 
     private void CANTIDAD_A_AJUSTARKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CANTIDAD_A_AJUSTARKeyReleased
         OPERACION();
+        VALIDAR_BOTON();
     }//GEN-LAST:event_CANTIDAD_A_AJUSTARKeyReleased
 
     private void TIPO_AJUSTEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TIPO_AJUSTEActionPerformed
         OPERACION();
+        VALIDAR_BOTON();
     }//GEN-LAST:event_TIPO_AJUSTEActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -481,14 +511,27 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(ValidarCajas()==true){
-        if(Float.parseFloat(NUEVO_AJUSTE.getText())<0f){
-              JOptionPane.showMessageDialog(this, "CANTIDAD NO PUEDE SER MAYOR AL STOCK ACTUAL", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);  
-              CANTIDAD_A_AJUSTAR.requestFocus();
-            }else{
-            AJUSTAR_STOCK();
-        }    
+        if(Float.parseFloat(NUEVO_AJUSTE.getText()) <= 0f) {
+                JOptionPane.showMessageDialog(this, "CANTIDAD NO PUEDE SER MAYOR AL STOCK ACTUAL", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+                CANTIDAD_A_AJUSTAR.requestFocus();
+            } else {
+                AJUSTAR_STOCK();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void CANTIDAD_A_AJUSTARMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CANTIDAD_A_AJUSTARMouseClicked
+        CANTIDAD_A_AJUSTAR.requestFocus();
+        CANTIDAD_A_AJUSTAR.addFocusListener(new FullSelectorListener());
+    }//GEN-LAST:event_CANTIDAD_A_AJUSTARMouseClicked
+
+    private void MOTIVO_AJUSTEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MOTIVO_AJUSTEActionPerformed
+        VALIDAR_BOTON();
+    }//GEN-LAST:event_MOTIVO_AJUSTEActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

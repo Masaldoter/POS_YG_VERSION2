@@ -865,6 +865,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
 
         Id.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         Id.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        Id.setNextFocusableComponent(Nombreproducto);
         Id.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 IdKeyPressed(evt);

@@ -12,6 +12,7 @@ import Controlador.CajaDao;
 import Controlador.FullSelectorListener;
 import Modelo.CAJA;
 import java.text.DecimalFormat;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -35,6 +36,8 @@ public class APERTURA_DE_CAJA extends javax.swing.JDialog {
         METODOS_GLOBALES.HORA_FECHA(jLabel5);
         jTextField1.addFocusListener(new FullSelectorListener());
         this.setLocationRelativeTo(null);
+        jTextField1.requestFocus();
+        jTextField1.addFocusListener(new FullSelectorListener());
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -204,8 +207,16 @@ public class APERTURA_DE_CAJA extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //javax.swing.JOptionPane.showMessageDialog(this, "SE GUARDÓ LA APERTURA DE CAJA\nPOR: "+jComboBox1.getSelectedIndex()+"\nFECHA Y HORA: "+jLabel5.getText());
-        APERTURAR_CAJA();
+        if(jTextField1.getText().equals("") || jTextField1.getText().equals(null)){
+            JOptionPane.showMessageDialog(this, "TIENE QUE INGRESAR UNA CANTIDAD", "ERROR AL APERTURAR", JOptionPane.WARNING_MESSAGE);
+            jTextField1.requestFocus();
+        }else if(Float.parseFloat(jTextField1.getText()) < 0){
+            JOptionPane.showMessageDialog(this, "EL TOTAL INICIAL NO PUEDE SER MENOR A 0.00", "ERROR AL APERTURAR", JOptionPane.WARNING_MESSAGE);
+            jTextField1.requestFocus();
+        jTextField1.addFocusListener(new FullSelectorListener());
+        }else{
+           APERTURAR_CAJA(); 
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void APERTURAR_CAJA(){

@@ -1410,8 +1410,8 @@ public void GenerarVenta() {
                 }
                 PrecioPublico.setSelected(true);
                 CantidadVenta.setText("1");
-                Final.requestFocus();
-                Final.addFocusListener(new FullSelectorListener());
+                CantidadVenta.requestFocus();
+                CantidadVenta.addFocusListener(new FullSelectorListener());
                 if ("0".equals(Cantidad2.getText()) || Cantidad2.getText() == "0.00") {
                     Cantidad2.setForeground(Color.red);
                 } else {
@@ -2165,6 +2165,7 @@ public void GenerarVenta() {
 
         Final.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         Final.setForeground(new java.awt.Color(255, 0, 51));
+        Final.setNextFocusableComponent(CantidadVenta);
         Final.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 FinalKeyPressed(evt);
@@ -2177,6 +2178,9 @@ public void GenerarVenta() {
         IdVenta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 IdVentaKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                IdVentaKeyTyped(evt);
             }
         });
 
@@ -2966,15 +2970,15 @@ public void GenerarVenta() {
 
     private void FinalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FinalKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-           /* if (jButton7.getText().equals("AGREGAR")) {
+           if (jButton7.getText().equals("AGREGAR")) {
                 AgregarProducto();
             } else {
 
                 EditarProductoPOS();
 
-            }*/
-           CantidadVenta.requestFocus();
-           CantidadVenta.addFocusListener(new FullSelectorListener());
+            }
+          // CantidadVenta.requestFocus();
+           //CantidadVenta.addFocusListener(new FullSelectorListener());
         }
     }//GEN-LAST:event_FinalKeyPressed
 
@@ -3382,6 +3386,11 @@ public void GenerarVenta() {
         Principal.DESKTOP_PRINCIPAL.add(jLayeredPane1);
         jLayeredPane1.setVisible(true);
     }//GEN-LAST:event_facturaMouseClicked
+
+    private void IdVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IdVentaKeyTyped
+         Eventos event = new Eventos();
+        event.numberKeyPress(evt);
+    }//GEN-LAST:event_IdVentaKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

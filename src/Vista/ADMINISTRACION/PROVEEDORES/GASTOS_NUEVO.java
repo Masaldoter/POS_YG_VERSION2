@@ -13,6 +13,7 @@ import Controlador.ComprasDao;
 import Controlador.FullSelectorListener;
 import Modelo.Compras;
 import Vista.POS.POS;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,6 +30,7 @@ public class GASTOS_NUEVO extends javax.swing.JDialog {
         initComponents();
         this.pos= pos;
     this.setLocationRelativeTo(parent);
+    jButton1.setEnabled(false);
     }
     public void GUARDAR_GASTO(){
         ComprasDao comprasDao= new ComprasDao();
@@ -111,7 +113,13 @@ public class GASTOS_NUEVO extends javax.swing.JDialog {
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), "DETALLES"));
 
+        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextField3.setText("0.00");
+        jTextField3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField3MouseClicked(evt);
+            }
+        });
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
@@ -163,7 +171,13 @@ public class GASTOS_NUEVO extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ENTRADA", "SALIDA" }));
+        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--SELECCIONE EL TIPO--", "ENTRADA", "SALIDA" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -239,7 +253,13 @@ public class GASTOS_NUEVO extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        GUARDAR_GASTO();
+        if(jTextField3.getText().equals("") || jTextField3.getText().equals(null) || Float.parseFloat(jTextField3.getText()) <=0){
+            JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER IGUAL O MENOR A CERO (0)", "ERROR AL INGRESAR", JOptionPane.ERROR_MESSAGE);
+        }else if(jComboBox1.getSelectedIndex()<=0){
+            JOptionPane.showMessageDialog(this, "TIENE QUE SELECCIONAR EL TIPO DE MOVIMIENTO", "ERROR AL INGRESAR", JOptionPane.WARNING_MESSAGE);
+        }else{
+            GUARDAR_GASTO();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -258,6 +278,19 @@ public class GASTOS_NUEVO extends javax.swing.JDialog {
         Eventos event = new Eventos();
         event.numberDecimalKeyPress(evt, jTextField3);
     }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        if(jComboBox1.getSelectedIndex()>0){
+            jButton1.setEnabled(true);
+        }else{
+            jButton1.setEnabled(false);
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jTextField3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField3MouseClicked
+         jTextField3.requestFocus();
+                jTextField3.addFocusListener(new FullSelectorListener());
+    }//GEN-LAST:event_jTextField3MouseClicked
 
     /**
      * @param args the command line arguments

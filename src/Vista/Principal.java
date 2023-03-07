@@ -3,6 +3,7 @@ import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
 import CLASES_GLOBALES.PARAMETROS_BASE_DE_DATOS;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
+import CLASES_GLOBALES.PARAMETROS_VENTAS;
 import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import CONTROL_DE_ACTUALIZACIÓNES.CONTROL_DE_ACTUALIZACIÓNES;
 import Vista.ADMINISTRACION.INVENTARIO.Ubicaciones;
@@ -361,6 +362,8 @@ public final class Principal extends javax.swing.JFrame {
         jMenuItem19 = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jSeparator40 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem23 = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jPanel62Layout = new javax.swing.GroupLayout(jPanel62);
         jPanel62.setLayout(jPanel62Layout);
@@ -1062,6 +1065,16 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jMenu3.add(jMenuItem8);
+        jMenu3.add(jSeparator40);
+
+        jMenuItem23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/GASTOS_32PX.png"))); // NOI18N
+        jMenuItem23.setText("TURNO");
+        jMenuItem23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem23ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem23);
 
         jMenuBar2.add(jMenu3);
 
@@ -1486,6 +1499,27 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem29ActionPerformed
 
+    private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
+        if (jLabel4.getText().equals("")) {
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "TURNO APERTURADO EXITOSAMENTE!", "¡PROCESO EXITOSO!", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }else{
+            int seleccion = JOptionPane.showConfirmDialog(this, "¿ESTÁ SEGURO DE CERRAR TURNO #"+PARAMETROS_VENTAS.NUMERO_CAJA+"?");
+            if(seleccion == 0){
+                jLabel4.setText("");
+                PARAMETROS_VENTAS.NUMERO_CAJA = "";
+                JOptionPane.showMessageDialog(this, "EL TURNO SE CERRÓ EXITOSAMENTE!", "¡PROCESO EXITOSO!", JOptionPane.INFORMATION_MESSAGE);
+                D.CARGAR_DASHBOARD();
+        ABRIR_VENTANAS(D, true);
+            }
+        }
+    }//GEN-LAST:event_jMenuItem23ActionPerformed
+
     public void EXPORTAR() {
         if (P_O_S.TablaVentas.getRowCount() < 1) {
             JOptionPane.showMessageDialog(this, "AÚN NO HAY NADA EN EL CARRITO", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -1716,6 +1750,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem22;
+    private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem24;
     private javax.swing.JMenuItem jMenuItem25;
     private javax.swing.JMenuItem jMenuItem26;
@@ -1768,6 +1803,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator38;
     private javax.swing.JPopupMenu.Separator jSeparator39;
     private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator40;
     private javax.swing.JSeparator jSeparator43;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator56;

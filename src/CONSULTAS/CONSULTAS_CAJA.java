@@ -148,7 +148,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("select SUM(TOTAL) from compras where FECHA = '" + Fecha + "' AND TIPO_COMPRA='SALIDA' AND id_CAJA="+CAJA);
+             ps = cn.prepareStatement("select SUM(TOTAL) from compras where FECHA = '" + Fecha + "' AND TIPO_COMPRA='ENTRADA' AND id_CAJA="+CAJA);
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -172,7 +172,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("select SUM(TOTAL) from compras where FECHA = '" + Fecha + "' AND TIPO_COMPRA='ENTRADA' AND id_CAJA="+CAJA);
+             ps = cn.prepareStatement("select SUM(TOTAL) from compras where FECHA = '" + Fecha + "' AND TIPO_COMPRA='SALIDA' AND id_CAJA="+CAJA);
             rs = ps.executeQuery();
 
             if (rs.next()) {
