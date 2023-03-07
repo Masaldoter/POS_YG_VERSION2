@@ -115,11 +115,11 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
 
     public static Float OPERACION() {
         Float Total = 0f;
-        if (TIPO_AJUSTE.getSelectedIndex() == 0) {
+        if (TIPO_AJUSTE.getSelectedIndex() == 1) {
             if (!STOCK_ACTUAL.getText().equals("") && !CANTIDAD_A_AJUSTAR.getText().equals("")) {
                 Total = Float.parseFloat(STOCK_ACTUAL.getText()) + Float.parseFloat(CANTIDAD_A_AJUSTAR.getText());
             }
-        } else {
+        } else if(TIPO_AJUSTE.getSelectedIndex() == 2){
             if (!STOCK_ACTUAL.getText().equals("") && !CANTIDAD_A_AJUSTAR.getText().equals("")) {
                 Total = Float.parseFloat(STOCK_ACTUAL.getText()) - Float.parseFloat(CANTIDAD_A_AJUSTAR.getText());
             }
