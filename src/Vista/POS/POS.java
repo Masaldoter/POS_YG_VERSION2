@@ -2186,6 +2186,7 @@ public void GenerarVenta() {
 
         lblCodigoPOS.setText("CÓDIGO");
 
+        NombreVenta.setNextFocusableComponent(Final);
         NombreVenta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 NombreVentaKeyPressed(evt);
