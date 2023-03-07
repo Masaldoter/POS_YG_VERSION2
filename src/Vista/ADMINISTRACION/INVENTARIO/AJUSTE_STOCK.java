@@ -32,6 +32,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
         this.setLocationRelativeTo(parent);
         InsertarDatos(Codigo);
         VENTANA_INDEPENDIENTE = Independiente;
+        OPERACION();
     }
     
     public static void limpiarCajas() {

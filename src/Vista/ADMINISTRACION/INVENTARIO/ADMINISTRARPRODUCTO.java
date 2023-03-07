@@ -25,6 +25,7 @@ import Modelo.Ubicacion;
 import Tablas.ActualizarTablaVentas;
 import Vista.Principal;
 import com.groupdocs.conversion.filetypes.ImageFileType;
+import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
@@ -104,6 +105,13 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         VaciarYllenarCategoria(ComboCategorias);
         VaciarYllenarProveedor();
         VaciarYllenarUbicacion();
+        
+        AutoCompletador = new TextAutoCompleter(Nombreproducto, new AutoCompleterCallback() {
+            @Override
+            public void callback(Object selectedItem) {
+            }
+        });
+        
         ListarProductosTienda(Nombreproducto);
         IdUsuario.setText(IDUSUARIO);
         NombreUsuarioVista.setText(NOMBREUSUARIO);
@@ -459,14 +467,14 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 }
     }
     
-    public void Ingreso_Kardex() {
+    public void Ingreso_Kardex(String MENSAJE) {
         KardexDao kdDao= new KardexDao();
         Kardex Kd ;
         if (ValidarCajas() == true) {
             InsertarDatos(Id.getText());
                 Kd = new Kardex();
                 Kd.setID_Codigo_Producto_Kardex(Integer.parseInt(idbodega.getText()));
-                Kd.setTitulo_Kardex("SE INGRESÓ | PRODUCTO NUEVO");
+                Kd.setTitulo_Kardex(MENSAJE);
                   Kd.setEntrada_Kardex(Cantidad.getText());  
                   Kd.setSalida_Kardex("0");
                 Kd.setAntes_Kardex("0");
@@ -477,7 +485,6 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 Boolean ResultadoIngreso = kdDao.RegistrarKARDEX(Kd);
                 if (ResultadoIngreso == true) {
                     limpiarCajas();
-                    this.dispose();
             }
 
         }
@@ -524,7 +531,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 pro.setAPLICAR_DESCUENTO(jCheckBox1.isSelected());
                 Boolean ResultadoIngreso = proDao.RegistrarProductos(pro);
                 if (ResultadoIngreso == true) {
-                    Ingreso_Kardex();
+                    Ingreso_Kardex("SE INGRESÓ | PRODUCTO NUEVO");
+                    ListarProductosTienda(Nombreproducto);
                     limpiarCajas();
                     inventario.REFRESCAR_INVENTARIO();
                 }
@@ -1446,6 +1454,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         VaciarYllenarCategoria(ComboCategorias);
         VaciarYllenarUbicacion();
         VaciarYllenarProveedor();
+        ListarProductosTienda(Nombreproducto);
         Id.requestFocus();
     }//GEN-LAST:event_ActualizarActionPerformed
 
@@ -1538,6 +1547,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         VaciarYllenarCategoria(ComboCategorias);
         VaciarYllenarProveedor();
+        ListarProductosTienda(Nombreproducto);
         Id.requestFocus();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
@@ -2035,18 +2045,21 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void ListarProductosTienda(JTextField Parametro) {
-        AutoCompletador = new TextAutoCompleter(Parametro);
-        tablasVentas = new ActualizarTablaVentas();
-        AutoCompletador.setMode(0); // infijo
-
-        List<Productos> ListarPr = tablasVentas.ListarProductosTiendaNombre();
-        Object[] ob = new Object[1];
-        for (int i = 0; i < ListarPr.size(); i++) {
-            ob[0] = ListarPr.get(i).getNombre();
-            AutoCompletador.addItems(ob);
+        try {
+            tablasVentas = new ActualizarTablaVentas();
+            AutoCompletador.removeAllItems();
+            AutoCompletador.setMode(0); // infijo
+            List<Productos> ListarPr = tablasVentas.ListarProductosTiendaNombre();
+            Object[] ob = new Object[1];
+            for (int i = 0; i < ListarPr.size(); i++) {
+                ob[0] = ListarPr.get(i).getNombre();
+                AutoCompletador.addItems(ob);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "NO SE PUDO CARGAR LOS DATOS");
         }
     }
-    
+
     public String ObtenerRutaImagen(int Seleccion){
         String Ruta ="";
         DatosEmpresaGeneral DE= new DatosEmpresaGeneral();
