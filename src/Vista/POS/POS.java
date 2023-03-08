@@ -1465,11 +1465,11 @@ public void GenerarVenta() {
                     } else {
                         EstadoProducto.setText("INGRESADO");
                     }
-                    Final.requestFocus();
+                    CantidadVenta.requestFocus();
                     Final.setText("" + pro.getPublico());
                     PrecioPublico.setSelected(true);
                     CantidadVenta.setText("1");
-                    Final.addFocusListener(new FullSelectorListener());
+                    CantidadVenta.addFocusListener(new FullSelectorListener());
                     if (Float.parseFloat(Cantidad2.getText()) == 0) {
                         Cantidad2.setForeground(Color.red);
                     } else {
