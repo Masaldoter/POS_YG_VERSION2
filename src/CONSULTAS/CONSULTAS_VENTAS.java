@@ -38,7 +38,7 @@ public class CONSULTAS_VENTAS {
         for (int i = 0; i < ListarPr.size(); i++) {
             ob[0] = ListarPr.get(i).getNoFactura();
             ob[1] = ListarPr.get(i).getIDENTIFICACION_CLIENTE() + " | " + ListarPr.get(i).getCliente();
-            ob[2] = "<html>" + CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha()) + "</html>";
+            ob[2] = CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha());
             ob[3] = ListarPr.get(i).getTotal();
             ob[4] = ListarPr.get(i).getPagocon();
             ob[5] = ListarPr.get(i).getCambio();
@@ -71,7 +71,7 @@ public class CONSULTAS_VENTAS {
         for (int i = 0; i < ListarPr.size(); i++) {
             ob[0] = ListarPr.get(i).getNoFactura();
             ob[1] = ListarPr.get(i).getIDENTIFICACION_CLIENTE() + " | " + ListarPr.get(i).getCliente();
-            ob[2] = "<html>" + CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha()) + "</html>";
+            ob[2] = CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha());
             ob[3] = ListarPr.get(i).getTotal();
             ob[4] = ListarPr.get(i).getPagocon();
             ob[5] = ListarPr.get(i).getCambio();
@@ -96,7 +96,7 @@ public class CONSULTAS_VENTAS {
         for (int i = 0; i < ListarPr.size(); i++) {
             ob[0] = ListarPr.get(i).getNoFactura();
             ob[1] = ListarPr.get(i).getIDENTIFICACION_CLIENTE() + " | " + ListarPr.get(i).getCliente();
-            ob[2] = "<html>" + CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha()) + "</html>";
+            ob[2] = CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha());
             ob[3] = ListarPr.get(i).getTotal();
             ob[4] = ListarPr.get(i).getPagocon();
             ob[5] = ListarPr.get(i).getCambio();
@@ -121,7 +121,7 @@ public class CONSULTAS_VENTAS {
         for (int i = 0; i < ListarPr.size(); i++) {
             ob[0] = ListarPr.get(i).getNoFactura();
             ob[1] = ListarPr.get(i).getIDENTIFICACION_CLIENTE() + " | " + ListarPr.get(i).getCliente();
-            ob[2] = "<html>" + CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha()) + "</html>";
+            ob[2] = CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha());
             ob[3] = ListarPr.get(i).getTotal();
             ob[4] = ListarPr.get(i).getPagocon();
             ob[5] = ListarPr.get(i).getCambio();
@@ -171,7 +171,7 @@ public class CONSULTAS_VENTAS {
         for (int i = 0; i < ListarPr.size(); i++) {
             ob[0] = ListarPr.get(i).getNoFactura();
             ob[1] = ListarPr.get(i).getIDENTIFICACION_CLIENTE() + " | " + ListarPr.get(i).getCliente();
-            ob[2] = "<html>" + CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha()) + "</html>";
+            ob[2] = CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha());
             ob[3] = ListarPr.get(i).getTotal();
             ob[4] = ListarPr.get(i).getPagocon();
             ob[5] = ListarPr.get(i).getCambio();
@@ -196,7 +196,7 @@ public class CONSULTAS_VENTAS {
         for (int i = 0; i < ListarPr.size(); i++) {
             ob[0] = ListarPr.get(i).getNoFactura();
             ob[1] = ListarPr.get(i).getIDENTIFICACION_CLIENTE() + " | " + ListarPr.get(i).getCliente();
-            ob[2] = "<html>" + CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha()) + "</html>";
+            ob[2] = CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha()) ;
             ob[3] = ListarPr.get(i).getTotal();
             ob[4] = ListarPr.get(i).getPagocon();
             ob[5] = ListarPr.get(i).getCambio();
@@ -223,7 +223,7 @@ public class CONSULTAS_VENTAS {
         for (int i = 0; i < ListarPr.size(); i++) {
             ob[0] = ListarPr.get(i).getNoFactura();
             ob[1] = ListarPr.get(i).getIDENTIFICACION_CLIENTE() + " | " + ListarPr.get(i).getCliente();
-            ob[2] = "<html>" + CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha()) + "</html>";
+            ob[2] = CONVERTIR_HORA(ListarPr.get(i).getHora()) + " | " + CONVERTIR_FECHA(ListarPr.get(i).getFecha());
             ob[3] = ListarPr.get(i).getTotal();
             ob[4] = ListarPr.get(i).getPagocon();
             ob[5] = ListarPr.get(i).getCambio();

@@ -48,7 +48,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         Double TotalPagar2 = 0.00;
         int numFila = VD.getRowCount();
         for (int i = 0; i < numFila; i++) {
-            double cal = Double.parseDouble(String.valueOf(VD.getValueAt(i, 4)));
+            double cal = Double.parseDouble(String.valueOf(VD.getValueAt(i, 3)));
             TotalPagar2 = TotalPagar2 + cal;
 
         }
@@ -56,7 +56,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         
         double pago= 0.00;
         for (int i = 0; i < numFila; i++) {
-            double cal2 = Double.parseDouble(String.valueOf(VD.getValueAt(i, 5)));
+            double cal2 = Double.parseDouble(String.valueOf(VD.getValueAt(i, 4)));
             pago = pago + cal2;
 
         }
@@ -64,7 +64,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         
         double pago3= 0.00;
         for (int i = 0; i < numFila; i++) {
-            double cal3 = Double.parseDouble(String.valueOf(VD.getValueAt(i, 6)));
+            double cal3 = Double.parseDouble(String.valueOf(VD.getValueAt(i, 5)));
             pago3 = pago3 + cal3;
 
         }
@@ -391,11 +391,11 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id Venta", "CLIENTE", "HORA", "FECHA", "TOTAL", "EFECTIVO", "CAMBIO", "NUMERO INTERNO", "FORMA DE PAGO", "USUARIO", "DOCUMENTO", "ESTADO", "ACCIÓNES"
+                "NÚMERO INTERNO", "CLIENTE", "FECHA", "TOTAL", "EFECTIVO", "CAMBIO", "FORMA DE PAGO", "USUARIO", "DOCUMENTO", "ESTADO", "ACCIÓNES"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, true, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -606,7 +606,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
                 String Id = VD.getValueAt(fila, 0).toString();
                 CajaIdVenta.setText(Id);
                 JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 1, principal.P_O_S, principal);
+                Detalles de= new Detalles(Id, 1, 1, principal.P_O_S, principal);
                 de.setVisible(true);
 
             }

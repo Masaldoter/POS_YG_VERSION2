@@ -566,11 +566,21 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField4KeyPressed
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
+
         jTabbedPane3.setSelectedIndex(1);
         lblTipoBusquedaVentasGenerales.setText("CODIGO O NOMBRE");
-        C_V.ActualizarRegistroPorNombreDetalleProductos(false, jTextField4, TablaVentasNombreProductos);
-        CARGAR_TOTALES();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                C_V.ActualizarRegistroPorNombreDetalleProductos(false, jTextField4, TablaVentasNombreProductos);
+                CARGAR_TOTALES();
+
+            }
+        };
+        Thread hilo = new Thread(runnable);
+        hilo.start();
     }//GEN-LAST:event_jTextField4KeyReleased
+
 
     private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
         jTabbedPane3.setSelectedIndex(0);
@@ -584,13 +594,23 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField5KeyPressed
 
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
-        try {
+        jTabbedPane3.setSelectedIndex(1);
+        lblTipoBusquedaVentasGenerales.setText("CODIGO O NOMBRE");
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                 try {
             lblTipoBusquedaVentasGenerales.setText("POR CLIENTE");
             jTabbedPane3.setSelectedIndex(0);
             C_V.ActualizarRegistroVentaPorNit(jTextField5.getText(), TablaReporteVentas, EstadoVentaGeneral);
             CARGAR_TOTALES();
         } catch (Exception e) {
         }
+
+            }
+        };
+        Thread hilo = new Thread(runnable);
+        hilo.start();
     }//GEN-LAST:event_jTextField5KeyReleased
 
     private void jTabbedPane2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane2StateChanged

@@ -74,24 +74,29 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         }
         try {
             Venta v;
-             ps = cn.prepareStatement("select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, Estado, TipoDocumentoFel from  registro where Fecha LIKE '%" + fecha + "%' AND Estado='"+Filtro+"' ORDER BY IdRegistro DESC");
+             ps = cn.prepareStatement("select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where Fecha LIKE '%" + fecha + "%' AND registro.Estado='"+Filtro+"' ORDER BY IdRegistro DESC");
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 v = new Venta();
-                v.setIdRegistro(rs.getInt("IdRegistro"));
-                v.setCliente(rs.getString("Cliente"));
-                v.setHora(rs.getString("Hora"));
-                v.setFecha(rs.getString("Fecha"));
-                v.setTotal(rs.getFloat("Total"));
-                v.setPagocon(rs.getFloat("Pago"));
-                v.setCambio(rs.getFloat("Cambio"));
-                v.setNoFactura(rs.getString("NoFactura"));
-                v.setFormaPago(rs.getString("FormaPago"));
-                v.setUsuario(rs.getInt("Usuario"));
-                v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
-                v.setEstado(rs.getString("Estado"));
-                v.setDetalles(btn1);
+                 v.setIdRegistro(rs.getInt("IdRegistro"));
+                 v.setIDENTIFICACION_CLIENTE(rs.getString("NitCliente"));
+                 v.setCliente(rs.getString("Cliente"));
+                 v.setHora(rs.getString("Hora"));
+                 v.setFecha(rs.getString("Fecha"));
+                 v.setTotal(rs.getFloat("Total"));
+                 v.setPagocon(rs.getFloat("Pago"));
+                 v.setCambio(rs.getFloat("Cambio"));
+                 v.setNoFactura(rs.getString("NoFactura"));
+                 v.setFormaPago(rs.getString("FormaPago"));
+                 v.setUsuario(rs.getInt("Usuario"));
+                 v.setUSUARIO_REGISTRO_LETRAS(rs.getString("NombreUsuario"));
+                 v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
+                 v.setEstado(rs.getString("Estado"));
+                 v.setDetalles(btn1);
                Listapro.add(v);
             }
 
@@ -141,26 +146,31 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         }
         try {
             Venta v;
-             ps = cn.prepareStatement("select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, TipoDocumentoFel, FormaPago, Usuario, Estado from  registro WHERE Usuario=? AND Fecha=? AND Estado='"+Filtro+"' ORDER BY IdRegistro DESC");
+             ps = cn.prepareStatement("select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where Usuario=? AND Fecha=? AND registro.Estado='"+Filtro+"' ORDER BY IdRegistro DESC");
              ps.setInt(1, Usuario);
              ps.setString(2, fecha);
              rs = ps.executeQuery();
 
             while (rs.next()) {
                 v = new Venta();
-                v.setIdRegistro(rs.getInt("IdRegistro"));
-                v.setCliente(rs.getString("Cliente"));
-                v.setHora(rs.getString("Hora"));
-                v.setFecha(rs.getString("Fecha"));
-                v.setTotal(rs.getFloat("Total"));
-                v.setPagocon(rs.getFloat("Pago"));
-                v.setCambio(rs.getFloat("Cambio"));
-                v.setNoFactura(rs.getString("NoFactura"));
-                v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
-                v.setFormaPago(rs.getString("FormaPago"));
-                v.setUsuario(rs.getInt("Usuario"));
-                v.setEstado(rs.getString("Estado"));
-                v.setDetalles(btn1);
+                 v.setIdRegistro(rs.getInt("IdRegistro"));
+                 v.setIDENTIFICACION_CLIENTE(rs.getString("NitCliente"));
+                 v.setCliente(rs.getString("Cliente"));
+                 v.setHora(rs.getString("Hora"));
+                 v.setFecha(rs.getString("Fecha"));
+                 v.setTotal(rs.getFloat("Total"));
+                 v.setPagocon(rs.getFloat("Pago"));
+                 v.setCambio(rs.getFloat("Cambio"));
+                 v.setNoFactura(rs.getString("NoFactura"));
+                 v.setFormaPago(rs.getString("FormaPago"));
+                 v.setUsuario(rs.getInt("Usuario"));
+                 v.setUSUARIO_REGISTRO_LETRAS(rs.getString("NombreUsuario"));
+                 v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
+                 v.setEstado(rs.getString("Estado"));
+                 v.setDetalles(btn1);
                Listapro.add(v);
             }
 
@@ -207,7 +217,9 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         cn = Unionsis2.getConnection();
         try {
 
-            ps = cn.prepareStatement("select IdRegistro, Cliente, Hora, Fecha, Pago, Cambio, Total, NoFactura, FormaPago, Estado from  registro");
+            ps = cn.prepareStatement("select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)");
 
             rs = ps.executeQuery();
 
@@ -263,7 +275,10 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         if (!"".equals(fecha)) {
 
             try {
-                ps = cn.prepareStatement("select IdRegistro, Cliente, Hora, Fecha, Pago, Cambio, Total, NoFactura, Serie, Estado from registro where Fecha BETWEEN '"+fecha+"' AND '"+fecha2+"' ORDER BY IdRegistro DESC");
+                ps = cn.prepareStatement("select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where Fecha BETWEEN '"+fecha+"' AND '"+fecha2+"' ORDER BY IdRegistro DESC");
                 rs = ps.executeQuery();
 
                 modeloTabla.addColumn("No. Venta");

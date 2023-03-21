@@ -928,6 +928,7 @@ public class POS extends javax.swing.JInternalFrame {
         if (ESTADO_REGISTRO_VENTA == true) {
             GUARDAR_KARDEX();
             RegistarDetalle();
+            Pagos.Seleccion(1);
         }
     }
 
@@ -1139,21 +1140,16 @@ public void GenerarVenta() {
             switch (pagocon.getText()) {
                 case "" -> JOptionPane.showMessageDialog(null, "¡AÚN NO INGRESO LA CANTIDAD DE PAGO!");
                 case "0.00" -> {
-                    int seleccion= JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO QUE EL PAGO SERÁ DE Q0.00?");
-                    if(seleccion == 0){
-                        Imprimir();
-                        //  Ticket();
+                    if(VentanaFormaPago==true){
+                        Pagos.toFront();
+                        Pagos.EfectivoPagado.requestFocus();
                     }else{
-                        if(VentanaFormaPago==true){
-                            Pagos.toFront();
-                        }else{
-                            VentanaFormaPago = true;
-                            Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(this.labeltotal.getText(), this.pagocon.getText(), this.cambio.getText(), this.Efectivo.getText(), 
-                                    this.Tarjeta.getText(), this.Deposito.getText(), this.Cheque.getText(), this.CajaNumeroTransacción.getText(), this.ComboFormaPago.getText(), 
-                                    Integer.parseInt(this.MetodoPagoEntero.getText()), this.TotalIva.getText(), 
-                                    IVA_EMPRESA, this.SubTotal.getText());
-                            Pagos.setVisible(true);    
-                        }
+                        VentanaFormaPago = true;
+                        Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
+                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
+                                Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
+                        Pagos.setVisible(true);
+                        Pagos.EfectivoPagado.requestFocus();
                     }
                 }
                 default -> Imprimir();
@@ -2610,7 +2606,7 @@ public void GenerarVenta() {
         });
 
         TipoDocumento.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        TipoDocumento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FACTURA", "PROFORMA", "COTIZACIÓN", "SALIDAS" }));
+        TipoDocumento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FACTURA", "PROFORMA", "COTIZACIÓN" }));
         TipoDocumento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TipoDocumentoActionPerformed(evt);
@@ -3226,12 +3222,14 @@ public void GenerarVenta() {
             if(VentanaFormaPago == true){
                 Pagos.toFront();
                 Pagos.toFront();
+                Pagos.EfectivoPagado.requestFocus();
             }else{
                 VentanaFormaPago = true;
                 Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
                     , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
                     Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
                 Pagos.setVisible(true);
+                Pagos.EfectivoPagado.requestFocus();
             }
         }
     }//GEN-LAST:event_BtnAgregarPagoPOSActionPerformed

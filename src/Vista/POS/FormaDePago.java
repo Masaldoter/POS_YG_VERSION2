@@ -991,7 +991,7 @@ public class FormaDePago extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ChequePagado;
     private javax.swing.JTextField DepositoPagado;
-    private javax.swing.JTextField EfectivoPagado;
+    public javax.swing.JTextField EfectivoPagado;
     private javax.swing.JTextArea NTransacciones;
     private static javax.swing.JLabel SeleccionId;
     private javax.swing.JLabel SeleccionNombre;

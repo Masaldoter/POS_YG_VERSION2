@@ -1534,7 +1534,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem23ActionPerformed
 
     private void jMenuItem32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem32ActionPerformed
-        if (jLabel4.getText().equals("")) {
+       /* if (jLabel4.getText().equals("")) {
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
@@ -1543,7 +1543,8 @@ public final class Principal extends javax.swing.JFrame {
             }
         } else {
             ABRIR_VENTANAS(V_P, true);
-        }
+        }*/
+       JOptionPane.showMessageDialog(this, "ESTAMOS TRABAJANDO DURO PARA PODER APERTURAR ESTE MÓDULO");
     }//GEN-LAST:event_jMenuItem32ActionPerformed
 
     public void EXPORTAR() {

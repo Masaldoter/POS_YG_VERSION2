@@ -511,12 +511,28 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(ValidarCajas()==true){
-        if(Float.parseFloat(NUEVO_AJUSTE.getText()) <= 0f) {
-                JOptionPane.showMessageDialog(this, "CANTIDAD NO PUEDE SER MAYOR AL STOCK ACTUAL", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+            if(TIPO_AJUSTE.getSelectedIndex()==1){
+              if(Float.parseFloat(CANTIDAD_A_AJUSTAR.getText()) <= 0f) {
+                JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER MENOR O IGUAL A 0", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
                 CANTIDAD_A_AJUSTAR.requestFocus();
             } else {
                 AJUSTAR_STOCK();
+            }  
+            }else{
+              if(Float.parseFloat(CANTIDAD_A_AJUSTAR.getText()) <= 0f) {
+                JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER MENOR O IGUAL A 0", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+                CANTIDAD_A_AJUSTAR.requestFocus();
+            } else if(TIPO_AJUSTE.getSelectedIndex()==2){
+                  if(Float.parseFloat(STOCK_ACTUAL.getText())==0){
+                    JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER MENOR A 0", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+                CANTIDAD_A_AJUSTAR.requestFocus();  
+                  }else{
+                    AJUSTAR_STOCK();
+                  }
+                
+            }  
             }
+        
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
