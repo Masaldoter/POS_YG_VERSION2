@@ -33,7 +33,6 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        
         if (PARAMETROS_USUARIOS.ROL_USUARIO.equals("Usuario")) {
             ListaUsuarios.setEnabled(false);
             jButton38.setEnabled(false);
@@ -41,6 +40,8 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
             jLabel49.setVisible(false);
             jSeparator47.setVisible(false);
             jTabbedPane6.setEnabledAt(1, false);
+            ListaUsuarios.setSelectedItem(PARAMETROS_USUARIOS.NOMBRE_USUARIO);
+            Sele.setText(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO));
         }
     }
     
@@ -77,6 +78,10 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         VaciarYllenarUsuariosVenta();
         REFRESCAR_VENTAS_DIARIAS();
         CARGAR_TOTALES();
+        
+        if (PARAMETROS_USUARIOS.ROL_USUARIO.equals("Usuario")) {
+            ListaUsuarios.setSelectedItem(PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+        }
     }
     
     private void VaciarYllenarUsuariosVenta(){
@@ -87,6 +92,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
             String Nombre = lista.get(i).getNombreUsuario();
             ListaUsuarios.addItem(new ComboUsuarios(id, Nombre).toString());
         }
+        
     }
     
     

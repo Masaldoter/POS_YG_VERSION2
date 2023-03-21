@@ -531,9 +531,9 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         rs= null;
         String Sql;
         if(IncluirFecha==true){
-        Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where Fecha='"+fecha+"' AND Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%' ORDER BY Iddetalle DESC";
+        Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where (Fecha='"+fecha+"' AND Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%') ORDER BY Iddetalle DESC";
         }else{
-        Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%' ORDER BY Iddetalle DESC";   
+        Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where (Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%') ORDER BY Iddetalle DESC";   
         }
         try {
             Venta v;
