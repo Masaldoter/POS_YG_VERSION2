@@ -22,6 +22,7 @@ import javax.swing.JButton;
  */
 public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
     ProductosDao proDao = new ProductosDao();
+    CONSULTAS_VENTAS C_V = new CONSULTAS_VENTAS();
     Principal principal;
     public MOVIMIENTOS_DIARIOS() {
         initComponents();
@@ -102,28 +103,28 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         switch (lblTipoDeBusquedaVentasDiarias.getText()) {
             case "TIPO DOCUMENTO":
                 jTabbedPane6.setSelectedIndex(0);
-                CONSULTAS_VENTAS.ActualizarRegistroVentaPorTipoDocumento(jComboBox1, true, VD);
+                C_V.ActualizarRegistroVentaPorTipoDocumento(jComboBox1, true, VD);
                 CARGAR_TOTALES();
                 break;
             case "USUARIOS":
                 jTabbedPane6.setSelectedIndex(0);
         if(ListaUsuarios.getSelectedItem() == null){
-            CONSULTAS_VENTAS.Registros(VD, EstadoVentas);
+            C_V.Registros(VD, EstadoVentas);
             CARGAR_TOTALES();
         }else{
             Sele.setText(String.valueOf(proDao.ConsultaIdUsuario(ListaUsuarios)));
-            CONSULTAS_VENTAS.RegistrosUsuario(VD, EstadoVentas, Sele.getText());
+            C_V.RegistrosUsuario(VD, EstadoVentas, Sele.getText());
             CARGAR_TOTALES();
         }
                 break;
             case "PRODUCTO":
                 jTabbedPane6.setSelectedIndex(1);
-                CONSULTAS_VENTAS.ActualizarRegistroPorNombreDetalleProductos(Boolean.TRUE, CajaProductoBusquedaVentasDiarias, TablaVentasNombreProductos1);
+                C_V.ActualizarRegistroPorNombreDetalleProductos(Boolean.TRUE, CajaProductoBusquedaVentasDiarias, TablaVentasNombreProductos1);
                 CARGAR_TOTALES();
                 break;
             case "SIN FILTRO":
                 jTabbedPane6.setSelectedIndex(0);
-                CONSULTAS_VENTAS.Registros(VD, EstadoVentas);
+                C_V.Registros(VD, EstadoVentas);
                 CARGAR_TOTALES();
                 break;
             default:
@@ -401,7 +402,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        VD.setRowHeight(28);
+        VD.setRowHeight(35);
         VD.getTableHeader().setReorderingAllowed(false);
         VD.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -546,19 +547,19 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         jTabbedPane6.setSelectedIndex(0);
         String a= (String) ListaUsuarios.getSelectedItem();
         if(a == null){
-            CONSULTAS_VENTAS.Registros(VD, EstadoVentas);
+            C_V.Registros(VD, EstadoVentas);
             CARGAR_TOTALES();
         }else if(a != null){
 
             Sele.setText(String.valueOf(proDao.ConsultaIdUsuario(ListaUsuarios)));
-            CONSULTAS_VENTAS.RegistrosUsuario(VD, EstadoVentas, Sele.getText());
+            C_V.RegistrosUsuario(VD, EstadoVentas, Sele.getText());
             CARGAR_TOTALES();
         }
     }//GEN-LAST:event_EstadoVentasActionPerformed
 
     private void jButton38ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton38ActionPerformed
         jTabbedPane6.setSelectedIndex(0);
-        CONSULTAS_VENTAS.Registros(VD, EstadoVentas);
+        C_V.Registros(VD, EstadoVentas);
         CARGAR_TOTALES();
         Sele.setText("General");
         ListaUsuarios.setSelectedItem(null);
@@ -568,7 +569,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         jTabbedPane6.setSelectedIndex(0);
         lblTipoDeBusquedaVentasDiarias.setText("TIPO DOCUMENTO");
-        CONSULTAS_VENTAS.ActualizarRegistroVentaPorTipoDocumento(jComboBox1, true, VD);
+        C_V.ActualizarRegistroVentaPorTipoDocumento(jComboBox1, true, VD);
         CARGAR_TOTALES();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
@@ -577,11 +578,11 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         lblTipoDeBusquedaVentasDiarias.setText("USUARIOS");
         String a= (String) ListaUsuarios.getSelectedItem();
         if(a == null){
-            CONSULTAS_VENTAS.Registros(VD, EstadoVentas);
+            C_V.Registros(VD, EstadoVentas);
         }else if(a != null){
 
             Sele.setText(String.valueOf(proDao.ConsultaIdUsuario(ListaUsuarios)));
-            CONSULTAS_VENTAS.RegistrosUsuario(VD, EstadoVentas, Sele.getText());
+            C_V.RegistrosUsuario(VD, EstadoVentas, Sele.getText());
         }
         CARGAR_TOTALES();
     }//GEN-LAST:event_ListaUsuariosActionPerformed
@@ -589,7 +590,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
     private void CajaProductoBusquedaVentasDiariasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CajaProductoBusquedaVentasDiariasKeyReleased
         jTabbedPane6.setSelectedIndex(1);
         lblTipoDeBusquedaVentasDiarias.setText("PRODUCTO");
-        CONSULTAS_VENTAS.ActualizarRegistroPorNombreDetalleProductos(Boolean.TRUE, CajaProductoBusquedaVentasDiarias, TablaVentasNombreProductos1);
+        C_V.ActualizarRegistroPorNombreDetalleProductos(Boolean.TRUE, CajaProductoBusquedaVentasDiarias, TablaVentasNombreProductos1);
     }//GEN-LAST:event_CajaProductoBusquedaVentasDiariasKeyReleased
 
     private void VDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VDMouseClicked

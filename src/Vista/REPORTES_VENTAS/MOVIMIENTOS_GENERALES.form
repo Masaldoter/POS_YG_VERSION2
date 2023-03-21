@@ -53,9 +53,10 @@
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jPanel19" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="jTabbedPane3" pref="264" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane3" pref="290" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="jPanel18" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="11" pref="11" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -87,7 +88,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="TotalVentaGeneral" alignment="0" pref="112" max="32767" attributes="0"/>
+                          <Component id="TotalVentaGeneral" alignment="0" pref="74" max="32767" attributes="0"/>
                           <Component id="CambiosVentaGeneral" alignment="0" max="32767" attributes="0"/>
                           <Component id="EfectivoPagadoVentaGeneral" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -172,33 +173,43 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="EstadoVentaGeneral" alignment="0" min="-2" pref="194" max="-2" attributes="0"/>
-                          <Component id="lblTipoBusquedaVentasGenerales" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jTabbedPane2" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jButton33" min="-2" pref="136" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="EstadoVentaGeneral" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jComboBox1" min="-2" pref="150" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblTipoBusquedaVentasGenerales" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTabbedPane2" pref="0" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton33" min="-2" pref="136" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButton33" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblTipoBusquedaVentasGenerales" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="EstadoVentaGeneral" min="-2" pref="56" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jTabbedPane2" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jTabbedPane2" max="32767" attributes="0"/>
+                          <Component id="jButton33" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lblTipoBusquedaVentasGenerales" max="32767" attributes="0"/>
+                          <Component id="EstadoVentaGeneral" alignment="0" pref="38" max="32767" attributes="0"/>
+                          <Component id="jComboBox1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel1" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -244,8 +255,8 @@
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="BUSQUEDA POR N&#xb0; DE DOCUMENTO">
-                        <Property name="tabTitle" type="java.lang.String" value="BUSQUEDA POR N&#xb0; DE DOCUMENTO"/>
+                      <JTabbedPaneConstraints tabName="BUSQUEDA POR N&#xb0; INTERNO">
+                        <Property name="tabTitle" type="java.lang.String" value="BUSQUEDA POR N&#xb0; INTERNO"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
@@ -259,7 +270,7 @@
                                   <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="345" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="552" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -273,7 +284,7 @@
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jTextField1" min="-2" pref="36" max="-2" attributes="0"/>
-                              <EmptySpace pref="33" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -300,8 +311,8 @@
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="BUSQUEDA POR PRODUCTO">
-                        <Property name="tabTitle" type="java.lang.String" value="BUSQUEDA POR PRODUCTO"/>
+                      <JTabbedPaneConstraints tabName="POR PRODUCTO">
+                        <Property name="tabTitle" type="java.lang.String" value="POR PRODUCTO"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
@@ -313,7 +324,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabel47" pref="324" max="32767" attributes="0"/>
+                                      <Component id="jLabel47" pref="531" max="32767" attributes="0"/>
                                       <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
@@ -331,7 +342,7 @@
                               <Component id="jLabel47" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jTextField4" min="-2" pref="32" max="-2" attributes="0"/>
-                              <EmptySpace pref="37" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -358,8 +369,8 @@
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="BUSQUEDA POR FECHAS">
-                        <Property name="tabTitle" type="java.lang.String" value="BUSQUEDA POR FECHAS"/>
+                      <JTabbedPaneConstraints tabName="POR FECHAS">
+                        <Property name="tabTitle" type="java.lang.String" value="POR FECHAS"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
@@ -405,12 +416,15 @@
                                           <Component id="jLabel46" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="fechabus" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
-                                          <Component id="Fecha2" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
-                                          <Component id="jSeparator34" alignment="1" min="-2" pref="18" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                              <Component id="jSeparator34" min="-2" pref="18" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="fechabus" alignment="0" min="-2" pref="38" max="-2" attributes="0"/>
+                                          <Component id="Fecha2" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jButton30" alignment="0" max="32767" attributes="0"/>
                               </Group>
@@ -429,8 +443,18 @@
                       </Events>
                     </Component>
                     <Component class="com.toedter.calendar.JDateChooser" name="fechabus">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Segoe UI" size="18" style="0"/>
+                        </Property>
+                      </Properties>
                     </Component>
                     <Component class="com.toedter.calendar.JDateChooser" name="Fecha2">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Segoe UI" size="18" style="0"/>
+                        </Property>
+                      </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel31">
                       <Properties>
@@ -443,6 +467,11 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JSeparator" name="jSeparator34">
+                      <Properties>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="0" green="0" red="0" type="rgb"/>
+                        </Property>
+                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -454,8 +483,8 @@
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="BUSQUEDA POR CLIENTE">
-                        <Property name="tabTitle" type="java.lang.String" value="BUSQUEDA POR CLIENTE"/>
+                      <JTabbedPaneConstraints tabName="POR CLIENTE">
+                        <Property name="tabTitle" type="java.lang.String" value="POR CLIENTE"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
@@ -469,7 +498,7 @@
                                   <Component id="jTextField5" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jLabel45" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="307" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="514" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -483,7 +512,7 @@
                               <Component id="jLabel45" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jTextField5" min="-2" pref="36" max="-2" attributes="0"/>
-                              <EmptySpace pref="33" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -505,20 +534,32 @@
               </SubComponents>
             </Container>
             <Component class="javax.swing.JLabel" name="lblTipoBusquedaVentasGenerales">
-              <Properties>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="TIPO DE BUSQUEDA">
-                      <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder/>
-                      </Border>
-                    </TitledBorder>
-                  </Border>
-                </Property>
-              </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="jComboBox1">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="3">
+                    <StringItem index="0" value="FACTURA"/>
+                    <StringItem index="1" value="PROFORMA"/>
+                    <StringItem index="2" value="FACTURA&apos; OR registro.TipoDocumentoFel=&apos;PROFORMA"/>
+                  </StringArray>
+                </Property>
+                <Property name="selectedIndex" type="int" value="2"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox1ActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="FILTRADO POR:"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -542,28 +583,84 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="TablaReporteVentas">
                   <Properties>
-                    <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="14" style="0"/>
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="13" rowCount="0">
-                        <Column editable="false" title="ID VENTA" type="java.lang.Object"/>
-                        <Column editable="false" title="CLIENTE" type="java.lang.Object"/>
-                        <Column editable="false" title="HORA" type="java.lang.Object"/>
-                        <Column editable="true" title="FECHA" type="java.lang.Object"/>
-                        <Column editable="true" title="TOTAL" type="java.lang.Object"/>
-                        <Column editable="true" title="EFECTIVO" type="java.lang.Object"/>
-                        <Column editable="true" title="CAMBIO" type="java.lang.Object"/>
+                      <Table columnCount="11" rowCount="0">
                         <Column editable="true" title="NUMERO INTERNO" type="java.lang.Object"/>
-                        <Column editable="true" title="FORMA DE PAGO" type="java.lang.Object"/>
-                        <Column editable="true" title="USUARIO" type="java.lang.Object"/>
-                        <Column editable="true" title="DOCUMENTO" type="java.lang.Object"/>
-                        <Column editable="true" title="ESTADO" type="java.lang.Object"/>
-                        <Column editable="true" title="ACCI&#xd3;N" type="java.lang.Object"/>
+                        <Column editable="false" title="CLIENTE" type="java.lang.Object"/>
+                        <Column editable="false" title="FECHA" type="java.lang.Object"/>
+                        <Column editable="false" title="TOTAL" type="java.lang.Object"/>
+                        <Column editable="false" title="EFECTIVO" type="java.lang.Object"/>
+                        <Column editable="true" title="CAMBIO" type="java.lang.Object"/>
+                        <Column editable="false" title="FORMA DE PAGO" type="java.lang.Object"/>
+                        <Column editable="false" title="USUARIO" type="java.lang.Object"/>
+                        <Column editable="false" title="DOCUMENTO" type="java.lang.Object"/>
+                        <Column editable="false" title="ESTADO" type="java.lang.Object"/>
+                        <Column editable="false" title="ACCI&#xd3;N" type="java.lang.Object"/>
                       </Table>
                     </Property>
-                    <Property name="rowHeight" type="int" value="25"/>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="150" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="2" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="2" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="rowHeight" type="int" value="40"/>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
@@ -595,7 +692,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane8" alignment="0" pref="231" max="32767" attributes="0"/>
+                      <Component id="jScrollPane8" alignment="0" pref="259" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -622,7 +719,7 @@
                             <Column editable="false" title="ACCI&#xd3;N " type="java.lang.Object"/>
                           </Table>
                         </Property>
-                        <Property name="rowHeight" type="int" value="25"/>
+                        <Property name="rowHeight" type="int" value="40"/>
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                           <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                         </Property>

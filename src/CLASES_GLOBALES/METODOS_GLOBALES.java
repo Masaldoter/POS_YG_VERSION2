@@ -10,6 +10,7 @@ import WebServiceDigifact.ObtenerToken;
 import com.groupdocs.conversion.Converter;
 import com.groupdocs.conversion.filetypes.ImageFileType;
 import com.groupdocs.conversion.options.convert.ImageConvertOptions;
+import com.groupdocs.conversion.options.load.WordProcessingLoadOptions;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.awt.Image;
@@ -19,6 +20,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Properties;
 import javax.swing.Icon;
@@ -103,11 +107,12 @@ public class METODOS_GLOBALES {
         }
         return Ruta;
     }
-    
+
     public static void CONVERSION_WEBP_IMAGE(String RUTA_ORIGEN, String RUTA_DESTINO, ImageFileType TIPO_IMAGEN) {
-        
-                Converter converter = new Converter(RUTA_ORIGEN);
-                ImageConvertOptions options = new ImageConvertOptions();
+        WordProcessingLoadOptions loadOptions = new WordProcessingLoadOptions();
+        loadOptions.setPassword("12345");
+        Converter converter = new Converter(RUTA_ORIGEN);
+        ImageConvertOptions options = new ImageConvertOptions();
                 options.setFormat(TIPO_IMAGEN);
                 converter.convert(RUTA_DESTINO, options);
                 
@@ -261,6 +266,30 @@ public class METODOS_GLOBALES {
         return fech;
     }
     
+    public static String CONVERTIR_FECHA(String Fecha){
+        LocalDate fecha = LocalDate.parse(Fecha);
+
+        // Crear un objeto DateTimeFormatter para el nuevo formato
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Convertir la fecha al nuevo formato
+        String fechaFormateada = fecha.format(formatter);
+        
+        return fechaFormateada;
+    }
+    
+    public static String CONVERTIR_HORA(String Hora){
+        LocalTime hora = LocalTime.parse(Hora);
+
+        // Crear un objeto DateTimeFormatter para el nuevo formato
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm:ss a");
+
+        // Convertir la hora al nuevo formato
+        String horaFormateada = hora.format(formatter);
+        
+        return horaFormateada;
+    }
+    
     public static void HORA_FECHA(JLabel ETIQUETA){
         Runnable runnable = new Runnable() {
             @Override
@@ -285,6 +314,7 @@ public class METODOS_GLOBALES {
         Thread hilo = new Thread(runnable);
         hilo.start();
     }
+    
 
     public static void CREAR_CARPETA(String RUTA) {
 

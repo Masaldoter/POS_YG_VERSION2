@@ -1279,7 +1279,7 @@ public final class Detalles extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void IR_A_VENTAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IR_A_VENTAActionPerformed
-        //Principal.MoverEntreSistema();
+        principal.MoverEntreSistema();
     }//GEN-LAST:event_IR_A_VENTAActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked

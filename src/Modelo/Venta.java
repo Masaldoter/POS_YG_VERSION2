@@ -10,7 +10,7 @@ public class Venta {
     private String FormaPago, NumeroTransaccion, TotalEnLetras, NoFactura;
     private String Fecha, Hora;
     private int Usuario;
-    private String Observacion;
+    private String Observacion, USUARIO_REGISTRO_LETRAS;
     private String NombreCertificador, NitCertificador, FechaAutorizacion, NumeroAutorizacion,
     NumeroDocumento, SerieDocumento, TipoDocumentoFel, Estado, NitEmisor, NUMERO_INTERNO;
     private JButton Detalles,Anular;
@@ -19,7 +19,7 @@ public class Venta {
         
     }
 
-    public Venta(int IdRegistro, int id_CAJA_registro, String Cliente, String IDENTIFICACION_CLIENTE, String TIPO_IDENTIFICACION_CLIENTE, String DireccionCliente, Float Total, Float pagocon, Float cambio, String FormaPago, String NumeroTransaccion, String TotalEnLetras, String NoFactura, String Fecha, String Hora, int Usuario, String Observacion, String NombreCertificador, String NitCertificador, String FechaAutorizacion, String NumeroAutorizacion, String NumeroDocumento, String SerieDocumento, String TipoDocumentoFel, String Estado, String NitEmisor, String NUMERO_INTERNO, JButton Detalles, JButton Anular) {
+    public Venta(int IdRegistro, int id_CAJA_registro, String Cliente, String IDENTIFICACION_CLIENTE, String TIPO_IDENTIFICACION_CLIENTE, String DireccionCliente, Float Total, Float pagocon, Float cambio, String FormaPago, String NumeroTransaccion, String TotalEnLetras, String NoFactura, String Fecha, String Hora, int Usuario, String Observacion, String USUARIO_REGISTRO_LETRAS, String NombreCertificador, String NitCertificador, String FechaAutorizacion, String NumeroAutorizacion, String NumeroDocumento, String SerieDocumento, String TipoDocumentoFel, String Estado, String NitEmisor, String NUMERO_INTERNO, JButton Detalles, JButton Anular) {
         this.IdRegistro = IdRegistro;
         this.id_CAJA_registro = id_CAJA_registro;
         this.Cliente = Cliente;
@@ -37,6 +37,7 @@ public class Venta {
         this.Hora = Hora;
         this.Usuario = Usuario;
         this.Observacion = Observacion;
+        this.USUARIO_REGISTRO_LETRAS = USUARIO_REGISTRO_LETRAS;
         this.NombreCertificador = NombreCertificador;
         this.NitCertificador = NitCertificador;
         this.FechaAutorizacion = FechaAutorizacion;
@@ -185,6 +186,14 @@ public class Venta {
 
     public void setObservacion(String Observacion) {
         this.Observacion = Observacion;
+    }
+
+    public String getUSUARIO_REGISTRO_LETRAS() {
+        return USUARIO_REGISTRO_LETRAS;
+    }
+
+    public void setUSUARIO_REGISTRO_LETRAS(String USUARIO_REGISTRO_LETRAS) {
+        this.USUARIO_REGISTRO_LETRAS = USUARIO_REGISTRO_LETRAS;
     }
 
     public String getNombreCertificador() {

@@ -1015,6 +1015,8 @@ public final class DetalleCotizacion extends javax.swing.JFrame {
                                                            ESTA ACCI\u00d3N ELIMINARA ESTA COTIZACI\u00d3N Y LA PASARA
                                                             A LA SECCI\u00d3N DE VENTAS.
                                                            TENGA EN CUENTA QUE SI TIENE PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTAR\u00c1""", "¿ESTÁ SEGURO DE REALIZAR LA VENTA?", JOptionPane.YES_NO_OPTION);
+        pos.principal.MoverEntreSistema();
+        pos.principal.MoverEntreSistema();
         Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
         if(Seleccion==0){
           //  Principal.MoverEntreSistema();

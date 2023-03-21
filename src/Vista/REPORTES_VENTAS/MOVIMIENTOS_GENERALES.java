@@ -30,11 +30,10 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }
     
     public void CARGAR_TOTALES(){
-        PARAMETROS_EMPRESA P_E =new PARAMETROS_EMPRESA();
         Double TotalPagar2 = 0.00;
         int numFila = TablaReporteVentas.getRowCount();
         for (int i = 0; i < numFila; i++) {
-            double cal = Double.parseDouble(String.valueOf(TablaReporteVentas.getValueAt(i, 4)));
+            double cal = Double.parseDouble(String.valueOf(TablaReporteVentas.getValueAt(i, 3)));
             TotalPagar2 = TotalPagar2 + cal;
 
         }
@@ -42,7 +41,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
 
         double pago = 0.00;
         for (int i = 0; i < numFila; i++) {
-            double cal2 = Double.parseDouble(String.valueOf(TablaReporteVentas.getValueAt(i, 5)));
+            double cal2 = Double.parseDouble(String.valueOf(TablaReporteVentas.getValueAt(i, 4)));
             pago = pago + cal2;
 
         }
@@ -50,7 +49,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
 
         double pago3 = 0.00;
         for (int i = 0; i < numFila; i++) {
-            double cal3 = Double.parseDouble(String.valueOf(TablaReporteVentas.getValueAt(i, 6)));
+            double cal3 = Double.parseDouble(String.valueOf(TablaReporteVentas.getValueAt(i, 5)));
             pago3 = pago3 + cal3;
 
         }
@@ -58,8 +57,9 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }
     
     public void CARGAR_REGISTROS(){
-        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral);
+        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);
     }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -96,6 +96,8 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         jLabel45 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         lblTipoBusquedaVentasGenerales = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jScrollPane5 = new javax.swing.JScrollPane();
         TablaReporteVentas = new javax.swing.JTable();
@@ -138,7 +140,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TotalVentaGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                    .addComponent(TotalVentaGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
                     .addComponent(CambiosVentaGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(EfectivoPagadoVentaGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -189,7 +191,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                     .addComponent(jTextField1)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(0, 345, Short.MAX_VALUE)))
+                        .addGap(0, 552, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -199,10 +201,10 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("BUSQUEDA POR N° DE DOCUMENTO", jPanel8);
+        jTabbedPane2.addTab("BUSQUEDA POR N° INTERNO", jPanel8);
 
         jPanel71.setBackground(new java.awt.Color(102, 153, 255));
 
@@ -225,7 +227,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel71Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel71Layout.createSequentialGroup()
-                        .addComponent(jLabel47, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+                        .addComponent(jLabel47, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
                         .addGap(135, 135, 135))
                     .addGroup(jPanel71Layout.createSequentialGroup()
                         .addComponent(jTextField4)
@@ -238,10 +240,10 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 .addComponent(jLabel47)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("BUSQUEDA POR PRODUCTO", jPanel71);
+        jTabbedPane2.addTab("POR PRODUCTO", jPanel71);
 
         jPanel23.setBackground(new java.awt.Color(204, 204, 255));
 
@@ -252,9 +254,15 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             }
         });
 
+        fechabus.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        Fecha2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         jLabel31.setText("FECHA DE INICIO");
 
         jLabel46.setText("FECHA DE FIN");
+
+        jSeparator34.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
         jPanel23.setLayout(jPanel23Layout);
@@ -290,16 +298,18 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                             .addComponent(jLabel31)
                             .addComponent(jLabel46))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(fechabus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Fecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator34, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel23Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jSeparator34, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(fechabus, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Fecha2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 12, Short.MAX_VALUE))
                     .addComponent(jButton30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("BUSQUEDA POR FECHAS", jPanel23);
+        jTabbedPane2.addTab("POR FECHAS", jPanel23);
 
         jPanel70.setBackground(new java.awt.Color(102, 204, 255));
 
@@ -324,7 +334,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                     .addComponent(jTextField5)
                     .addGroup(jPanel70Layout.createSequentialGroup()
                         .addComponent(jLabel45)
-                        .addGap(0, 307, Short.MAX_VALUE)))
+                        .addGap(0, 514, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel70Layout.setVerticalGroup(
@@ -334,39 +344,54 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 .addComponent(jLabel45)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("BUSQUEDA POR CLIENTE", jPanel70);
+        jTabbedPane2.addTab("POR CLIENTE", jPanel70);
 
-        lblTipoBusquedaVentasGenerales.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "TIPO DE BUSQUEDA"));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FACTURA", "PROFORMA", "FACTURA' OR registro.TipoDocumentoFel='PROFORMA" }));
+        jComboBox1.setSelectedIndex(2);
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("FILTRADO POR:");
 
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
         jPanel19Layout.setHorizontalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(EstadoVentaGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTipoBusquedaVentasGenerales, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton33, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addComponent(jTabbedPane2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton33, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(EstadoVentaGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTipoBusquedaVentasGenerales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTipoBusquedaVentasGenerales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane2)
+                    .addComponent(jButton33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(EstadoVentaGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
-                .addComponent(jTabbedPane2)
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblTipoBusquedaVentasGenerales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(EstadoVentaGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addComponent(jComboBox1)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -380,25 +405,24 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 return false;
             }
         };
-        TablaReporteVentas.setAutoCreateRowSorter(true);
         TablaReporteVentas.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         TablaReporteVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID VENTA", "CLIENTE", "HORA", "FECHA", "TOTAL", "EFECTIVO", "CAMBIO", "NUMERO INTERNO", "FORMA DE PAGO", "USUARIO", "DOCUMENTO", "ESTADO", "ACCIÓN"
+                "NUMERO INTERNO", "CLIENTE", "FECHA", "TOTAL", "EFECTIVO", "CAMBIO", "FORMA DE PAGO", "USUARIO", "DOCUMENTO", "ESTADO", "ACCIÓN"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true, true, true, true, true, true, true, true, true
+                true, false, false, false, false, true, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        TablaReporteVentas.setRowHeight(25);
+        TablaReporteVentas.setRowHeight(40);
         TablaReporteVentas.getTableHeader().setReorderingAllowed(false);
         TablaReporteVentas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -406,6 +430,14 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane5.setViewportView(TablaReporteVentas);
+        if (TablaReporteVentas.getColumnModel().getColumnCount() > 0) {
+            TablaReporteVentas.getColumnModel().getColumn(0).setPreferredWidth(5);
+            TablaReporteVentas.getColumnModel().getColumn(1).setPreferredWidth(200);
+            TablaReporteVentas.getColumnModel().getColumn(2).setPreferredWidth(150);
+            TablaReporteVentas.getColumnModel().getColumn(3).setPreferredWidth(20);
+            TablaReporteVentas.getColumnModel().getColumn(4).setPreferredWidth(2);
+            TablaReporteVentas.getColumnModel().getColumn(5).setPreferredWidth(2);
+        }
 
         jTabbedPane3.addTab("", jScrollPane5);
 
@@ -426,7 +458,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        TablaVentasNombreProductos.setRowHeight(25);
+        TablaVentasNombreProductos.setRowHeight(40);
         TablaVentasNombreProductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TablaVentasNombreProductosMouseClicked(evt);
@@ -442,7 +474,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         );
         jPanel75Layout.setVerticalGroup(
             jPanel75Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
         );
 
         jTabbedPane3.addTab("", jPanel75);
@@ -463,9 +495,10 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             .addGroup(ReporteDeVentasLayout.createSequentialGroup()
                 .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -486,9 +519,10 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
-        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral);
+        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);
         jTabbedPane3.setSelectedIndex(0);
         fechabus.setDate(null);
+        Fecha2.setDate(null);
         lblTipoBusquedaVentasGenerales.setText("TODAS LAS VENTAS");
         CARGAR_TOTALES();
     }//GEN-LAST:event_jButton33ActionPerformed
@@ -502,7 +536,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             Sele.setText(String.valueOf(proDao.ConsultaIdUsuario(ListaUsuarios)));
             RegistrosUsuario();
         }*/
-        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral);
+        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);
         CARGAR_TOTALES();
     }//GEN-LAST:event_EstadoVentaGeneralActionPerformed
 
@@ -541,7 +575,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
         jTabbedPane3.setSelectedIndex(0);
         lblTipoBusquedaVentasGenerales.setText("POR FECHAS");
-        CONSULTAS_VENTAS.ActualizarRegistroVentaPorFecha(TablaReporteVentas, fechabus, Fecha2);
+        C_V.ActualizarRegistroVentaPorFecha(TablaReporteVentas, fechabus, Fecha2, EstadoVentaGeneral, jComboBox1);
         CARGAR_TOTALES();
     }//GEN-LAST:event_jButton30ActionPerformed
 
@@ -550,10 +584,13 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField5KeyPressed
 
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
-        lblTipoBusquedaVentasGenerales.setText("POR CLIENTE");
-        jTabbedPane3.setSelectedIndex(0);
-        CONSULTAS_VENTAS.ActualizarRegistroVentaPorNit(jTextField1, false, TablaReporteVentas, EstadoVentaGeneral);
-        CARGAR_TOTALES();
+        try {
+            lblTipoBusquedaVentasGenerales.setText("POR CLIENTE");
+            jTabbedPane3.setSelectedIndex(0);
+            C_V.ActualizarRegistroVentaPorNit(jTextField5.getText(), TablaReporteVentas, EstadoVentaGeneral);
+            CARGAR_TOTALES();
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_jTextField5KeyReleased
 
     private void jTabbedPane2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane2StateChanged
@@ -563,16 +600,14 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     private void TablaReporteVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaReporteVentasMouseClicked
         int fila = TablaReporteVentas.getSelectedRow();
 
-        String codigo = TablaReporteVentas.getValueAt(fila, 7).toString();
+        String codigo = TablaReporteVentas.getValueAt(fila, 0).toString();
 
         int Columna = TablaReporteVentas.getColumnModel().getColumnIndexAtX(evt.getX());
         int Fila = evt.getY()/TablaReporteVentas.getRowHeight();
         if(Fila < TablaReporteVentas.getRowCount() && Fila >= 0 && Columna < TablaReporteVentas.getColumnCount() && Columna >= 0){
             Object value = TablaReporteVentas.getValueAt(Fila, Columna);
-            if(value instanceof JButton){
-                ((JButton)value).doClick();
-                String Id = TablaReporteVentas.getValueAt(fila, 0).toString();
-                JButton boton = (JButton) value;
+            if(value instanceof JButton jButton){
+                jButton.doClick();
                 Detalles de= new Detalles(codigo, 1, 0, principal.P_O_S, principal);
                 de.setVisible(true);
             }
@@ -588,15 +623,18 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         int Fila = evt.getY()/TablaVentasNombreProductos.getRowHeight();
         if(Fila < TablaVentasNombreProductos.getRowCount() && Fila >= 0 && Columna < TablaVentasNombreProductos.getColumnCount() && Columna >= 0){
             Object value = TablaVentasNombreProductos.getValueAt(Fila, Columna);
-            if(value instanceof JButton){
-                ((JButton)value).doClick();
-                String Id = TablaVentasNombreProductos.getValueAt(fila, 0).toString();
-                JButton boton = (JButton) value;
-                Detalles de= new Detalles(codigo, 1, 0, principal.P_O_S, principal);
+            if(value instanceof JButton jButton){
+                jButton.doClick();
+                     Detalles de= new Detalles(codigo, 1, 0, principal.P_O_S, principal);
                 de.setVisible(true);
             }
         }
     }//GEN-LAST:event_TablaVentasNombreProductosMouseClicked
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);
+        CARGAR_TOTALES();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -611,6 +649,8 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser fechabus;
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton33;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel45;

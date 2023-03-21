@@ -889,10 +889,11 @@ public class DetallesCotizacion2 extends javax.swing.JInternalFrame {
         prin.Mov.Tabla(prin.tablamadre, prin.tablamadre.getSelectedIndex());*/
         int Seleccion= JOptionPane.showConfirmDialog(null, "ESTA ACCIÓN ELIMINARA ESTA COTIZACIÓN Y LA PASARA\n A LA SECCIÓN DE VENTAS.\nTENGA EN CUENTA QUE SI TIENE"
                 + " PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTARÁ", "¿ESTÁ SEGURO DE REALIZAR LA VENTA?", JOptionPane.YES_NO_OPTION);
+        pos.principal.MoverEntreSistema();
+        pos.principal.MoverEntreSistema();
         Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
         if(Seleccion==0){
-            //MoverEntreSistema();
-            //MoverEntreSistema();
+            
             if(VerificarCheckEnVenta == true){
             pos.CheckIngresoAutomatico.setSelected(false);    
             }

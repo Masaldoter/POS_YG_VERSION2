@@ -203,7 +203,6 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         rs = null;
         DefaultTableModel modeloTabla = new DefaultTableModel();
         TablaReporteVentas.setModel(modeloTabla);
-        Date d = new Date();
         //conexion Unionsis2 = conexion.getInstancia();
         cn = Unionsis2.getConnection();
         try {
@@ -298,7 +297,7 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
      
      
      
-     public List ListarVentasGenerales(JComboBox Seleccion){
+     public List ListarVentasGenerales(JComboBox Seleccion, JComboBox Seleccion2){
         JButton btn1 = new JButton();
         JButton btn2 = new JButton();
         btn1.setName("edit");
@@ -312,45 +311,39 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         ImageIcon ro2= new ImageIcon(retValue2);
 
         btn1.setIcon(ro);*/
-        btn1.setBackground(new Color(0,195,0));
-        btn1.setText("DETALLES");
-        List<Venta> Listapro = new ArrayList();
-        cn = Unionsis2.getConnection();
-        ps= null;
-        rs= null;
-        String Filtro ="";
-        switch (Seleccion.getSelectedIndex()) {
-            case 0:
-                Filtro="FACTURADO";
-                break;
-            case 1:
-                Filtro="ANULADO";
-                break;
-            default:
-                break;
-        }
-        try {
-            Venta v;
-             ps = cn.prepareStatement("select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where Estado='"+Filtro+"' ORDER BY IdRegistro DESC");
-            rs = ps.executeQuery();
+         btn1.setBackground(new Color(0, 195, 0));
+         btn1.setText("DETALLES");
+         List<Venta> Listapro = new ArrayList();
+         cn = Unionsis2.getConnection();
+         ps = null;
+         rs = null;
+         try {
+             Venta v;
+             ps = cn.prepareStatement("select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where (registro.Estado='" + Seleccion.getSelectedItem().toString() + "' AND registro.TipoDocumentoFel='" + Seleccion2.getSelectedItem().toString() + "') ORDER BY IdRegistro DESC");
+             rs = ps.executeQuery();
 
-            while (rs.next()) {
-                v = new Venta();
-                v.setIdRegistro(rs.getInt("IdRegistro"));
-                v.setCliente(rs.getString("Cliente"));
-                v.setHora(rs.getString("Hora"));
-                v.setFecha(rs.getString("Fecha"));
-                v.setTotal(rs.getFloat("Total"));
-                v.setPagocon(rs.getFloat("Pago"));
-                v.setCambio(rs.getFloat("Cambio"));
-                v.setNoFactura(rs.getString("NoFactura"));
-                v.setFormaPago(rs.getString("FormaPago"));
-                v.setUsuario(rs.getInt("Usuario"));
-                v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
-                v.setEstado(rs.getString("Estado"));
-                v.setDetalles(btn1);
-               Listapro.add(v);
-            }
+             while (rs.next()) {
+                 v = new Venta();
+                 v.setIdRegistro(rs.getInt("IdRegistro"));
+                 v.setIDENTIFICACION_CLIENTE(rs.getString("NitCliente"));
+                 v.setCliente(rs.getString("Cliente"));
+                 v.setHora(rs.getString("Hora"));
+                 v.setFecha(rs.getString("Fecha"));
+                 v.setTotal(rs.getFloat("Total"));
+                 v.setPagocon(rs.getFloat("Pago"));
+                 v.setCambio(rs.getFloat("Cambio"));
+                 v.setNoFactura(rs.getString("NoFactura"));
+                 v.setFormaPago(rs.getString("FormaPago"));
+                 v.setUsuario(rs.getInt("Usuario"));
+                 v.setUSUARIO_REGISTRO_LETRAS(rs.getString("NombreUsuario"));
+                 v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
+                 v.setEstado(rs.getString("Estado"));
+                 v.setDetalles(btn1);
+                 Listapro.add(v);
+             }
 
         } catch (SQLException e) {
             System.err.println("Error ListarVentasGenerales, " + e);
@@ -386,9 +379,15 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         
         String Sql;
         if(IncluirFecha==true){
-          Sql="select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where NoFactura='"+NombreProducto.getText()+"' AND Fecha='"+fecha+"' ORDER BY IdRegistro DESC";
+          Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where NoFactura='"+NombreProducto.getText()+"' AND Fecha='"+fecha+"' ORDER BY IdRegistro DESC";
         }else{
-         Sql="select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where NoFactura='"+NombreProducto.getText()+"' ORDER BY IdRegistro DESC";   
+         Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where NoFactura='"+NombreProducto.getText()+"' ORDER BY IdRegistro DESC";   
         }
         
         try {
@@ -399,17 +398,19 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
             while (rs.next()) {
                 v = new Venta();
                 v.setIdRegistro(rs.getInt("IdRegistro"));
-                v.setCliente(rs.getString("Cliente"));
-                v.setHora(rs.getString("Hora"));
-                v.setFecha(rs.getString("Fecha"));
-                v.setTotal(rs.getFloat("Total"));
-                v.setPagocon(rs.getFloat("Pago"));
-                v.setCambio(rs.getFloat("Cambio"));
-                v.setNoFactura(rs.getString("NoFactura"));
-                v.setFormaPago(rs.getString("FormaPago"));
-                v.setUsuario(rs.getInt("Usuario"));
-                v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
-                v.setEstado(rs.getString("Estado"));
+                 v.setIDENTIFICACION_CLIENTE(rs.getString("NitCliente"));
+                 v.setCliente(rs.getString("Cliente"));
+                 v.setHora(rs.getString("Hora"));
+                 v.setFecha(rs.getString("Fecha"));
+                 v.setTotal(rs.getFloat("Total"));
+                 v.setPagocon(rs.getFloat("Pago"));
+                 v.setCambio(rs.getFloat("Cambio"));
+                 v.setNoFactura(rs.getString("NoFactura"));
+                 v.setFormaPago(rs.getString("FormaPago"));
+                 v.setUsuario(rs.getInt("Usuario"));
+                 v.setUSUARIO_REGISTRO_LETRAS(rs.getString("NombreUsuario"));
+                 v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
+                 v.setEstado(rs.getString("Estado"));
                 v.setDetalles(btn1);
                Listapro.add(v);
             }
@@ -425,7 +426,7 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
        return Listapro;
     }
      
-     public List ListarVentasGeneralesPorFecha(JDateChooser FechaInicial, JDateChooser FechaFinal){
+     public List ListarVentasGeneralesPorFecha(JDateChooser FechaInicial, JDateChooser FechaFinal, JComboBox Seleccion, JComboBox Seleccion2){
         JButton btn1 = new JButton();
         JButton btn2 = new JButton();
         btn1.setName("edit");
@@ -456,23 +457,28 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         rs= null;
         try {
             Venta v;
-             ps = cn.prepareStatement("select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where Fecha BETWEEN '"+fecha+"' AND '"+fecha2+"' ORDER BY IdRegistro DESC");
+             ps = cn.prepareStatement("select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where (Fecha BETWEEN '"+fecha+"' AND '"+fecha2+"' AND registro.Estado='" + Seleccion.getSelectedItem().toString() + "' AND registro.TipoDocumentoFel='" + Seleccion2.getSelectedItem().toString() + "') ORDER BY IdRegistro DESC");
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 v = new Venta();
                 v.setIdRegistro(rs.getInt("IdRegistro"));
-                v.setCliente(rs.getString("Cliente"));
-                v.setHora(rs.getString("Hora"));
-                v.setFecha(rs.getString("Fecha"));
-                v.setTotal(rs.getFloat("Total"));
-                v.setPagocon(rs.getFloat("Pago"));
-                v.setCambio(rs.getFloat("Cambio"));
-                v.setNoFactura(rs.getString("NoFactura"));
-                v.setFormaPago(rs.getString("FormaPago"));
-                v.setUsuario(rs.getInt("Usuario"));
-                v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
-                v.setEstado(rs.getString("Estado"));
+                 v.setIDENTIFICACION_CLIENTE(rs.getString("NitCliente"));
+                 v.setCliente(rs.getString("Cliente"));
+                 v.setHora(rs.getString("Hora"));
+                 v.setFecha(rs.getString("Fecha"));
+                 v.setTotal(rs.getFloat("Total"));
+                 v.setPagocon(rs.getFloat("Pago"));
+                 v.setCambio(rs.getFloat("Cambio"));
+                 v.setNoFactura(rs.getString("NoFactura"));
+                 v.setFormaPago(rs.getString("FormaPago"));
+                 v.setUsuario(rs.getInt("Usuario"));
+                 v.setUSUARIO_REGISTRO_LETRAS(rs.getString("NombreUsuario"));
+                 v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
+                 v.setEstado(rs.getString("Estado"));
                 v.setDetalles(btn1);
                Listapro.add(v);
             }
@@ -510,9 +516,9 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         rs= null;
         String Sql;
         if(IncluirFecha==true){
-        Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where Fecha='"+fecha+"' AND Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%'";
+        Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where Fecha='"+fecha+"' AND Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%' ORDER BY Iddetalle DESC";
         }else{
-        Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%'";   
+        Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%' ORDER BY Iddetalle DESC";   
         }
         try {
             Venta v;
@@ -565,18 +571,30 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         String Sql;
         if(IncluirFecha==true){
           if(IncluirUSUARIO==true){
-            Sql="select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where TipoDocumentoFel='"+Seleccion.getSelectedItem().toString()+
+            Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where TipoDocumentoFel='"+Seleccion.getSelectedItem().toString()+
                     "' AND Fecha='"+fecha+"' AND Usuario='"+USUARIO+"' ORDER BY IdRegistro DESC";  
           }else{
-              Sql="select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where TipoDocumentoFel='"
+              Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where TipoDocumentoFel='"
                   +Seleccion.getSelectedItem().toString()+"' AND Fecha='"+fecha+"' ORDER BY IdRegistro DESC";
           }
         }else{
          if(IncluirUSUARIO==true){
-             Sql="select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where TipoDocumentoFel='"
+             Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where TipoDocumentoFel='"
                  +Seleccion.getSelectedItem().toString()+"' AND Usuario='"+USUARIO+"' ORDER BY IdRegistro DESC";  
          }else{
-             Sql="select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where TipoDocumentoFel='"
+             Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                     + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                     + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
+                     + "where TipoDocumentoFel='"
                  +Seleccion.getSelectedItem().toString()+"' ORDER BY IdRegistro DESC";
          }
         }
@@ -589,17 +607,19 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
             while (rs.next()) {
                 v = new Venta();
                 v.setIdRegistro(rs.getInt("IdRegistro"));
-                v.setCliente(rs.getString("Cliente"));
-                v.setHora(rs.getString("Hora"));
-                v.setFecha(rs.getString("Fecha"));
-                v.setTotal(rs.getFloat("Total"));
-                v.setPagocon(rs.getFloat("Pago"));
-                v.setCambio(rs.getFloat("Cambio"));
-                v.setNoFactura(rs.getString("NoFactura"));
-                v.setFormaPago(rs.getString("FormaPago"));
-                v.setUsuario(rs.getInt("Usuario"));
-                v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
-                v.setEstado(rs.getString("Estado"));
+                 v.setIDENTIFICACION_CLIENTE(rs.getString("NitCliente"));
+                 v.setCliente(rs.getString("Cliente"));
+                 v.setHora(rs.getString("Hora"));
+                 v.setFecha(rs.getString("Fecha"));
+                 v.setTotal(rs.getFloat("Total"));
+                 v.setPagocon(rs.getFloat("Pago"));
+                 v.setCambio(rs.getFloat("Cambio"));
+                 v.setNoFactura(rs.getString("NoFactura"));
+                 v.setFormaPago(rs.getString("FormaPago"));
+                 v.setUsuario(rs.getInt("Usuario"));
+                 v.setUSUARIO_REGISTRO_LETRAS(rs.getString("NombreUsuario"));
+                 v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
+                 v.setEstado(rs.getString("Estado"));
                 v.setDetalles(btn1);
                Listapro.add(v);
             }
@@ -615,7 +635,7 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
        return Listapro;
     }
      
-     public List ListarVentasGeneralesPorCliente(JTextField Cliente, Boolean IncluirFecha, JComboBox EstadoDocumento){
+     public List ListarVentasGeneralesPorCliente(String Cliente, JComboBox EstadoDocumento){
         JButton btn1 = new JButton();
         JButton btn2 = new JButton();
         btn1.setName("edit");
@@ -647,31 +667,40 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
                 break;
         }
         String Sql;
-        if(IncluirFecha==true){
-          Sql="select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where Cliente LIKE '%' '"+Cliente.getText()+"' '%' AND Estado='"+Filtro+"' AND Fecha='"+fecha+"' ORDER BY IdRegistro DESC";
-        }else{
-         Sql="select IdRegistro, Cliente, Hora, Fecha, Total, Pago, Cambio, NoFactura, FormaPago, Usuario, TipoDocumentoFel, Estado from  registro where Cliente LIKE '%' '"+Cliente.getText()+"' '%' AND Estado='"+Filtro+"' ORDER BY IdRegistro DESC";   
-        }
-        
-        try {
-            Venta v;
+        /*if(IncluirFecha==true){
+          Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                  + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                  + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1) "
+                  + "where Cliente LIKE '%' '"+Cliente.getText()+"' '%' AND registro.Estado='"+Filtro+"' "
+                  + "AND registro.Fecha='"+fecha+"' ORDER BY IdRegistro DESC";
+        }else{*/
+         Sql = "select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
+                 + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
+                 + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1) "
+                 + "where Cliente LIKE '%' '" + Cliente + "' '%' AND registro.Estado='" + Filtro + "' ORDER BY IdRegistro DESC";
+         //}
+
+         try {
+             Venta v;
              ps = cn.prepareStatement(Sql);
-            rs = ps.executeQuery();
+             rs = ps.executeQuery();
 
             while (rs.next()) {
                 v = new Venta();
                 v.setIdRegistro(rs.getInt("IdRegistro"));
-                v.setCliente(rs.getString("Cliente"));
-                v.setHora(rs.getString("Hora"));
-                v.setFecha(rs.getString("Fecha"));
-                v.setTotal(rs.getFloat("Total"));
-                v.setPagocon(rs.getFloat("Pago"));
-                v.setCambio(rs.getFloat("Cambio"));
-                v.setNoFactura(rs.getString("NoFactura"));
-                v.setFormaPago(rs.getString("FormaPago"));
-                v.setUsuario(rs.getInt("Usuario"));
-                v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
-                v.setEstado(rs.getString("Estado"));
+                 v.setIDENTIFICACION_CLIENTE(rs.getString("NitCliente"));
+                 v.setCliente(rs.getString("Cliente"));
+                 v.setHora(rs.getString("Hora"));
+                 v.setFecha(rs.getString("Fecha"));
+                 v.setTotal(rs.getFloat("Total"));
+                 v.setPagocon(rs.getFloat("Pago"));
+                 v.setCambio(rs.getFloat("Cambio"));
+                 v.setNoFactura(rs.getString("NoFactura"));
+                 v.setFormaPago(rs.getString("FormaPago"));
+                 v.setUsuario(rs.getInt("Usuario"));
+                 v.setUSUARIO_REGISTRO_LETRAS(rs.getString("NombreUsuario"));
+                 v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
+                 v.setEstado(rs.getString("Estado"));
                 v.setDetalles(btn1);
                Listapro.add(v);
             }

@@ -1,4 +1,5 @@
 package Vista;
+
 import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
 import CLASES_GLOBALES.PARAMETROS_BASE_DE_DATOS;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
@@ -8,12 +9,9 @@ import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import CONTROL_DE_ACTUALIZACIÓNES.CONTROL_DE_ACTUALIZACIÓNES;
 import Vista.ADMINISTRACION.INVENTARIO.Ubicaciones;
 import Vista.ADMINISTRACION.INVENTARIO.CategoriaVista;
-import Modelo.Productos;
-import Controlador.ProductosDao;
 import Controlador.loginDao;
 import Excel.Excel;
 import Configuraciones.Ventas;
-import Controlador.DatosEmpresaDao;
 import PROMOCIONES.ETIQUETAS.Promociones;
 import Reportes.Reportes;
 import Vista.ADMINISTRACION.CLIENTES.CLIENTES;
@@ -28,7 +26,6 @@ import Vista.ADMINISTRACION.INVENTARIO.INVENTARIO;
 import Vista.ADMINISTRACION.INVENTARIO.ImportarExcel;
 import Vista.ADMINISTRACION.INVENTARIO.KARDEX;
 import Vista.ADMINISTRACION.PROVEEDORES.GASTOS_NUEVO;
-import Vista.ADMINISTRACION.PROVEEDORES.HISTORIAL_GASTOS;
 import Vista.POS.MODO_ESPERA;
 import Vista.POS.POS;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_DIARIOS;
@@ -36,6 +33,7 @@ import Vista.REPORTES_VENTAS.MOVIMIENTOS_GENERALES;
 import Vista.SESION.SESION;
 import Vista.VENTAS.CAJA.INTERNAL_CAJA_PRINCIPAL;
 import Vista.VENTAS.CAJA.VER_CAJAS;
+import Vista.Vales.Vales_Principal;
 import WebServiceDigifact.ObtenerToken;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -60,13 +58,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public final class Principal extends javax.swing.JFrame {
-    ProductosDao proDao;
-    Productos pro = new Productos();
-    PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();;
+
     Ventas ConfigVentas = new Ventas();
 
     Reportes Re = new Reportes();
-    
+
     loginDao logina = new loginDao();
     public ADMINISTRARPRODUCTO AdminProduct;
     public CategoriaVista Cat;
@@ -80,31 +76,32 @@ public final class Principal extends javax.swing.JFrame {
     public boolean VentanaUbicaciones = false;
     public boolean VentanaConfiguraciones = false;
     public boolean VentanaDetalleDeVenta = false;
-    
+
     //VENTANAS
-    MOVIMIENTOS_GENERALES MG= new MOVIMIENTOS_GENERALES(this);
-    USUARIOS_INTERNOS UI= new USUARIOS_INTERNOS(this);
-    public CLIENTES C= new CLIENTES(this);
-    PROVEEDORES P= new PROVEEDORES();
-    SESION S= new SESION();
-    DASHBOARD D= new DASHBOARD(this);
+    MOVIMIENTOS_GENERALES MG = new MOVIMIENTOS_GENERALES(this);
+    USUARIOS_INTERNOS UI = new USUARIOS_INTERNOS(this);
+    public CLIENTES C = new CLIENTES(this);
+    PROVEEDORES P = new PROVEEDORES();
+    SESION S = new SESION();
+    DASHBOARD D = new DASHBOARD(this);
     EMPRESA E = new EMPRESA(this);
     public POS P_O_S = new POS(this);
     CotizacionesGenerales CG = new CotizacionesGenerales(P_O_S);
-    MOVIMIENTOS_DIARIOS MD= new MOVIMIENTOS_DIARIOS(this);
+    MOVIMIENTOS_DIARIOS MD = new MOVIMIENTOS_DIARIOS(this);
     INVENTARIO I = new INVENTARIO(P_O_S, this);
     //POS P_O_S= new POS();
     INTERNAL_CAJA_PRINCIPAL INTERNAL_CAJA_P = new INTERNAL_CAJA_PRINCIPAL(this);
-    MODO_ESPERA M_E= new MODO_ESPERA();
-    KARDEX K= new KARDEX();
+    Vales_Principal V_P= new Vales_Principal();
+    MODO_ESPERA M_E = new MODO_ESPERA();
+    KARDEX K = new KARDEX();
     //VENTANAS EMERGENTES
     public ADMINISTRACION_DE_USUARIOS ADMIN_USUARIOS;
     //NUMERO INTERNO DE VENTA    
-    
-    public Principal(){
-        
+
+    public Principal() {
+
     }
-    
+
     public Principal(String Validar) {
         initComponents();
         this.setExtendedState(Principal.MAXIMIZED_BOTH);
@@ -288,6 +285,8 @@ public final class Principal extends javax.swing.JFrame {
         ItemVentas = new javax.swing.JMenuItem();
         jSeparator23 = new javax.swing.JPopupMenu.Separator();
         jMenuItem20 = new javax.swing.JMenuItem();
+        jSeparator41 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem32 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuItem14 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -673,6 +672,16 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem20);
+        jMenu2.add(jSeparator41);
+
+        jMenuItem32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/checklist_106575.png"))); // NOI18N
+        jMenuItem32.setText("VALES");
+        jMenuItem32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem32ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem32);
         jMenu2.add(jSeparator3);
 
         jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/ENTRADAS_SALIDAS_32PX.png"))); // NOI18N
@@ -1288,41 +1297,45 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
-        if(VentanaConfiguraciones==false){
-            VentanaConfiguraciones=true;
-            conf= new Config(this);
-          conf.setVisible(true);
-        conf.setLocationRelativeTo(null);  
-        }else{
+        if (VentanaConfiguraciones == false) {
+            VentanaConfiguraciones = true;
+            conf = new Config(this);
+            conf.setVisible(true);
+            conf.setLocationRelativeTo(null);
+        } else {
             conf.toFront();
         }
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
-    
+
     private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
-        ImportarExcel IE= new ImportarExcel();
+        ImportarExcel IE = new ImportarExcel();
         IE.setVisible(true);
     }//GEN-LAST:event_jMenuItem21ActionPerformed
 
     private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
-       /* int TotalDeFila= tablaProductos.getRowCount();
+        /* int TotalDeFila= tablaProductos.getRowCount();
         if(TotalDeFila<= 300){
         ReporteProductosCatalago();    
         }else{
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("ERROR AL GENERAR CATÁLOGO", "NO PUEDE GENERAR UN REPORTE DE CATÁLOGO CON MAS DE 50 REGISTRO :(",DesktopNotify.ERROR, 14000L);
         }*/
-        
+
     }//GEN-LAST:event_jMenuItem22ActionPerformed
 
     private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
-        if(jLabel4.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "SI NO EXISTE, PIDELE AL ADMINISTRADOR QUE APERTURA UNA :)", "NECESITAS SELECCIONAR UNA CAJA", JOptionPane.WARNING_MESSAGE);
-            VER_CAJAS CA= new VER_CAJAS(this, true, this);
+        if (jLabel4.getText().equals("")) {
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
-        }else{
+            if (jLabel4.getText().equals("")) {
+            } else {
+                ABRIR_VENTANAS(CG, true);
+                CG.ActualizarTablaEstado();
+            }
+        } else {
             ABRIR_VENTANAS(CG, true);
-        CG.ActualizarTablaEstado();
+            CG.ActualizarTablaEstado();
         }
     }//GEN-LAST:event_jMenuItem20ActionPerformed
 
@@ -1519,6 +1532,19 @@ public final class Principal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jMenuItem23ActionPerformed
+
+    private void jMenuItem32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem32ActionPerformed
+        if (jLabel4.getText().equals("")) {
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
+            } else {
+                ABRIR_VENTANAS(V_P, true);
+            }
+        } else {
+            ABRIR_VENTANAS(V_P, true);
+        }
+    }//GEN-LAST:event_jMenuItem32ActionPerformed
 
     public void EXPORTAR() {
         if (P_O_S.TablaVentas.getRowCount() < 1) {
@@ -1760,6 +1786,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem30;
     private javax.swing.JMenuItem jMenuItem31;
+    private javax.swing.JMenuItem jMenuItem32;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -1804,6 +1831,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator39;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator40;
+    private javax.swing.JPopupMenu.Separator jSeparator41;
     private javax.swing.JSeparator jSeparator43;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator56;
