@@ -1139,6 +1139,7 @@ public void GenerarVenta() {
             case 1 -> {
             switch (pagocon.getText()) {
                 case "" -> JOptionPane.showMessageDialog(null, "¡AÚN NO INGRESO LA CANTIDAD DE PAGO!");
+                
                 case "0.00" -> {
                     if(VentanaFormaPago==true){
                         Pagos.toFront();
@@ -1560,9 +1561,7 @@ public void GenerarVenta() {
             if (i == 0) {
                 ConsultarNit_CUIFinal("CF");
                 EnviarParametrosAXML();
-            }else{
-            EnviarParametrosAXML();
-        }
+            }
             }
         }else{
             EnviarParametrosAXML();
