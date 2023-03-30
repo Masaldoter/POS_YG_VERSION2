@@ -1,6 +1,7 @@
 //[52,118,243]
 package Vista;
 
+import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import Controlador.DatosEmpresaDao;
@@ -11,9 +12,14 @@ import Modelo.DatosEmpresaGeneral;
 import WebServiceDigifact.ObtenerToken;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -33,9 +40,10 @@ public class LOGIN extends javax.swing.JFrame {
     InputStream entrada = null;
     FondoPanel fondo = new FondoPanel();
     PARAMETROS_EMPRESA P_E;
+    DatosEmpresaGeneral DE = new DatosEmpresaGeneral();
     @Override
     public Image getIconImage() {
-        DatosEmpresaGeneral DE = new DatosEmpresaGeneral();
+        
         DE = login.VerDatosEmpresaEnLogin();
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(CargarDatosRutas(0) + "\\" + DE.getRutaimagensistema());
@@ -54,6 +62,22 @@ public class LOGIN extends javax.swing.JFrame {
         this.setTitle("LOGIN | POS " + PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA);
         CargarImagen();
         CargarDatos();
+        
+        try {
+      BufferedImage originalImage = ImageIO.read(new File(CargarDatosRutas(0) + "\\" + DE.getRutaimagensistema()));
+      Image scaledImage = originalImage.getScaledInstance(10, 10, Image.SCALE_SMOOTH);
+      BufferedImage icon = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+      Graphics g2 = icon.getGraphics();
+      g2.setColor(Color.RED); // Cambia aquí el color de fondo del icono
+      g2.fillRect(0, 0, 16, 16);
+      g2.drawImage(scaledImage, 3, 3, null);
+      // Establece la transparencia del dibujo para que se vean el color de fondo y la imagen
+      ((Graphics2D) g2).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+      g2.dispose();
+      setIconImage(icon); // Establece la imagen como el icono del JFrame
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     }
 
     public static void TextoEnCajas() {

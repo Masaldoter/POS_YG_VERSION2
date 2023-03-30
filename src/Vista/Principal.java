@@ -35,7 +35,9 @@ import Vista.VENTAS.CAJA.INTERNAL_CAJA_PRINCIPAL;
 import Vista.VENTAS.CAJA.VER_CAJAS;
 import Vista.Vales.Vales_Principal;
 import WebServiceDigifact.ObtenerToken;
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -43,12 +45,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -142,6 +146,22 @@ public final class Principal extends javax.swing.JFrame {
         }
         AlIniciarSesion();
         Cerrar();
+        
+    try {
+      BufferedImage originalImage = ImageIO.read(new File(ObtenerRutaImagen(1)));
+      Image scaledImage = originalImage.getScaledInstance(10, 10, Image.SCALE_SMOOTH);
+      BufferedImage icon = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+      Graphics g2 = icon.getGraphics();
+      g2.setColor(Color.WHITE); // Cambia aquí el color de fondo del icono
+      g2.fillRect(0, 0, 16, 16);
+      g2.drawImage(scaledImage, 3, 3, null);
+      // Establece la transparencia del dibujo para que se vean el color de fondo y la imagen
+      ((Graphics2D) g2).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+      g2.dispose();
+      setIconImage(icon); // Establece la imagen como el icono del JFrame
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     }
     
     public void CARGAR_TITULO(){
