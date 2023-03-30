@@ -1099,7 +1099,8 @@ public final class Detalles extends javax.swing.JFrame {
     }
     
     
-    public void FacturaCopiaSinImprimir(Boolean Guardar, int TipoDocumentoImpresion) {
+    public String FacturaCopiaSinImprimir(Boolean Guardar, int TipoDocumentoImpresion) {
+        String RUTA = "";
         Documentos documentos = new Documentos();
         DatosEmpresaDao datosDao= new DatosEmpresaDao();
         DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
@@ -1138,15 +1139,13 @@ public final class Detalles extends javax.swing.JFrame {
         }else{
             
             if(TipoDocumentoImpresion== 0){
-                documentos.CrearYGuardarDocumento(datos, datosempresa,DatosCertificador, Fel,"N° Interno", TablaDetalles, 0);
+                RUTA = documentos.CrearYGuardarDocumento(datos, datosempresa,DatosCertificador, Fel,"N° Interno", TablaDetalles, 0);
         }else if(TipoDocumentoImpresion== 1){
-            documentos.CrearYGuardarDocumento(datos, datosempresa,DatosCertificador, Fel,"N° Interno", TablaDetalles, 1);
+            RUTA =  documentos.CrearYGuardarDocumento(datos, datosempresa,DatosCertificador, Fel,"N° Interno", TablaDetalles, 1);
         }
             
         }
-        
-        
-
+        return RUTA;
     }
     
     public void abrirarchivo(String archivo){
@@ -1177,8 +1176,7 @@ public final class Detalles extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        FacturaCopiaSinImprimir(false, jComboBox1.getSelectedIndex());
-        InterfazGmail VP= new InterfazGmail(Fac.getText(), CajaVendedor.getText());
+        InterfazGmail VP= new InterfazGmail(Fac.getText(), CajaVendedor.getText(), FacturaCopiaSinImprimir(true, jComboBox1.getSelectedIndex()), TipoDocumento.getText());
         VP.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

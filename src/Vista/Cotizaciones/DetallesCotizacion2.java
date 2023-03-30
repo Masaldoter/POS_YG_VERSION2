@@ -255,13 +255,15 @@ public class DetallesCotizacion2 extends javax.swing.JInternalFrame {
         }
     }
     
-    public void Imprimir(){
+    public String Imprimir(){
+        String RUTA =  "";
         if(jComboBox1.getSelectedIndex()== 0){
-            Proforma(0);
+            RUTA = ProformaGuardar(0);
         }else if(jComboBox1.getSelectedIndex()== 1){
-            Proforma(1);
+            RUTA = ProformaGuardar(1);
        
         }
+        return RUTA;
     }
     
     public void Proforma(int TipoDocumentoImpresion) {
@@ -299,6 +301,44 @@ public class DetallesCotizacion2 extends javax.swing.JInternalFrame {
                 Logger.getLogger(Detalles.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public String ProformaGuardar(int TipoDocumentoImpresion) {
+        String RUTA = "";
+        Documentos documentos = new Documentos();
+        DatosEmpresaDao datosDao= new DatosEmpresaDao();
+        DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
+        DaEm = datosDao.VerDatos();      
+        DatosEmpresa datosempresa= new DatosEmpresa();
+        datosempresa.setUsuario(CajaVendedor.getText());
+        datosempresa.setNombreEmpresa(DaEm.getNombreEmpresa());
+        datosempresa.setNit(DaEm.getNit());
+        datosempresa.setDireccion(DaEm.getDireccion());
+        datosempresa.setTel(DaEm.getTel());
+        datosempresa.setEslogan(DaEm.getEslogan());
+        datosempresa.setPoliticas(DaEm.getPoliticas());
+        //DATOS DE AUTORIZACION DE DTE
+ 
+        DocumentoFel Fel= new DocumentoFel();
+        Fel.setTipoDocumento(TipoDocumento.getText());
+        DatosClienteYFactura datos;
+        datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), "", Fac.getText(), CajaTotal.getText(), "0.00", "0.00", Fac.getText(), Fac.getText(), 
+        "", "", CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " "+Fechaventa.getText(), Fechaventa.getText());
+        
+        if(TipoDocumentoImpresion== 0){
+            try {    
+                RUTA = documentos.DocumentoCotizacionGuardar(datos, datosempresa, "N° Interno", TablaDetalles, Fel, 0);
+            } catch (PrinterException ex) {
+                Logger.getLogger(Detalles.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else if(TipoDocumentoImpresion== 1){
+            try {    
+                RUTA = documentos.DocumentoCotizacionGuardar(datos, datosempresa, "N° Interno", TablaDetalles, Fel, 1);
+            } catch (PrinterException ex) {
+                Logger.getLogger(Detalles.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return RUTA;
     }
     
     public void abrirarchivo(String archivo){
@@ -764,7 +804,7 @@ public class DetallesCotizacion2 extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        InterfazGmail VP= new InterfazGmail(Fac.getText(), CajaVendedor.getText());
+        InterfazGmail VP= new InterfazGmail(Fac.getText(), CajaVendedor.getText(), Imprimir(), TipoDocumento.getText());
         VP.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

@@ -472,8 +472,8 @@ public class Documentos {
 
     }
 
-    public void DocumentoCotizacionGuardar(DatosClienteYFactura datos, DatosEmpresa Empresa, String TipoDocumento, JTable tabla, DocumentoFel Fel, int TipoDocumentoImpresion) throws PrinterException {
-
+    public String DocumentoCotizacionGuardar(DatosClienteYFactura datos, DatosEmpresa Empresa, String TipoDocumento, JTable tabla, DocumentoFel Fel, int TipoDocumentoImpresion) throws PrinterException {
+        String ruta2 = "";
         Empleado em;// Instaciamos la clase empleado
         Fac datoscliente;
         Impresora.CargarDatosImpresoras();
@@ -531,7 +531,7 @@ public class Documentos {
             selectPath = chooser.getSelectedFile().getPath();
         }
             
-            String ruta2 = selectPath + "\\" + a;
+            ruta2 = selectPath + "\\" + a;
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
@@ -541,12 +541,12 @@ public class Documentos {
             System.out.println("Error  en Reporte Proforma, " + ex);
 
         }
-
+        return ruta2;
     }
 
     
-    public void CrearYGuardarDocumento(DatosClienteYFactura datos, DatosEmpresa Empresa, DatosCertificador DatosCertificador, DocumentoFel Fel, String TipoDocumento, JTable tabla, int TipoDocumentoImpresion) {
-
+    public String CrearYGuardarDocumento(DatosClienteYFactura datos, DatosEmpresa Empresa, DatosCertificador DatosCertificador, DocumentoFel Fel, String TipoDocumento, JTable tabla, int TipoDocumentoImpresion) {
+        String ruta2 = null;
         Empleado em;// Instaciamos la clase empleado
         Fac datoscliente;
         String a = null;
@@ -635,7 +635,7 @@ public class Documentos {
             selectPath = chooser.getSelectedFile().getPath();
         }
             
-            String ruta2 = selectPath + "\\" + a;
+            ruta2 = selectPath + "\\" + a;
             String directorio2 = new File("/Sistema Punto de Venta YG/" + Doc + ".jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
@@ -647,9 +647,9 @@ public class Documentos {
             System.out.println("Error  en Reporte Factura, " + ex);
 
         }
-
+        return ruta2;
     }
-
+    
     private void estableceImpresoraPredeterminada(String printerName) {
         String cmdLine = String.format("RUNDLL32 PRINTUI.DLL,PrintUIEntry /y /n \"%s\"", printerName);
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", cmdLine);

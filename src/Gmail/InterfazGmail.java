@@ -30,13 +30,17 @@ public class InterfazGmail extends javax.swing.JFrame {
     public InterfazGmail() {
         //initComponents();
     }
-    public InterfazGmail(String NumeroFactura, String IdUsuario) {
+    public InterfazGmail(String NumeroFactura, String IdUsuario, String RUTA, String TIPO_DOCUMENTO) {
         initComponents();
         jLabel7.setText(IdUsuario);
         Factura.setText(NumeroFactura);
         this.setLocationRelativeTo(null);
         CargarDatosEmpresa();
-        CargarDocumento();
+        ArchivoAdjunto.setText(RUTA);
+        CuerpoMensaje.setText("¡HOLA, TE ADJUNTAMOS EL DETALLE DE TU "+TIPO_DOCUMENTO+"!\n" +
+" GRACIAS POR TU PREFERENCIA! :)");
+        AsuntoMensaje.setText("TE ADJUNTAMOS TU "+TIPO_DOCUMENTO+" #"+Factura.getText());
+        //CargarDocumento();
     }
 
     public void CargarDatosEmpresa(){
@@ -117,6 +121,8 @@ public class InterfazGmail extends javax.swing.JFrame {
 
         jLabel3.setText("CORREO RECEPTOR:");
 
+        CajaCorreoReceptor.setText("aldomusic179@gmail.com");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -178,7 +184,7 @@ public class InterfazGmail extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AsuntoMensaje))
                     .addComponent(jLabel6)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE))
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -191,7 +197,7 @@ public class InterfazGmail extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ArchivoAdjunto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -223,11 +229,11 @@ public class InterfazGmail extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 595, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 534, Short.MAX_VALUE)
+            .addGap(0, 577, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("", jPanel2);
@@ -246,13 +252,13 @@ public class InterfazGmail extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("", jPanel3);
@@ -305,7 +311,7 @@ public class InterfazGmail extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ContraseniaRemitente, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)))
+                        .addComponent(ContraseniaRemitente, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)))
                 .addGap(20, 20, 20))
             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
@@ -331,12 +337,11 @@ public class InterfazGmail extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createSequentialGroup()
                     .addGap(230, 230, 230)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(231, Short.MAX_VALUE)))
+                    .addContainerGap(282, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("", jPanel7);
 
-        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/1492692368-7email_83536.png"))); // NOI18N
@@ -385,7 +390,7 @@ public class InterfazGmail extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -417,12 +422,12 @@ public class InterfazGmail extends javax.swing.JFrame {
         if(ventana == JFileChooser.APPROVE_OPTION){
             File file= archivo.getSelectedFile();
             ArchivoAdjunto.setText(file.toString());
-            CargarDocumento();
+           // CargarDocumento();
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
+/*        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         if(CajaCorreoReceptor.getText() != null){
         DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("¡ENVIANDO CORREO!","¡EL CORREO EL CORREO CON FACTURA "+Factura.getText()+" SE ESTÁ ENVIANDO!", DesktopNotify.INFORMATION, 9000L);
@@ -433,7 +438,10 @@ public class InterfazGmail extends javax.swing.JFrame {
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("¡ERROR!","¡DEBE INGRESAR EL CORREO DEL CLIENTE!", DesktopNotify.FAIL, 9000L);
         
-        }
+        }*/
+
+        EmailSender E= new EmailSender();
+        E.ENVIAR_CORREO(CajaRemitente.getText(), ContraseniaRemitente.getText(), CajaCorreoReceptor.getText(), AsuntoMensaje.getText(), CuerpoMensaje.getText(), ArchivoAdjunto.getText());
         
     }//GEN-LAST:event_jButton4ActionPerformed
 

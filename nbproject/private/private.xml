@@ -5,8 +5,13 @@
         <group>
             <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Principal.java</file>
             <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/REPORTES_VENTAS/MOVIMIENTOS_GENERALES.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Cotizaciones/DetallesCotizacion2.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Gmail/InterfazGmail.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Detalles.java</file>
             <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/POS/POS.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Gmail/EmailSender.java</file>
             <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/CLASES_GLOBALES/METODOS_GLOBALES.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Cotizaciones/DetalleCotizacion.java</file>
         </group>
     </open-files>
 </project-private>
