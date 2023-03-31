@@ -74,7 +74,7 @@ public class EmailSender {
          // Enviar el correo electrónico
          Transport.send(message);
          DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-            DesktopNotify.showDesktopMessage("ÉXITO", "CORREO ENVIADO EXITÓSAMENTE A: "+RECEPTOR, DesktopNotify.SUCCESS, 10000L);
+            DesktopNotify.showDesktopMessage("ÉXITO", "CORREO ENVIADO ÉXITOSAMENTE A: "+RECEPTOR, DesktopNotify.SUCCESS, 10000L);
          return true;
       } catch (MessagingException mex) {
           DesktopNotify.setDefaultTheme(NotifyTheme.Light);

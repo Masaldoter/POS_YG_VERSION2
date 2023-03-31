@@ -365,6 +365,11 @@ public class InterfazGmail extends javax.swing.JFrame {
         jButton2.setText("RECIBIDOS");
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/email-send256_25228.png"))); // NOI18N
         jButton3.setText("ENVÍADOS");
@@ -528,6 +533,10 @@ public class InterfazGmail extends javax.swing.JFrame {
                 Logger.getLogger(InterfazGmail.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void LimpiarTablaVenta(JTable Tabla){
         DefaultTableModel modelo = new DefaultTableModel();
