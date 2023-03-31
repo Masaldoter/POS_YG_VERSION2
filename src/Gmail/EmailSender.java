@@ -4,6 +4,8 @@
  */
 package Gmail;
 
+import ds.desktop.notify.DesktopNotify;
+import ds.desktop.notify.NotifyTheme;
 import java.io.File;
 import java.util.Properties;
 import javax.activation.DataHandler;
@@ -13,7 +15,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 public class EmailSender {
-   public void ENVIAR_CORREO(String EMISOR, String CONTRASENIA, String RECEPTOR, String ASUNTO, String CUERPO, String RUTA_ARCHIVO) {
+   public Boolean ENVIAR_CORREO(String EMISOR, String CONTRASENIA, String RECEPTOR, String ASUNTO, String CUERPO, String RUTA_ARCHIVO) {
       String host = "smtp.gmail.com";
 
       Properties properties = System.getProperties();
@@ -24,6 +26,7 @@ public class EmailSender {
 
       Session session = Session.getDefaultInstance(properties,
          new javax.mail.Authenticator() {
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                return new PasswordAuthentication(EMISOR, CONTRASENIA);
             }
@@ -70,9 +73,14 @@ public class EmailSender {
 
          // Enviar el correo electrónico
          Transport.send(message);
-         System.out.println("Correo enviado exitosamente...");
+         DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+            DesktopNotify.showDesktopMessage("ÉXITO", "CORREO ENVIADO EXITÓSAMENTE A: "+RECEPTOR, DesktopNotify.SUCCESS, 10000L);
+         return true;
       } catch (MessagingException mex) {
+          DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+            DesktopNotify.showDesktopMessage("ERRÓR", "NO SE HA PODIDO ENVIAR EL CORREO\n ERROR: "+mex.getCause(), DesktopNotify.ERROR, 10000L);
          mex.printStackTrace();
+         return false;
       }
    }
 }
