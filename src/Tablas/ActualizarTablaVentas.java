@@ -38,23 +38,22 @@ import javax.swing.table.TableRowSorter;
 
 public class ActualizarTablaVentas extends ConexionesSQL{
     
-    ConsultasVentas v= new ConsultasVentas();
-    
+    ConsultasVentas v = new ConsultasVentas();
+
     private final int anchotabla[] = {8, 130, 6, 6, 6, 6, 6, 4, 4, 2};
-    public List ListarProductosTienda(){
-        
-        
-        
+
+    public List ListarProductosTienda() {
+
         List<Productos> Listapro = new ArrayList();
         Productos pro;
         cn = conexion.getInstancia().getConnection();
         try {
-            
+
             ps = cn.prepareStatement("select idProductos, CodigoBarras, Nombre, Cantidad, Costo, Publico, CodigoLetras, PrecioEs, PrecioRe from productos ORDER BY idProductos DESC");
             rs = ps.executeQuery();
 
             while (rs.next()) {
-               pro = new Productos();
+                pro = new Productos();
                 pro.setIdProductos(rs.getInt("idProductos"));
                 pro.setCodigoBarras(rs.getString("CodigoBarras"));
                 pro.setNombre(rs.getString("Nombre"));
@@ -64,34 +63,40 @@ public class ActualizarTablaVentas extends ConexionesSQL{
                 pro.setCodigoLetras(rs.getString("CodigoLetras"));
                 pro.setPrecioEs(rs.getFloat("PrecioEs"));
                 pro.setPrecioRe(rs.getFloat("PrecioRe"));
-               Listapro.add(pro);
+                Listapro.add(pro);
             }
 
         } catch (SQLException e) {
             System.err.println("Error, " + e);
-        }finally{
-                RsClose(rs);
+        } finally {
+            RsClose(rs);
             PsClose(ps);
             ConnectionClose(cn);
         }
-       
-       return Listapro;
+
+        return Listapro;
     }
-    
-    public List ListarProductosTiendaNombre(){
-        
+
+    public List ListarProductosTiendaNombre(String PARAMETRO) {
+
         List<Productos> Listapro = new ArrayList();
         Productos pro;
         cn = conexion.getInstancia().getConnection();
         try {
             
-            ps = cn.prepareStatement("select Nombre, ruta from productos WHERE (Estado_Productos='ACTIVO') ORDER BY idProductos DESC");
+            String[] palabras = PARAMETRO.split(" ");
+StringBuilder terminosBusqueda = new StringBuilder();
+
+for (String palabra : palabras) {
+    terminosBusqueda.append("+" + palabra + "* ");
+}
+            //"select Nombre, ruta from productos WHERE (Estado_Productos='ACTIVO') ORDER BY idProductos DESC"
+            ps = cn.prepareStatement("SELECT Nombre FROM productos WHERE MATCH (Nombre, Descripcion) AGAINST ('"+terminosBusqueda.toString()+"' IN BOOLEAN MODE) AND Estado_Productos='ACTIVO' ORDER BY idProductos DESC");
             rs = ps.executeQuery();
 
             while (rs.next()) {
                pro = new Productos();
                 pro.setNombre(rs.getString("Nombre"));
-                pro.setRuta(rs.getString("ruta"));
                Listapro.add(pro);
             }
 

@@ -1,6 +1,7 @@
 //[52,118,243]
 package Vista;
 
+import CLASES_GLOBALES.AL_INICIAR;
 import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
@@ -499,6 +500,8 @@ public class LOGIN extends javax.swing.JFrame {
                         D_E.VerDatosCertificador();
                         ObtenerToken OT = new ObtenerToken();
                         OT.ObtenerToken();
+                        AL_INICIAR INICIO= new AL_INICIAR();
+                        INICIO.VERIFICAR_FULLTEXT_PRODUCTOS();
                         AV.dispose();
                     }
                 };

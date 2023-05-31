@@ -1,5 +1,6 @@
 package ReportesImpresion;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
 import Clases_Reportes.DatosEmpresa;
 import Clases_Reportes.Empleado;
 import Clases_Reportes.Fac;
@@ -557,7 +558,7 @@ public class Documentos {
         List<Empleado> lista = new ArrayList<>(); //Creamos una lista de empleados con ArrayList para obtener cada empleado
         for (int i = 0; i < tabla.getRowCount(); i++) { // Iterena cada fila de la tabla
             em = new Empleado(tabla.getValueAt(i, 0).toString(), tabla.getValueAt(i, 1).toString(), //Tomamos de la tabla el valor de cada columna y creamos un objeto empleado
-                    tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 3).toString(), tabla.getValueAt(i, 4).toString());
+                    tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 3).toString(), tabla.getValueAt(i, 6).toString());
             lista.add(em); //Agregamos el objeto empleado a la lista
         }
         HashMap<String, Object> par = new HashMap<String, Object>();
@@ -610,11 +611,9 @@ public class Documentos {
             a = datos.getNoDocumento()+"_TICKET" + ".pdf";
                 }
             }
-        
-        
-
         try {
             JasperReport reporte = null;
+            
             JFileChooser chooser = new JFileChooser();
         /*
 * De acuerdo con JFileChooser para seleccionar el cuadro de carpeta emergente 1. Sólo seleccione el directorio JFileChooser.DIRECTORIES_ONLY
@@ -622,6 +621,7 @@ public class Documentos {
  * 3. Tanto los directorios como los archivos pueden ser JFileChooser.FILES_AND_DIRECTORIES
              */
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setCurrentDirectory(new File(METODOS_GLOBALES.CargarDatosRutasAlBuscarImagen()));
             String selectPath = null;
             // Guardar el directorio seleccionado chooser.showSaveDialog (parent);
             Component parent = null;
@@ -641,8 +641,7 @@ public class Documentos {
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
             JasperExportManager.exportReportToPdfFile(imprimirReporte, ruta2);
-            //JasperExportManager.exportReportToXmlFile(imprimirReporte, directorio + "\\" + b, true);
-
+           
         } catch (JRException ex) {
             System.out.println("Error  en Reporte Factura, " + ex);
 

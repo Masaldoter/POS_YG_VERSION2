@@ -1148,20 +1148,6 @@ public final class Detalles extends javax.swing.JFrame {
         return RUTA;
     }
     
-    public void abrirarchivo(String archivo){
-
-     try {
-            Desktop.getDesktop().open(new File("/Ferretería El Amigo/Ventas de Ferretería El Amigo/"+archivo));
-            /*File objetofile = new File (archivo);
-            Desktop.getDesktop().open(objetofile);*/
-
-     }catch (IOException ex) {
-
-            JOptionPane.showMessageDialog(null, "¡El archivo no existe o se eliminó!"+ex);
-
-     }
-
-}
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         int seleccion= JOptionPane.showConfirmDialog(this, "¿ESTÁ SEGURO DE ELIMINAR ESTA VENTA?\n*Esto no se puede deshacer");
         if(seleccion==0){

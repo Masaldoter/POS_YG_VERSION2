@@ -152,7 +152,7 @@ public class POS extends javax.swing.JInternalFrame {
                 ConsultarNit_CUIFinal(String.valueOf(o));
             }
         });
-        ListarProductosPOS_NOMBRE();
+        
         LISTAR_CLIENTES_CAJAS_NOMBRES();
         LISTAR_CLIENTES_CAJAS_NIT();
         LIMPIAR_DATOS_RESUMEN_VENTA();
@@ -217,8 +217,10 @@ public class POS extends javax.swing.JInternalFrame {
         PrecioPublico.setSelected(false);
         CajaNumeroTransacción.setText(null);
         ComboFormaPago.setText(null);
-        TotalLetras.setText("0.00");
-        ObservacionVenta.setText(null);
+        if(TablaVentas.getRowCount()<1){
+           TotalLetras.setText("0.00");
+        ObservacionVenta.setText(null); 
+        }
         jButton7.setText("AGREGAR");
         IdVenta.requestFocus();
         EstadoProducto.setText("NO INGRESADO");
@@ -250,6 +252,9 @@ public class POS extends javax.swing.JInternalFrame {
        Tarjeta.setText("0.00");
        Cheque.setText("0.00");
        labeltotal.setText("0.00");
+           TotalLetras.setText("0.00");
+        ObservacionVenta.setText(null); 
+        
     }
 
     //Limpiar cajas Clientes
@@ -271,7 +276,7 @@ public class POS extends javax.swing.JInternalFrame {
         METODOS_GLOBALES.PintarImagen2(lblImagenVenta, bl);
     }
     
-    public void ListarProductosPOS_NOMBRE() {
+    public void ListarProductosPOS_NOMBRE(String PARAMETRO) {
         try {
             /*TextAutoCompleter AutoCompletador_PRODUCTOS=null;
             AutoCompletador_PRODUCTOS = new TextAutoCompleter(Parametro, new AutoCompleterCallback() {
@@ -284,7 +289,7 @@ public class POS extends javax.swing.JInternalFrame {
             ActualizarTablaVentas tablasVentas = new ActualizarTablaVentas();
             Object[] ob = new Object[1];
             List<Productos> ListarPr = null;
-            ListarPr = tablasVentas.ListarProductosTiendaNombre();
+            ListarPr = tablasVentas.ListarProductosTiendaNombre(PARAMETRO);
             AutoCompletador_PRODUCTOS.setMode(0); // infijo
             for (int i = 0; i < ListarPr.size(); i++) {
                 ob[0] = ListarPr.get(i).getNombre();
@@ -2187,6 +2192,9 @@ public void GenerarVenta() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 NombreVentaKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                NombreVentaKeyReleased(evt);
+            }
         });
 
         lblNombrePOS.setText("NOMBRE");
@@ -2442,7 +2450,7 @@ public void GenerarVenta() {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false, false, false, true, false, false
+                false, false, false, false, false, false, false, true, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -3230,6 +3238,7 @@ public void GenerarVenta() {
                     Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
                 Pagos.setVisible(true);
                 Pagos.EfectivoPagado.requestFocus();
+                Pagos.toFront();
             }
         }
     }//GEN-LAST:event_BtnAgregarPagoPOSActionPerformed
@@ -3390,6 +3399,10 @@ public void GenerarVenta() {
          Eventos event = new Eventos();
         event.numberKeyPress(evt);
     }//GEN-LAST:event_IdVentaKeyTyped
+
+    private void NombreVentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NombreVentaKeyReleased
+        ListarProductosPOS_NOMBRE(NombreVenta.getText());
+    }//GEN-LAST:event_NombreVentaKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -979,6 +979,7 @@
               </Properties>
               <Events>
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="NombreVentaKeyPressed"/>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="NombreVentaKeyReleased"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -1313,7 +1314,7 @@
                         <Column editable="false" title="Codigo" type="java.lang.String"/>
                         <Column editable="false" title="Producto" type="java.lang.String"/>
                         <Column editable="false" title="Cantidad" type="java.lang.String"/>
-                        <Column editable="true" title="PRECIO" type="java.lang.Object"/>
+                        <Column editable="false" title="PRECIO" type="java.lang.Object"/>
                         <Column editable="false" title="%" type="java.lang.Object"/>
                         <Column editable="false" title="PRECIO CON %" type="java.lang.String"/>
                         <Column editable="false" title="TOTAL" type="java.lang.String"/>

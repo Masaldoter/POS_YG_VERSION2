@@ -95,7 +95,7 @@ public final class Principal extends javax.swing.JFrame {
     INVENTARIO I = new INVENTARIO(P_O_S, this);
     //POS P_O_S= new POS();
     INTERNAL_CAJA_PRINCIPAL INTERNAL_CAJA_P = new INTERNAL_CAJA_PRINCIPAL(this);
-    Vales_Principal V_P= new Vales_Principal();
+    Vales_Principal V_P= new Vales_Principal(this);
     MODO_ESPERA M_E = new MODO_ESPERA();
     KARDEX K = new KARDEX();
     //VENTANAS EMERGENTES
@@ -148,11 +148,12 @@ public final class Principal extends javax.swing.JFrame {
         Cerrar();
         
     try {
+        Color colorAleatorio = generarColorRandom();
       BufferedImage originalImage = ImageIO.read(new File(ObtenerRutaImagen(1)));
       Image scaledImage = originalImage.getScaledInstance(10, 10, Image.SCALE_SMOOTH);
       BufferedImage icon = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
       Graphics g2 = icon.getGraphics();
-      g2.setColor(Color.WHITE); // Cambia aquí el color de fondo del icono
+      g2.setColor(colorAleatorio); // Cambia aquí el color de fondo del icono
       g2.fillRect(0, 0, 16, 16);
       g2.drawImage(scaledImage, 3, 3, null);
       // Establece la transparencia del dibujo para que se vean el color de fondo y la imagen
@@ -163,7 +164,13 @@ public final class Principal extends javax.swing.JFrame {
       e.printStackTrace();
     }
     }
-    
+    public Color generarColorRandom() {
+        int r = (int) (Math.random() * 256); // Valor aleatorio entre 0 y 255 para el componente rojo
+        int g = (int) (Math.random() * 256); // Valor aleatorio entre 0 y 255 para el componente verde
+        int b = (int) (Math.random() * 256); // Valor aleatorio entre 0 y 255 para el componente azul
+
+        return new Color(r, g, b);
+    }
     public void CARGAR_TITULO(){
         this.setTitle(PARAMETROS_VERSION_SISTEMA.NOMBRE_SISTEMA+" "+PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA+
         " | "+PARAMETROS_EMPRESA.NOMBRE_EMPRESA.toUpperCase()+ " | "+PARAMETROS_USUARIOS.NOMBRE_USUARIO+ 
@@ -1142,12 +1149,12 @@ public final class Principal extends javax.swing.JFrame {
             } else {
                 ABRIR_VENTANAS(P_O_S, true);
                 P_O_S.IdVenta.requestFocus();
-                P_O_S.ListarProductosPOS_NOMBRE();
+                P_O_S.ListarProductosPOS_NOMBRE(P_O_S.NombreVenta.getText());
             }
         } else {
             ABRIR_VENTANAS(P_O_S, true);
             P_O_S.IdVenta.requestFocus();
-            P_O_S.ListarProductosPOS_NOMBRE();
+            P_O_S.ListarProductosPOS_NOMBRE(P_O_S.NombreVenta.getText());
         }
     }
 
@@ -1554,7 +1561,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem23ActionPerformed
 
     private void jMenuItem32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem32ActionPerformed
-       /* if (jLabel4.getText().equals("")) {
+        if (jLabel4.getText().equals("")) {
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
@@ -1563,8 +1570,8 @@ public final class Principal extends javax.swing.JFrame {
             }
         } else {
             ABRIR_VENTANAS(V_P, true);
-        }*/
-       JOptionPane.showMessageDialog(this, "ESTAMOS TRABAJANDO DURO PARA PODER APERTURAR ESTE MÓDULO");
+        }
+       //JOptionPane.showMessageDialog(this, "ESTAMOS TRABAJANDO DURO PARA PODER APERTURAR ESTE MÓDULO");
     }//GEN-LAST:event_jMenuItem32ActionPerformed
 
     public void EXPORTAR() {

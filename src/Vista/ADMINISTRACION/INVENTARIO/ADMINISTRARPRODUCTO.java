@@ -2050,7 +2050,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             tablasVentas = new ActualizarTablaVentas();
             AutoCompletador.removeAllItems();
             AutoCompletador.setMode(0); // infijo
-            List<Productos> ListarPr = tablasVentas.ListarProductosTiendaNombre();
+            List<Productos> ListarPr = tablasVentas.ListarProductosTiendaNombre(Nombreproducto.getText());
             Object[] ob = new Object[1];
             for (int i = 0; i < ListarPr.size(); i++) {
                 ob[0] = ListarPr.get(i).getNombre();
