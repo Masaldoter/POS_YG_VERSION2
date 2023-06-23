@@ -61,7 +61,8 @@ public class Actualizartablas extends ConexionesSQL{
                 if(IMPORTAR_ORDEN==true){
                   SQL = SQL+"(productos.Nombre LIKE '%" + valor + "%' or productos.Descripcion LIKE '%" + valor + "%') AND"+ESTADO_REGISTRO;  
                 }else{
-                  SQL = SQL+"MATCH(productos.Nombre,productos.Descripcion) AGAINST('"+valor+"' IN NATURAL LANGUAGE MODE) AND"+ESTADO_REGISTRO;  
+                  SQL = SQL+"MATCH(productos.Nombre, productos.Descripcion) AGAINST('"+valor+"' IN BOOLEAN MODE) AND"+ESTADO_REGISTRO+ 
+                          " ORDER BY MATCH (productos.Nombre, productos.Descripcion) AGAINST ('"+valor+"' IN BOOLEAN MODE) DESC, productos.idProductos DESC";  
                 }
                 break;
             case 3:

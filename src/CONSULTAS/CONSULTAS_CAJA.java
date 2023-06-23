@@ -62,7 +62,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs = null;
         cn = conexion.getInstancia().getConnection();
         String sql = "SELECT ESTADO_DE_CAJA, Total_inicial_CAJA, Total_Compras_CAJA, Total_Ventas_CAJA, Total_Gastos_CAJA, Total_Efectivo_CAJA, Total_Transferencia_CAJA, Total_Cheque_CAJA,"
-                + " Total_Tarjeta_CAJA, ARQUEO_DE_CAJA "
+                + " Total_Tarjeta_CAJA, Total_Compartido_CAJA, ARQUEO_DE_CAJA "
                 + "from caja "
                 + "WHERE idcaja="+NUMERO_CAJA;
             try {
@@ -80,6 +80,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
                     caja.setTotal_Transferencia_CAJA(rs.getFloat("Total_Transferencia_CAJA"));
                     caja.setTotal_Cheque_CAJA(rs.getFloat("Total_Cheque_CAJA"));
                     caja.setTotal_Tarjeta_CAJA(rs.getFloat("Total_Tarjeta_CAJA"));
+                    caja.setTotal_Compartido_CAJA(rs.getFloat("Total_Compartido_CAJA"));
                     caja.setARQUEO_DE_CAJA(rs.getString("ARQUEO_DE_CAJA"));
                 }
 
@@ -237,6 +238,135 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
 
         } catch (SQLException e) {
             System.err.println("Error Total Ventas, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
+    public Float Total_EFECTIVO(String Fecha) {
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'EFECTIVO' AND Fecha = ? THEN Pago ELSE 0 END) AS total_pago, "
+                     + "SUM(CASE WHEN FormaPago = 'EFECTIVO' AND Fecha = ? THEN Cambio ELSE 0 END) AS total_cambios FROM registro");
+            ps.setString(1, Fecha);
+            ps.setString(2, Fecha);
+             rs = ps.executeQuery();
+
+            if (rs.next()){
+            Total_Final = rs.getFloat("total_pago") - rs.getFloat("total_cambios");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error Total_EFECTIVO, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
+    public Float Total_CHEQUE(String Fecha) {
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'CHEQUE' AND Fecha = ? THEN Pago ELSE 0 END) AS total_suma FROM registro");
+            ps.setString(1, Fecha);
+             rs = ps.executeQuery();
+
+            if (rs.next()){
+            Total_Final = rs.getFloat("total_suma");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error Total_CHEQUE, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
+    public Float Total_TRANSFERENCIA(String Fecha) {
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'DEPÓSITO O TRANSFERENCIA' AND Fecha = ? THEN Pago ELSE 0 END) AS total_suma FROM registro");
+            ps.setString(1, Fecha);
+             rs = ps.executeQuery();
+
+            if (rs.next()){
+            Total_Final = rs.getFloat("total_suma");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error Total_TRANSFERENCIA, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
+    public Float Total_TARJETA(String Fecha) {
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'TARJETA' AND Fecha = ? THEN Pago ELSE 0 END) AS total_suma FROM registro");
+            ps.setString(1, Fecha);
+             rs = ps.executeQuery();
+
+            if (rs.next()){
+            Total_Final = rs.getFloat("total_suma");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error Total_TARJETA, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
+    public Float Total_COMPARTIDO(String Fecha) {
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'COMPARTIDO' AND Fecha = ? THEN Pago ELSE 0 END) AS total_pago, "
+                     + "SUM(CASE WHEN FormaPago = 'COMPARTIDO' AND Fecha = ? THEN Cambio ELSE 0 END) AS total_cambios FROM registro");
+            ps.setString(1, Fecha);
+            ps.setString(2, Fecha);
+             rs = ps.executeQuery();
+
+            if (rs.next()){
+            Total_Final = rs.getFloat("total_pago") - rs.getFloat("total_cambios");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error Total_COMPARTIDO, " + e);
         }finally{
                 RsClose(rs);
             PsClose(ps);

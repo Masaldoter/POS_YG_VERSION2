@@ -475,7 +475,7 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
              ps = cn.prepareStatement("select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
                      + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
                      + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
-                     + "where (Fecha BETWEEN '"+fecha+"' AND '"+fecha2+"' AND registro.Estado='" + Seleccion.getSelectedItem().toString() + "' AND registro.TipoDocumentoFel='" + Seleccion2.getSelectedItem().toString() + "') ORDER BY IdRegistro DESC");
+                     + "where (Fecha BETWEEN '"+fecha+"' AND '"+fecha2+"') AND (registro.Estado='" + Seleccion.getSelectedItem().toString() + "') AND (registro.TipoDocumentoFel='" + Seleccion2.getSelectedItem().toString() + "') ORDER BY IdRegistro DESC");
             rs = ps.executeQuery();
 
             while (rs.next()) {

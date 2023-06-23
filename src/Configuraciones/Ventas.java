@@ -98,6 +98,45 @@ public class Ventas {
         }
     }
     
+    public void CargarDatosMODO_REVENTA(JCheckBox VistaPreviaVenta){
+            
+        
+            try {
+            properties= new Properties();
+            entrada = new FileInputStream(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\VENTAS_MODO_REVENTA.properties").getAbsolutePath());
+            properties.load(entrada);
+            String Estado = properties.getProperty("MODO_REVENTA");
+            
+            if(Estado.equals("true")){
+            VistaPreviaVenta.setSelected(true);    
+            }else{
+                VistaPreviaVenta.setSelected(false);
+            }
+        } catch (FileNotFoundException e) {
+        }catch(IOException e){
+        }  
+    }
+    
+    public void RecordarMODO_REVENTA(JCheckBox VistaPreviaVenta){
+        String Estado;
+        try {
+            if(VistaPreviaVenta.isSelected()){
+                 Estado ="true";
+                 properties= new Properties();
+            properties.setProperty("MODO_REVENTA", Estado);
+            properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\VENTAS_MODO_REVENTA.properties").getAbsolutePath()), "CONFIGURACIÓN DE VENTAS");
+             }else{
+                 Estado = "false";
+                 properties= new Properties();
+            properties.setProperty("MODO_REVENTA", Estado);
+            properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\VENTAS_MODO_REVENTA.properties").getAbsolutePath()), "CONFIGURACIÓN DE VENTAS");
+             }
+            
+            
+        } catch (IOException e) {
+        }
+    }
+    
     
     public void CargarDatosImprimir(JCheckBox VistaPreviaVenta){
             
@@ -187,47 +226,19 @@ public class Ventas {
             entrada = new FileInputStream(new File ("C:\\Sistema Punto de Venta YG/CONFIGURACIONES\\TIPODOCUMENTO.properties").getAbsolutePath());
             properties.load(entrada);
             String Estado = properties.getProperty("tipodocumento");
-            
-            if(Estado.equals("0")){
-            Seleccion.setSelectedIndex(0);
-            }else if(Estado.equals("1")){
-                Seleccion.setSelectedIndex(1);
-            }else if(Estado.equals("2")){
-                Seleccion.setSelectedIndex(2);
-            }else if(Estado.equals("3")){
-                Seleccion.setSelectedIndex(3);
-            }
+            Seleccion.setSelectedIndex(Integer.parseInt(Estado));
         } catch (FileNotFoundException e) {
-        }catch(IOException e){
-        }  
+        }catch(IOException e) {
+        }
     }
-    
-    public void RecordarTipoDocumento(JComboBox Seleccion){
+
+    public void RecordarTipoDocumento(JComboBox Seleccion) {
         String Estado;
         try {
-            if(Seleccion.getSelectedIndex()== 0){
-                 Estado ="0";
-                 properties= new Properties();
+            Estado = String.valueOf(Seleccion.getSelectedIndex());
+            properties = new Properties();
             properties.setProperty("tipodocumento", Estado);
-            properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\TIPODOCUMENTO.properties").getAbsolutePath()), "CONFIGURACIÓN DE TIPO DE DOCUMENTO");
-             }else if(Seleccion.getSelectedIndex()== 1){
-                 Estado = "1";
-                 properties= new Properties();
-            properties.setProperty("tipodocumento", Estado);
-            properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\TIPODOCUMENTO.properties").getAbsolutePath()), "CONFIGURACIÓN DE TIPO DE DOCUMENTO");
-             }else if(Seleccion.getSelectedIndex()== 2){
-                 Estado = "2";
-                 properties= new Properties();
-            properties.setProperty("tipodocumento", Estado);
-            properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\TIPODOCUMENTO.properties").getAbsolutePath()), "CONFIGURACIÓN DE TIPO DE DOCUMENTO");
-             }else if(Seleccion.getSelectedIndex()== 3 ){
-                 Estado = "3";
-                 properties= new Properties();
-            properties.setProperty("tipodocumento", Estado);
-            properties.store(new FileWriter(new File ("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\TIPODOCUMENTO.properties").getAbsolutePath()), "CONFIGURACIÓN DE TIPO DE DOCUMENTO");
-             }
-            
-            
+            properties.store(new FileWriter(new File("C:\\Sistema Punto de Venta YG\\CONFIGURACIONES\\TIPODOCUMENTO.properties").getAbsolutePath()), "CONFIGURACIÓN DE TIPO DE DOCUMENTO");
         } catch (IOException e) {
         }
     }

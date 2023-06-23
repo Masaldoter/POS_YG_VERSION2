@@ -83,32 +83,36 @@ public class ActualizarTablaVentas extends ConexionesSQL{
         Productos pro;
         cn = conexion.getInstancia().getConnection();
         try {
-            
+            /*
             String[] palabras = PARAMETRO.split(" ");
-StringBuilder terminosBusqueda = new StringBuilder();
-
+StringBuilder terminosBusqueda = new StringBuilder();*/
+ /*
 for (String palabra : palabras) {
     terminosBusqueda.append("+" + palabra + "* ");
-}
+}*/
             //"select Nombre, ruta from productos WHERE (Estado_Productos='ACTIVO') ORDER BY idProductos DESC"
-            ps = cn.prepareStatement("SELECT Nombre FROM productos WHERE MATCH (Nombre, Descripcion) AGAINST ('"+terminosBusqueda.toString()+"' IN BOOLEAN MODE) AND Estado_Productos='ACTIVO' ORDER BY idProductos DESC");
-            rs = ps.executeQuery();
-
+           // ps = cn.prepareStatement("SELECT Nombre FROM productos WHERE MATCH(Nombre, Descripcion) AGAINST ('"+PARAMETRO+"' IN BOOLEAN MODE) AND Estado_Productos = 'ACTIVO' ORDER BY idProductos DESC");
+           //ps = cn.prepareStatement("SELECT Nombre FROM productos WHERE MATCH (Nombre, Descripcion)"
+              //     + " AGAINST ('"+PARAMETRO+"' IN BOOLEAN MODE) AND Estado_Productos = 'ACTIVO' "
+            //       + "ORDER BY MATCH (Nombre, Descripcion) AGAINST ('"+PARAMETRO+"' IN BOOLEAN MODE) DESC, idProductos DESC");
+           //ps = cn.prepareStatement("select Nombre, ruta from productos WHERE (Estado_Productos='ACTIVO') AND (Nombre LIKE '%"+PARAMETRO+"%' OR Descripcion LIKE '%"+PARAMETRO+"%') ORDER BY idProductos DESC"); 
+            ps = cn.prepareStatement("select Nombre, ruta from productos WHERE (Estado_Productos='ACTIVO') ORDER BY idProductos DESC");            
+//ps.setString(1, PARAMETRO);
+           rs = ps.executeQuery();
             while (rs.next()) {
-               pro = new Productos();
+                pro = new Productos();
                 pro.setNombre(rs.getString("Nombre"));
-               Listapro.add(pro);
+                Listapro.add(pro);
             }
-
         } catch (SQLException e) {
-            System.err.println("Error, " + e);
-        }finally{
-                RsClose(rs);
+            System.err.println("Error en ActualizarTablaVentas/ListarProductosTiendaNombre, " + e);
+        } finally {
+            RsClose(rs);
             PsClose(ps);
             ConnectionClose(cn);
         }
-       
-       return Listapro;
+
+        return Listapro;
     }
     
     public void TablaVentaId(JTable TablaVentas1, String valor){

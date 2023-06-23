@@ -2,6 +2,7 @@ package Vista;
 
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import Clases_Reportes.DatosEmpresa;
@@ -1073,28 +1074,23 @@ public final class Detalles extends javax.swing.JFrame {
         Fel.setFechaAutorizacion(FechaCertificacion.getText());
         Fel.setTipoDocumento(TipoDocumento.getText());
         DatosClienteYFactura datos;
-        datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), CajaDireccion.getText(), Fac.getText(), CajaTotal.getText(), CajaPago.getText(), CajaCambio.getText(), Fac.getText(), Fac.getText(), 
-        FormapagoDetalleVenta.getText(), CajaTransaccionDetalle.getText(), CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " "+Fechaventa.getText(), Fechaventa.getText());
-        
-        if(TipoDocumentoImpresion== 0){
-            try {    
+        datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), CajaDireccion.getText(), Fac.getText(), CajaTotal.getText(), CajaPago.getText(), CajaCambio.getText(), Fac.getText(), Fac.getText(),
+                FormapagoDetalleVenta.getText(), CajaTransaccionDetalle.getText(), CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " " + Fechaventa.getText(), Fechaventa.getText());
+
+        if (TipoDocumentoImpresion == 0) {
+            try {
+
                 documentos.FacturaNoDTE(datos, datosempresa, "N° Interno", TablaDetalles, Fel, 0);
             } catch (PrinterException ex) {
                 Logger.getLogger(Detalles.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if(TipoDocumentoImpresion== 1){
-            try {    
+        } else if (TipoDocumentoImpresion == 1) {
+            try {
                 documentos.FacturaNoDTE(datos, datosempresa, "N° Interno", TablaDetalles, Fel, 1);
             } catch (PrinterException ex) {
                 Logger.getLogger(Detalles.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
-        
-        
-        
-        
 
     }
     
@@ -1148,17 +1144,68 @@ public final class Detalles extends javax.swing.JFrame {
         return RUTA;
     }
     
+    public void REABRIR() {
+        int Seleccion = JOptionPane.showConfirmDialog(null, """
+                                                            ESTA ACCI\u00d3N REABRIRA LA VENTA, POR LO TANTO ESTA SE ANULAR\u00c1
+                                                            TENGA EN CUENTA QUE SI TIENE PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTAR\u00c1""", "¿ESTÁ SEGURO DE RE-ABRIR LA VENTA?", JOptionPane.YES_NO_OPTION);
+        Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
+        if (Seleccion == 0) {
+            Boolean Anular = AnularTodaLaVenta();
+            if (Anular == true) {
+                pos.principal.MoverEntreSistema();
+                if (VerificarCheckEnVenta == true) {
+                    pos.CheckIngresoAutomatico.setSelected(false);
+                }
+                for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
+                    pos.LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
+                    if (Integer.parseInt(TablaDetalles.getValueAt(i, 8).toString()) == 0) {
+                        pos.NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
+                        pos.IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
+                        pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+                        pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
+                        pos.AgregarProducto();
+                    } else {
+                        pos.BusquedaCodigoBarras(TablaDetalles.getValueAt(i, 0).toString());
+                        pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+                        pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
+                        pos.AgregarProducto();
+
+                    }
+                }
+                if (VerificarCheckEnVenta == true) {
+                    pos.CheckIngresoAutomatico.setSelected(true);
+                }
+                pos.ConsultarNit_CUIFinal(CajaNit.getText());
+                pos.ConsultarNit_CUIFinal(CajaNit.getText());
+                pos.LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
+                this.dispose();
+            }
+        }
+    }
+
+    public void ANULAR() {
+        int seleccion = JOptionPane.showConfirmDialog(this, "¿ESTÁ SEGURO DE ELIMINAR ESTA VENTA?\n*Esto no se puede deshacer");
+        if (seleccion == 0) {
+            if (TipoDocumento.getText().equals("FACTURA")) {
+                AnularDTE();
+            } else {
+                AnularVenta();
+            }
+            principal.MD.CARGAR_REGISTROS();
+            this.dispose();
+        }
+    }
+
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        int seleccion= JOptionPane.showConfirmDialog(this, "¿ESTÁ SEGURO DE ELIMINAR ESTA VENTA?\n*Esto no se puede deshacer");
-        if(seleccion==0){
-        if(TipoDocumento.getText().equals("FACTURA")){
-            AnularDTE();
-        }else{
-            AnularVenta();
+        if (METODOS_GLOBALES.VALIDAR_ANULAR_DOCUMENTO(Fechaventa.getText()) == false) {
+            int seleccionValidacion = JOptionPane.showConfirmDialog(this, "ESTA FACTURA TIENE MÁS DE 20 DÍAS DE EMTIDA\n¿ESTÁ SEGURO DE ANULARLA?");
+            if (seleccionValidacion == 0) {
+                ANULAR();
+            }
+        } else {
+            ANULAR();
         }
-        principal.MD.CARGAR_REGISTROS();
-        this.dispose();
-        }
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -1217,48 +1264,20 @@ public final class Detalles extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         if(VALIDAR_TOTAL()==true){
         int Seleccion= JOptionPane.showConfirmDialog(null, "ESTA ACCIÓN CONVERTIRÁ ESTA VENTA A FACTURA ELECTRÓNICA\n ¿ESTÁ SEGURO DE REALIZAR LA ACCIÓN?");
-        if(Seleccion==0){
-            GenerarFacturaElectronica();
-        }    
+        if(Seleccion== 0) {
+                GenerarFacturaElectronica();
+            }
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       int Seleccion = JOptionPane.showConfirmDialog(null, """
-                                                            ESTA ACCI\u00d3N REABRIRA LA VENTA, POR LO TANTO ESTA SE ANULAR\u00c1
-                                                            TENGA EN CUENTA QUE SI TIENE PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTAR\u00c1""", "¿ESTÁ SEGURO DE RE-ABRIR LA VENTA?", JOptionPane.YES_NO_OPTION);
-        Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
-        if (Seleccion == 0) {
-            Boolean Anular = AnularTodaLaVenta();
-            if (Anular == true) {
-                pos.principal.MoverEntreSistema();
-                if (VerificarCheckEnVenta == true) {
-                    pos.CheckIngresoAutomatico.setSelected(false);
-                }
-                for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
-                    pos.LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
-                    if (Integer.parseInt(TablaDetalles.getValueAt(i, 8).toString()) == 0) {
-                        pos.NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
-                        pos.IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
-                        pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-                        pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
-                        pos.AgregarProducto();
-                    } else {
-                        pos.BusquedaCodigoBarras(TablaDetalles.getValueAt(i, 0).toString());
-                        pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-                        pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
-                        pos.AgregarProducto();
-
-                    }
-                }
-                if (VerificarCheckEnVenta == true) {
-                    pos.CheckIngresoAutomatico.setSelected(true);
-                }
-                pos.ConsultarNit_CUIFinal(CajaNit.getText());
-                pos.ConsultarNit_CUIFinal(CajaNit.getText());
-                pos.LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
-                this.dispose();  
+        if (METODOS_GLOBALES.VALIDAR_ANULAR_DOCUMENTO(Fechaventa.getText()) == false) {
+            int seleccionValidacion = JOptionPane.showConfirmDialog(this, "ESTA FACTURA TIENE MÁS DE 20 DÍAS DE EMTIDA\n¿ESTÁ SEGURO DE ANULARLA?");
+            if (seleccionValidacion == 0) {
+                REABRIR();
             }
+        }else{
+            REABRIR();
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

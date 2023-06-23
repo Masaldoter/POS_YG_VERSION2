@@ -1,12 +1,15 @@
 package Vista;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_BASE_DE_DATOS;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import CLASES_GLOBALES.PARAMETROS_VENTAS;
 import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import CONTROL_DE_ACTUALIZACIÓNES.CONTROL_DE_ACTUALIZACIÓNES;
+import Clases_Reportes.DatosEmpresa;
 import Vista.ADMINISTRACION.INVENTARIO.Ubicaciones;
 import Vista.ADMINISTRACION.INVENTARIO.CategoriaVista;
 import Controlador.loginDao;
@@ -14,6 +17,7 @@ import Excel.Excel;
 import Configuraciones.Ventas;
 import PROMOCIONES.ETIQUETAS.Promociones;
 import Reportes.Reportes;
+import ReportesImpresion.Documentos;
 import Vista.ADMINISTRACION.CLIENTES.CLIENTES;
 import Vista.ADMINISTRACION.PROVEEDORES.PROVEEDORES;
 import Vista.ADMINISTRACION.USUARIOS.ADMINISTRACION_DE_USUARIOS;
@@ -31,10 +35,14 @@ import Vista.POS.POS;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_DIARIOS;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_GENERALES;
 import Vista.SESION.SESION;
+import Vista.Traslados.TrasladosGenerales;
 import Vista.VENTAS.CAJA.INTERNAL_CAJA_PRINCIPAL;
 import Vista.VENTAS.CAJA.VER_CAJAS;
-import Vista.Vales.Vales_Principal;
+import Vista.Vales.ValesGenerales;
+import Vista.Vales_Version2.Vales_Principal;
 import WebServiceDigifact.ObtenerToken;
+import ds.desktop.notify.DesktopNotify;
+import ds.desktop.notify.NotifyTheme;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -96,6 +104,8 @@ public final class Principal extends javax.swing.JFrame {
     //POS P_O_S= new POS();
     INTERNAL_CAJA_PRINCIPAL INTERNAL_CAJA_P = new INTERNAL_CAJA_PRINCIPAL(this);
     Vales_Principal V_P= new Vales_Principal(this);
+    public TrasladosGenerales T_G = new TrasladosGenerales(P_O_S);
+    public ValesGenerales V_G = new ValesGenerales(P_O_S);
     MODO_ESPERA M_E = new MODO_ESPERA();
     KARDEX K = new KARDEX();
     //VENTANAS EMERGENTES
@@ -110,19 +120,20 @@ public final class Principal extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(Principal.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
-        Runtime.getRuntime().addShutdownHook(new Thread() {
+        /*Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
                 Excel EX = new Excel();
                 EX.exportarExcel_JTABLE(P_O_S.TablaVentas, PARAMETROS_USUARIOS.NOMBRE_USUARIO);
             }
-        });
+        });*/
         CARGAR_TITULO();
         Ventas.CargarDatosImpresionRapida(CheckBoxImpresionRapida);
         ConfigVentas.CargarDatosModoReinventario(CheckBoxModoStockCero);
         ConfigVentas.CargarDatosProductosPersonalizados(CheckPermitirProductosPersonalizados);
         HORA_FECHA();
         CARGAR_INICIO();
+        COLOR_FONDO();
         if (PARAMETROS_USUARIOS.ROL_USUARIO.equals("Usuario")) {
             ItemInventario.setVisible(false);
             ItemUsuariosSistema.setVisible(false);
@@ -142,13 +153,20 @@ public final class Principal extends javax.swing.JFrame {
             jSeparator3.setVisible(false);
             jButton5.setVisible(false);
             jButton6.setVisible(false);
+            jMenuItem33.setVisible(false);
+            jMenuItem32.setVisible(false);
+            jSeparator42.setVisible(false);
+            jSeparator41.setVisible(false);
         } else {
         }
         AlIniciarSesion();
         Cerrar();
         
-    try {
-        Color colorAleatorio = generarColorRandom();
+    }
+    
+    public void COLOR_FONDO(){
+        try {
+        Color colorAleatorio = Color.decode(PARAMETROS_USUARIOS.COLOR_USUARIO);
       BufferedImage originalImage = ImageIO.read(new File(ObtenerRutaImagen(1)));
       Image scaledImage = originalImage.getScaledInstance(10, 10, Image.SCALE_SMOOTH);
       BufferedImage icon = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
@@ -164,13 +182,14 @@ public final class Principal extends javax.swing.JFrame {
       e.printStackTrace();
     }
     }
+    /*
     public Color generarColorRandom() {
         int r = (int) (Math.random() * 256); // Valor aleatorio entre 0 y 255 para el componente rojo
         int g = (int) (Math.random() * 256); // Valor aleatorio entre 0 y 255 para el componente verde
         int b = (int) (Math.random() * 256); // Valor aleatorio entre 0 y 255 para el componente azul
 
         return new Color(r, g, b);
-    }
+    }*/
     public void CARGAR_TITULO(){
         this.setTitle(PARAMETROS_VERSION_SISTEMA.NOMBRE_SISTEMA+" "+PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA+
         " | "+PARAMETROS_EMPRESA.NOMBRE_EMPRESA.toUpperCase()+ " | "+PARAMETROS_USUARIOS.NOMBRE_USUARIO+ 
@@ -204,20 +223,22 @@ public final class Principal extends javax.swing.JFrame {
     public void ConfirmarSalida(){
         if(P_O_S.TablaVentas.getRowCount() > 0){
             JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTA PENDIENTE, TERMINELA O CANCELELA!");
-        }else if(VentanaAdministracionDeProductos==true){
+        } else if (VentanaAdministracionDeProductos == true) {
             JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN ABIERTA, TERMÍNELA O CIÉRRELA!");
             AdminProduct.toFront();
-        }else if(VENTANA_ADMINISTRACION_DE_USUARIOS==true){
+        } else if (VENTANA_ADMINISTRACION_DE_USUARIOS == true) {
             JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN DE USUARIOS ABIERTA, TERMÍNELA O CIÉRRELA!");
             ADMIN_USUARIOS.toFront();
-        } else{
-            int seleccion = JOptionPane.showConfirmDialog(null, "¿ESTA SEGURO DE SALIR DEL SISTEMA?","SISTEMA EL AMIGO", JOptionPane.YES_NO_OPTION);
-            if(seleccion==0){
+        } else {
+            int seleccion = JOptionPane.showConfirmDialog(null, "¿ESTA SEGURO DE SALIR DEL SISTEMA?", "SISTEMA EL AMIGO", JOptionPane.YES_NO_OPTION);
+            if (seleccion == 0) {
                 AlCerrarSesion();
-                JOptionPane.showMessageDialog(null, "¡FUE UN GUSTO VERTE "+PARAMETROS_USUARIOS.NOMBRE_USUARIO.toUpperCase() +" ! :)", "SISTEMA EL AMIGO", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);    
+                JOptionPane.showMessageDialog(null, "¡FUE UN GUSTO VERTE " + PARAMETROS_USUARIOS.NOMBRE_USUARIO.toUpperCase() + " ! :)", "SISTEMA EL AMIGO", JOptionPane.INFORMATION_MESSAGE);
+                METODOS_GLOBALES.executorService.shutdown();
+                dispose();
+                System.exit(0);
             }
-            
+
         }
     }
     
@@ -231,7 +252,7 @@ public final class Principal extends javax.swing.JFrame {
     }
     
     public void HORA_FECHA(){
-        Runnable runnable = new Runnable() {
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
                 Date objDate = new Date();
@@ -249,9 +270,7 @@ public final class Principal extends javax.swing.JFrame {
             }
         }
             }
-        };
-        Thread hilo = new Thread(runnable);
-        hilo.start();
+        });
     }
     
     public void CARGAR_INICIO(){
@@ -314,6 +333,8 @@ public final class Principal extends javax.swing.JFrame {
         jMenuItem20 = new javax.swing.JMenuItem();
         jSeparator41 = new javax.swing.JPopupMenu.Separator();
         jMenuItem32 = new javax.swing.JMenuItem();
+        jSeparator42 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem33 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuItem14 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -586,9 +607,6 @@ public final class Principal extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblHora_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel8)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(lblURL_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lblNombre_BD_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
@@ -600,6 +618,7 @@ public final class Principal extends javax.swing.JFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jMenu1.setText("DASHBOARD");
@@ -701,6 +720,7 @@ public final class Principal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem20);
         jMenu2.add(jSeparator41);
 
+        jMenuItem32.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
         jMenuItem32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/checklist_106575.png"))); // NOI18N
         jMenuItem32.setText("VALES");
         jMenuItem32.addActionListener(new java.awt.event.ActionListener() {
@@ -709,6 +729,16 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem32);
+        jMenu2.add(jSeparator42);
+
+        jMenuItem33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CAMION_32PX.png"))); // NOI18N
+        jMenuItem33.setText("TRASLADOS");
+        jMenuItem33.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem33ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem33);
         jMenu2.add(jSeparator3);
 
         jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/ENTRADAS_SALIDAS_32PX.png"))); // NOI18N
@@ -1149,12 +1179,12 @@ public final class Principal extends javax.swing.JFrame {
             } else {
                 ABRIR_VENTANAS(P_O_S, true);
                 P_O_S.IdVenta.requestFocus();
-                P_O_S.ListarProductosPOS_NOMBRE(P_O_S.NombreVenta.getText());
+                //P_O_S.ListarProductosPOS_NOMBRE(P_O_S.NombreVenta.getText());
             }
         } else {
             ABRIR_VENTANAS(P_O_S, true);
             P_O_S.IdVenta.requestFocus();
-            P_O_S.ListarProductosPOS_NOMBRE(P_O_S.NombreVenta.getText());
+            //P_O_S.ListarProductosPOS_NOMBRE(P_O_S.NombreVenta.getText());
         }
     }
 
@@ -1341,13 +1371,13 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem21ActionPerformed
 
     private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
-        /* int TotalDeFila= tablaProductos.getRowCount();
+         int TotalDeFila= INVENTARIO.tablaProductos.getRowCount();
         if(TotalDeFila<= 300){
         ReporteProductosCatalago();    
         }else{
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("ERROR AL GENERAR CATÁLOGO", "NO PUEDE GENERAR UN REPORTE DE CATÁLOGO CON MAS DE 50 REGISTRO :(",DesktopNotify.ERROR, 14000L);
-        }*/
+        }
 
     }//GEN-LAST:event_jMenuItem22ActionPerformed
 
@@ -1386,7 +1416,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
         Promociones promo= new Promociones();
-        promo.Logo1();
+        promo.Logo1(true);
     }//GEN-LAST:event_jMenuItem25ActionPerformed
 
     private void jMenuItem26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem26ActionPerformed
@@ -1566,13 +1596,30 @@ public final class Principal extends javax.swing.JFrame {
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
             } else {
-                ABRIR_VENTANAS(V_P, true);
+                ABRIR_VENTANAS(V_G, true);
+                V_G.ActualizarTablaEstado(V_G.FiltroBusqueda, V_G.Parametro1, V_G.Parametro2);
             }
         } else {
-            ABRIR_VENTANAS(V_P, true);
+            ABRIR_VENTANAS(V_G, true);
+            V_G.ActualizarTablaEstado(V_G.FiltroBusqueda, V_G.Parametro1, V_G.Parametro2);
         }
        //JOptionPane.showMessageDialog(this, "ESTAMOS TRABAJANDO DURO PARA PODER APERTURAR ESTE MÓDULO");
     }//GEN-LAST:event_jMenuItem32ActionPerformed
+
+    private void jMenuItem33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem33ActionPerformed
+        if (jLabel4.getText().equals("")) {
+            VER_CAJAS CA = new VER_CAJAS(this, true, this);
+            CA.setVisible(true);
+            if (jLabel4.getText().equals("")) {
+            } else {
+                ABRIR_VENTANAS(T_G, true);
+                T_G.ActualizarTablaEstado(T_G.FiltroBusqueda, T_G.Parametro1, T_G.Parametro2);
+            }
+        } else {
+            ABRIR_VENTANAS(T_G, true);
+            T_G.ActualizarTablaEstado(T_G.FiltroBusqueda, T_G.Parametro1, T_G.Parametro2);
+        }
+    }//GEN-LAST:event_jMenuItem33ActionPerformed
 
     public void EXPORTAR() {
         if (P_O_S.TablaVentas.getRowCount() < 1) {
@@ -1815,6 +1862,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem30;
     private javax.swing.JMenuItem jMenuItem31;
     private javax.swing.JMenuItem jMenuItem32;
+    private javax.swing.JMenuItem jMenuItem33;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -1860,6 +1908,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator40;
     private javax.swing.JPopupMenu.Separator jSeparator41;
+    private javax.swing.JPopupMenu.Separator jSeparator42;
     private javax.swing.JSeparator jSeparator43;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator56;
@@ -1875,7 +1924,8 @@ public final class Principal extends javax.swing.JFrame {
 
     //reporte de Productos
     public void ReporteProductos() {
-        /*DatosEmpresa datos= new DatosEmpresa();
+        Documentos documentos = new Documentos();
+        DatosEmpresa datos= new DatosEmpresa();
         datos.setUsuario(PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
         datos.setNombreEmpresa(PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
         datos.setNit(PARAMETROS_EMPRESA.NIT_EMPRESA);
@@ -1883,12 +1933,13 @@ public final class Principal extends javax.swing.JFrame {
         datos.setTel(PARAMETROS_EMPRESA.TEL_EMPRESA);
         datos.setLugar(PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
         datos.setEslogan(PARAMETROS_EMPRESA.ESLOGAN_EMPRESA);
-        documentos.Productos(datos, tablaProductos, false);*/
+        documentos.Productos(datos, INVENTARIO.tablaProductos, false);
         //Re.ReporteProductos();
     }
     
     public void ReporteProductosCatalago() {
-       /* DatosEmpresa datos= new DatosEmpresa();
+        Documentos documentos = new Documentos();
+        DatosEmpresa datos= new DatosEmpresa();
         datos.setUsuario(PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
         datos.setNombreEmpresa(PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
         datos.setNit(PARAMETROS_EMPRESA.NIT_EMPRESA);
@@ -1896,7 +1947,7 @@ public final class Principal extends javax.swing.JFrame {
         datos.setTel(PARAMETROS_EMPRESA.TEL_EMPRESA);
         datos.setLugar(PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
         datos.setEslogan(PARAMETROS_EMPRESA.ESLOGAN_EMPRESA);
-        documentos.Productos(datos, tablaProductos, true);
+        documentos.Productos(datos, INVENTARIO.tablaProductos, true);
         //Re.ReporteProductos();*/
     }
 

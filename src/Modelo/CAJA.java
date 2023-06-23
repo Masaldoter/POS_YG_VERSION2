@@ -12,12 +12,12 @@ public class CAJA {
     int idcaja, USUARIO_APERTURO_CAJA, USUARIO_CERRO_CAJA;
     String ESTADO_DE_CAJA, FECHA_HORA_APERTURA_CAJA, FECHA_HORA_CIERRE_CAJA, ARQUEO_DE_CAJA, USUARIO_APERTURO_CAJA_LETRAS, USUARIO_CERRO_CAJA_LETRAS, FECHA;
     float Total_inicial_CAJA, Total_Compras_CAJA, Total_Ventas_CAJA, Total_Gastos_CAJA;
-    float Total_Efectivo_CAJA, Total_Transferencia_CAJA, Total_Cheque_CAJA, Total_Tarjeta_CAJA;
+    float Total_Efectivo_CAJA, Total_Transferencia_CAJA, Total_Cheque_CAJA, Total_Tarjeta_CAJA, Total_Compartido_CAJA;
     public CAJA(){
         
     }
 
-    public CAJA(int idcaja, int USUARIO_APERTURO_CAJA, int USUARIO_CERRO_CAJA, String ESTADO_DE_CAJA, String FECHA_HORA_APERTURA_CAJA, String FECHA_HORA_CIERRE_CAJA, String ARQUEO_DE_CAJA, String USUARIO_APERTURO_CAJA_LETRAS, String USUARIO_CERRO_CAJA_LETRAS, String FECHA, float Total_inicial_CAJA, float Total_Compras_CAJA, float Total_Ventas_CAJA, float Total_Gastos_CAJA, float Total_Efectivo_CAJA, float Total_Transferencia_CAJA, float Total_Cheque_CAJA, float Total_Tarjeta_CAJA) {
+    public CAJA(int idcaja, int USUARIO_APERTURO_CAJA, int USUARIO_CERRO_CAJA, String ESTADO_DE_CAJA, String FECHA_HORA_APERTURA_CAJA, String FECHA_HORA_CIERRE_CAJA, String ARQUEO_DE_CAJA, String USUARIO_APERTURO_CAJA_LETRAS, String USUARIO_CERRO_CAJA_LETRAS, String FECHA, float Total_inicial_CAJA, float Total_Compras_CAJA, float Total_Ventas_CAJA, float Total_Gastos_CAJA, float Total_Efectivo_CAJA, float Total_Transferencia_CAJA, float Total_Cheque_CAJA, float Total_Tarjeta_CAJA, float Total_Compartido_CAJA) {
         this.idcaja = idcaja;
         this.USUARIO_APERTURO_CAJA = USUARIO_APERTURO_CAJA;
         this.USUARIO_CERRO_CAJA = USUARIO_CERRO_CAJA;
@@ -36,6 +36,7 @@ public class CAJA {
         this.Total_Transferencia_CAJA = Total_Transferencia_CAJA;
         this.Total_Cheque_CAJA = Total_Cheque_CAJA;
         this.Total_Tarjeta_CAJA = Total_Tarjeta_CAJA;
+        this.Total_Compartido_CAJA = Total_Compartido_CAJA;
     }
 
     public int getIdcaja() {
@@ -180,5 +181,13 @@ public class CAJA {
 
     public void setTotal_Tarjeta_CAJA(float Total_Tarjeta_CAJA) {
         this.Total_Tarjeta_CAJA = Total_Tarjeta_CAJA;
+    }
+
+    public float getTotal_Compartido_CAJA() {
+        return Total_Compartido_CAJA;
+    }
+
+    public void setTotal_Compartido_CAJA(float Total_Compartido_CAJA) {
+        this.Total_Compartido_CAJA = Total_Compartido_CAJA;
     }
 }

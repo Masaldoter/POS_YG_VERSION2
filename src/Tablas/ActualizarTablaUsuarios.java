@@ -33,7 +33,7 @@ public class ActualizarTablaUsuarios {
        DefaultTableModel modeloTabla = new DefaultTableModel();
         TablalUsuarios.setModel(modeloTabla); 
         try {
-            ps= cn.prepareStatement("select idlogin1, Nombre, Contraseña, Rol, NombreUsuario, FechaIngreso, Ingreso, UltimaVezIngreso, Estado from login1");
+            ps= cn.prepareStatement("select idlogin1, Nombre, Contraseña, Rol, NombreUsuario, FechaIngreso, Ingreso, UltimaVezIngreso, Estado, Estado_Registro from login1");
             rs= ps.executeQuery();
             
             modeloTabla.addColumn("Id");
@@ -44,12 +44,13 @@ public class ActualizarTablaUsuarios {
             modeloTabla.addColumn("Fecha de Registro");
             modeloTabla.addColumn("Fecha de Ingreso");
             modeloTabla.addColumn("Última Vez.");
-            modeloTabla.addColumn("Estado");
+            modeloTabla.addColumn("LÍNEA");
+            modeloTabla.addColumn("ESTADO");
 
             while (rs.next()) {
 
-                Object fila[] = new Object[9];
-                for (int i = 0; i < 9; i++) {
+                Object fila[] = new Object[10];
+                for (int i = 0; i < 10; i++) {
                     fila[i] = rs.getObject(i + 1);
                 }
                 modeloTabla.addRow(fila);

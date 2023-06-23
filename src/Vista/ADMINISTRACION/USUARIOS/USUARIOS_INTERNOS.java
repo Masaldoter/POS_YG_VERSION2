@@ -188,7 +188,7 @@ public class USUARIOS_INTERNOS extends javax.swing.JInternalFrame {
         }else{
             if (principal.VENTANA_ADMINISTRACION_DE_USUARIOS == false) {
                 principal.VENTANA_ADMINISTRACION_DE_USUARIOS = true;
-                principal.ADMIN_USUARIOS = new ADMINISTRACION_DE_USUARIOS();
+                principal.ADMIN_USUARIOS = new ADMINISTRACION_DE_USUARIOS(principal);
                 principal.ADMIN_USUARIOS.setVisible(true);
                 principal.ADMIN_USUARIOS.BUSCAR_USUARIO(UsuarioVista.getText());
             } else {
@@ -202,7 +202,7 @@ public class USUARIOS_INTERNOS extends javax.swing.JInternalFrame {
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         if (principal.VENTANA_ADMINISTRACION_DE_USUARIOS == false) {
             principal.VENTANA_ADMINISTRACION_DE_USUARIOS = true;
-            principal.ADMIN_USUARIOS = new ADMINISTRACION_DE_USUARIOS();
+            principal.ADMIN_USUARIOS = new ADMINISTRACION_DE_USUARIOS(principal);
             principal.ADMIN_USUARIOS.setVisible(true);
         } else {
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);

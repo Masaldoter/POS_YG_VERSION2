@@ -655,7 +655,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="PanleDatosProductoPOS" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                           <Component id="jPanel69" max="32767" attributes="0"/>
                       </Group>
                       <Component id="PanelTotalVentaPOS" max="32767" attributes="0"/>
@@ -731,22 +731,32 @@
                                   <Component id="IdVenta" max="32767" attributes="0"/>
                                   <Component id="jScrollPane20" alignment="1" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="lblCodigoPOS" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="CheckImprimir" alignment="0" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblCodigoPOS" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="CheckImprimir" min="-2" pref="19" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
-                                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
                                               <Component id="CheckIngresoAutomatico" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="CheckVistaPreviaVenta" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                                              <Component id="CheckVistaPreviaVenta" max="32767" attributes="0"/>
+                                              <Component id="CheckReventa" max="32767" attributes="0"/>
                                           </Group>
                                           <Group type="102" attributes="0">
                                               <Component id="EstadoProducto" max="32767" attributes="0"/>
-                                              <EmptySpace min="-2" max="-2" attributes="0"/>
-                                              <Component id="ID_PRODUCTO" max="32767" attributes="0"/>
-                                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="ID_PRODUCTO" min="-2" pref="21" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                                              <Component id="ID_PRODUCTO_BD" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
                                               <Component id="TOTAL_INGRESADO" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -764,17 +774,25 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="CheckIngresoAutomatico" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="CheckVistaPreviaVenta" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="CheckImprimir" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="CheckIngresoAutomatico" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CheckImprimir" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <Component id="CheckVistaPreviaVenta" min="-2" max="-2" attributes="0"/>
+                          <Component id="CheckReventa" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="lblCodigoPOS" alignment="1" max="32767" attributes="0"/>
                           <Component id="ID_PRODUCTO" alignment="1" max="32767" attributes="0"/>
                           <Component id="EstadoProducto" alignment="1" max="32767" attributes="0"/>
-                          <Component id="TOTAL_INGRESADO" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="TOTAL_INGRESADO" alignment="3" max="32767" attributes="0"/>
+                              <Component id="ID_PRODUCTO_BD" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="IdVenta" min="-2" pref="33" max="-2" attributes="0"/>
@@ -1096,7 +1114,7 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="CheckIngresoAutomatico">
               <Properties>
-                <Property name="text" type="java.lang.String" value="AUTOMATICO"/>
+                <Property name="toolTipText" type="java.lang.String" value="INGRESO AUTOM&#xc1;TICO"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckIngresoAutomaticoActionPerformed"/>
@@ -1105,17 +1123,10 @@
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="CheckVistaPreviaVenta">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="VISTA PREVIA"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckVistaPreviaVentaActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JCheckBox" name="CheckImprimir">
               <Properties>
-                <Property name="text" type="java.lang.String" value="PRINT"/>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="IMPRIMIR REGISTRO"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckImprimirActionPerformed"/>
@@ -1231,6 +1242,51 @@
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
               </AuxValues>
             </Component>
+            <Component class="javax.swing.JLabel" name="jLabel5">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/IconosSOciales/IMPRESORA_20PX.png"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="IMPRIMIR REGISTRO"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel5MouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel6">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/IconosSOciales/CARRITO_20PX.png"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="INGRESO AUTOM&#xc1;TICO"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel6MouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="CheckVistaPreviaVenta">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="VISTA PREVIA"/>
+                <Property name="toolTipText" type="java.lang.String" value="VISTA PREVIA"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckVistaPreviaVentaActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="CheckReventa">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="REVENTA"/>
+                <Property name="toolTipText" type="java.lang.String" value="MODO REVENTA"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckReventaActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="ID_PRODUCTO_BD">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel7"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel69">
@@ -1245,26 +1301,29 @@
                               <Component id="jLabel1" max="32767" attributes="0"/>
                               <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="factura" pref="79" max="32767" attributes="0"/>
+                          <Component id="factura" pref="78" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel2" pref="85" max="32767" attributes="0"/>
+                          <Component id="jLabel2" pref="84" max="32767" attributes="0"/>
                           <Component id="lblNumeroSerieCotizacion" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="Vale" pref="0" max="32767" attributes="0"/>
-                          <Component id="jLabel3" pref="49" max="32767" attributes="0"/>
+                          <Component id="jLabel3" pref="55" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel4" pref="60" max="32767" attributes="0"/>
-                          <Component id="lblSerie_Salidas" pref="0" max="32767" attributes="0"/>
+                          <Component id="jLabel4" max="32767" attributes="0"/>
+                          <Component id="lblSerie_TRASLADOS" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane2" alignment="1" pref="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -1284,10 +1343,10 @@
                           <Component id="factura" pref="25" max="32767" attributes="0"/>
                           <Component id="lblNumeroSerieCotizacion" max="32767" attributes="0"/>
                           <Component id="Vale" max="32767" attributes="0"/>
-                          <Component id="lblSerie_Salidas" max="32767" attributes="0"/>
+                          <Component id="lblSerie_TRASLADOS" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="311" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1310,7 +1369,7 @@
                       <Font name="Dialog" size="12" style="0"/>
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="10" rowCount="0">
+                      <Table columnCount="11" rowCount="0">
                         <Column editable="false" title="Codigo" type="java.lang.String"/>
                         <Column editable="false" title="Producto" type="java.lang.String"/>
                         <Column editable="false" title="Cantidad" type="java.lang.String"/>
@@ -1318,8 +1377,9 @@
                         <Column editable="false" title="%" type="java.lang.Object"/>
                         <Column editable="false" title="PRECIO CON %" type="java.lang.String"/>
                         <Column editable="false" title="TOTAL" type="java.lang.String"/>
-                        <Column editable="true" title="VALIDAR" type="java.lang.Boolean"/>
+                        <Column editable="false" title="VALIDAR" type="java.lang.Boolean"/>
                         <Column editable="false" title="ID" type="java.lang.Object"/>
+                        <Column editable="false" title="ID PROD." type="java.lang.Object"/>
                         <Column editable="false" title="Acciones" type="java.lang.Object"/>
                       </Table>
                     </Property>
@@ -1367,6 +1427,11 @@
                           <Renderer/>
                         </Column>
                         <Column maxWidth="30" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
@@ -1432,7 +1497,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="lblSerie_Salidas">
+            <Component class="javax.swing.JTextField" name="lblSerie_TRASLADOS">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -1444,7 +1509,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lblSerie_SalidasActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lblSerie_TRASLADOSActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
@@ -1464,7 +1529,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
               <Properties>
-                <Property name="text" type="java.lang.String" value="SALIDAS"/>
+                <Property name="text" type="java.lang.String" value="TRASLADOS"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -1605,10 +1670,12 @@
                   <Font name="Segoe UI" size="18" style="0"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="3">
+                  <StringArray count="5">
                     <StringItem index="0" value="FACTURA"/>
                     <StringItem index="1" value="PROFORMA"/>
                     <StringItem index="2" value="COTIZACI&#xd3;N"/>
+                    <StringItem index="3" value="VALE"/>
+                    <StringItem index="4" value="TRASLADO"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -1694,11 +1761,11 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="TotalTipoDeProductosPOS" min="-2" pref="72" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="labeltotalenfacturacion" pref="131" max="32767" attributes="0"/>
+                      <Component id="labeltotalenfacturacion" pref="134" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="pagocon" pref="131" max="32767" attributes="0"/>
+                      <Component id="pagocon" pref="134" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="cambio" pref="131" max="32767" attributes="0"/>
+                      <Component id="cambio" pref="134" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -1853,7 +1920,7 @@
                           <Group type="102" attributes="0">
                               <Component id="MunicipioCliente" min="-2" pref="113" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="DepartamentoCliente" pref="144" max="32767" attributes="0"/>
+                              <Component id="DepartamentoCliente" pref="147" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="IdCliente" min="-2" pref="40" max="-2" attributes="0"/>
@@ -1864,7 +1931,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="Caja_IDENTIFICACION" pref="65" max="32767" attributes="0"/>
+                              <Component id="Caja_IDENTIFICACION" pref="68" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel8" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
@@ -1879,7 +1946,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="SiglaPais" min="-2" pref="67" max="-2" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="CodigoPostalCliente" pref="145" max="32767" attributes="0"/>
+                              <Component id="CodigoPostalCliente" pref="148" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>

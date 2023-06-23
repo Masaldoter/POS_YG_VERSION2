@@ -758,13 +758,14 @@ public class ProductosDao extends ConexionesSQL{
         cn = Unionsis2.getConnection();
         producto = new Productos();
     
-    String sql= "select CodigoBarras, Nombre, Publico, PrecioRe, PrecioEs, Cantidad, Precio1, Precio2, Precio3, Descripcion, ruta, Estado_Productos, Permitir_Descuentos from productos where CodigoBarras=?";
+    String sql= "select idProductos, CodigoBarras, Nombre, Publico, PrecioRe, PrecioEs, Cantidad, Precio1, Precio2, Precio3, Descripcion, ruta, Estado_Productos, Permitir_Descuentos from productos where CodigoBarras=?";
         try {
             
             ps=(PreparedStatement) cn.prepareStatement(sql);
             ps.setString(1, cod);
             rs= ps.executeQuery();
             if(rs.next()){
+                producto.setIdProductos(rs.getInt("idProductos"));
                 producto.setCodigoBarras(rs.getString("CodigoBarras"));
                 producto.setNombre(rs.getString("Nombre"));
                 producto.setPublico(rs.getFloat("Publico"));
@@ -796,13 +797,14 @@ public class ProductosDao extends ConexionesSQL{
         rs = null;
         cn = Unionsis2.getConnection();
     
-    String sql= "select CodigoBarras, Nombre, Cantidad, Publico, PrecioRe, PrecioEs, Precio1, Precio2, Precio3, Descripcion, ruta, Estado_Productos, Permitir_Descuentos from productos where Nombre=?";
+    String sql= "select idProductos, CodigoBarras, Nombre, Cantidad, Publico, PrecioRe, PrecioEs, Precio1, Precio2, Precio3, Descripcion, ruta, Estado_Productos, Permitir_Descuentos from productos where Nombre=?";
         try {
             
             ps=(PreparedStatement) cn.prepareStatement(sql);
             ps.setString(1, Nombre);
             rs= ps.executeQuery();
             if(rs.next()){
+                 producto.setIdProductos(rs.getInt("idProductos"));
                 producto.setCodigoBarras(rs.getString("CodigoBarras"));
                 producto.setNombre(rs.getString("Nombre"));
                 producto.setCantidad(rs.getFloat("Cantidad"));

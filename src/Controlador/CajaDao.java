@@ -57,7 +57,7 @@ public class CajaDao extends ConexionesSQL{
         cn = Unionsis2.getConnection();
         
         String sql="update caja set ESTADO_DE_CAJA=?, FECHA_HORA_CIERRE_CAJA=?, USUARIO_CERRO_CAJA=?, ARQUEO_DE_CAJA=?, Total_Compras_CAJA=?, Total_Ventas_CAJA=?,  Total_Gastos_CAJA=?,"
-                + "Total_Efectivo_CAJA=?, Total_Transferencia_CAJA=?, Total_Cheque_CAJA=?, Total_Tarjeta_CAJA=?"
+                + "Total_Efectivo_CAJA=?, Total_Transferencia_CAJA=?, Total_Cheque_CAJA=?, Total_Tarjeta_CAJA=?, Total_Compartido_CAJA=?"
                 + " where idcaja=?";       
         try {
             ps=cn.prepareStatement(sql);
@@ -72,7 +72,8 @@ public class CajaDao extends ConexionesSQL{
                 ps.setFloat(9, pro.getTotal_Transferencia_CAJA());
                 ps.setFloat(10, pro.getTotal_Cheque_CAJA());
                 ps.setFloat(11, pro.getTotal_Tarjeta_CAJA());
-                ps.setInt(12,pro.getIdcaja());
+                ps.setFloat(12, pro.getTotal_Compartido_CAJA());
+                ps.setInt(13,pro.getIdcaja());
             
             ps.executeUpdate(); 
             
@@ -97,7 +98,7 @@ public class CajaDao extends ConexionesSQL{
         cn = Unionsis2.getConnection();
         
         String sql="update caja set ESTADO_DE_CAJA=?, FECHA_HORA_CIERRE_CAJA=?, USUARIO_CERRO_CAJA=?, ARQUEO_DE_CAJA=?, Total_Compras_CAJA=?, Total_Ventas_CAJA=?,  Total_Gastos_CAJA=?,"
-                + "Total_Efectivo_CAJA=?, Total_Transferencia_CAJA=?, Total_Cheque_CAJA=?, Total_Tarjeta_CAJA=?"
+                + "Total_Efectivo_CAJA=?, Total_Transferencia_CAJA=?, Total_Cheque_CAJA=?, Total_Tarjeta_CAJA=?, Total_Compartido_CAJA=?"
                 + " where idcaja=?";       
         try {
             ps=cn.prepareStatement(sql);
@@ -112,7 +113,8 @@ public class CajaDao extends ConexionesSQL{
                 ps.setFloat(9, pro.getTotal_Transferencia_CAJA());
                 ps.setFloat(10, pro.getTotal_Cheque_CAJA());
                 ps.setFloat(11, pro.getTotal_Tarjeta_CAJA());
-                ps.setInt(12,pro.getIdcaja());
+                ps.setFloat(12, pro.getTotal_Compartido_CAJA());
+                ps.setInt(13,pro.getIdcaja());
             
             ps.executeUpdate(); 
             

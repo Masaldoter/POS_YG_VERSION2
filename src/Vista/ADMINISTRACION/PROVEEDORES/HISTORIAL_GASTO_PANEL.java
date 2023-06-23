@@ -12,6 +12,10 @@ public class HISTORIAL_GASTO_PANEL extends javax.swing.JPanel {
 
     /**
      * Creates new form HISTORIAL_GASTO_PANEL
+     * @param NUMERO
+     * @param TOTAL
+     * @param DETALLES
+     * @param FECHA_USUARIO
      */
     public HISTORIAL_GASTO_PANEL(String NUMERO, String TOTAL, String DETALLES, String FECHA_USUARIO) {
         initComponents();

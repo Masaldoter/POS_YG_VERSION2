@@ -10,7 +10,9 @@ import CLASES_GLOBALES.PARAMETROS_VENTAS;
 import Modelo.CAJA;
 import Tablas.ACTUALIZA_CAJA;
 import Vista.Principal;
+import java.awt.event.KeyEvent;
 import java.util.List;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -47,6 +49,17 @@ public class VER_CAJAS extends javax.swing.JDialog {
         }
         jTable1.setModel(modelo2);
        //return ob;
+       
+       // Obtener el modelo de selección de filas
+        ListSelectionModel selectionModel = jTable1.getSelectionModel();
+        
+        // Establecer el modo de selección a selección única
+        selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        // Seleccionar la primera fila
+        selectionModel.setSelectionInterval(0, 0);
+        
+        jTable1.requestFocus();
     }
 
     /**
@@ -90,6 +103,11 @@ public class VER_CAJAS extends javax.swing.JDialog {
                 jTable1MouseClicked(evt);
             }
         });
+        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable1KeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -111,6 +129,14 @@ public class VER_CAJAS extends javax.swing.JDialog {
         principal.jLabel4.setText(PARAMETROS_VENTAS.NUMERO_CAJA);
         this.dispose();
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            PARAMETROS_VENTAS.NUMERO_CAJA = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
+            principal.jLabel4.setText(PARAMETROS_VENTAS.NUMERO_CAJA);
+            this.dispose();
+        }
+    }//GEN-LAST:event_jTable1KeyPressed
 
     /**
      * @param args the command line arguments

@@ -1,8 +1,10 @@
 //[52,118,243]
 package Vista;
 
-import CLASES_GLOBALES.AL_INICIAR;
+import CLASES_GLOBALES.METODOS_GLOBALES;
+import static CLASES_GLOBALES.METODOS_GLOBALES.CargarDatosRutas;
 import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import Controlador.DatosEmpresaDao;
@@ -13,38 +15,41 @@ import Modelo.DatosEmpresaGeneral;
 import WebServiceDigifact.ObtenerToken;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
-import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class LOGIN extends javax.swing.JFrame {
+public final class LOGIN extends javax.swing.JFrame {
+
     private Icon icono;
     Properties properties;
     InputStream entrada = null;
     FondoPanel fondo = new FondoPanel();
     PARAMETROS_EMPRESA P_E;
     DatosEmpresaGeneral DE = new DatosEmpresaGeneral();
+
     @Override
     public Image getIconImage() {
-        
+
         DE = login.VerDatosEmpresaEnLogin();
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(CargarDatosRutas(0) + "\\" + DE.getRutaimagensistema());
@@ -63,8 +68,9 @@ public class LOGIN extends javax.swing.JFrame {
         this.setTitle("LOGIN | POS " + PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA);
         CargarImagen();
         CargarDatos();
+        CREAR_ACCESOS_RAPIDOS ();
         
-        try {
+      /*  try {
       BufferedImage originalImage = ImageIO.read(new File(CargarDatosRutas(0) + "\\" + DE.getRutaimagensistema()));
       Image scaledImage = originalImage.getScaledInstance(10, 10, Image.SCALE_SMOOTH);
       BufferedImage icon = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
@@ -78,31 +84,13 @@ public class LOGIN extends javax.swing.JFrame {
       setIconImage(icon); // Establece la imagen como el icono del JFrame
     } catch (IOException e) {
       e.printStackTrace();
-    }
+    }*/
     }
 
     public static void TextoEnCajas() {
         TextPrompt hold;
         hold = new TextPrompt("USUARIO", us);
         hold = new TextPrompt("CONTRASEÑA", pass);
-    }
-
-    public static String CargarDatosRutas(int TipoRuta) {
-        String Ruta = "";
-        try {
-            Properties propertie3 = new Properties();
-            InputStream entrada = null;
-            entrada = new FileInputStream(new File("/Sistema Punto de Venta YG/CONFIGURACIONES/RUTASERVIDORIMAGENES.properties").getAbsolutePath());
-            propertie3.load(entrada);
-            if (TipoRuta == 0) {
-                Ruta = propertie3.getProperty("rutasistema");
-            } else {
-                Ruta = propertie3.getProperty("ruta");
-            }
-        } catch (FileNotFoundException e) {
-        } catch (IOException e) {
-        }
-        return Ruta;
     }
 
     public final void CargarDatos() {
@@ -149,12 +137,30 @@ public class LOGIN extends javax.swing.JFrame {
         } catch (IOException e) {
         }
     }
+    
+    public final String CargarDatos_ACCESOS_RAPIDOS(String ID, Boolean Ver) {
+        try {
+            properties = new Properties();
+            entrada = new FileInputStream(new File("/Sistema Punto de Venta YG/ACCESOS_RAPIDOS_USUARIOS/" + ID).getAbsolutePath());
+            properties.load(entrada);
+            jCheckBox1.setSelected(true);
+            if (Ver == true) {
+                us.setText(properties.getProperty("usuario"));
+                pass.setText(properties.getProperty("contrasenia"));
+            }
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+        return properties.getProperty("usuario");
+    }
 
     public final void CargarImagen() {
         P_E = new PARAMETROS_EMPRESA();
         DatosEmpresaGeneral DE = new DatosEmpresaGeneral();
         DE = login.VerDatosEmpresaEnLogin();
         NombreEmpresa.setText("<html>" + DE.getNombreEmpresa() + "</html>");
+
+
         Eslogan.setText("<html>" + DE.getEslogan() + "</html>");
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(CargarDatosRutas(0) + "\\" + DE.getRutaimagenlogo());
@@ -194,11 +200,14 @@ public class LOGIN extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Panel_AccesosRapidos = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(getIconImage());
         setIconImages(getIconImages());
-        setPreferredSize(new java.awt.Dimension(500, 400));
+        setPreferredSize(new java.awt.Dimension(600, 600));
 
         jPanel1.setBackground(new java.awt.Color(52, 118, 243));
 
@@ -233,7 +242,7 @@ public class LOGIN extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(NombreEmpresa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botonRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                    .addComponent(botonRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
                     .addComponent(Eslogan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -245,12 +254,12 @@ public class LOGIN extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(NombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(NombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Eslogan)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(Eslogan, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(botonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -327,6 +336,14 @@ public class LOGIN extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mbrilock_99595.png"))); // NOI18N
 
+        jScrollPane1.setBorder(null);
+
+        Panel_AccesosRapidos.setBackground(new java.awt.Color(255, 255, 255));
+        Panel_AccesosRapidos.setLayout(new java.awt.GridLayout(0, 3));
+        jScrollPane1.setViewportView(Panel_AccesosRapidos);
+
+        jLabel1.setText("ACCESOS RÁPIDOS");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -351,15 +368,17 @@ public class LOGIN extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jSeparator2)
-                                    .addComponent(pass, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
+                                    .addComponent(pass, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Ver, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(Ver, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(us, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -380,7 +399,11 @@ public class LOGIN extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -484,35 +507,38 @@ public class LOGIN extends javax.swing.JFrame {
             } else {
                 lg = login.log(Nom, con);
                 if (lg.getNombre() != null && lg.getContraseña() != null) {
-                    Principal Aldo = new Principal("g");
-                    Aldo.setVisible(true);
-                    Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                AV = new AVISOS("CARGANDO DATOS", "POR FAVOR, ESPERE");
-                AV.setVisible(true);
+                    if (lg.getEstado_Registro().equals("ACTIVO")) {
+                        Principal Aldo = new Principal("g");
+                        Aldo.setVisible(true);
+                        executorService.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                AV = new AVISOS("CARGANDO DATOS", "POR FAVOR, ESPERE");
+                                AV.setVisible(true);
 
-                Runnable runnable2 = new Runnable() {
-                    @Override
-                    public void run() {
-                        DatosEmpresaDao D_E = new DatosEmpresaDao();
-                        D_E.VerDatos();
-                        D_E.VerDatosCertificador();
-                        ObtenerToken OT = new ObtenerToken();
-                        OT.ObtenerToken();
-                        AL_INICIAR INICIO= new AL_INICIAR();
-                        INICIO.VERIFICAR_FULLTEXT_PRODUCTOS();
-                        AV.dispose();
+                                executorService.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        DatosEmpresaDao D_E = new DatosEmpresaDao();
+                                        D_E.VerDatos();
+                                        D_E.VerDatosCertificador();
+                                        ObtenerToken OT = new ObtenerToken();
+                                        OT.ObtenerToken();
+                                        /*AL_INICIAR INICIO= new AL_INICIAR();
+                        INICIO.VERIFICAR_FULLTEXT_PRODUCTOS();*/
+                                        /*Promociones promo = new Promociones();
+                                        promo.Logo1(false);*/
+                                        AV.dispose();
+                                    }
+                                });
+
+                            }
+                        });
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "¡UPSS, EL USUARIO ESTÁ DESACTIVADO!", "ÉRROR AL INICAR SESIÓN", JOptionPane.ERROR_MESSAGE);
                     }
-                };
-                Thread hilo2 = new Thread(runnable2);
-                hilo2.start();
 
-            }
-        };
-        Thread hilo = new Thread(runnable);
-        hilo.start();
-                    this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "¡UPSS, HAS INGRESADO DATOS INCORRECTOS, POR FAVOR VERIFICA!", "DATOS INCORRECTOS", JOptionPane.WARNING_MESSAGE);
                 }
@@ -572,16 +598,19 @@ public class LOGIN extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Eslogan;
     private javax.swing.JLabel NombreEmpresa;
+    private javax.swing.JPanel Panel_AccesosRapidos;
     private javax.swing.JToggleButton Ver;
     private javax.swing.JLabel botonRegistrar;
     private static javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private static javax.swing.JPasswordField pass;
@@ -603,5 +632,66 @@ public class LOGIN extends javax.swing.JFrame {
             super.paint(g);
         }*/
     }
+    
+    public void INICIAR_SESION_CON_ACCESO_RAPIDO(String ID){
+        login logi= new login();
+        logi = login.ABRIR_SESION_CON_ID(ID);
+        us.setText(logi.getNombre());
+        pass.setText(logi.getContraseña());
+        Validar();
+        
+    }
+    
+    public List<String> OBTENER_REGISTROS(){
+        List<String> listaRegistros = new ArrayList<>();
+        properties = new Properties(); // Manejo de la excepción
+        // Manejo de la excepción
+        File carpeta = new File("/Sistema Punto de Venta YG/ACCESOS_RAPIDOS_USUARIOS"); // Ruta de la carpeta a recorrer
+       if (carpeta.isDirectory()) {
+        File[] archivos = carpeta.listFiles();
+
+        for (File archivo : archivos) {
+            if (archivo.isFile()) {
+                listaRegistros.add(archivo.getName());
+            }
+        }
+    }
+        return listaRegistros;
+        
+
+    }
+
+    public void CREAR_ACCESOS_RAPIDOS() {
+        List<String> listaRegistros = login.VER_USUARIOS_ACCESOS_DIRECTOS();
+
+        // Crear un botón para cada registro y agregarlo al panel de botones
+        for (String registro : listaRegistros) {
+            login l = new login(); // Crear una nueva instancia de login en cada iteración
+
+            // Obtener los datos del registro actual
+            l = login.ABRIR_SESION_CON_ID(registro);
+            JButton boton = new JButton(registro);
+            boton.setText("" + l.getNombre());
+            Color color = Color.decode(l.getColor());
+            int borderWidth = 2; // Ancho del borde
+            boton.setVerticalTextPosition(JButton.BOTTOM);
+            boton.setHorizontalTextPosition(JButton.CENTER);
+            boton.setBorder(BorderFactory.createLineBorder(color, borderWidth));
+            boton.setName("" + l.getIdlogin1());
+            boton.setSize(50, 30);
+            METODOS_GLOBALES.PintarImagen_BOTON(boton, CargarDatosRutas(3) + "\\" + l.getImagen());
+            boton.setVisible(true);
+            boton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    INICIAR_SESION_CON_ACCESO_RAPIDO(boton.getName());
+                }
+            });
+            Panel_AccesosRapidos.add(boton);
+            Panel_AccesosRapidos.updateUI();
+            l= new login();
+        }
+    }
+
 
 }

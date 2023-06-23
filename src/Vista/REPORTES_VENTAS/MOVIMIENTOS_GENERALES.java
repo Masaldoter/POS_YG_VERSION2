@@ -18,6 +18,7 @@ import javax.swing.JButton;
 public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     CONSULTAS_VENTAS C_V = new CONSULTAS_VENTAS();
     Principal principal;
+    int TipoBusqueda = 0;
     public MOVIMIENTOS_GENERALES() {
         initComponents();
     }
@@ -525,18 +526,17 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         Fecha2.setDate(null);
         lblTipoBusquedaVentasGenerales.setText("TODAS LAS VENTAS");
         CARGAR_TOTALES();
+        TipoBusqueda = 0;
     }//GEN-LAST:event_jButton33ActionPerformed
 
     private void EstadoVentaGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EstadoVentaGeneralActionPerformed
-        /*String a= (String) EstadoVentaGeneral.getSelectedItem();
-        if(a == null){
-            Registros();
-        }else if(a != null){
-
-            Sele.setText(String.valueOf(proDao.ConsultaIdUsuario(ListaUsuarios)));
-            RegistrosUsuario();
-        }*/
-        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);
+        if(TipoBusqueda == 3){
+            C_V.ActualizarRegistroVentaPorFecha(TablaReporteVentas, fechabus, Fecha2, EstadoVentaGeneral, jComboBox1);
+        }else if(TipoBusqueda == 0){
+            C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);
+        }else{
+          C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);  
+        }
         CARGAR_TOTALES();
     }//GEN-LAST:event_EstadoVentaGeneralActionPerformed
 
@@ -546,6 +546,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             lblTipoBusquedaVentasGenerales.setText("POR DOCUMENTO");
             C_V.ActualizarRegistroVentaPorDocumento(jTextField1, false, TablaReporteVentas);
             CARGAR_TOTALES();
+            TipoBusqueda = 1;
         }
     }//GEN-LAST:event_jTextField1KeyPressed
 
@@ -587,6 +588,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         lblTipoBusquedaVentasGenerales.setText("POR FECHAS");
         C_V.ActualizarRegistroVentaPorFecha(TablaReporteVentas, fechabus, Fecha2, EstadoVentaGeneral, jComboBox1);
         CARGAR_TOTALES();
+        TipoBusqueda = 3;
     }//GEN-LAST:event_jButton30ActionPerformed
 
     private void jTextField5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyPressed
@@ -652,7 +654,13 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_TablaVentasNombreProductosMouseClicked
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);
+        if(TipoBusqueda == 3){
+            C_V.ActualizarRegistroVentaPorFecha(TablaReporteVentas, fechabus, Fecha2, EstadoVentaGeneral, jComboBox1);
+        }else if(TipoBusqueda == 0){
+            C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);
+        }else{
+          C_V.ActualizarRegistroVenta(TablaReporteVentas, EstadoVentaGeneral, jComboBox1);  
+        }
         CARGAR_TOTALES();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 

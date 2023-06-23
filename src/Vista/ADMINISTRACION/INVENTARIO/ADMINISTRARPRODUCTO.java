@@ -2,7 +2,9 @@
 package Vista.ADMINISTRACION.INVENTARIO;
 
 import CLASES_GLOBALES.METODOS_GLOBALES;
+import static CLASES_GLOBALES.METODOS_GLOBALES.CargarDatosRutas;
 import static CLASES_GLOBALES.METODOS_GLOBALES.OBTENER_EXTENSION_ARCHIVO;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import CodigosDeBarras.CodigosDeBarras;
@@ -23,6 +25,7 @@ import Modelo.Proveedor;
 import Modelo.SubCategoria;
 import Modelo.Ubicacion;
 import Tablas.ActualizarTablaVentas;
+import Vista.POS.VisualizarImagen;
 import Vista.Principal;
 import com.groupdocs.conversion.filetypes.ImageFileType;
 import com.mxrck.autocompleter.AutoCompleterCallback;
@@ -170,64 +173,58 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         }
     }
     
-    public void DRAG_AND_DROP_IMAGEN(){
-        class BuscarProducto_Hilo extends Thread {
+    public void DRAG_AND_DROP_IMAGEN() {
+    executorService.execute(new Runnable() {
+        @Override
+        public void run() {
+            new rsdragdropfiles.RSDragDropFiles(jPanel3, new rsdragdropfiles.RSDragDropFiles.Listener() {
+                @Override
+                public void filesDropped(File[] files) {
+                    if (files.length > 1) {
+                        javax.swing.JOptionPane.showMessageDialog(null, "¡NO PUEDE INSERTAR MÁS DE DOS IMÁGENES A LA VEZ!");
+                    } else {
+                        try {
+                            if (METODOS_GLOBALES.OBTENER_EXTENSION_ARCHIVO(files[0].getCanonicalPath()).equals("webp")) {
+                                ImageIcon imagenIa = new ImageIcon(ClassLoader.getSystemResource("IconosSOciales/CARGANDO.gif"));
+                                METODOS_GLOBALES.PintarImagen2(labelimagen, imagenIa);
 
-            @Override
-            public void run() {
-                new rsdragdropfiles.RSDragDropFiles(jPanel3, new rsdragdropfiles.RSDragDropFiles.Listener() {
-                    @Override
-                    public void filesDropped(File[] files) {
-                        if (files.length > 1) {
-                            javax.swing.JOptionPane.showMessageDialog(null, "¡NO PUEDE INSERTAR MÁS DE DOS IMÁGENES A LA VEZ!");
-                        } else {
-                            try {
-                                if (METODOS_GLOBALES.OBTENER_EXTENSION_ARCHIVO(files[0].getCanonicalPath()).equals("webp")) {
-                                    ImageIcon imagenIa = new ImageIcon(ClassLoader.getSystemResource("IconosSOciales/CARGANDO.gif"));
-                                    METODOS_GLOBALES.PintarImagen2(labelimagen, imagenIa);
-                                    class CARGAR_IMAGEN_CONVERTIR extends Thread {
-
-                                        @Override
-                                        public void run() {
-                                            String NombreFinal_Webp = String.valueOf(new Random().nextLong()).substring(7) + ".png";
-                                            String RutaFinal_Webp = CargarDatosRutas(1) + "\\" + NombreFinal_Webp;
-                                            try {
-                                                METODOS_GLOBALES.CONVERSION_WEBP_IMAGE(files[0].getCanonicalPath(), RutaFinal_Webp, ImageFileType.Png);
-                                            } catch (IOException ex) {
-                                                Logger.getLogger(ADMINISTRARPRODUCTO.class.getName()).log(Level.SEVERE, null, ex);
-                                            }
-                                            labelruta.removeAll();
-                                            labelruta.setText(NombreFinal_Webp);
-                                            METODOS_GLOBALES.PintarImagen(labelimagen, RutaFinal_Webp);
+                                class CARGAR_IMAGEN_CONVERTIR extends Thread {
+                                    @Override
+                                    public void run() {
+                                        String NombreFinal_Webp = String.valueOf(new Random().nextLong()).substring(7) + ".png";
+                                        String RutaFinal_Webp = CargarDatosRutas(1) + "\\" + NombreFinal_Webp;
+                                        try {
+                                            METODOS_GLOBALES.CONVERSION_WEBP_IMAGE(files[0].getCanonicalPath(), RutaFinal_Webp, ImageFileType.Png);
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(ADMINISTRARPRODUCTO.class.getName()).log(Level.SEVERE, null, ex);
                                         }
+                                        labelruta.removeAll();
+                                        labelruta.setText(NombreFinal_Webp);
+                                        METODOS_GLOBALES.PintarImagen(labelimagen, RutaFinal_Webp);
                                     }
+                                }
 
-                                    CARGAR_IMAGEN_CONVERTIR Hilo_CARGAR_IMAGEN_CONVERTIR = new CARGAR_IMAGEN_CONVERTIR();
-                                    Hilo_CARGAR_IMAGEN_CONVERTIR.start();
-
-                                } else {
-                                    labelruta.removeAll();
-                                    String NombreFinal = String.valueOf(new Random().nextLong()).substring(7) + "-" + files[0].getName();
+                                CARGAR_IMAGEN_CONVERTIR hilo_CARGAR_IMAGEN_CONVERTIR = new CARGAR_IMAGEN_CONVERTIR();
+                                hilo_CARGAR_IMAGEN_CONVERTIR.start();
+                            } else {
+                                labelruta.removeAll();
+                                String NombreFinal = String.valueOf(new Random().nextLong()).substring(7) + "-" + files[0].getName();
                                 String RutaFinal = CargarDatosRutas(1) + "\\" + NombreFinal;
                                 rsdragdropfiles.RSDragDropFiles.setCopiar(files[0].getCanonicalPath(), RutaFinal);
                                 METODOS_GLOBALES.PintarImagen(labelimagen, RutaFinal);
-                                labelruta.setText(NombreFinal);    
-                                }
-
-                                
-                            } catch (IOException ex) {
-                                DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-              DesktopNotify.showDesktopMessage("ERROR AL CARGAR IMAGEN EN MODO DRAG AND DROP \n", ""+ex, DesktopNotify.ERROR, 14000L);  
+                                labelruta.setText(NombreFinal);
                             }
+                        } catch (IOException ex) {
+                            DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+                            DesktopNotify.showDesktopMessage("ERROR AL CARGAR IMAGEN EN MODO DRAG AND DROP \n", "" + ex, DesktopNotify.ERROR, 14000L);
                         }
                     }
-                });
-            }
+                }
+            });
         }
+    });
+}
 
-        BuscarProducto_Hilo Hilo = new BuscarProducto_Hilo();
-        Hilo.start();
-    }
     
     public void ActualizarEstado(){
         if (EstadoProducto.getText().equals("INGRESADO")) {
@@ -535,6 +532,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                     ListarProductosTienda(Nombreproducto);
                     limpiarCajas();
                     inventario.REFRESCAR_INVENTARIO();
+                    inventario.pos.ListarProductosPOS_NOMBRE();
                 }
 
             }
@@ -551,7 +549,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 principal.VentanaAdministracionDeProductos=false;
                 this.dispose();
                 inventario.REFRESCAR_INVENTARIO();
-
+                inventario.pos.ListarProductosPOS_NOMBRE();
             }
 
         }
@@ -592,6 +590,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 principal.VentanaAdministracionDeProductos=false;
                 this.dispose();
                 inventario.REFRESCAR_INVENTARIO();
+                inventario.pos.ListarProductosPOS_NOMBRE();
             }
             }
     }
@@ -608,6 +607,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         labelruta = new javax.swing.JLabel();
         Eliminarp = new javax.swing.JButton();
+        VerFoto_Previa = new javax.swing.JPopupMenu();
+        VISUALIZAR = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         IdUsuario = new javax.swing.JLabel();
         NombreUsuarioVista = new javax.swing.JLabel();
@@ -716,6 +717,14 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 EliminarpActionPerformed(evt);
             }
         });
+
+        VISUALIZAR.setText("PRE-VISUALIZAR");
+        VISUALIZAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VISUALIZARActionPerformed(evt);
+            }
+        });
+        VerFoto_Previa.add(VISUALIZAR);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("ADMINISTRACIÓN DE PRODUCTOS");
@@ -996,6 +1005,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         labelimagen.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labelimagenMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                labelimagenMouseReleased(evt);
             }
         });
 
@@ -1449,6 +1461,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         ImageIcon bl = new ImageIcon(retValue);
         PintarImagen2(labelimagen, bl);
         labelruta.setText(ObtenerRutaImagen(2));
+        RutaDeImagen = ObtenerRutaImagen(0);
     }
 
     private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
@@ -1583,25 +1596,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "ERROR AL GENERAR CÓDIGOS", "¡DEBE INGRESAR UN PRODUCTO!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
-
-    public static String CargarDatosRutas(int TipoRuta){
-        String Ruta="";
-            try {
-                Properties propertie3= new Properties();
-    InputStream entrada = null;
-            entrada = new FileInputStream(new File ("/Sistema Punto de Venta YG/CONFIGURACIONES/RUTASERVIDORIMAGENES.properties").getAbsolutePath());
-            propertie3.load(entrada);
-            if(TipoRuta==0){
-                Ruta=propertie3.getProperty("rutasistema");
-            }else{
-               Ruta=  propertie3.getProperty("ruta");
-            }
-        } catch (FileNotFoundException e) {
-        }catch(IOException e){
-        }  
-            return Ruta;
-    }
-    
+ 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
         //MoverEntreSistema();
     }//GEN-LAST:event_jMenuItem13ActionPerformed
@@ -1868,6 +1863,17 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         ActualizarEstado();
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
+    private void labelimagenMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelimagenMouseReleased
+        if(evt.isPopupTrigger()){
+            VerFoto_Previa.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_labelimagenMouseReleased
+
+    private void VISUALIZARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VISUALIZARActionPerformed
+        VisualizarImagen VI = new VisualizarImagen(this, true, RutaDeImagen);
+        VI.setVisible(true);
+    }//GEN-LAST:event_VISUALIZARActionPerformed
+
     public int ConsultarIdProveedor(JComboBox ComboCategoria){
         int ResultadoProveedor = 0;
         ResultadoProveedor = proDao.ConsultaIdProveedor(ComboCategoria);
@@ -1987,6 +1993,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private static javax.swing.JComboBox<String> ProveedoresCombo;
     private static javax.swing.JTextField Publico;
     private static javax.swing.JTextField Reve;
+    private javax.swing.JMenuItem VISUALIZAR;
+    private javax.swing.JPopupMenu VerFoto_Previa;
     private static javax.swing.JComboBox<String> comboubicacion;
     private static javax.swing.JComboBox<String> comboubicacion2;
     private static javax.swing.JTextField idbodega;

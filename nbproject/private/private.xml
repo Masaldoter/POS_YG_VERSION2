@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Principal.java</file>
-            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Vales/Vales_Principal.java</file>
-            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Vales/historialAbonos.java</file>
-            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Vales/DETALLE_VALE.java</file>
-            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/Detalles.java</file>
-            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/POS/POS.java</file>
-            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/REPORTES_VENTAS/MOVIMIENTOS_DIARIOS.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Modelo/REGISTROS_ACCESOS_RAPIDOS.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Vista/LOGIN.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/Controlador/loginDao.java</file>
+            <file>file:/C:/Users/aldoy/OneDrive/Documents/NetBeansProjects/POS_YG_VERSION2/src/CLASES_GLOBALES/METODOS_GLOBALES.java</file>
         </group>
     </open-files>
 </project-private>

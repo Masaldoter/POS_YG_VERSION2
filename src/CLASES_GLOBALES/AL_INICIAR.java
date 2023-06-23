@@ -21,7 +21,7 @@ import java.sql.SQLException;
 public class AL_INICIAR extends ConexionesSQL{
     
     public void VERIFICAR_FULLTEXT_PRODUCTOS(){
-                    try {
+         /*           try {
             cn = conexion.getInstancia().getConnection();
             String tableName = "productos";
             String columnName1 = "Nombre";
@@ -52,7 +52,7 @@ public class AL_INICIAR extends ConexionesSQL{
             RsClose(rs);
             PsClose(ps);
             ConnectionClose(cn);
-        }
+        }*/
 
     }
     

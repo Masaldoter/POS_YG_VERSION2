@@ -39,7 +39,7 @@ public class VentaDao extends ConexionesSQL {
         return NumeroInterno;
     }
     
-    public int numeroserie_Salidas() {
+    public int numeroserie_TRASLADOS() {
         ps = null;
         rs = null;
         cn = Unionsis2.getConnection();

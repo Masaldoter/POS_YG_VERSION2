@@ -22,6 +22,9 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -32,42 +35,84 @@ import org.jfree.data.category.DefaultCategoryDataset;
  */
 public class REPORTESGRAFICOS extends ConexionesSQL {
     
-    public void ProductosMasVendidos(JTable tablaProductos) {
+    public void RegistrosGeneral(int Usuario, JPanel panel) {
+    ps = null;
+                rs = null;
                 cn = Unionsis2.getConnection();
-        DefaultTableModel modeloTabla = new DefaultTableModel();
-        tablaProductos.setModel(modeloTabla);
-        try {
+    Date fecha = new Date();
+    String strDateFormat = "YYYY-MM-dd";
+    SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+    String fechaFormateada = objSDF.format(fecha);
 
-            ps = cn.prepareStatement("SELECT CodigoBarras, Nombre ,SUM(CANTIDAD) AS VENDIDOS FROM detalle GROUP BY Nombre Order by SUM(CANTIDAD) desc LIMIT 0,500");
-
-            rs = ps.executeQuery();
-
-            modeloTabla.addColumn("CÓDIGO");
-            modeloTabla.addColumn("NOMBRE");
-            modeloTabla.addColumn("CANTIDAD VENDIDA");
-
-            ResultSetMetaData rsMD = rs.getMetaData();
-            int cantidadColumnas = rsMD.getColumnCount();
-
-            int anchotabla[] = {5, 190, 10};
-
-            for (int i = 0; i < cantidadColumnas; i++) {
-                tablaProductos.getColumnModel().getColumn(i).setPreferredWidth(anchotabla[i]);
-            }
-            while (rs.next()) {
-
-                Object fila[] = new Object[cantidadColumnas];
-                for (int i = 0; i < cantidadColumnas; i++) {
-                    fila[i] = rs.getObject(i + 1);
-                }
-
-                modeloTabla.addRow(fila);
-
-            }
-
-        } catch (SQLException e) {
+    try {
+        // Consulta SQL para obtener los datos
+        String sql = "SELECT SUM(Total) AS TOTAL, EXTRACT(MONTH FROM fecha) AS MES, EXTRACT(YEAR FROM fecha) AS AÑO FROM registro WHERE Estado='FACTURADO' GROUP BY MES, AÑO ORDER BY AÑO, MES";
+        ps = cn.prepareStatement(sql);
+        rs = ps.executeQuery();
+        
+        // Crear el conjunto de datos para el gráfico
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        while (rs.next()) {
+            dataset.setValue(rs.getDouble("TOTAL"), "MES", rs.getString("MES") + "-" + rs.getString("AÑO"));
         }
+        
+        // Crear el gráfico de líneas
+        JFreeChart chart = ChartFactory.createLineChart("VENTAS GENERALES", "FECHAS", "TOTALES", dataset, PlotOrientation.VERTICAL, true, true, false);
+        
+        // Rotar las etiquetas del eje X
+        CategoryPlot plot = chart.getCategoryPlot();
+        CategoryAxis domainAxis = plot.getDomainAxis();
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+        
+        // Crear el panel del gráfico y agregarlo al panel principal
+        panel.setLayout(new BorderLayout());
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
+        panel.add(chartPanel, BorderLayout.CENTER);
+        panel.validate();
+    } catch (SQLException e) {
+        System.out.println(e.toString());
+    } finally {
+        PsClose(ps);
+        RsClose(rs);
+        ConnectionClose(cn);
     }
+}
+
+    
+    public void ProductosMasVendidos(JTable tablaProductos) {
+    cn = Unionsis2.getConnection();
+    DefaultTableModel modeloTabla = new DefaultTableModel();
+    tablaProductos.setModel(modeloTabla);
+    
+    modeloTabla.addColumn("CÓDIGO");
+    modeloTabla.addColumn("NOMBRE");
+    modeloTabla.addColumn("CANTIDAD VENDIDA");
+    
+    try {
+        ps = cn.prepareStatement("SELECT CodigoBarras, Nombre, SUM(CANTIDAD) AS VENDIDOS FROM detalle GROUP BY CodigoBarras, Nombre ORDER BY SUM(CANTIDAD) DESC LIMIT 0, 500");
+        rs = ps.executeQuery();
+        
+        ResultSetMetaData rsMD = rs.getMetaData();
+        int cantidadColumnas = rsMD.getColumnCount();
+        int anchotabla[] = {5, 190, 10};
+        
+        for (int i = 0; i < cantidadColumnas; i++) {
+            tablaProductos.getColumnModel().getColumn(i).setPreferredWidth(anchotabla[i]);
+        }
+        
+        while (rs.next()) {
+            Object fila[] = new Object[cantidadColumnas];
+            for (int i = 0; i < cantidadColumnas; i++) {
+                fila[i] = rs.getObject(i + 1);
+            }
+            modeloTabla.addRow(fila);
+        }
+    } catch (SQLException e) {
+        // Manejo de excepciones
+    }
+}
+
     
     public void AvisoDeStock(JTable tablaProductos) {
                 cn = Unionsis2.getConnection();
@@ -132,6 +177,11 @@ public class REPORTESGRAFICOS extends ConexionesSQL {
              JFreeChart Barras = ChartFactory.createLineChart("Ventas del Día", "Usuario", "Ventas", Datos, PlotOrientation.VERTICAL, true, true, false);
              //JFreeChart jf = ChartFactory.createPieChart("VENTAS DEL DÍA", (PieDataset) Datos);
 
+             // Rotar las etiquetas del eje X
+             CategoryPlot plot = Barras.getCategoryPlot();
+             CategoryAxis domainAxis = plot.getDomainAxis();
+             domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+
              //DISEÑO
             //
             
@@ -150,7 +200,7 @@ public class REPORTESGRAFICOS extends ConexionesSQL {
         }
     }
     
-    public void RegistrosGeneral(int Usuario, JPanel panel){
+    /*public void RegistrosGeneral(int Usuario, JPanel panel){
         ps = null;
                 rs = null;
                 cn = Unionsis2.getConnection();
@@ -160,7 +210,7 @@ public class REPORTESGRAFICOS extends ConexionesSQL {
         String fecha=objSDF.format(fech);
         
          try {
-            String sql = "SELECT SUM(Total) AS TOTAL, EXTRACT(MONTH FROM fecha) AS MES,EXTRACT(YEAR FROM fecha) AS AÑO FROM registro WHERE Estado='FACTURADO' GROUP BY MES ORDER BY idregistro";
+            String sql = "SELECT SUM(Total) AS TOTAL, EXTRACT(MONTH FROM fecha) AS MES, EXTRACT(YEAR FROM fecha) AS AÑO FROM registro WHERE Estado='FACTURADO' GROUP BY MES, AÑO, idregistro ORDER BY MES, AÑO, idregistro";
             //      "SELECT rg.Total ,lg.Nombre AS Usuario , rg.Fecha FROM registro  AS rg INNER JOIN login1 As lg ON(rg.Usuario= lg.idlogin1) WHERE Usuario=? AND Fecha BETWEEN '"+EstablecerTiempo(-10)+"' AND '"+Fecha()+"'"
             
             ps = cn.prepareStatement(sql);
@@ -186,7 +236,7 @@ public class REPORTESGRAFICOS extends ConexionesSQL {
             RsClose(rs);
             ConnectionClose(cn);
         }
-    }
+    }*/
     
     
     public InterfazPrincipal Registros(){

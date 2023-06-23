@@ -9,23 +9,25 @@ public class login {
     private int idlogin1;
     private String NombreUsuario;
     private String ruta;
-    private byte[] imagen;
-    private String FechaIngreso, UltimaVezIngreso, Estado;
+    private String FechaIngreso, UltimaVezIngreso, Estado, Color, Estado_Registro, AccesoDirecto, Imagen;
     public login(){
         
     }
 
-    public login(String Nombre, String Contraseña, String Rol, int idlogin1, String NombreUsuario, String ruta, byte[] imagen, String FechaIngreso, String UltimaVezIngreso, String Estado) {
+    public login(String Nombre, String Contraseña, String Rol, int idlogin1, String NombreUsuario, String ruta, String FechaIngreso, String UltimaVezIngreso, String Estado, String Color, String Estado_Registro, String AccesoDirecto, String Imagen) {
         this.Nombre = Nombre;
         this.Contraseña = Contraseña;
         this.Rol = Rol;
         this.idlogin1 = idlogin1;
         this.NombreUsuario = NombreUsuario;
         this.ruta = ruta;
-        this.imagen = imagen;
         this.FechaIngreso = FechaIngreso;
         this.UltimaVezIngreso = UltimaVezIngreso;
         this.Estado = Estado;
+        this.Color = Color;
+        this.Estado_Registro = Estado_Registro;
+        this.AccesoDirecto = AccesoDirecto;
+        this.Imagen = Imagen;
     }
 
     public String getNombre() {
@@ -76,14 +78,6 @@ public class login {
         this.ruta = ruta;
     }
 
-    public byte[] getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
-    }
-
     public String getFechaIngreso() {
         return FechaIngreso;
     }
@@ -106,5 +100,37 @@ public class login {
 
     public void setEstado(String Estado) {
         this.Estado = Estado;
+    }
+
+    public String getColor() {
+        return Color;
+    }
+
+    public void setColor(String Color) {
+        this.Color = Color;
+    }
+
+    public String getEstado_Registro() {
+        return Estado_Registro;
+    }
+
+    public void setEstado_Registro(String Estado_Registro) {
+        this.Estado_Registro = Estado_Registro;
+    }
+
+    public String getAccesoDirecto() {
+        return AccesoDirecto;
+    }
+
+    public void setAccesoDirecto(String AccesoDirecto) {
+        this.AccesoDirecto = AccesoDirecto;
+    }
+
+    public String getImagen() {
+        return Imagen;
+    }
+
+    public void setImagen(String Imagen) {
+        this.Imagen = Imagen;
     }
 }

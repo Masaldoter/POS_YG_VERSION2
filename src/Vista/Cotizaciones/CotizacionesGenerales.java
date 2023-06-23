@@ -326,7 +326,7 @@ public class CotizacionesGenerales extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        TablaCotizaciones.setRowHeight(25);
+        TablaCotizaciones.setRowHeight(50);
         TablaCotizaciones.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TablaCotizacionesMouseClicked(evt);

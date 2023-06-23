@@ -141,6 +141,7 @@ public class HISTORIAL_GASTOS extends javax.swing.JDialog {
         jPanel2.removeAll();
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
         HISTORIAL_GASTO_PANEL H_G_P;
+        jPanel2.removeAll();
         List<Compras> ListarPr = C_C.Total_ENTRADAS_SALIDAS_DETALLES(NUMERO_CAJA, jComboBox1.getSelectedItem().toString());
         Object[] ob = new Object[4];
         for (int i = 0; i < ListarPr.size(); i++) {

@@ -18,14 +18,14 @@ import java.sql.SQLException;
  */
 public class ACTUALIZA_CAJA extends ConexionesSQL{
     
-    public static List LISTAR_CAJAS(String Fecha){
+    public static List LISTAR_CAJAS(String Fecha, String Fecha2){
         List<CAJA> Listapro = new ArrayList();
         try {
             cn = conexion.getInstancia().getConnection();
             rs = null;
             ps = null;
             CAJA caja;
-             ps = cn.prepareStatement("SELECT idcaja, ESTADO_DE_CAJA, Total_inicial_CAJA, FECHA_HORA_APERTURA_CAJA, FECHA_HORA_CIERRE_CAJA, USUARIO_APERTURO_CAJA, USUARIO_CERRO_CAJA, ARQUEO_DE_CAJA, FECHA from caja WHERE FECHA= '"+Fecha+"' ORDER BY idcaja DESC");
+             ps = cn.prepareStatement("SELECT idcaja, ESTADO_DE_CAJA, Total_inicial_CAJA, FECHA_HORA_APERTURA_CAJA, FECHA_HORA_CIERRE_CAJA, USUARIO_APERTURO_CAJA, USUARIO_CERRO_CAJA, ARQUEO_DE_CAJA, FECHA from caja WHERE FECHA BETWEEN '"+Fecha+"' AND '"+Fecha2+"' ORDER BY idcaja DESC");
              rs = ps.executeQuery();
              while (rs.next()) {
                 caja= new CAJA();

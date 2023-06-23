@@ -4,6 +4,7 @@
  */
 package Vista.ADMINISTRACION.INVENTARIO;
 
+import CLASES_GLOBALES.ATAJOSDETECLADO;
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import Controlador.FullSelectorListener;
@@ -31,6 +32,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
+        ATAJOSDETECLADO.clickOnKey(jButton1, "AJUSTAR()", KeyEvent.VK_ENTER);
         InsertarDatos(Codigo);
         VENTANA_INDEPENDIENTE = Independiente;
         OPERACION();
@@ -51,8 +53,8 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
     }
     
     public static void InsertarDatos(String codigo) {
-            ProductosDao proDao= new ProductosDao();
-            Productos proo = new Productos();
+        ProductosDao proDao = new ProductosDao();
+        Productos proo = new Productos();
         proo.setCodigoBarras(codigo);
         proDao.ActualizarTabla(proo);
         if (proo.getNombre() != null) {
@@ -63,8 +65,8 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
             CANTIDAD_A_AJUSTAR.setText("0");
             NUEVO_AJUSTE.setText("0");
             ValidarBotones();
-            CANTIDAD_A_AJUSTAR.requestFocus(); 
-        CANTIDAD_A_AJUSTAR.addFocusListener(new FullSelectorListener());
+            CANTIDAD_A_AJUSTAR.requestFocus();
+            CANTIDAD_A_AJUSTAR.addFocusListener(new FullSelectorListener());
         } else if (proo.getNombre() == null) {
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("VERIFIQUE EL CÓDIGO", codigo + " NO EXISTE!", DesktopNotify.ERROR, 14000L);
@@ -110,6 +112,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
         } else {
             jButton1.setEnabled(true);
             jButton2.setEnabled(true);
+
         }
     }
 
@@ -135,11 +138,11 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
                 Kd = new Kardex();
                 Kd.setID_Codigo_Producto_Kardex(Integer.parseInt(ID.getText()));
                 Kd.setTitulo_Kardex(MOTIVO_AJUSTE.getSelectedItem().toString()+" | "+TIPO_AJUSTE.getSelectedItem().toString());
-                if(TIPO_AJUSTE.getSelectedIndex()==0){
+                if(TIPO_AJUSTE.getSelectedIndex()==1){
                   Kd.setEntrada_Kardex(CANTIDAD_A_AJUSTAR.getText());  
                   Kd.setSalida_Kardex("0");
                 }else{
-                    Kd.setEntrada_Kardex("0");
+                    Kd.setEntrada_Kardex("2");
                     Kd.setSalida_Kardex(CANTIDAD_A_AJUSTAR.getText());  
                 }
                 Kd.setAntes_Kardex(STOCK_ACTUAL.getText());
@@ -173,12 +176,55 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
             }
         }
     }
-    
-    public void VALIDAR_BOTON(){
-        if(Float.parseFloat(CANTIDAD_A_AJUSTAR.getText())<=0 || MOTIVO_AJUSTE.getSelectedIndex()<=0 || TIPO_AJUSTE.getSelectedIndex()<=0){
+
+    public void VALIDAR_BOTON() {
+        if (Float.parseFloat(CANTIDAD_A_AJUSTAR.getText()) <= 0 || MOTIVO_AJUSTE.getSelectedIndex() <= 0 || TIPO_AJUSTE.getSelectedIndex() <= 0) {
             jButton1.setEnabled(false);
-        }else{
-            jButton1.setEnabled(true);
+        } else {
+            if (Float.parseFloat(NUEVO_AJUSTE.getText()) < 0) {
+                jButton1.setEnabled(false);
+            } else {
+                jButton1.setEnabled(true);
+            }
+        }
+    }
+
+    public void VALIDAR_OPCION() {
+        if (MOTIVO_AJUSTE.getSelectedIndex()==1) {
+            TIPO_AJUSTE.setSelectedIndex(1);
+        } else if (MOTIVO_AJUSTE.getSelectedIndex()==3
+                || MOTIVO_AJUSTE.getSelectedIndex()==4
+                || MOTIVO_AJUSTE.getSelectedIndex()==5) {
+            TIPO_AJUSTE.setSelectedIndex(2);
+        } else {
+            TIPO_AJUSTE.setSelectedIndex(0);
+        }
+    }
+
+    public void AJUSTAR() {
+        if (ValidarCajas() == true) {
+            if (TIPO_AJUSTE.getSelectedIndex() == 1) {
+                if (Float.parseFloat(CANTIDAD_A_AJUSTAR.getText()) <= 0f) {
+                    JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER MENOR O IGUAL A 0", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+                    CANTIDAD_A_AJUSTAR.requestFocus();
+                } else {
+                    AJUSTAR_STOCK();
+                }
+            } else {
+                if (Float.parseFloat(CANTIDAD_A_AJUSTAR.getText()) <= 0f) {
+                    JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER MENOR O IGUAL A 0", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+                    CANTIDAD_A_AJUSTAR.requestFocus();
+                } else if (TIPO_AJUSTE.getSelectedIndex() == 2) {
+                    if (Float.parseFloat(STOCK_ACTUAL.getText()) == 0) {
+                        JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER MENOR A 0", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+                        CANTIDAD_A_AJUSTAR.requestFocus();
+                    } else {
+                        AJUSTAR_STOCK();
+                    }
+
+                }
+            }
+
         }
     }
 
@@ -297,7 +343,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
 
         jLabel8.setText("MOTIVO AJUSTE:");
 
-        MOTIVO_AJUSTE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--SELECCIONE UNA OPCIÓN--", "NUEVO INGRESO", "RECONTEO FISICO", "TRASLADO DE PRODUCTO", "PRODUCTO INEXISTENTE" }));
+        MOTIVO_AJUSTE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--SELECCIONE UNA OPCIÓN--", "NUEVO INGRESO", "RECONTEO FISICO", "TRASLADO DE PRODUCTO", "PRODUCTO INEXISTENTE", "USO" }));
         MOTIVO_AJUSTE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MOTIVO_AJUSTEActionPerformed(evt);
@@ -403,7 +449,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
         );
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/ACEPTAR_32PX.png"))); // NOI18N
-        jButton1.setText("AJUSTAR");
+        jButton1.setText("AJUSTAR (ENTER)");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -510,30 +556,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(ValidarCajas()==true){
-            if(TIPO_AJUSTE.getSelectedIndex()==1){
-              if(Float.parseFloat(CANTIDAD_A_AJUSTAR.getText()) <= 0f) {
-                JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER MENOR O IGUAL A 0", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
-                CANTIDAD_A_AJUSTAR.requestFocus();
-            } else {
-                AJUSTAR_STOCK();
-            }  
-            }else{
-              if(Float.parseFloat(CANTIDAD_A_AJUSTAR.getText()) <= 0f) {
-                JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER MENOR O IGUAL A 0", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
-                CANTIDAD_A_AJUSTAR.requestFocus();
-            } else if(TIPO_AJUSTE.getSelectedIndex()==2){
-                  if(Float.parseFloat(STOCK_ACTUAL.getText())==0){
-                    JOptionPane.showMessageDialog(this, "LA CANTIDAD NO PUEDE SER MENOR A 0", "PROCESO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
-                CANTIDAD_A_AJUSTAR.requestFocus();  
-                  }else{
-                    AJUSTAR_STOCK();
-                  }
-                
-            }  
-            }
-        
-        }
+        AJUSTAR();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void CANTIDAD_A_AJUSTARMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CANTIDAD_A_AJUSTARMouseClicked
@@ -543,6 +566,7 @@ public class AJUSTE_STOCK extends javax.swing.JDialog {
 
     private void MOTIVO_AJUSTEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MOTIVO_AJUSTEActionPerformed
         VALIDAR_BOTON();
+        VALIDAR_OPCION();
     }//GEN-LAST:event_MOTIVO_AJUSTEActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

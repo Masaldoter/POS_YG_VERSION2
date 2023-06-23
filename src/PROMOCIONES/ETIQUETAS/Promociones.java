@@ -88,7 +88,7 @@ public class Promociones {
 
     }
     
-    public void Logo1(){
+    public void Logo1(boolean Visible){
         Codigos codigos;
         codigos= new Codigos("","","", "");
         List<Codigos> lista = new ArrayList<>();
@@ -104,9 +104,9 @@ public class Promociones {
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
             JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
             vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            vistaReporte.setVisible(true);
+            vistaReporte.setVisible(Visible);
             vistaReporte.setZoomRatio(1);
-            Boolean P=  JasperPrintManager.printReport(imprimirReporte, true);
+            Boolean P=  JasperPrintManager.printReport(imprimirReporte, Visible);
             if(P==true){
               vistaReporte.dispose();
             }

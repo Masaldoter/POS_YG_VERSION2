@@ -37,7 +37,7 @@ public class ComprasDao extends ConexionesSQL{
             ps.setString(7, pro.getTIPO_COMPRA());
             ps.execute();  
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-                DesktopNotify.showDesktopMessage("¡MOVIMIENTO EXITOSO!", "¡EL GASTÓ DE "+pro.getTOTAL_COMPRA()+" SE REGISTRÓ CORRECTAMENTE!", DesktopNotify.SUCCESS, 10000L);
+                DesktopNotify.showDesktopMessage("¡MOVIMIENTO EXITOSO!", "¡LA "+pro.getTIPO_COMPRA()+" DE "+pro.getTOTAL_COMPRA()+" SE REGISTRÓ CORRECTAMENTE!", DesktopNotify.SUCCESS, 10000L);
                 return true;
                 
         } catch (SQLException e) {

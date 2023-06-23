@@ -4,6 +4,7 @@
  */
 package Vista.ADMINISTRACION.INVENTARIO;
 
+import CLASES_GLOBALES.ATAJOSDETECLADO;
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.INSERTAR_IMAGEN_TABLA;
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
@@ -24,6 +25,7 @@ import Tablas.Actualizartablas;
 import Tablas.RenderTablasJLabel;
 import Vista.POS.POS;
 import Vista.Principal;
+import Vista.VENTAS.CAJA.VER_CAJAS;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.awt.Color;
@@ -51,6 +53,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     private static int TIPO_BUSQUEDA_FINAL_INVENTARIO;
     POS pos;
     Principal principal;
+    
     public INVENTARIO(POS pos, Principal principal) {
         initComponents();
         this.pos = pos;
@@ -59,7 +62,8 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         LIMPIAR_CAJAS_PRODUCTOS();
         DINAMICA_BOTONES_PRODUCTOS();
-        jCheckBox2.setEnabled(false);
+        //jCheckBox2.setEnabled(false);
+        ATAJOSDETECLADO.clickOnKey(Nuevop, "LIMPIAR", KeyEvent.VK_F5);
     }
     
     public void CARGAR_REGISTROS(){
@@ -553,8 +557,9 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
             }
         });
 
+        Nuevop.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         Nuevop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/nuevo.png"))); // NOI18N
-        Nuevop.setText("LIMPIAR");
+        Nuevop.setText("LIMPIAR (F5)");
         Nuevop.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         Nuevop.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         Nuevop.addActionListener(new java.awt.event.ActionListener() {
@@ -933,11 +938,11 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jSeparator58, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rSButtonHover1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addComponent(rSButtonHover1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rSButtonHover2, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                .addComponent(rSButtonHover2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rSButtonHover3, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addComponent(rSButtonHover3, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel14Layout.setVerticalGroup(
@@ -1218,8 +1223,14 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
                     }
                 }
                 if (boton.getName().equals("delete")) {
-
-                    Boolean ESTADO = pos.BusquedaCodigoBarras(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
+                    
+                    if (principal.jLabel4.getText().equals("")) {
+            VER_CAJAS CA = new VER_CAJAS(principal, true, principal);
+            CA.setVisible(true);
+            if (principal.jLabel4.getText().equals("")) {
+                
+            } else {
+                Boolean ESTADO = pos.BusquedaCodigoBarras(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
                     if (ESTADO == true) {
                         Boolean ESTADO_AGREGAR =pos.AgregarProducto();
                         if(ESTADO_AGREGAR==true){
@@ -1227,6 +1238,17 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
                             DesktopNotify.showDesktopMessage("ÉXITO", "SE AGREGÓ AL CARRITO 1  " + String.valueOf(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 1).toString()), DesktopNotify.SUCCESS, 10000L);
                         }
                     }
+            }
+        } else {
+            Boolean ESTADO = pos.BusquedaCodigoBarras(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
+                    if (ESTADO == true) {
+                        Boolean ESTADO_AGREGAR =pos.AgregarProducto();
+                        if(ESTADO_AGREGAR==true){
+                            DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+                            DesktopNotify.showDesktopMessage("ÉXITO", "SE AGREGÓ AL CARRITO 1  " + String.valueOf(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 1).toString()), DesktopNotify.SUCCESS, 10000L);
+                        }
+                    }
+        } 
                 }
             }
         }

@@ -1,6 +1,7 @@
 package ReportesImpresion;
 
 import CLASES_GLOBALES.METODOS_GLOBALES;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import Clases_Reportes.DatosEmpresa;
 import Clases_Reportes.Empleado;
 import Clases_Reportes.Fac;
@@ -20,6 +21,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -38,102 +41,101 @@ public class Documentos {
 
     CargarDatosGmail EmpresaDao;
     DatosEmpresaGeneral EmpresaReporte;
-    OBTENERIMPRESORAS Impresora= new OBTENERIMPRESORAS();
-    
+    OBTENERIMPRESORAS Impresora = new OBTENERIMPRESORAS();
+
     public void Facturaa(DatosClienteYFactura datos, DatosEmpresa Empresa, DatosCertificador DatosCertificador, DocumentoFel Fel, String TipoDocumento, JTable tabla, int TipoDocumentoImpresion, String LinkFelQR) {
-
-        Empleado em;// Instaciamos la clase empleado
-        Fac datoscliente;
-        Impresora.CargarDatosImpresoras();
-        String ImpresoraSeleccionada = null;
-        datoscliente = new Fac(datos.getNombre(), datos.getNit(), datos.getDireccion(), datos.getNoDocumento(), datos.getTotal(), datos.getEfectivo(), datos.getCambio(),
-                datos.getNoVale(), datos.getNoCotizacion(),
-                datos.getFormadePago(), datos.getNumeroTransaccion(), datos.getVendedor(), datos.getObservacion(), datos.getTotalLetras(), datos.getFechaEmision(), datos.getFechaVenta());
-
-        List<Empleado> lista = new ArrayList<>(); //Creamos una lista de empleados con ArrayList para obtener cada empleado
-        for (int i = 0; i < tabla.getRowCount(); i++) { // Iterena cada fila de la tabla
-            em = new Empleado(tabla.getValueAt(i, 0).toString(), tabla.getValueAt(i, 1).toString(), //Tomamos de la tabla el valor de cada columna y creamos un objeto empleado
-                    tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 3).toString(), tabla.getValueAt(i, 6).toString());
-            lista.add(em); //Agregamos el objeto empleado a la lista
-        }
-        HashMap<String, Object> par = new HashMap<String, Object>();
-        par.put("factura", datoscliente.getFactura());
-        par.put("nombre", datoscliente.getNombre());
-        par.put("nit", datoscliente.getNit());
-        par.put("direccion", datoscliente.getDireccion());
-        par.put("labeltotal", datoscliente.getLabeltotal());
-        par.put("pagocon", datoscliente.getPagocon());
-        par.put("cambio", datoscliente.getCambio());
-        par.put("observa", datoscliente.getObservacion());
-        par.put("Vende", datoscliente.getVendedor());
-        par.put("formapago", datoscliente.getFormaPago());
-        par.put("totalletras", datoscliente.getTotalEnLetras());
-        par.put("fechaemision", datoscliente.getFechaEmision());
-        par.put("fechaventa", datoscliente.getFechaVenta());
-        par.put("nombreempresa", Empresa.getNombreEmpresa());
-        par.put("nitempresa", Empresa.getNit());
-        par.put("direccionempresa", Empresa.getDireccion());
-        par.put("telempresa", Empresa.getTel());
-        par.put("eslogan", Empresa.getEslogan());
-        par.put("tipodocumento", TipoDocumento);
-
-        par.put("politicas", Empresa.getPoliticas());
-
-        par.put("TipoDocumento", Fel.getTipoDocumento());
-        par.put("NumeroDocumento", Fel.getNumeroDocumento());
-        par.put("SerieDocumento", Fel.getSerieDocumento());
-        par.put("NumeroAutorizacion", Fel.getNumeroAutorizacion());
-        par.put("FechaAutorizacion", Fel.getFechaAutorizacion());
-
-        par.put("NombreCertificador", DatosCertificador.getNombreCertificador());
-        par.put("NitCertificador", DatosCertificador.getNitCertificador());
         
-        //LINK
-        //par.put("LinkQR", LinkFelQR);
+                Empleado em;// Instaciamos la clase empleado
+                Fac datoscliente;
+                Impresora.CargarDatosImpresoras();
+                String ImpresoraSeleccionada = null;
+                datoscliente = new Fac(datos.getNombre(), datos.getNit(), datos.getDireccion(), datos.getNoDocumento(), datos.getTotal(), datos.getEfectivo(), datos.getCambio(),
+                        datos.getNoVale(), datos.getNoCotizacion(),
+                        datos.getFormadePago(), datos.getNumeroTransaccion(), datos.getVendedor(), datos.getObservacion(), datos.getTotalLetras(), datos.getFechaEmision(), datos.getFechaVenta());
 
-        try {
-            JasperReport reporte = null;
-            String directorio2 = null;
-            
-            if (TipoDocumentoImpresion == 0) {
-                directorio2 = new File("\\Sistema Punto de Venta YG\\Factura_Carta.jasper").getAbsolutePath();
-                ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
-            } else if (TipoDocumentoImpresion == 1) {
-                directorio2 = new File("C:\\Sistema Punto de Venta YG\\TicketFel.jasper").getAbsolutePath();
-                ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
-            }
-            File prove = new File(directorio2);
-           // File archivo = new File(ruta2);
-            reporte = (JasperReport) JRLoader.loadObject(prove);
-            JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
-            try {
-             estableceImpresoraPredeterminada(ImpresoraSeleccionada);    
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, ""+e, "ERROR AL ESTABLECER IMPRESORA EN FACTURA", JOptionPane.ERROR);
-            }
-            try {
-               
-            JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
-            vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            vistaReporte.setVisible(true);  
-             Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
-
-            if (P == true) {
-                vistaReporte.dispose();
-            }else if(P == false){
-                
-                int Seleccion = JOptionPane.showConfirmDialog(null, "¿CERRAR EL DOCUMENTO?");
-                if(Seleccion==0){
-                vistaReporte.dispose();
+                List<Empleado> lista = new ArrayList<>(); //Creamos una lista de empleados con ArrayList para obtener cada empleado
+                for (int i = 0; i < tabla.getRowCount(); i++) { // Iterena cada fila de la tabla
+                    em = new Empleado(tabla.getValueAt(i, 0).toString(), tabla.getValueAt(i, 1).toString(), //Tomamos de la tabla el valor de cada columna y creamos un objeto empleado
+                            tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 3).toString(), tabla.getValueAt(i, 6).toString());
+                    lista.add(em); //Agregamos el objeto empleado a la lista
                 }
-            }
-            } catch (HeadlessException | JRException e) {
-                JOptionPane.showMessageDialog(null, ""+e, "ERROR AL IMPRIMIR FACTURA", JOptionPane.ERROR);
-            }
-        } catch (JRException ex) {
-            System.out.println("Error  en Reporte Factura, " + ex);
+                HashMap<String, Object> par = new HashMap<String, Object>();
+                par.put("factura", datoscliente.getFactura());
+                par.put("nombre", datoscliente.getNombre());
+                par.put("nit", datoscliente.getNit());
+                par.put("direccion", datoscliente.getDireccion());
+                par.put("labeltotal", datoscliente.getLabeltotal());
+                par.put("pagocon", datoscliente.getPagocon());
+                par.put("cambio", datoscliente.getCambio());
+                par.put("observa", datoscliente.getObservacion());
+                par.put("Vende", datoscliente.getVendedor());
+                par.put("formapago", datoscliente.getFormaPago());
+                par.put("totalletras", datoscliente.getTotalEnLetras());
+                par.put("fechaemision", datoscliente.getFechaEmision());
+                par.put("fechaventa", datoscliente.getFechaVenta());
+                par.put("nombreempresa", Empresa.getNombreEmpresa());
+                par.put("nitempresa", Empresa.getNit());
+                par.put("direccionempresa", Empresa.getDireccion());
+                par.put("telempresa", Empresa.getTel());
+                par.put("eslogan", Empresa.getEslogan());
+                par.put("tipodocumento", TipoDocumento);
 
-        }
+                par.put("politicas", Empresa.getPoliticas());
+
+                par.put("TipoDocumento", Fel.getTipoDocumento());
+                par.put("NumeroDocumento", Fel.getNumeroDocumento());
+                par.put("SerieDocumento", Fel.getSerieDocumento());
+                par.put("NumeroAutorizacion", Fel.getNumeroAutorizacion());
+                par.put("FechaAutorizacion", Fel.getFechaAutorizacion());
+
+                par.put("NombreCertificador", DatosCertificador.getNombreCertificador());
+                par.put("NitCertificador", DatosCertificador.getNitCertificador());
+
+                //LINK
+                //par.put("LinkQR", LinkFelQR);
+                try {
+                    JasperReport reporte = null;
+                    String directorio2 = null;
+
+                    if (TipoDocumentoImpresion == 0) {
+                        directorio2 = new File("\\Sistema Punto de Venta YG\\Factura_Carta.jasper").getAbsolutePath();
+                        ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
+                    } else if (TipoDocumentoImpresion == 1) {
+                        directorio2 = new File("C:\\Sistema Punto de Venta YG\\TicketFel.jasper").getAbsolutePath();
+                        ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
+                    }
+                    File prove = new File(directorio2);
+                    // File archivo = new File(ruta2);
+                    reporte = (JasperReport) JRLoader.loadObject(prove);
+                    JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
+                    try {
+                        estableceImpresoraPredeterminada(ImpresoraSeleccionada);
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "" + e, "ERROR AL ESTABLECER IMPRESORA EN FACTURA", JOptionPane.ERROR);
+                    }
+                    try {
+
+                        JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
+                        vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                        vistaReporte.setVisible(true);
+                        Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
+
+                        if (P == true) {
+                            vistaReporte.dispose();
+                        } else if (P == false) {
+
+                            int Seleccion = JOptionPane.showConfirmDialog(null, "¿CERRAR EL DOCUMENTO?");
+                            if (Seleccion == 0) {
+                                vistaReporte.dispose();
+                            }
+                        }
+                    } catch (HeadlessException | JRException e) {
+                        JOptionPane.showMessageDialog(null, "" + e, "ERROR AL IMPRIMIR FACTURA", JOptionPane.ERROR);
+                    }
+                } catch (JRException ex) {
+                    System.out.println("Error  en Reporte Factura, " + ex);
+
+                }
 
     }
 
@@ -191,7 +193,7 @@ public class Documentos {
 
         try {
             JasperReport reporte = null;
-            
+
             String directorio2 = new File("/Sistema Punto de Venta YG/" + Doc + ".jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
@@ -204,126 +206,129 @@ public class Documentos {
     }
 
     public void FacturaNoDTE(DatosClienteYFactura datos, DatosEmpresa Empresa, String TipoDocumento, JTable tabla, DocumentoFel Fel, int TipoDocumentoImpresion) throws PrinterException {
+        
+                Empleado em;// Instaciamos la clase empleado
+                Fac datoscliente;
+                datoscliente = new Fac(datos.getNombre(), datos.getNit(), datos.getDireccion(), datos.getNoDocumento(), datos.getTotal(), datos.getEfectivo(), datos.getCambio(),
+                        datos.getNoVale(), datos.getNoCotizacion(),
+                        datos.getFormadePago(), datos.getNumeroTransaccion(), datos.getVendedor(), datos.getObservacion(), datos.getTotalLetras(), datos.getFechaEmision(), datos.getFechaVenta());
 
-        Empleado em;// Instaciamos la clase empleado
-        Fac datoscliente;
-        datoscliente = new Fac(datos.getNombre(), datos.getNit(), datos.getDireccion(), datos.getNoDocumento(), datos.getTotal(), datos.getEfectivo(), datos.getCambio(),
-                datos.getNoVale(), datos.getNoCotizacion(),
-                datos.getFormadePago(), datos.getNumeroTransaccion(), datos.getVendedor(), datos.getObservacion(), datos.getTotalLetras(), datos.getFechaEmision(), datos.getFechaVenta());
+                List<Empleado> lista = new ArrayList<>(); //Creamos una lista de empleados con ArrayList para obtener cada empleado
+                for (int i = 0; i < tabla.getRowCount(); i++) { // Iterena cada fila de la tabla
+                    em = new Empleado(tabla.getValueAt(i, 0).toString(), tabla.getValueAt(i, 1).toString(), //Tomamos de la tabla el valor de cada columna y creamos un objeto empleado
+                            tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 3).toString(), tabla.getValueAt(i, 6).toString());
+                    lista.add(em); //Agregamos el objeto empleado a la lista
+                }
+                HashMap<String, Object> par = new HashMap<String, Object>();
+                par.put("factura", datoscliente.getFactura());
+                par.put("nombre", datoscliente.getNombre());
+                par.put("nit", datoscliente.getNit());
+                par.put("direccion", datoscliente.getDireccion());
+                par.put("labeltotal", datoscliente.getLabeltotal());
+                par.put("pagocon", datoscliente.getPagocon());
+                par.put("cambio", datoscliente.getCambio());
+                par.put("observa", datoscliente.getObservacion());
+                par.put("Vende", datoscliente.getVendedor());
+                par.put("formapago", datoscliente.getFormaPago());
+                par.put("totalletras", datoscliente.getTotalEnLetras());
+                par.put("fechaemision", datoscliente.getFechaEmision());
+                par.put("fecha_venta", datoscliente.getFechaVenta());
+                par.put("nombreempresa", Empresa.getNombreEmpresa());
+                par.put("nitempresa", Empresa.getNit());
+                par.put("direccionempresa", Empresa.getDireccion());
+                par.put("telempresa", Empresa.getTel());
+                par.put("eslogan", Empresa.getEslogan());
+                par.put("tipodocumento", TipoDocumento);
+                par.put("politicas", Empresa.getPoliticas());
 
-        List<Empleado> lista = new ArrayList<>(); //Creamos una lista de empleados con ArrayList para obtener cada empleado
-        for (int i = 0; i < tabla.getRowCount(); i++) { // Iterena cada fila de la tabla
-            em = new Empleado(tabla.getValueAt(i, 0).toString(), tabla.getValueAt(i, 1).toString(), //Tomamos de la tabla el valor de cada columna y creamos un objeto empleado
-                    tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 3).toString(), tabla.getValueAt(i, 6).toString());
-            lista.add(em); //Agregamos el objeto empleado a la lista
-        }
-        HashMap<String, Object> par = new HashMap<String, Object>();
-        par.put("factura", datoscliente.getFactura());
-        par.put("nombre", datoscliente.getNombre());
-        par.put("nit", datoscliente.getNit());
-        par.put("direccion", datoscliente.getDireccion());
-        par.put("labeltotal", datoscliente.getLabeltotal());
-        par.put("pagocon", datoscliente.getPagocon());
-        par.put("cambio", datoscliente.getCambio());
-        par.put("observa", datoscliente.getObservacion());
-        par.put("Vende", datoscliente.getVendedor());
-        par.put("formapago", datoscliente.getFormaPago());
-        par.put("totalletras", datoscliente.getTotalEnLetras());
-        par.put("fechaemision", datoscliente.getFechaEmision());
-        par.put("fecha_venta", datoscliente.getFechaVenta());
-        par.put("nombreempresa", Empresa.getNombreEmpresa());
-        par.put("nitempresa", Empresa.getNit());
-        par.put("direccionempresa", Empresa.getDireccion());
-        par.put("telempresa", Empresa.getTel());
-        par.put("eslogan", Empresa.getEslogan());
-        par.put("tipodocumento", TipoDocumento);
-        par.put("politicas", Empresa.getPoliticas());
+                par.put("TipoDocumento", Fel.getTipoDocumento());
 
-        par.put("TipoDocumento", Fel.getTipoDocumento());
+                try {
+                    JasperReport reporte = null;
+                    Impresora.CargarDatosImpresoras();
+                    String ImpresoraSeleccionada = null;
 
-        try {
-            JasperReport reporte = null;
-            Impresora.CargarDatosImpresoras();
-            String ImpresoraSeleccionada = null;
-            
-            String directorio2 = null;
-            if (TipoDocumentoImpresion == 0) {
-                directorio2 = new File("C:\\Sistema Punto de Venta YG\\Factura_Carta_NoFel.jasper").getAbsolutePath();
-                ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
-            } else if (TipoDocumentoImpresion == 1) {
-                directorio2 = new File("C:\\Sistema Punto de Venta YG\\Factura_Ticket_NoFel_.jasper").getAbsolutePath();
-                ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
-            }
+                    String directorio2 = null;
+                    if (TipoDocumentoImpresion == 0) {
+                        directorio2 = new File("C:\\Sistema Punto de Venta YG\\Factura_Carta_NoFel.jasper").getAbsolutePath();
+                        ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
+                    } else if (TipoDocumentoImpresion == 1) {
+                        directorio2 = new File("C:\\Sistema Punto de Venta YG\\Factura_Ticket_NoFel_.jasper").getAbsolutePath();
+                        ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
+                    }
 
-            File prove = new File(directorio2);
-            reporte = (JasperReport) JRLoader.loadObject(prove);
-            JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
-            JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
-            
-            
-            estableceImpresoraPredeterminada(ImpresoraSeleccionada);
-           vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            vistaReporte.setVisible(true);
-            Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
+                    File prove = new File(directorio2);
+                    reporte = (JasperReport) JRLoader.loadObject(prove);
+                    JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
 
-            if (P == true) {
-                vistaReporte.dispose();
-            }else if(P == false){
-                
-               //int Seleccion = JOptionPane.showConfirmDialog(null, "¿CERRAR EL DOCUMENTO?");
-                //if(Seleccion==0){
-                vistaReporte.dispose();
-              //  }
-            }
+                    JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
 
-        } catch (JRException ex) {
-            System.out.println("Error  en Reporte Proforma, " + ex);
+                    estableceImpresoraPredeterminada(ImpresoraSeleccionada);
+                    vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    vistaReporte.setVisible(true);
 
-        }
+                    Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
 
+                    if (P == true) {
+                        vistaReporte.dispose();
+                    } else if (P == false) {
+                        vistaReporte.dispose();
+                    }
+
+                } catch (JRException ex) {
+                    System.out.println("Error  en Reporte Proforma, " + ex);
+
+                }
     }
 
     public void Productos(DatosEmpresa datos, JTable tabla, Boolean Catalago) {
-        ParametrosProductos em;// Instaciamos la clase empleado
-        DatosCertificador DatosCertificador = new DatosCertificador();
-        DatosEmpresa datoscliente;
-        datoscliente = new DatosEmpresa(datos.getUsuario(), datos.getNombreEmpresa(), datos.getNit(), datos.getDireccion(), datos.getTel(), datos.getLugar(), datos.getEslogan());
 
-        List<ParametrosProductos> lista = new ArrayList<>(); //Creamos una lista de empleados con ArrayList para obtener cada empleado
-        for (int i = 0; i < tabla.getRowCount(); i++) { // Iterena cada fila de la tabla
-            em = new ParametrosProductos(tabla.getValueAt(i, 0).toString(), tabla.getValueAt(i, 1).toString(), //Tomamos de la tabla el valor de cada columna y creamos un objeto empleado
-                    tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 4).toString(), tabla.getValueAt(i, 5).toString(), tabla.getValueAt(i, 9).toString());
-            lista.add(em); //Agregamos el objeto empleado a la lista
-        }
-        HashMap<String, Object> par = new HashMap<>();
-        par.put("usuario", datoscliente.getUsuario());
-        par.put("nombreempresa", datoscliente.getNombreEmpresa());
-        par.put("nit", datoscliente.getNit());
-        par.put("direccion", datoscliente.getDireccion());
-        par.put("tel", datoscliente.getTel());
-        par.put("lugar", datoscliente.getLugar());
-        par.put("eslogan", datoscliente.getEslogan());
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                ParametrosProductos em;// Instaciamos la clase empleado
+                DatosCertificador DatosCertificador = new DatosCertificador();
+                DatosEmpresa datoscliente;
+                datoscliente = new DatosEmpresa(datos.getUsuario(), datos.getNombreEmpresa(), datos.getNit(), datos.getDireccion(), datos.getTel(), datos.getLugar(), datos.getEslogan());
 
-        try {
-            String directorio2 = null;
-            if (Catalago == true) {
-                directorio2 = new File("C:/Sistema Punto de Venta YG/REPORTESPRODUCTOS/ProductosParametrosCatalago.jasper").getAbsolutePath();
-            } else if (Catalago == false) {
-                directorio2 = new File("C:/Sistema Punto de Venta YG/REPORTESPRODUCTOS/ProductosParametros.jasper").getAbsolutePath();
+                List<ParametrosProductos> lista = new ArrayList<>(); //Creamos una lista de empleados con ArrayList para obtener cada empleado
+                for (int i = 0; i < tabla.getRowCount(); i++) { // Iterena cada fila de la tabla
+                    em = new ParametrosProductos(tabla.getValueAt(i, 0).toString(), tabla.getValueAt(i, 1).toString(), //Tomamos de la tabla el valor de cada columna y creamos un objeto empleado
+                            tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 4).toString(), tabla.getValueAt(i, 5).toString(), tabla.getValueAt(i, 9).toString());
+                    lista.add(em); //Agregamos el objeto empleado a la lista
+                }
+                HashMap<String, Object> par = new HashMap<>();
+                par.put("usuario", datoscliente.getUsuario());
+                par.put("nombreempresa", datoscliente.getNombreEmpresa());
+                par.put("nit", datoscliente.getNit());
+                par.put("direccion", datoscliente.getDireccion());
+                par.put("tel", datoscliente.getTel());
+                par.put("lugar", datoscliente.getLugar());
+                par.put("eslogan", datoscliente.getEslogan());
+
+                try {
+                    String directorio2 = null;
+                    if (Catalago == true) {
+                        directorio2 = new File("C:/Sistema Punto de Venta YG/REPORTESPRODUCTOS/ProductosParametrosCatalago.jasper").getAbsolutePath();
+                    } else if (Catalago == false) {
+                        directorio2 = new File("C:/Sistema Punto de Venta YG/REPORTESPRODUCTOS/ProductosParametros.jasper").getAbsolutePath();
+                    }
+                    JasperReport reporte = null;
+
+                    File prove = new File(directorio2);
+                    reporte = (JasperReport) JRLoader.loadObject(prove);
+                    JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
+                    JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
+                    vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    vistaReporte.setVisible(true);
+
+                } catch (JRException ex) {
+                    System.out.println("Error  en Reporte de Productos, " + ex);
+
+                }
+
             }
-            JasperReport reporte = null;
-
-            File prove = new File(directorio2);
-            reporte = (JasperReport) JRLoader.loadObject(prove);
-            JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
-            JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
-            vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            vistaReporte.setVisible(true);
-
-        } catch (JRException ex) {
-            System.out.println("Error  en Reporte de Productos, " + ex);
-
-        }
+        });
 
     }
 
@@ -393,7 +398,7 @@ public class Documentos {
     }*/
     
     public void DocumentoCotizacion(DatosClienteYFactura datos, DatosEmpresa Empresa, String TipoDocumento, JTable tabla, DocumentoFel Fel, int TipoDocumentoImpresion) throws PrinterException {
-
+       
         Empleado em;// Instaciamos la clase empleado
         Fac datoscliente;
         Impresora.CargarDatosImpresoras();
@@ -470,7 +475,6 @@ public class Documentos {
             System.out.println("Error  en Reporte Proforma, " + ex);
 
         }
-
     }
 
     public String DocumentoCotizacionGuardar(DatosClienteYFactura datos, DatosEmpresa Empresa, String TipoDocumento, JTable tabla, DocumentoFel Fel, int TipoDocumentoImpresion) throws PrinterException {
@@ -532,7 +536,7 @@ public class Documentos {
             selectPath = chooser.getSelectedFile().getPath();
         }
             
-            ruta2 = selectPath + "\\" + a;
+            ruta2 = selectPath + "\\"+Fel.getTipoDocumento()+"-" + a;
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
