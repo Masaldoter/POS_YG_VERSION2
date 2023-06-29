@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
 import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -40,6 +41,7 @@ public class Config extends javax.swing.JFrame {
         initComponents();
         this.principal = principal;
         ObtenerImpresoras();
+        jCheckBox1.setSelected(Boolean.valueOf(METODOS_GLOBALES.Cargar_Boton_Fecha()));
         CargarDatosImpresoras();
         CargarDatosRutas();
         Cerrar();
@@ -104,6 +106,7 @@ public class Config extends javax.swing.JFrame {
     public void Guardar() {
         GuardarRutaImagenes();
         GuardarImpresoras();
+        METODOS_GLOBALES.GuardarBoton_Fecha(jCheckBox1.isSelected());
     }
 
     public void GuardarRutaImagenes() {
@@ -129,6 +132,8 @@ public class Config extends javax.swing.JFrame {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+     
 
     
     @SuppressWarnings("unchecked")
@@ -513,6 +518,7 @@ public class Config extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        METODOS_GLOBALES.GuardarBoton_Fecha(jCheckBox1.isSelected());
         if(jCheckBox1.isSelected()){
             principal.P_O_S.Fecha_Movimiento.setEnabled(true);
         }else{

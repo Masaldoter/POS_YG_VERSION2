@@ -368,7 +368,7 @@ public final class LOGIN extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jSeparator2)
-                                    .addComponent(pass, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+                                    .addComponent(pass, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Ver, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jScrollPane1)
@@ -402,8 +402,8 @@ public final class LOGIN extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -505,6 +505,8 @@ public final class LOGIN extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "¡POR FAVOR, INGRESA UNA CONTRASEÑA!");
                 pass.requestFocus();
             } else {
+                lg = new login();
+                login = new loginDao();
                 lg = login.log(Nom, con);
                 if (lg.getNombre() != null && lg.getContraseña() != null) {
                     if (lg.getEstado_Registro().equals("ACTIVO")) {
@@ -662,6 +664,7 @@ public final class LOGIN extends javax.swing.JFrame {
     }
 
     public void CREAR_ACCESOS_RAPIDOS() {
+        login = new loginDao();
         List<String> listaRegistros = login.VER_USUARIOS_ACCESOS_DIRECTOS();
 
         // Crear un botón para cada registro y agregarlo al panel de botones

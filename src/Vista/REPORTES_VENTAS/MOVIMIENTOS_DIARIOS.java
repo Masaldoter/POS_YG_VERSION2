@@ -92,8 +92,8 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
     
     public void REFRESCAR_VENTAS_DIARIAS(){
         if(!PARAMETROS_USUARIOS.ROL_USUARIO.equals("Administrador")){
-            Sele.setText(PARAMETROS_USUARIOS.NOMBRE_USUARIO);
-        ListaUsuarios.setSelectedItem(PARAMETROS_USUARIOS.NOMBRE_USUARIO);    
+        ListaUsuarios.setSelectedItem(PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);    
+        Sele.setText(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO));
         }else{
           Sele.setText("General");
         ListaUsuarios.setSelectedItem(null);  

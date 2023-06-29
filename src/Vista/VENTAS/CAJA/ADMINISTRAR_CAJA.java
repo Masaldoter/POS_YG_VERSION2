@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  * @author aldoy
  */
-public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
+public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
 
     String NUMERO_CAJA, Fecha, TotalInicial;
     Float TOTAL_FINAL_EN_CAJA=0F, TOTAL_FINAL= 0F;
@@ -46,7 +46,7 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         this.Usuario = ID_USUARIO;
         this.Fecha = Fecha;
         this.jTextField9.setText(Total_Inicial);
-        this.setLocationRelativeTo(this);
+        this.setLocationRelativeTo(parent);
         this.NUMERO_CAJA = NUMERO_CAJA;
         jLabel2.setText(jLabel2.getText()+ " #"+this.NUMERO_CAJA);
         CARGAR_TOTALES();
@@ -110,12 +110,14 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(701, 647));
         setPreferredSize(new java.awt.Dimension(701, 680));
 
-        jPanel1.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel1.setBackground(new java.awt.Color(0, 153, 255));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CAJA_32PX.png"))); // NOI18N
@@ -506,6 +508,15 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
             }
         });
         jMenu1.add(jMenuItem3);
+        jMenu1.add(jSeparator4);
+
+        jMenuItem5.setText("VIGENTES Y ANULADOS");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
 
         jMenuBar1.add(jMenu1);
 
@@ -613,11 +624,11 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     
     public void CARGAR_PAGOS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        caja_TotalEfectivo.setText(C_C.Total_EFECTIVO(Fecha).toString());
-        caja_TotalCheque.setText(C_C.Total_CHEQUE(Fecha).toString());
-        caja_TotalTarjeta.setText(C_C.Total_TARJETA(Fecha).toString());
-        caja_TotalTransferencia.setText(C_C.Total_TRANSFERENCIA(Fecha).toString());
-        caja_TotalCompartido.setText(C_C.Total_COMPARTIDO(Fecha).toString());
+        caja_TotalEfectivo.setText(C_C.Total_EFECTIVO(Integer.parseInt(NUMERO_CAJA)).toString());
+        caja_TotalCheque.setText(C_C.Total_CHEQUE(Integer.parseInt(NUMERO_CAJA)).toString());
+        caja_TotalTarjeta.setText(C_C.Total_TARJETA(Integer.parseInt(NUMERO_CAJA)).toString());
+        caja_TotalTransferencia.setText(C_C.Total_TRANSFERENCIA(Integer.parseInt(NUMERO_CAJA)).toString());
+        caja_TotalCompartido.setText(C_C.Total_COMPARTIDO(Integer.parseInt(NUMERO_CAJA)).toString());
     }
 
     public void CARGAR_TOTALES(){
@@ -632,22 +643,22 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
 
     public void CARGAR_VENTAS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        jTextField6.setText(C_C.Total_Ventas(Fecha, Integer.parseInt(NUMERO_CAJA)).toString());
+        jTextField6.setText(C_C.Total_Ventas(Integer.parseInt(NUMERO_CAJA)).toString());
     }
     
     public void CARGAR_COMPRAS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        jTextField7.setText(C_C.Total_Compras(Fecha, Integer.parseInt(NUMERO_CAJA)).toString());
+        jTextField7.setText(C_C.Total_Compras(Integer.parseInt(NUMERO_CAJA)).toString());
     }
     
     public void CARGAR_SALIDAS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        jTextField8.setText(C_C.Total_SALIDAS(Fecha, Integer.parseInt(NUMERO_CAJA)).toString());
+        jTextField8.setText(C_C.Total_SALIDAS(Integer.parseInt(NUMERO_CAJA)).toString());
     }
     
     public void CARGAR_ENTRADAS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        jTextField10.setText(C_C.Total_ENTRADAS(Fecha, Integer.parseInt(NUMERO_CAJA)).toString());
+        jTextField10.setText(C_C.Total_ENTRADAS(Integer.parseInt(NUMERO_CAJA)).toString());
     }
     
     public void OPERACIONES(){
@@ -657,7 +668,7 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     
     public void CARGAR_VENTAS_TARJETA(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        caja_TotalEfectivo.setText(C_C.Total_Ventas(Fecha, Integer.parseInt(NUMERO_CAJA)).toString());
+        caja_TotalEfectivo.setText(C_C.Total_Ventas(Integer.parseInt(NUMERO_CAJA)).toString());
     }
     
     public String SUMAR_CANTIDADES(){
@@ -857,6 +868,11 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         CARGAR_PAGOS();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        VER_DETALLES_VIGENTES_ANULADOS D_V_A = new VER_DETALLES_VIGENTES_ANULADOS(null, true, Integer.parseInt(NUMERO_CAJA));
+        D_V_A.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -929,6 +945,7 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -938,6 +955,7 @@ public class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;

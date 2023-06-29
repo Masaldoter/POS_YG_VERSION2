@@ -17,9 +17,9 @@ import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.Icon;
@@ -216,6 +215,36 @@ public class METODOS_GLOBALES {
     public static void Desactivar_Inactividad(){
         timer.cancel();
     }*/
+    public static void GuardarBoton_Fecha(Boolean Validar) {
+        Properties propertie3= new Properties();
+        InputStream entrada = null;
+        try {
+            propertie3.setProperty("fecha_venta", String.valueOf(Validar));
+            
+            propertie3.store(new FileWriter(new File("/Sistema Punto de Venta YG/CONFIGURACIONES/CAMBIAR_FECHA.properties").getAbsolutePath()), "CONFIGURACIÓN DE INGRESO DE DATOS CON FECHA DIFRENTE");
+        } catch (IOException ex) {
+        }
+    }
+    
+    public static String Cargar_Boton_Fecha() {
+        String Ruta = "";
+        try {
+            Properties propertie3 = new Properties();
+            InputStream entrada = null;
+            entrada = new FileInputStream(new File("/Sistema Punto de Venta YG/CONFIGURACIONES/CAMBIAR_FECHA.properties").getAbsolutePath());
+            propertie3.load(entrada);
+            Ruta = propertie3.getProperty("fecha_venta");
+            if(Ruta.equals("")  || Ruta.equals(null)){
+                GuardarBoton_Fecha(false);
+                Ruta = "false";
+            }else{
+                Ruta = propertie3.getProperty("fecha_venta");
+            }
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+        return Ruta;
+    }
     
     public static String CargarDatosRutas(int TipoRuta){
         String Ruta="";

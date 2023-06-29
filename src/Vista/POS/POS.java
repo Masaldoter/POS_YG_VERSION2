@@ -80,8 +80,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,7 +94,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public final class POS extends javax.swing.JInternalFrame {
-    private Boolean VENTANA_REVENTA_MOSTRADA= false;
+
+    // Crear un formato decimal personalizado
+    DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
+    private Boolean VENTANA_REVENTA_MOSTRADA = false;
     TextAutoCompleter AutoCompletador_PRODUCTOS, AUTOCOMPLETADOR_CLIENTES_NOMBRE, AUTOCOMPLETADOR_CLIENTE_NIT;
     double TotalPagar = 0.00;
     int item;
@@ -139,6 +142,7 @@ public final class POS extends javax.swing.JInternalFrame {
         ConfigVentas.CargarDatosImprimir(CheckImprimir);
         ConfigVentas.CargarDatosTipoDocumento(TipoDocumento);
         ConfigVentas.CargarDatosMODO_REVENTA(CheckReventa);
+        Fecha_Movimiento.setEnabled(Boolean.valueOf(METODOS_GLOBALES.Cargar_Boton_Fecha()));
         CARGAR_POS();
     }
 
@@ -180,7 +184,6 @@ public final class POS extends javax.swing.JInternalFrame {
         OBTENERSERIES();
         IdVenta.requestFocus();
         Fecha_Movimiento.setDate(METODOS_GLOBALES.Fecha_DATE());
-        Fecha_Movimiento.setEnabled(false);
     }
     
     public String OBTENER_FECHA(){
@@ -293,14 +296,8 @@ public final class POS extends javax.swing.JInternalFrame {
     
     public void ListarProductosPOS_NOMBRE() {
         try {
-            //TextAutoCompleter AutoCompletador_PRODUCTOS=null;
-          //  AutoCompletador_PRODUCTOS = new TextAutoCompleter(Parametro, new AutoCompleterCallback() {
-           ///     @Override
-           //     public void callback(Object selectedItem) {
-             //       BuscarProductoVentaPorNombre(String.valueOf(selectedItem));
-             //   }
-           // });
             AutoCompletador_PRODUCTOS.removeAllItems();
+            AutoCompletador_PRODUCTOS.setMode(0);
             ActualizarTablaVentas tablasVentas = new ActualizarTablaVentas();
             Object[] ob = new Object[1];
             List<Productos> ListarPr = null;
@@ -593,11 +590,11 @@ public final class POS extends javax.swing.JInternalFrame {
                         lista.add(item);
                         lista.add(cod);
                         lista.add(descripcion);
-                        lista.add(cantidad);
-                        lista.add(String.format("%.4f", PRECIO_FINAL));
-                        lista.add(String.format("%.4f", TotalDescuento));
-                        lista.add(String.format("%.4f", PRECIO_FINAL));
-                        lista.add(String.format("%.4f", TOTAL));
+                        lista.add(String.valueOf(decimalFormat.format(cantidad)));
+                        lista.add(String.valueOf(decimalFormat.format(PRECIO_FINAL)));
+                        lista.add(String.valueOf(decimalFormat.format(TotalDescuento)));
+                        lista.add(String.valueOf(decimalFormat.format(PRECIO_FINAL)));
+                        lista.add(String.valueOf(decimalFormat.format(TOTAL)));
                         lista.add(jCheckBox1.isSelected());
                         lista.add("1");
                         lista.add(ID_PRODUCTO_BD.getText());
@@ -688,11 +685,11 @@ public final class POS extends javax.swing.JInternalFrame {
                         lista.add(item);
                         lista.add(cod);
                         lista.add(descripcion);
-                        lista.add(cantidad);
-                        lista.add(String.format("%.4f", PRECIO_FINAL));
-                        lista.add(String.format("%.4f", TotalDescuento));
-                        lista.add(String.format("%.4f", PRECIO_FINAL));
-                        lista.add(String.format("%.4f", TOTAL));
+                        lista.add(String.valueOf(decimalFormat.format(cantidad)));
+                        lista.add(String.valueOf(decimalFormat.format(PRECIO_FINAL)));
+                        lista.add(String.valueOf(decimalFormat.format(TotalDescuento)));
+                        lista.add(String.valueOf(decimalFormat.format(PRECIO_FINAL)));
+                        lista.add(String.valueOf(decimalFormat.format(TOTAL)));
                         lista.add(jCheckBox1.isSelected());
                         lista.add("1");
                         lista.add(ID_PRODUCTO_BD.getText());
@@ -763,11 +760,11 @@ public final class POS extends javax.swing.JInternalFrame {
                     lista.add(item);
                     lista.add(IdVenta.getText());
                     lista.add(NombreVenta.getText());
-                    lista.add(Float.parseFloat(CantidadVenta.getText()));
-                    lista.add(String.format("%.4f", Float.parseFloat(Final.getText())));
+                    lista.add(String.valueOf(decimalFormat.format(Float.parseFloat(CantidadVenta.getText()))));
+                    lista.add(String.valueOf(decimalFormat.format(Float.parseFloat(Final.getText()))));
                     lista.add(0);
-                    lista.add(String.format("%.4f", Float.parseFloat(Final.getText())));
-                    lista.add(String.format("%.4f", total));
+                    lista.add(String.valueOf(decimalFormat.format(Float.parseFloat(Final.getText()))));
+                    lista.add(String.valueOf(decimalFormat.format(total)));
                     lista.add(jCheckBox1.isSelected());
                     lista.add("0");
                     lista.add("0");
@@ -1529,7 +1526,6 @@ public void GenerarVenta() {
         PrecioRe.setFont(new Font("Consolas", Font.BOLD, 18));
         PrecioEs.setFont(new Font("Consolas", Font.BOLD, 16));
         PrecioPublico.setFont(new Font("Consolas", Font.BOLD, 16));
-        Final.requestFocus();
         }else{
             PrecioPublico.setSelected(true);
             PrecioRe.setSelected(false);
@@ -1538,7 +1534,6 @@ public void GenerarVenta() {
         PrecioPublico.setFont(new Font("Consolas", Font.BOLD, 18));
         PrecioRe.setFont(new Font("Consolas", Font.BOLD, 16));
         PrecioEs.setFont(new Font("Consolas", Font.BOLD, 16));
-        Final.requestFocus();
         }
     }
 
@@ -1734,16 +1729,18 @@ public void GenerarVenta() {
                     } else {
                         EstadoProducto.setText("INGRESADO");
                     }
-                    CantidadVenta.requestFocus();
+
                     Final.setText("" + pro.getPublico());
                     MODO_PRECIO_FIJO();
-                    CantidadVenta.setText("1");
-                    CantidadVenta.addFocusListener(new FullSelectorListener());
                     if (Float.parseFloat(Cantidad2.getText()) == 0) {
                         Cantidad2.setForeground(Color.red);
                     } else {
                         Cantidad2.setForeground(Color.GREEN);
                     }
+                    CantidadVenta.setText("1");
+                    CantidadVenta.requestFocus();
+                    CantidadVenta.addFocusListener(new FullSelectorListener());
+                    CantidadVenta.requestFocus();
                 }
             } else if (pro.getNombre() == null) {
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);
@@ -2460,9 +2457,6 @@ public void GenerarVenta() {
         NombreVenta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 NombreVentaKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                NombreVentaKeyReleased(evt);
             }
         });
 
@@ -3314,7 +3308,6 @@ public void GenerarVenta() {
 
     private void NombreVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NombreVentaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
             BuscarProductoVentaPorNombre(NombreVenta.getText());
         }
     }//GEN-LAST:event_NombreVentaKeyPressed
@@ -3739,10 +3732,6 @@ public void GenerarVenta() {
          Eventos event = new Eventos();
         event.numberKeyPress(evt);
     }//GEN-LAST:event_IdVentaKeyTyped
-
-    private void NombreVentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NombreVentaKeyReleased
-//        ListarProductosPOS_NOMBRE();
-    }//GEN-LAST:event_NombreVentaKeyReleased
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         if(CheckImprimir.isSelected() == true){
