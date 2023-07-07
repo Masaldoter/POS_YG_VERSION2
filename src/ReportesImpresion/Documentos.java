@@ -21,8 +21,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -109,17 +107,12 @@ public class Documentos {
                     reporte = (JasperReport) JRLoader.loadObject(prove);
                     JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
                     try {
-                        estableceImpresoraPredeterminada(ImpresoraSeleccionada);
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, "" + e, "ERROR AL ESTABLECER IMPRESORA EN FACTURA", JOptionPane.ERROR);
-                    }
-                    try {
 
                         JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
                         vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                         vistaReporte.setVisible(true);
                         Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
-
+                        estableceImpresoraPredeterminada(ImpresoraSeleccionada);
                         if (P == true) {
                             vistaReporte.dispose();
                         } else if (P == false) {
@@ -263,12 +256,11 @@ public class Documentos {
 
                     JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
 
-                    estableceImpresoraPredeterminada(ImpresoraSeleccionada);
                     vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                     vistaReporte.setVisible(true);
 
                     Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
-
+                    estableceImpresoraPredeterminada(ImpresoraSeleccionada);
                     if (P == true) {
                         vistaReporte.dispose();
                     } else if (P == false) {
@@ -453,13 +445,14 @@ public class Documentos {
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
             
-            estableceImpresoraPredeterminada(ImpresoraSeleccionada);
+            
             
             JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
             vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             vistaReporte.setVisible(true);
             
             Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
+            estableceImpresoraPredeterminada(ImpresoraSeleccionada);
 
             if (P == true) {
                 vistaReporte.dispose();
@@ -654,7 +647,7 @@ public class Documentos {
     }
     
     private void estableceImpresoraPredeterminada(String printerName) {
-        String cmdLine = String.format("RUNDLL32 PRINTUI.DLL,PrintUIEntry /y /n \"%s\"", printerName);
+         String cmdLine = String.format("RUNDLL32 PRINTUI.DLL,PrintUIEntry /y /n \"%s\"", printerName);
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", cmdLine);
         builder.redirectErrorStream(true);
         Process p = null;
@@ -662,7 +655,7 @@ public class Documentos {
             p = builder.start();
         } catch (IOException e) {
         }
-
+/*
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String line = new String();
         while (true) {
@@ -673,6 +666,7 @@ public class Documentos {
             if (line == null) {
                 break;
             }
-        }
+        }*/
+        
     }
 }

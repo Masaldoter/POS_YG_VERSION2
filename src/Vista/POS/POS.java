@@ -1281,7 +1281,7 @@ public void GenerarVenta() {
             case 0 -> {
 
                 if (Float.parseFloat(labeltotalenfacturacion.getText()) > Float.parseFloat(pagocon.getText())) {
-                    JOptionPane.showMessageDialog(null, "¡AÚN NO INGRESO LA CANTIDAD DE PAGO!");
+                    
                     if (VentanaFormaPago == true) {
                         Pagos.toFront();
                     } else {
@@ -1298,7 +1298,6 @@ public void GenerarVenta() {
             case 1 -> {
                
                 if (Float.parseFloat(labeltotalenfacturacion.getText()) > Float.parseFloat(pagocon.getText())) {
-                    JOptionPane.showMessageDialog(null, "¡AÚN NO INGRESO LA CANTIDAD DE PAGO!");
                     if (VentanaFormaPago == true) {
                         Pagos.toFront();
                         Pagos.EfectivoPagado.requestFocus();
@@ -1823,13 +1822,11 @@ public void GenerarVenta() {
             if(Float.parseFloat(labeltotalenfacturacion.getText())>=2500){
             JOptionPane.showMessageDialog(this, "¡DEBE INGRESAR UN NÚMERO DE NIT O CUI PARA PODER GENERAR ESTA FACTURA!", "*****MAYOR A 2500****", JOptionPane.ERROR_MESSAGE);
         }else{
-              int i = JOptionPane.showConfirmDialog(null, "¿DESEA COMPLETAR LA VENTA SIN UN CLIENTE?\n *Esta acción asignará automaticamente un CONSUMIDOR FINAL a la venta");
+              int i = JOptionPane.showConfirmDialog(null, "¿DESEA COMPLETAR LA VENTA SIN UN CLIENTE?\n *Esta acción asignará automaticamente un CONSUMIDOR FINAL a la venta", "SELECCIONE", JOptionPane.OK_OPTION);
             if (i == 0) {
                 ConsultarNit_CUIFinal("CF");
                 EnviarParametrosAXML();
-            }else{
-            EnviarParametrosAXML();
-        }
+            }
             }
         }else{
             EnviarParametrosAXML();
