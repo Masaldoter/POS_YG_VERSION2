@@ -45,6 +45,7 @@ import javax.swing.table.DefaultTableModel;
  * @author aldoy
  */
 public class METODOS_GLOBALES {
+    public static boolean AVISO_MEDIA_ESTADO= false;
     private static ImageIcon imagenI;
     private static Icon icono;
     public static ExecutorService executorService = Executors.newCachedThreadPool();

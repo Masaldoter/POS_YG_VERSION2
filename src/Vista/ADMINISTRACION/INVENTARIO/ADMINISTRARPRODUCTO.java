@@ -121,6 +121,10 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         limpiarCajas();
         this.setLocationRelativeTo(null);
         Cerrar();
+        
+        CajaDescripcion.setLineWrap(true);
+        CajaDescripcion.setWrapStyleWord(true);
+
     }
 
     public void Cerrar() {
@@ -306,6 +310,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         EstadoProducto2.setText("NO");
         EstadoProducto3.setVisible(false);
         EstadoProducto4.setVisible(false);
+        jSeparator6.setVisible(false);
+        jMenuItem8.setVisible(false);
         Id.requestFocus();
         CargarImagen();
         ValidarBotones();
@@ -385,6 +391,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         if (proo.getNombre() != null) {
             EstadoProducto3.setVisible(true);
             EstadoProducto4.setVisible(true);
+            jSeparator6.setVisible(true);
+            jMenuItem8.setVisible(true);
             idbodega.setText(String.valueOf(proo.getIdProductos()));
             Id.setText(proo.getCodigoBarras());
             Nombreproducto.setText(proo.getNombre());
@@ -436,6 +444,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         if (pro.getNombre() != null) {
             EstadoProducto3.setVisible(true);
             EstadoProducto4.setVisible(true);
+            jSeparator6.setVisible(true);
+            jMenuItem8.setVisible(true);
             Id.setText("" + pro.getCodigoBarras());
             idbodega.setText("" + pro.getIdProductos());
             Nombreproducto.setText("" + pro.getNombre());
@@ -697,6 +707,12 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jMenuItem12 = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jMenu16 = new javax.swing.JMenu();
+        jMenuItem34 = new javax.swing.JMenuItem();
+        jSeparator44 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem35 = new javax.swing.JMenuItem();
+        jSeparator45 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem36 = new javax.swing.JMenuItem();
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         jMenuItem1.setText("jMenuItem1");
@@ -743,6 +759,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         setTitle("ADMINISTRACIÓN DE PRODUCTOS");
         setIconImage(getIconImage());
         setMinimumSize(new java.awt.Dimension(500, 200));
+        setPreferredSize(new java.awt.Dimension(725, 750));
 
         NombreUsuarioVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         NombreUsuarioVista.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "NOMBRE DE USUARIO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 10))); // NOI18N
@@ -1058,7 +1075,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 .addComponent(labelimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton4.setText("+");
@@ -1251,8 +1268,10 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel34Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -1464,6 +1483,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jMenu2.add(jSeparator6);
 
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/OPERACIONES_32PX.png"))); // NOI18N
         jMenuItem8.setText("SACAR MEDIA");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1473,6 +1493,42 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jMenu2.add(jMenuItem8);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu16.setText("APLICACIÓNES EXTERNAS");
+
+        jMenuItem34.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CALCULADORA.png"))); // NOI18N
+        jMenuItem34.setText("CALCULADORA");
+        jMenuItem34.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem34ActionPerformed(evt);
+            }
+        });
+        jMenu16.add(jMenuItem34);
+        jMenu16.add(jSeparator44);
+
+        jMenuItem35.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/BLOC DE NOTAS_32PX.png"))); // NOI18N
+        jMenuItem35.setText("BLOC DE NOTAS");
+        jMenuItem35.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem35ActionPerformed(evt);
+            }
+        });
+        jMenu16.add(jMenuItem35);
+        jMenu16.add(jSeparator45);
+
+        jMenuItem36.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/NAVEGADOR_32PX.png"))); // NOI18N
+        jMenuItem36.setText("NAVEGADOR");
+        jMenuItem36.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem36ActionPerformed(evt);
+            }
+        });
+        jMenu16.add(jMenuItem36);
+
+        jMenuBar1.add(jMenu16);
 
         setJMenuBar(jMenuBar1);
 
@@ -1916,9 +1972,21 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     }//GEN-LAST:event_VISUALIZARActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        if (METODOS_GLOBALES.AVISO_MEDIA_ESTADO == false) {
+            AVISO A = new AVISO(this, true);
+            SACAR_MEDIA();
+        } else {
+            SACAR_MEDIA();
+        }
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    public void SACAR_MEDIA() {
+        if (Costo.getText().equals("") || Costo.getText().equals(null)) {
+            JOptionPane.showMessageDialog(this, "EL CAMPO DEL COSTO ESTÁ VACÍO", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
         DecimalFormat formato = new DecimalFormat("#.##");
-        Float TOTAL = Float.valueOf(JOptionPane.showInputDialog(this, "INGRESA EL TOTAL DE TODODS LOS PRODUCTOS:", "INGRESE TOTAL"));
-        Float CANTIDAD = Float.valueOf(JOptionPane.showInputDialog(this, "INGRESA LA CANTIDAD DE PRODUCTOS:", "INGRESE CANTIDAD"));
+        Float TOTAL = Float.valueOf(JOptionPane.showInputDialog(this, "INGRESA EL TOTAL DE TODOS LOS PRODUCTOS:", "INGRESE TOTAL", JOptionPane.QUESTION_MESSAGE));
+        Float CANTIDAD = Float.valueOf(JOptionPane.showInputDialog(this, "INGRESA LA CANTIDAD DE PRODUCTOS:", "INGRESE CANTIDAD", JOptionPane.QUESTION_MESSAGE));
         Float STOCK_ANTERIOR = Float.valueOf(Cantidad.getText());
         Float COSTO_ANTERIOR = Float.valueOf(Costo.getText());
 
@@ -1930,12 +1998,67 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         ActualizarEstado();
         NumerosALetras NAL = new NumerosALetras();
         Letras.setText(NAL.Convertir(Costo.getText()));
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    }
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         principal.P.ACTUALIZAR_PROVEEDOR();
         principal.ABRIR_VENTANAS(principal.P, true);
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jMenuItem34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem34ActionPerformed
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // Ejecutar calculadora en Windows
+                Runtime.getRuntime().exec("calc");
+            } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+                // Ejecutar calculadora en Linux o macOS
+                Runtime.getRuntime().exec("gnome-calculator"); // Cambia "gnome-calculator" según el entorno de escritorio
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo determinar el sistema operativo compatible.", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir la calculadora: " + e.getMessage(), "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem34ActionPerformed
+
+    private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem35ActionPerformed
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // Ejecutar Bloc de notas en Windows
+                Runtime.getRuntime().exec("notepad");
+            } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+                // Ejecutar TextEdit en Linux o macOS
+                Runtime.getRuntime().exec("gedit"); // Cambia "gedit" según el editor de texto que utilices en tu entorno
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo determinar el sistema operativo compatible", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir el Bloc de notas: " + e.getMessage(), "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem35ActionPerformed
+
+    private void jMenuItem36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem36ActionPerformed
+        try {
+            // Crear un objeto URI con la URL del sitio web que deseas abrir
+            java.net.URI url = new java.net.URI("https://www.google.com");
+
+            // Verificar si el escritorio es compatible y admite la acción de navegación
+            if (java.awt.Desktop.isDesktopSupported() && java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.BROWSE)) {
+                // Abrir el navegador predeterminado con la URL especificada
+                java.awt.Desktop.getDesktop().browse(url);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo abrir el navegador", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+
+            }
+        } catch (IOException | java.net.URISyntaxException e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir el navegador: " + e.getMessage(), "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_jMenuItem36ActionPerformed
 
     public int ConsultarIdProveedor(JComboBox ComboCategoria) {
         int ResultadoProveedor = 0;
@@ -2084,6 +2207,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu16;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -2093,6 +2217,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem34;
+    private javax.swing.JMenuItem jMenuItem35;
+    private javax.swing.JMenuItem jMenuItem36;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -2111,6 +2238,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator44;
+    private javax.swing.JPopupMenu.Separator jSeparator45;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JSeparator jSeparator7;

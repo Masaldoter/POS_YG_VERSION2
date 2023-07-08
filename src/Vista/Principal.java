@@ -411,8 +411,12 @@ public final class Principal extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jSeparator40 = new javax.swing.JPopupMenu.Separator();
         jMenuItem23 = new javax.swing.JMenuItem();
-        jMenu15 = new javax.swing.JMenu();
+        jMenu16 = new javax.swing.JMenu();
         jMenuItem34 = new javax.swing.JMenuItem();
+        jSeparator44 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem35 = new javax.swing.JMenuItem();
+        jSeparator45 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem36 = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jPanel62Layout = new javax.swing.GroupLayout(jPanel62);
         jPanel62.setLayout(jPanel62Layout);
@@ -1146,9 +1150,9 @@ public final class Principal extends javax.swing.JFrame {
 
         jMenuBar2.add(jMenu3);
 
-        jMenu15.setText("OTROS");
+        jMenu16.setText("APLICACIÓNES EXTERNAS");
 
-        jMenuItem34.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem34.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItem34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CALCULADORA.png"))); // NOI18N
         jMenuItem34.setText("CALCULADORA");
         jMenuItem34.addActionListener(new java.awt.event.ActionListener() {
@@ -1156,9 +1160,31 @@ public final class Principal extends javax.swing.JFrame {
                 jMenuItem34ActionPerformed(evt);
             }
         });
-        jMenu15.add(jMenuItem34);
+        jMenu16.add(jMenuItem34);
+        jMenu16.add(jSeparator44);
 
-        jMenuBar2.add(jMenu15);
+        jMenuItem35.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/BLOC DE NOTAS_32PX.png"))); // NOI18N
+        jMenuItem35.setText("BLOC DE NOTAS");
+        jMenuItem35.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem35ActionPerformed(evt);
+            }
+        });
+        jMenu16.add(jMenuItem35);
+        jMenu16.add(jSeparator45);
+
+        jMenuItem36.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/NAVEGADOR_32PX.png"))); // NOI18N
+        jMenuItem36.setText("NAVEGADOR");
+        jMenuItem36.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem36ActionPerformed(evt);
+            }
+        });
+        jMenu16.add(jMenuItem36);
+
+        jMenuBar2.add(jMenu16);
 
         setJMenuBar(jMenuBar2);
 
@@ -1655,6 +1681,43 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem34ActionPerformed
 
+    private void jMenuItem35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem35ActionPerformed
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // Ejecutar Bloc de notas en Windows
+                Runtime.getRuntime().exec("notepad");
+            } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+                // Ejecutar TextEdit en Linux o macOS
+                Runtime.getRuntime().exec("gedit"); // Cambia "gedit" según el editor de texto que utilices en tu entorno
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo determinar el sistema operativo compatible", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir el Bloc de notas: " + e.getMessage(), "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem35ActionPerformed
+
+    private void jMenuItem36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem36ActionPerformed
+        try {
+            // Crear un objeto URI con la URL del sitio web que deseas abrir
+            java.net.URI url = new java.net.URI("https://www.google.com");
+
+            // Verificar si el escritorio es compatible y admite la acción de navegación
+            if (java.awt.Desktop.isDesktopSupported() && java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.BROWSE)) {
+                // Abrir el navegador predeterminado con la URL especificada
+                java.awt.Desktop.getDesktop().browse(url);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo abrir el navegador", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+
+            }
+        } catch (IOException | java.net.URISyntaxException e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir el navegador: " + e.getMessage(), "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_jMenuItem36ActionPerformed
+
     public void EXPORTAR() {
         if (P_O_S.TablaVentas.getRowCount() < 1) {
             JOptionPane.showMessageDialog(this, "AÚN NO HAY NADA EN EL CARRITO", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -1861,7 +1924,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu13;
     private javax.swing.JMenu jMenu14;
-    private javax.swing.JMenu jMenu15;
+    private javax.swing.JMenu jMenu16;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -1899,6 +1962,8 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem32;
     private javax.swing.JMenuItem jMenuItem33;
     private javax.swing.JMenuItem jMenuItem34;
+    private javax.swing.JMenuItem jMenuItem35;
+    private javax.swing.JMenuItem jMenuItem36;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -1946,6 +2011,8 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator41;
     private javax.swing.JPopupMenu.Separator jSeparator42;
     private javax.swing.JSeparator jSeparator43;
+    private javax.swing.JPopupMenu.Separator jSeparator44;
+    private javax.swing.JPopupMenu.Separator jSeparator45;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator56;
     private javax.swing.JPopupMenu.Separator jSeparator6;
