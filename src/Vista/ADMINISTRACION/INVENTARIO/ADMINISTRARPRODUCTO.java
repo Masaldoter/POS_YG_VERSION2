@@ -1482,7 +1482,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jMenu2.add(jMenuItem12);
         jMenu2.add(jSeparator6);
 
-        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
+        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/OPERACIONES_32PX.png"))); // NOI18N
         jMenuItem8.setText("SACAR MEDIA");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
