@@ -8,6 +8,7 @@ import CLASES_GLOBALES.ATAJOSDETECLADO;
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.INSERTAR_IMAGEN_TABLA;
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import CodigosDeBarras.CodigosDeBarras;
@@ -1037,21 +1038,22 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_ActualizarActionPerformed
 
     private void AgregarpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarpActionPerformed
-        if(principal.VentanaAdministracionDeProductos==false){
-            principal.VentanaAdministracionDeProductos=true;
-            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
-            principal.AdminProduct.setVisible(true);
-        }else{
-            DesktopNotify.setDefaultTheme(NotifyTheme.Light);
-            DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
-            principal.AdminProduct.toFront();
-        }
+       
+                if (principal.VentanaAdministracionDeProductos == false) {
+                    principal.VentanaAdministracionDeProductos = true;
+                    principal.AdminProduct = new ADMINISTRARPRODUCTO(principal, principal.I);
+                    principal.AdminProduct.setVisible(true);
+                } else {
+                    DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+                    DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
+                    principal.AdminProduct.toFront();
+                }
     }//GEN-LAST:event_AgregarpActionPerformed
 
     private void EditarpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarpActionPerformed
-        if(principal.VentanaAdministracionDeProductos==false){
-            principal.VentanaAdministracionDeProductos=true;
-            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
+        if (principal.VentanaAdministracionDeProductos == false) {
+            principal.VentanaAdministracionDeProductos = true;
+            principal.AdminProduct = new ADMINISTRARPRODUCTO(principal, this);
             principal.AdminProduct.InsertarDatos(Id.getText());
             principal.AdminProduct.setVisible(true);
         }else{
@@ -1213,7 +1215,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
 
                     if (principal.VentanaAdministracionDeProductos == false) {
                         principal.VentanaAdministracionDeProductos=true;
-                        principal.AdminProduct = new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
+                        principal.AdminProduct = new ADMINISTRARPRODUCTO(principal, this);
                         principal.AdminProduct.InsertarDatos(codigo);
                         principal.AdminProduct.setVisible(true);
                     } else {
@@ -1277,7 +1279,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
 
                 if(principal.VentanaAdministracionDeProductos==false){
                     principal.VentanaAdministracionDeProductos=true;
-                    principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
+                    principal.AdminProduct= new ADMINISTRARPRODUCTO(principal, this);
                     principal.AdminProduct.InsertarDatos(codigo);
                     principal.AdminProduct.setVisible(true);
                 }else{
@@ -1360,7 +1362,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
         String Codigo = tablaProductos.getValueAt(Fila, 0).toString();
         if(principal.VentanaAdministracionDeProductos==false){
             principal.VentanaAdministracionDeProductos=true;
-            principal.AdminProduct= new ADMINISTRARPRODUCTO(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO, principal, this);
+            principal.AdminProduct= new ADMINISTRARPRODUCTO(principal, this);
             principal.AdminProduct.InsertarDatos(Codigo);
             principal.AdminProduct.setVisible(true);
         }else{

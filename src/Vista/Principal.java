@@ -93,14 +93,14 @@ public final class Principal extends javax.swing.JFrame {
     MOVIMIENTOS_GENERALES MG = new MOVIMIENTOS_GENERALES(this);
     USUARIOS_INTERNOS UI = new USUARIOS_INTERNOS(this);
     public CLIENTES C = new CLIENTES(this);
-    PROVEEDORES P = new PROVEEDORES();
+    public PROVEEDORES P = new PROVEEDORES();
     SESION S = new SESION();
     DASHBOARD D = new DASHBOARD(this);
     EMPRESA E = new EMPRESA(this);
     public POS P_O_S = new POS(this);
     CotizacionesGenerales CG = new CotizacionesGenerales(P_O_S);
     MOVIMIENTOS_DIARIOS MD = new MOVIMIENTOS_DIARIOS(this);
-    INVENTARIO I = new INVENTARIO(P_O_S, this);
+    public INVENTARIO I = new INVENTARIO(P_O_S, this);
     //POS P_O_S= new POS();
     INTERNAL_CAJA_PRINCIPAL INTERNAL_CAJA_P = new INTERNAL_CAJA_PRINCIPAL(this);
     Vales_Principal V_P= new Vales_Principal(this);
@@ -411,6 +411,8 @@ public final class Principal extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jSeparator40 = new javax.swing.JPopupMenu.Separator();
         jMenuItem23 = new javax.swing.JMenuItem();
+        jMenu15 = new javax.swing.JMenu();
+        jMenuItem34 = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jPanel62Layout = new javax.swing.GroupLayout(jPanel62);
         jPanel62.setLayout(jPanel62Layout);
@@ -1144,6 +1146,20 @@ public final class Principal extends javax.swing.JFrame {
 
         jMenuBar2.add(jMenu3);
 
+        jMenu15.setText("OTROS");
+
+        jMenuItem34.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CALCULADORA.png"))); // NOI18N
+        jMenuItem34.setText("CALCULADORA");
+        jMenuItem34.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem34ActionPerformed(evt);
+            }
+        });
+        jMenu15.add(jMenuItem34);
+
+        jMenuBar2.add(jMenu15);
+
         setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1621,6 +1637,24 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem33ActionPerformed
 
+    private void jMenuItem34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem34ActionPerformed
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // Ejecutar calculadora en Windows
+                Runtime.getRuntime().exec("calc");
+            } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+                // Ejecutar calculadora en Linux o macOS
+                Runtime.getRuntime().exec("gnome-calculator"); // Cambia "gnome-calculator" según el entorno de escritorio
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo determinar el sistema operativo compatible.", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir la calculadora: " + e.getMessage(), "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem34ActionPerformed
+
     public void EXPORTAR() {
         if (P_O_S.TablaVentas.getRowCount() < 1) {
             JOptionPane.showMessageDialog(this, "AÚN NO HAY NADA EN EL CARRITO", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -1827,6 +1861,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu13;
     private javax.swing.JMenu jMenu14;
+    private javax.swing.JMenu jMenu15;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -1863,6 +1898,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem31;
     private javax.swing.JMenuItem jMenuItem32;
     private javax.swing.JMenuItem jMenuItem33;
+    private javax.swing.JMenuItem jMenuItem34;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;

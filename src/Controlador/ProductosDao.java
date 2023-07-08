@@ -479,13 +479,18 @@ public class ProductosDao extends ConexionesSQL{
 "                productos.PrecioEs, productos.PrecioRe, productos.ruta, \n" +
 "                productos.Descripcion, productos.Precio1, productos.Precio2, productos.Precio3,\n" +
 "                ubicaciones.NombreUbicacion AS NOMBREUBICACION1,\n" +
-"                ubicacionestabla2.NombreUbicacion AS NOMBREUBICACION2\n" +
+"                ubicacionestabla2.NombreUbicacion AS NOMBREUBICACION2,\n" +
+"                productos.fechaingreso, productos.fechamodificacion,\n" +
+"                Usuarios.NombreUsuario AS USUARIOINGRESO, \n" +
+"                Usuarios2.NombreUsuario AS USUARIOMODIFICO\n" +
 "                FROM productos \n" +
 "                INNER JOIN proveedores ON (productos.Proveedores = proveedores.idproveedores) \n" +
 "                INNER JOIN categoria ON (productos.Categoria = categoria.idCategoria) \n" +
 "			    INNER JOIN subcategoria ON (productos.subcategoria = subcategoria.idsubcategoria) \n" +
 "                INNER JOIN ubicaciones ON (productos.Ubicacion1 = ubicaciones.idubicaciones) \n" +
-"                INNER JOIN ubicaciones AS ubicacionestabla2 ON (productos.Ubicacion2 = ubicacionestabla2.idubicaciones) WHERE CodigoBarras=?;";
+"                INNER JOIN ubicaciones AS ubicacionestabla2 ON (productos.Ubicacion2 = ubicacionestabla2.idubicaciones)"
+                + "INNER JOIN login1 AS Usuarios ON (productos.UsuarioIngreso = Usuarios.idlogin1) \n" +
+"                INNER JOIN login1 AS Usuarios2 ON (productos.UsuarioModifico = Usuarios2.idlogin1) WHERE CodigoBarras=?;";
         try {
             ps = cn.prepareStatement(sql);
             ps.setString(1, pro.getCodigoBarras());
@@ -515,6 +520,8 @@ public class ProductosDao extends ConexionesSQL{
                 pro.setUbicacionNombre2(rs.getString("NOMBREUBICACION2"));
                 pro.setEstado_Producto(rs.getString("Estado_Productos"));
                 pro.setAPLICAR_DESCUENTO(rs.getBoolean("Permitir_Descuentos"));
+                pro.setFechaingreso("<html>"+rs.getString("fechaingreso")+ " POR: "+rs.getString("USUARIOINGRESO")+"</html>");
+                pro.setFechamodificacion("<html>"+rs.getString("fechamodificacion")+ " POR: "+rs.getString("USUARIOMODIFICO")+"</html>");
             }
 
         } catch (SQLException e) {
@@ -905,21 +912,26 @@ public class ProductosDao extends ConexionesSQL{
                 productos.PrecioEs, productos.PrecioRe, productos.Descripcion, productos.Precio1, productos.Precio2, productos.Precio3, productos.ruta, productos.Estado_Productos,
                 subcategoria.NombreSubCategoria AS SUBCATEGORIANOMBRE, 
                 ubicaciones.NombreUbicacion AS UBICACIONNOMBRE, 
-                ubicacionesTabla2.NombreUbicacion AS UBICACIONNOMBRE2 
+                ubicacionesTabla2.NombreUbicacion AS UBICACIONNOMBRE2,
+                productos.fechaingreso, productos.fechamodificacion,
+                Usuarios.NombreUsuario AS USUARIOINGRESO, 
+                Usuarios2.NombreUsuario AS USUARIOMODIFICO
                 FROM productos 
                 INNER JOIN proveedores ON (productos.Proveedores = proveedores.idproveedores) 
                 INNER JOIN categoria ON (productos.Categoria = categoria.idCategoria) 
                 INNER JOIN subcategoria ON (productos.subcategoria = subcategoria.idsubcategoria) 
                 INNER JOIN ubicaciones ON (productos.Ubicacion1 = ubicaciones.idubicaciones) 
                 INNER JOIN ubicaciones AS ubicacionesTabla2 ON (productos.Ubicacion2 = ubicacionesTabla2.idubicaciones) 
+                INNER JOIN login1 AS Usuarios ON (productos.UsuarioIngreso = Usuarios.idlogin1) 
+                INNER JOIN login1 AS Usuarios2 ON (productos.UsuarioModifico = Usuarios2.idlogin1) 
                 WHERE productos.Nombre=?""";
         try {
-            
-            ps=(PreparedStatement) cn.prepareStatement(sql);
+
+            ps = (PreparedStatement) cn.prepareStatement(sql);
             ps.setString(1, NombreProducto);
-            rs= ps.executeQuery();
-            if(rs.next()){
-                 producto.setIdProductos(rs.getInt("IdProductos"));
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                producto.setIdProductos(rs.getInt("IdProductos"));
                 producto.setCodigoBarras(rs.getString("CodigoBarras"));
                 producto.setNombre(rs.getString("Nombre"));
                 producto.setCantidad(rs.getFloat("Cantidad"));
@@ -932,18 +944,20 @@ public class ProductosDao extends ConexionesSQL{
                 producto.setPrecioRe(rs.getFloat("PrecioRe"));
                 producto.setPrecioEs(rs.getFloat("PrecioEs"));
                 producto.setCategoria(rs.getInt("Categoria"));
-               // producto.setRuta(rs.getString("ruta"));
+                // producto.setRuta(rs.getString("ruta"));
                 producto.setDescripcion(rs.getString("Descripcion"));
                 producto.setNombreTiposDePrecio1(rs.getString("Precio1"));
                 producto.setNombreTiposDePrecio2(rs.getString("Precio2"));
                 producto.setNombreTiposDePrecio3(rs.getString("Precio3"));
                 producto.setRuta(rs.getString("ruta"));
-                
+
                 producto.setSubcategoriaNombre(rs.getString("SUBCATEGORIANOMBRE"));
                 producto.setUbicacionNombre1(rs.getString("UBICACIONNOMBRE"));
                 producto.setUbicacionNombre2(rs.getString("UBICACIONNOMBRE2"));
                 producto.setEstado_Producto(rs.getString("Estado_Productos"));
                 producto.setAPLICAR_DESCUENTO(rs.getBoolean("Permitir_Descuentos"));
+                producto.setFechaingreso("<html>"+rs.getString("fechaingreso")+ "POR: "+rs.getString("USUARIOINGRESO")+"</html>");
+                producto.setFechamodificacion("<html>"+rs.getString("fechamodificacion")+ "POR: "+rs.getString("USUARIOMODIFICO")+"</html>");
             }
             
         } catch (SQLException e) {
