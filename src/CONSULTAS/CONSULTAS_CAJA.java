@@ -5,7 +5,6 @@
 package CONSULTAS;
 
 import CLASES_GLOBALES.METODOS_GLOBALES;
-import static CLASES_GLOBALES.METODOS_GLOBALES.Hora;
 import Conexiones.ConexionesSQL;
 import static Conexiones.ConexionesSQL.ConnectionClose;
 import static Conexiones.ConexionesSQL.PsClose;
@@ -254,7 +253,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         Float Total_Final = 0f;
         try {
              ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'EFECTIVO' THEN Pago ELSE 0 END) AS total_pago, "
-                     + "SUM(CASE WHEN FormaPago = 'EFECTIVO' THEN Cambio ELSE 0 END) AS total_cambios FROM registro WHERE id_CAJA_registro="+CAJA);
+                     + "SUM(CASE WHEN FormaPago = 'EFECTIVO' THEN Cambio ELSE 0 END) AS total_cambios FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
             
              rs = ps.executeQuery();
 
@@ -279,7 +278,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'CHEQUE' THEN Pago ELSE 0 END) AS total_suma FROM registro WHERE id_CAJA_registro="+CAJA);
+             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'CHEQUE' THEN Pago ELSE 0 END) AS total_suma FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
             
              rs = ps.executeQuery();
 
@@ -304,7 +303,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'DEPÓSITO O TRANSFERENCIA' THEN Pago ELSE 0 END) AS total_suma FROM registro WHERE id_CAJA_registro="+CAJA);
+             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'DEPÓSITO O TRANSFERENCIA' THEN Pago ELSE 0 END) AS total_suma FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
            
              rs = ps.executeQuery();
 
@@ -329,7 +328,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'TARJETA' THEN Pago ELSE 0 END) AS total_suma FROM registro WHERE id_CAJA_registro="+CAJA);
+             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'TARJETA' THEN Pago ELSE 0 END) AS total_suma FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
             
              rs = ps.executeQuery();
 
@@ -355,7 +354,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         Float Total_Final = 0f;
         try {
              ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'COMPARTIDO' THEN Pago ELSE 0 END) AS total_pago, "
-                     + "SUM(CASE WHEN FormaPago = 'COMPARTIDO' THEN Cambio ELSE 0 END) AS total_cambios FROM registro WHERE id_CAJA_registro="+CAJA);
+                     + "SUM(CASE WHEN FormaPago = 'COMPARTIDO' THEN Cambio ELSE 0 END) AS total_cambios FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
              rs = ps.executeQuery();
 
             if (rs.next()){
@@ -379,7 +378,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("SELECT SUM(CASE WHEN TipoDocumentoFel = ? AND Estado = ? THEN Total ELSE 0 END) AS TOTAL FROM registro WHERE id_CAJA_registro=?");
+             ps = cn.prepareStatement("SELECT SUM(CASE WHEN TipoDocumentoFel = ? AND Estado = ? THEN Total ELSE 0 END) AS TOTAL FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro=?");
             ps.setString(1, Tipo_Documento);
             ps.setString(2, Estado);
             ps.setInt(3, CAJA);
