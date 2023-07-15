@@ -96,7 +96,7 @@ import javax.swing.table.DefaultTableModel;
 public final class POS extends javax.swing.JInternalFrame {
 
     // Crear un formato decimal personalizado
-    DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    DecimalFormat decimalFormat = new DecimalFormat("0.0000");
 
     private Boolean VENTANA_REVENTA_MOSTRADA = false;
     TextAutoCompleter AutoCompletador_PRODUCTOS, AUTOCOMPLETADOR_CLIENTES_NOMBRE, AUTOCOMPLETADOR_CLIENTE_NIT;

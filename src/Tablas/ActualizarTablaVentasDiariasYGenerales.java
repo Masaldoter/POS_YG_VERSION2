@@ -5,6 +5,7 @@
  */
 package Tablas;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
 import Conexiones.ConexionesSQL;
 import Conexiones.conexion;
 import Modelo.Detalle;
@@ -32,19 +33,6 @@ import javax.swing.table.DefaultTableModel;
  * @author Masaldoter
  */
 public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
-    Date fech = new Date();
-        String strDateFormat = "YYYY-MM-dd";
-        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-        String fecha=objSDF.format(fech);
-        
-         public String Fecha(){
-        Date fech = new Date();
-        String strDateFormat1 = "YYYY-MM-dd";
-        SimpleDateFormat Fechas = new SimpleDateFormat(strDateFormat1);
-        String fecha = Fechas.format(fech);
-        
-        return fecha;
-    }
         
         public List ListarVentasDiarias(JComboBox Seleccion){
         JButton btn1 = new JButton();
@@ -77,7 +65,7 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
              ps = cn.prepareStatement("select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
                      + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
                      + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
-                     + "where Fecha LIKE '%" + fecha + "%' AND registro.Estado='"+Filtro+"' ORDER BY IdRegistro DESC");
+                     + "where Fecha LIKE '%" + METODOS_GLOBALES.Fecha() + "%' AND registro.Estado='"+Filtro+"' ORDER BY IdRegistro DESC");
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -151,7 +139,7 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
                      + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
                      + "where Usuario=? AND Fecha=? AND registro.Estado='"+Filtro+"' ORDER BY IdRegistro DESC");
              ps.setInt(1, Usuario);
-             ps.setString(2, fecha);
+             ps.setString(2, METODOS_GLOBALES.Fecha());
              rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -397,7 +385,7 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
           Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
                      + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
                      + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
-                     + "where NoFactura='"+NombreProducto.getText()+"' AND Fecha='"+fecha+"' ORDER BY IdRegistro DESC";
+                     + "where NoFactura='"+NombreProducto.getText()+"' AND Fecha='"+METODOS_GLOBALES.Fecha()+"' ORDER BY IdRegistro DESC";
         }else{
          Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
                      + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
@@ -528,11 +516,15 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
         List<Venta> Listapro = new ArrayList();
         cn = Unionsis2.getConnection();
         ps= null;
-        rs= null;
-        String Sql;
-        if(IncluirFecha==true){
-        Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where Fecha='"+fecha+"' AND Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%' ORDER BY Iddetalle DESC";
-        }else{
+         rs = null;
+         String Sql;
+         if (IncluirFecha == true) {
+             Sql = "SELECT d.CodigoBarras, d.Nombre, d.Cantidad, d.Total, d.NoFactura FROM detalle AS d "
+                     + "LEFT JOIN registro AS r ON d.NoFactura = r.NoFactura "
+                     + "WHERE (d.Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR d.CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%')"
+                     + "AND ((d.Fecha IS NULL AND r.Fecha = '"+METODOS_GLOBALES.Fecha()+"')"
+                     + " OR (d.Fecha = '"+METODOS_GLOBALES.Fecha()+"')) ORDER BY d.Iddetalle DESC";
+         } else {
         Sql="select CodigoBarras, Nombre, Cantidad, Total, NoFactura from  detalle where Nombre LIKE '%' '"+NombreProducto.getText()+"' '%' OR CodigoBarras LIKE '%' '"+NombreProducto.getText()+"' '%' ORDER BY Iddetalle DESC";   
         }
         try {
@@ -590,13 +582,13 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
                      + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
                      + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
                      + "where TipoDocumentoFel='"+Seleccion.getSelectedItem().toString()+
-                    "' AND Fecha='"+fecha+"' AND Usuario='"+USUARIO+"' ORDER BY IdRegistro DESC";  
+                    "' AND Fecha='"+METODOS_GLOBALES.Fecha()+"' AND Usuario='"+USUARIO+"' ORDER BY IdRegistro DESC";  
           }else{
               Sql="select IdRegistro, NitCliente, Cliente, Hora, Fecha, Total, Pago, "
                      + "Cambio, NoFactura, FormaPago, Usuario, login1.Nombre AS NombreUsuario, TipoDocumentoFel, registro.Estado from registro "
                      + "INNER JOIN login1 ON (registro.Usuario = login1.idlogin1)"
                      + "where TipoDocumentoFel='"
-                  +Seleccion.getSelectedItem().toString()+"' AND Fecha='"+fecha+"' ORDER BY IdRegistro DESC";
+                  +Seleccion.getSelectedItem().toString()+"' AND Fecha='"+METODOS_GLOBALES.Fecha()+"' ORDER BY IdRegistro DESC";
           }
         }else{
          if(IncluirUSUARIO==true){
