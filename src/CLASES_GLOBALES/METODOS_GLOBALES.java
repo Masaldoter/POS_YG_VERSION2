@@ -30,8 +30,6 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

@@ -105,7 +105,7 @@ public class TrasladosGenerales extends javax.swing.JInternalFrame {
 
         jPanel4.setBackground(new java.awt.Color(102, 204, 255));
 
-        jLabel1.setText("INGRESE EL NÚMERO DE TRASLADO");
+        jLabel1.setText("INGRESE EL NÚMERO DE VALE");
 
         CajaNumero.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {

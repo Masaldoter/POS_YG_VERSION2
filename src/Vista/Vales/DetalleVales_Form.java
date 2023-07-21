@@ -1,7 +1,5 @@
 package Vista.Vales;
 
-import CLASES_GLOBALES.METODOS_GLOBALES;
-import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import Vista.*;
 import Clases_Reportes.DatosEmpresa;
@@ -15,11 +13,6 @@ import Modelo.DatosEmpresaGeneral;
 import ReportesImpresion.DatosClienteYFactura;
 import ReportesImpresion.Documentos;
 import Conexiones.ConexionesSQL;
-import Controlador.KardexDao;
-import Controlador.ProductosDao;
-import Controlador.VentaDao;
-import Modelo.Kardex;
-import Modelo.Productos;
 import Vista.POS.POS;
 import java.awt.Desktop;
 import java.awt.Image;
@@ -706,16 +699,12 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
     
     public void Imprimir(){
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() { 
-                if(jComboBox1.getSelectedIndex()== 0){
+        if(jComboBox1.getSelectedIndex()== 0){
             Proforma(0);
         }else if(jComboBox1.getSelectedIndex()== 1){
             Proforma(1);
        
         }
-            }});
     }
     
     public String Imprimir2(){
@@ -820,7 +809,6 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         int seleccion= JOptionPane.showConfirmDialog(this, "¿ESTÁ SEGURO DE ELIMINAR ESTE VALE?\n*Esto no se puede deshacer");
         if(seleccion==0){
-            AnularVenta();
             ModificarCotizacion(0);
             V_G.ActualizarTablaEstado(V_G.FiltroBusqueda, V_G.Parametro1, V_G.Parametro2);
         this.dispose();
@@ -1061,14 +1049,12 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
         pos.principal.MoverEntreSistema();
         Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
         if(Seleccion==0){
-            AnularVenta();
           //  Principal.MoverEntreSistema();
            // Principal.MoverEntreSistema();
             if(VerificarCheckEnVenta == true){
             pos.CheckIngresoAutomatico.setSelected(false);    
             }
         pos.ConsultarNit_CUIFinal(CajaNit.getText());
-            
         for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
             if(Integer.parseInt(TablaDetalles.getValueAt(i, 5).toString())==0){
                 
@@ -1091,60 +1077,4 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
         }
     }
         }
-    
-    public synchronized void AumentarStock() {
-        Productos pro = new Productos();
-        ProductosDao proDao = new ProductosDao();
-        for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
-
-            String cod = TablaDetalles.getValueAt(i, 0).toString();
-            Float cant = Float.parseFloat(TablaDetalles.getValueAt(i, 2).toString());
-            if (Integer.parseInt(TablaDetalles.getValueAt(i, 5).toString()) == 1) {
-
-                pro = proDao.VerStock(cod);
-                Float StockActual = pro.getCantidad() + cant;
-                VentaDao.ActualizarStock(StockActual, String.valueOf(cod));
-            }
-
-        }
-
-    }
-    
-    public void AnularVenta() {
-        VentaDao Vdao= new VentaDao();
-        Boolean EstadoDeAnulacion = Vdao.AnularVentaRegistro(Fac.getText());
-        if (EstadoDeAnulacion == true) {
-            GUARDAR_KARDEX();
-            AumentarStock();
-        }
-    }
-    
-    private synchronized Boolean GUARDAR_KARDEX() {
-        Boolean Estado=false;
-        KardexDao kdDao = new KardexDao();
-        Kardex Kd;
-        for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
-            if (TablaDetalles.getValueAt(i, 8).toString().equals("1")) {
-                Kd = new Kardex();
-                int Id_Producto = VentaDao.BuscarIdProducto(TablaDetalles.getValueAt(i, 0).toString());
-                String CANTIDAD_A_DEVOLVER= TablaDetalles.getValueAt(i, 2).toString();
-                String STOCK_ANTES= String.valueOf(VentaDao.BuscarSTOCKProducto(Id_Producto));
-                String STOCK_DESPUES= String.valueOf(Float.parseFloat(STOCK_ANTES)+Float.parseFloat(CANTIDAD_A_DEVOLVER));
-                Kd.setID_Codigo_Producto_Kardex(Id_Producto);
-                Kd.setTitulo_Kardex(" SE REINGRESO DE "+TipoDocumento.getText()+": "+Fac.getText());
-                Kd.setEntrada_Kardex(CANTIDAD_A_DEVOLVER);
-                Kd.setSalida_Kardex("0");
-                Kd.setAntes_Kardex(STOCK_ANTES);
-                Kd.setDespues_Kardex(STOCK_DESPUES);
-                Kd.setFecha_Modificacion_Kardex(METODOS_GLOBALES.Fecha() + " " + METODOS_GLOBALES.Hora());
-                Kd.setUsuario_Modifico_Kardex(PARAMETROS_USUARIOS.ID_USUARIO);
-                Kd.setModulo_Kardex("MOVIMIENTOS");
-                Estado = kdDao.RegistrarKARDEX(Kd);
-            }
-        }
-        return Estado;
-    }
-    
 }
-
-

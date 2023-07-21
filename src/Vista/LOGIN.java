@@ -30,8 +30,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -39,8 +37,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperPrintManager;
 
 public final class LOGIN extends javax.swing.JFrame {
 

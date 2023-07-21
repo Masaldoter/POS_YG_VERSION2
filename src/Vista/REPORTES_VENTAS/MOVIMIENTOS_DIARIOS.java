@@ -15,7 +15,6 @@ import Vista.Detalles;
 import Vista.Principal;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.Timer;
 
 /**
  *
@@ -609,6 +608,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
                 JButton boton = (JButton) value;
                 Detalles de= new Detalles(Id, 1, 1, principal.P_O_S, principal);
                 de.setVisible(true);
+
             }
         }
     }//GEN-LAST:event_VDMouseClicked

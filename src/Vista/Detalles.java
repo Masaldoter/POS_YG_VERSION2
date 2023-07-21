@@ -985,9 +985,6 @@ public final class Detalles extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
     
     public void Imprimir(){
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() { 
         if(jComboBox1.getSelectedIndex()== 0){
         if(TipoDocumento.getText().equals("FACTURA")){
             FacturaCopia(0);
@@ -1001,7 +998,6 @@ public final class Detalles extends javax.swing.JFrame {
           Proforma(1);  
         }
         }
-            }});
     }
     
     public void FacturaCopia(int TipoDocumentoImpresion) {
@@ -1542,8 +1538,8 @@ public final class Detalles extends javax.swing.JFrame {
         VentaDao Vdao= new VentaDao();
         Boolean EstadoDeAnulacion = Vdao.AnularVentaRegistro(Fac.getText());
         if (EstadoDeAnulacion == true) {
-            AumentarStock();
             GUARDAR_KARDEX();
+            AumentarStock();
         }
     }
     
