@@ -1,5 +1,6 @@
 package Vista.Traslados;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import Vista.*;
 import Clases_Reportes.DatosEmpresa;
@@ -13,7 +14,14 @@ import Modelo.DatosEmpresaGeneral;
 import ReportesImpresion.DatosClienteYFactura;
 import ReportesImpresion.Documentos;
 import Conexiones.ConexionesSQL;
+import Controlador.KardexDao;
+import Controlador.ProductosDao;
+import Controlador.VentaDao;
+import Modelo.Kardex;
+import Modelo.Productos;
 import Vista.POS.POS;
+import ds.desktop.notify.DesktopNotify;
+import ds.desktop.notify.NotifyTheme;
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -30,81 +38,86 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public final class DetalleTrasladosForm extends javax.swing.JFrame {
-    Ventas v= new Ventas();
+
+    Ventas v = new Ventas();
     int DiariasGenerales;
     Date fech = new Date();
-        String strDateFormat = "YYYY-MM-dd";
-        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-        String fecha=objSDF.format(fech);
-        POS pos;
-        TrasladosGenerales V_G;
+    String strDateFormat = "YYYY-MM-dd";
+    SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+    String fecha = objSDF.format(fech);
+    POS pos;
+    TrasladosGenerales V_G;
+
     public DetalleTrasladosForm() {
-        
+
     }
+
     public DetalleTrasladosForm(String NumeroFactura, int ModoAbierto, int TipoDeVista, POS pos, TrasladosGenerales V_G) {
-        
+
         initComponents();
         this.V_G = V_G;
         this.pos = pos;
         this.setLocationRelativeTo(null);
         CargarTodosLosDetalles(NumeroFactura);
         v.CargarDatosFormatoImpresion(jComboBox1);
-        DiariasGenerales= TipoDeVista;
-        if(!EstadoVenta.getText().equals("VIGENTE")){
+        DiariasGenerales = TipoDeVista;
+        if (!EstadoVenta.getText().equals("VIGENTE")) {
             jMenuItem2.setEnabled(false);
             jButton4.setEnabled(false);
-        }else{
-           jMenuItem2.setEnabled(true);
-           jButton4.setEnabled(true);
+        } else {
+            jMenuItem2.setEnabled(true);
+            jButton4.setEnabled(true);
         }
-        if(ModoAbierto == 0){
-        new java.util.Timer().schedule(new java.util.TimerTask() {
-         @Override
-         public void run() {
-             Cerrar();
-         }
-     },
-             20000
-     );    
+        if (ModoAbierto == 0) {
+            new java.util.Timer().schedule(new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    Cerrar();
+                }
+            },
+                    20000
+            );
         }
-        
+
     }
-    public void Cerrar(){
+
+    public void Cerrar() {
         this.dispose();
     }
-    
-    @Override
-        public Image getIconImage() {
-            Image retValue = Toolkit.getDefaultToolkit().
-                    getImage(ClassLoader.getSystemResource("Imagenes/Detalle.png"));
 
-            return retValue;
-        }
-        
-        public void CargarTodosLosDetalles(String NumeroFactura){
-            Fac.setText(NumeroFactura);
-           // CajaNumeroAutorizacion.setText(NumeroAutorizacion);
-            VerDetalles();
-            VerDetalles2();
-            VerDetalles3();
-            
-        }
-    public void VerDetalles(){
-        
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage(ClassLoader.getSystemResource("Imagenes/Detalle.png"));
+
+        return retValue;
+    }
+
+    public void CargarTodosLosDetalles(String NumeroFactura) {
+        Fac.setText(NumeroFactura);
+        // CajaNumeroAutorizacion.setText(NumeroAutorizacion);
+        VerDetalles();
+        VerDetalles2();
+        VerDetalles3();
+
+    }
+
+    public void VerDetalles() {
+
         DefaultTableModel modeloTabla = new DefaultTableModel();
         TablaDetalles.setModel(modeloTabla);
-        String NoF= Fac.getText();
-      
+        String NoF = Fac.getText();
+
         ConexionesSQL.rs = null;
         ConexionesSQL.ps = null;
-        ConexionesSQL.cn= ConexionesSQL.Unionsis2.getConnection();
+        ConexionesSQL.cn = ConexionesSQL.Unionsis2.getConnection();
         try {
-            
+
             ConexionesSQL.ps = ConexionesSQL.cn.prepareStatement("select CodigoBarras, NombreProducto, "
                     + "CantidadProductos, PrecioUnitario, Total, ProductoRegistrado, IdProducto "
                     + "from detalle_traslados where NoTraslado=?");
             ConexionesSQL.ps.setString(1, NoF);
-            
+
             ConexionesSQL.rs = ConexionesSQL.ps.executeQuery();
 
             modeloTabla.addColumn("Codigo");
@@ -118,7 +131,7 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
             ResultSetMetaData rsMD = ConexionesSQL.rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
 
-            int anchotabla[] = {20,150, 10, 10, 10, 2, 2};
+            int anchotabla[] = {20, 150, 10, 10, 10, 2, 2};
 
             for (int i = 0; i < cantidadColumnas; i++) {
                 TablaDetalles.getColumnModel().getColumn(i).setPreferredWidth(anchotabla[i]);
@@ -136,77 +149,77 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
 
         } catch (SQLException e) {
             System.err.println("Error en JFRAME Detalles, " + e);
-        }finally{
+        } finally {
             ConexionesSQL.RsClose(ConexionesSQL.rs);
             ConexionesSQL.PsClose(ConexionesSQL.ps);
             ConexionesSQL.ConnectionClose(ConexionesSQL.cn);
         }
-    
+
     }
-    
-    public void VerDetalles2(){
-        String NoF= Fac.getText();
+
+    public void VerDetalles2() {
+        String NoF = Fac.getText();
         ConexionesSQL.rs = null;
         ConexionesSQL.ps = null;
-        ConexionesSQL.cn= ConexionesSQL.Unionsis2.getConnection();
+        ConexionesSQL.cn = ConexionesSQL.Unionsis2.getConnection();
         try {
             ConexionesSQL.ps = ConexionesSQL.cn.prepareStatement("select NombreCliente, NitCliente from traslados where NoTraslado=?");
             ConexionesSQL.ps.setString(1, NoF);
-            
+
             ConexionesSQL.rs = ConexionesSQL.ps.executeQuery();
-            
+
             while (ConexionesSQL.rs.next()) {
-            CajaCliente.setText(ConexionesSQL.rs.getString("NombreCliente"));
-            CajaNit.setText(ConexionesSQL.rs.getString("NitCliente"));
+                CajaCliente.setText(ConexionesSQL.rs.getString("NombreCliente"));
+                CajaNit.setText(ConexionesSQL.rs.getString("NitCliente"));
             }
         } catch (SQLException e) {
             System.err.println("Error en JFRAME Detalles2, " + e);
-        }finally{
+        } finally {
             ConexionesSQL.RsClose(ConexionesSQL.rs);
             ConexionesSQL.PsClose(ConexionesSQL.ps);
             ConexionesSQL.ConnectionClose(ConexionesSQL.cn);
         }
     }
-    
-    public void VerDetalles3(){
-        String NoF= Fac.getText();
+
+    public void VerDetalles3() {
+        String NoF = Fac.getText();
         ConexionesSQL.rs = null;
         ConexionesSQL.ps = null;
-        ConexionesSQL.cn= ConexionesSQL.Unionsis2.getConnection();
+        ConexionesSQL.cn = ConexionesSQL.Unionsis2.getConnection();
         try {
             ConexionesSQL.ps = ConexionesSQL.cn.prepareStatement("select idtraslados, TotalTraslado, IdUsuario, HoraRealizada, "
                     + "FechaRealizada, Observacion, TotalLetras"
                     + ", EstadoTraslado from traslados where NoTraslado=?");
             ConexionesSQL.ps.setString(1, NoF);
-            
+
             ConexionesSQL.rs = ConexionesSQL.ps.executeQuery();
-            
+
             if (ConexionesSQL.rs.next()) {
                 Id.setText(ConexionesSQL.rs.getString("idtraslados"));
                 CajaTotal.setText(ConexionesSQL.rs.getString("TotalTraslado"));
-            CajaVendedor.setText(ConexionesSQL.rs.getString("IdUsuario"));
-            HoraVenta.setText(ConexionesSQL.rs.getString("HoraRealizada"));
-            Fechaventa.setText(ConexionesSQL.rs.getString("FechaRealizada"));
-            CajaObservacion.setText(ConexionesSQL.rs.getString("Observacion"));
-            TotalLetras.setText(ConexionesSQL.rs.getString("TotalLetras"));
-            TipoDocumento.setText("TRASLADO");
-            EstadoVenta.setText(ConexionesSQL.rs.getString("EstadoTraslado"));
+                CajaVendedor.setText(ConexionesSQL.rs.getString("IdUsuario"));
+                HoraVenta.setText(ConexionesSQL.rs.getString("HoraRealizada"));
+                Fechaventa.setText(ConexionesSQL.rs.getString("FechaRealizada"));
+                CajaObservacion.setText(ConexionesSQL.rs.getString("Observacion"));
+                TotalLetras.setText(ConexionesSQL.rs.getString("TotalLetras"));
+                TipoDocumento.setText("TRASLADO");
+                EstadoVenta.setText(ConexionesSQL.rs.getString("EstadoTraslado"));
             }
         } catch (SQLException e) {
             System.err.println("Error en JFRAME Detalles3, " + e);
-        }finally{
+        } finally {
             ConexionesSQL.RsClose(ConexionesSQL.rs);
             ConexionesSQL.PsClose(ConexionesSQL.ps);
             ConexionesSQL.ConnectionClose(ConexionesSQL.cn);
         }
-    
+
     }
-    
-    public void ObtenerId(int Seleccion, int TipoDeVista){
+
+    public void ObtenerId(int Seleccion, int TipoDeVista) {
         ConexionesSQL.rs = null;
         ConexionesSQL.ps = null;
-        ConexionesSQL.cn= ConexionesSQL.Unionsis2.getConnection();
-        String Query="";
+        ConexionesSQL.cn = ConexionesSQL.Unionsis2.getConnection();
+        String Query = "";
         if (TipoDeVista == 0) {
             if (Seleccion == 0) {
                 Query = "select idtraslados, NoTraslado from traslados where idtraslados = (select min(idtraslados) from traslados where idtraslados > " + Id.getText() + ")";
@@ -220,26 +233,25 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
                 Query = "select idtraslados, NoTraslado from traslados where idtraslados = (select max(idtraslados) from traslados where idtraslados < " + Id.getText() + ") AND FechaRealizada LIKE '%" + fecha + "%'";
             }
         }
-        
-        
+
         try {
             ConexionesSQL.ps = ConexionesSQL.cn.prepareStatement(Query);
-            
+
             ConexionesSQL.rs = ConexionesSQL.ps.executeQuery();
-            
+
             if (ConexionesSQL.rs.next()) {
                 Id.setText(ConexionesSQL.rs.getString("idtraslados"));
                 Fac.setText(ConexionesSQL.rs.getString("NoTraslado"));
             }
         } catch (SQLException e) {
             System.err.println("Error en JFRAME Detalles2, " + e);
-        }finally{
+        } finally {
             ConexionesSQL.RsClose(ConexionesSQL.rs);
             ConexionesSQL.PsClose(ConexionesSQL.ps);
             ConexionesSQL.ConnectionClose(ConexionesSQL.cn);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -697,34 +709,35 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Imprimir();
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
-    
-    public void Imprimir(){
-        if(jComboBox1.getSelectedIndex()== 0){
+
+    public void Imprimir() {
+        if (jComboBox1.getSelectedIndex() == 0) {
             Proforma(0);
-        }else if(jComboBox1.getSelectedIndex()== 1){
+        } else if (jComboBox1.getSelectedIndex() == 1) {
             Proforma(1);
-       
+
         }
     }
-    
-    public String Imprimir2(){
-        String RUTA =  "";
-        if(jComboBox1.getSelectedIndex()== 0){
+
+    public String Imprimir2() {
+        String RUTA = "";
+        if (jComboBox1.getSelectedIndex() == 0) {
             RUTA = ProformaGuardar(0);
-        }else if(jComboBox1.getSelectedIndex()== 1){
+        } else if (jComboBox1.getSelectedIndex() == 1) {
             RUTA = ProformaGuardar(1);
-       
+
         }
         return RUTA;
     }
+
     public void Proforma(int TipoDocumentoImpresion) {
         Documentos documentos = new Documentos();
-        DatosEmpresaDao datosDao= new DatosEmpresaDao();
+        DatosEmpresaDao datosDao = new DatosEmpresaDao();
         DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
-        DaEm = datosDao.VerDatos();      
-        DatosEmpresa datosempresa= new DatosEmpresa();
+        DaEm = datosDao.VerDatos();
+        DatosEmpresa datosempresa = new DatosEmpresa();
         datosempresa.setUsuario(CajaVendedor.getText());
         datosempresa.setNombreEmpresa(DaEm.getNombreEmpresa());
         datosempresa.setNit(DaEm.getNit());
@@ -733,35 +746,35 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
         datosempresa.setEslogan(DaEm.getEslogan());
         datosempresa.setPoliticas(DaEm.getPoliticas());
         //DATOS DE AUTORIZACION DE DTE
- 
-        DocumentoFel Fel= new DocumentoFel();
+
+        DocumentoFel Fel = new DocumentoFel();
         Fel.setTipoDocumento(TipoDocumento.getText());
         DatosClienteYFactura datos;
-        datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), "", Fac.getText(), CajaTotal.getText(), "0.00", "0.00", Fac.getText(), Fac.getText(), 
-        "", "", CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " "+Fechaventa.getText(), Fechaventa.getText());
-        
-        if(TipoDocumentoImpresion== 0){
-            try {    
+        datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), "", Fac.getText(), CajaTotal.getText(), "0.00", "0.00", Fac.getText(), Fac.getText(),
+                "", "", CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " " + Fechaventa.getText(), Fechaventa.getText());
+
+        if (TipoDocumentoImpresion == 0) {
+            try {
                 documentos.DocumentoCotizacion(datos, datosempresa, "N° Interno", TablaDetalles, Fel, 0);
             } catch (PrinterException ex) {
                 Logger.getLogger(Detalles.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if(TipoDocumentoImpresion== 1){
-            try {    
+        } else if (TipoDocumentoImpresion == 1) {
+            try {
                 documentos.DocumentoCotizacion(datos, datosempresa, "N° Interno", TablaDetalles, Fel, 1);
             } catch (PrinterException ex) {
                 Logger.getLogger(Detalles.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    
+
     public String ProformaGuardar(int TipoDocumentoImpresion) {
         String RUTA = "";
         Documentos documentos = new Documentos();
-        DatosEmpresaDao datosDao= new DatosEmpresaDao();
+        DatosEmpresaDao datosDao = new DatosEmpresaDao();
         DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
-        DaEm = datosDao.VerDatos();      
-        DatosEmpresa datosempresa= new DatosEmpresa();
+        DaEm = datosDao.VerDatos();
+        DatosEmpresa datosempresa = new DatosEmpresa();
         datosempresa.setUsuario(CajaVendedor.getText());
         datosempresa.setNombreEmpresa(DaEm.getNombreEmpresa());
         datosempresa.setNit(DaEm.getNit());
@@ -770,21 +783,21 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
         datosempresa.setEslogan(DaEm.getEslogan());
         datosempresa.setPoliticas(DaEm.getPoliticas());
         //DATOS DE AUTORIZACION DE DTE
- 
-        DocumentoFel Fel= new DocumentoFel();
+
+        DocumentoFel Fel = new DocumentoFel();
         Fel.setTipoDocumento(TipoDocumento.getText());
         DatosClienteYFactura datos;
-        datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), "", Fac.getText(), CajaTotal.getText(), "0.00", "0.00", Fac.getText(), Fac.getText(), 
-        "", "", CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " "+Fechaventa.getText(), Fechaventa.getText());
-        
-        if(TipoDocumentoImpresion== 0){
-            try {    
+        datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), "", Fac.getText(), CajaTotal.getText(), "0.00", "0.00", Fac.getText(), Fac.getText(),
+                "", "", CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " " + Fechaventa.getText(), Fechaventa.getText());
+
+        if (TipoDocumentoImpresion == 0) {
+            try {
                 RUTA = documentos.DocumentoCotizacionGuardar(datos, datosempresa, "N° Interno", TablaDetalles, Fel, 0);
             } catch (PrinterException ex) {
                 Logger.getLogger(Detalles.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if(TipoDocumentoImpresion== 1){
-            try {    
+        } else if (TipoDocumentoImpresion == 1) {
+            try {
                 RUTA = documentos.DocumentoCotizacionGuardar(datos, datosempresa, "N° Interno", TablaDetalles, Fel, 1);
             } catch (PrinterException ex) {
                 Logger.getLogger(Detalles.class.getName()).log(Level.SEVERE, null, ex);
@@ -792,77 +805,79 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
         }
         return RUTA;
     }
-    
-    public void abrirarchivo(String archivo){
 
-     try {
-            Desktop.getDesktop().open(new File("/Ferretería El Amigo/Ventas de Ferretería El Amigo/"+archivo));
+    public void abrirarchivo(String archivo) {
+
+        try {
+            Desktop.getDesktop().open(new File("/Ferretería El Amigo/Ventas de Ferretería El Amigo/" + archivo));
             /*File objetofile = new File (archivo);
             Desktop.getDesktop().open(objetofile);*/
 
-     }catch (IOException ex) {
+        } catch (IOException ex) {
 
-            JOptionPane.showMessageDialog(null, "¡El archivo no existe o se eliminó!"+ex);
+            JOptionPane.showMessageDialog(null, "¡El archivo no existe o se eliminó!" + ex);
 
-     }
+        }
 
-}
-    
+    }
+
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        int seleccion= JOptionPane.showConfirmDialog(this, "¿ESTÁ SEGURO DE ELIMINAR ESTE VALE?\n*Esto no se puede deshacer");
-        if(seleccion==0){
-            Modificar(0);
-            V_G.ActualizarTablaEstado(V_G.FiltroBusqueda, V_G.Parametro1, V_G.Parametro2);
-        this.dispose();
+        int seleccion = JOptionPane.showConfirmDialog(this, "¿ESTÁ SEGURO DE ELIMINAR ESTE VALE?\n*Esto no se puede deshacer");
+        if (seleccion == 0) {
+            if (AumentarStock() == true) {
+                GUARDAR_KARDEX();
+                Modificar(0);
+                V_G.ActualizarTablaEstado(V_G.FiltroBusqueda, V_G.Parametro1, V_G.Parametro2);
+                this.dispose();
+            }
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        InterfazGmail VP= new InterfazGmail(Fac.getText(), CajaVendedor.getText(), Imprimir2(), TipoDocumento.getText());
+        InterfazGmail VP = new InterfazGmail(Fac.getText(), CajaVendedor.getText(), Imprimir2(), TipoDocumento.getText());
         VP.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        
+
         v.RecordarFormatoImpresion(jComboBox1);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ObtenerId(1, DiariasGenerales);
         CargarTodosLosDetalles(Fac.getText());
-        if(EstadoVenta.getText().equals("ANULADO")){
+        if (EstadoVenta.getText().equals("ANULADO")) {
             jMenuItem2.setEnabled(false);
-        }else{
-           jMenuItem2.setEnabled(true); 
+        } else {
+            jMenuItem2.setEnabled(true);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ObtenerId(0, DiariasGenerales);
         CargarTodosLosDetalles(Fac.getText());
-        if(EstadoVenta.getText().equals("ANULADO")){
+        if (EstadoVenta.getText().equals("ANULADO")) {
             jMenuItem2.setEnabled(false);
-        }else{
-           jMenuItem2.setEnabled(true); 
+        } else {
+            jMenuItem2.setEnabled(true);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         RealizarVenta();
-        V_G.ActualizarTablaEstado(V_G.FiltroBusqueda,V_G.Parametro1, V_G.Parametro1);
+        V_G.ActualizarTablaEstado(V_G.FiltroBusqueda, V_G.Parametro1, V_G.Parametro1);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         Imprimir2();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
-    
     public void FacturaCopiaSinImprimir(Boolean Guardar, int TipoDocumentoImpresion) {
         Documentos documentos = new Documentos();
-        DatosEmpresaDao datosDao= new DatosEmpresaDao();
+        DatosEmpresaDao datosDao = new DatosEmpresaDao();
         DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
-        DaEm = datosDao.VerDatos();      
-        DatosEmpresa datosempresa= new DatosEmpresa();
+        DaEm = datosDao.VerDatos();
+        DatosEmpresa datosempresa = new DatosEmpresa();
         datosempresa.setUsuario(CajaVendedor.getText());
         datosempresa.setNombreEmpresa(DaEm.getNombreEmpresa());
         datosempresa.setNit(DaEm.getNit());
@@ -870,35 +885,31 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
         datosempresa.setTel(DaEm.getTel());
         datosempresa.setEslogan(DaEm.getEslogan());
         datosempresa.setPoliticas(DaEm.getPoliticas());
-        
+
         //DATOS DE AUTORIZACION DE DTE
-        DatosCertificador DatosCertificador = new DatosCertificador(); 
-        DocumentoFel Fel= new DocumentoFel();
-        
+        DatosCertificador DatosCertificador = new DatosCertificador();
+        DocumentoFel Fel = new DocumentoFel();
+
         DatosCertificador = datosDao.VerDatosCertificador();
         Fel.setTipoDocumento(TipoDocumento.getText());
-        
-        
-        
+
         DatosClienteYFactura datos;
-        datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), "", Fac.getText(), CajaTotal.getText(), "", "", Fac.getText(), Fac.getText(), 
-        "", "", CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " "+Fechaventa.getText(), Fechaventa.getText());
-        if(Guardar == false){
-           //documentos.FacturaaCrearSinImprimir(datos, datosempresa,DatosCertificador, Fel,"N° Interno", TablaDetalles); 
-        }else{
-            
-            if(TipoDocumentoImpresion== 0){
-                documentos.CrearYGuardarDocumento(datos, datosempresa,DatosCertificador, Fel,"N° VALE", TablaDetalles, 0);
-        }else if(TipoDocumentoImpresion== 1){
-            documentos.CrearYGuardarDocumento(datos, datosempresa,DatosCertificador, Fel,"N° VALE", TablaDetalles, 1);
+        datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), "", Fac.getText(), CajaTotal.getText(), "", "", Fac.getText(), Fac.getText(),
+                "", "", CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " " + Fechaventa.getText(), Fechaventa.getText());
+        if (Guardar == false) {
+            //documentos.FacturaaCrearSinImprimir(datos, datosempresa,DatosCertificador, Fel,"N° Interno", TablaDetalles); 
+        } else {
+
+            if (TipoDocumentoImpresion == 0) {
+                documentos.CrearYGuardarDocumento(datos, datosempresa, DatosCertificador, Fel, "N° VALE", TablaDetalles, 0);
+            } else if (TipoDocumentoImpresion == 1) {
+                documentos.CrearYGuardarDocumento(datos, datosempresa, DatosCertificador, Fel, "N° VALE", TablaDetalles, 1);
+            }
+
         }
-            
-        }
-        
-        
 
     }
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1040,75 +1051,123 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     public javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
-    
-    public String Hora(){
-            Date hour = new Date();
-            String strDateFormat = "HH:mm:ss";
-            SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-            String hora=objSDF.format(hour);
-            
-       return hora;
-   }   
-    
-    public String Fecha(){
+
+    public String Hora() {
+        Date hour = new Date();
+        String strDateFormat = "HH:mm:ss";
+        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+        String hora = objSDF.format(hour);
+
+        return hora;
+    }
+
+    public String Fecha() {
         Date fech = new Date();
         String strDateFormat1 = "YYYY-MM-dd";
         SimpleDateFormat Fechas = new SimpleDateFormat(strDateFormat1);
         String fecha = Fechas.format(fech);
-        
+
         return fecha;
     }
-    
-    public void Modificar(int Seleccion){
-            TrasladosDao coDao= new TrasladosDao();
-            if(Seleccion==0){
-            int Estado= coDao.ModificarTraslado(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), "ANULADO", Fac.getText());
-            if(Estado>1){
+
+    public void Modificar(int Seleccion) {
+        TrasladosDao coDao = new TrasladosDao();
+        if (Seleccion == 0) {
+            int Estado = coDao.ModificarTraslado(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), "ANULADO", Fac.getText());
+            if (Estado > 1) {
                 this.dispose();
-            }    
-            }else{
-                int Estado= coDao.ModificarTraslado(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), "REALIZADO", Fac.getText());
+            }
+        } else {
+            int Estado = coDao.ModificarTraslado(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO), "REALIZADO", Fac.getText());
             this.dispose();
             this.toBack();
-            }
-            
+        }
+
     }
-    
-    public void RealizarVenta(){
-        int Seleccion= JOptionPane.showConfirmDialog(null, """
+
+    public void RealizarVenta() {
+        int Seleccion = JOptionPane.showConfirmDialog(null, """
                                                            ESTA ACCI\u00d3N ELIMINARA ESTE TRASLADO Y LA PASARA
                                                             A LA SECCI\u00d3N DE VENTAS.
                                                            TENGA EN CUENTA QUE SI TIENE PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTAR\u00c1""", "¿ESTÁ SEGURO DE REALIZAR LA VENTA?", JOptionPane.YES_NO_OPTION);
-        pos.principal.MoverEntreSistema();
-        pos.principal.MoverEntreSistema();
+
         Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
-        if(Seleccion==0){
-          //  Principal.MoverEntreSistema();
-           // Principal.MoverEntreSistema();
-            if(VerificarCheckEnVenta == true){
-            pos.CheckIngresoAutomatico.setSelected(false);    
+        if (Seleccion == 0) {
+            if (AumentarStock() == true) {
+                GUARDAR_KARDEX();
+                pos.principal.MoverEntreSistema();
+                pos.principal.MoverEntreSistema();
+                if (VerificarCheckEnVenta == true) {
+                    pos.CheckIngresoAutomatico.setSelected(false);
+                }
+                pos.ConsultarNit_CUIFinal(CajaNit.getText());
+                for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
+                    if (Integer.parseInt(TablaDetalles.getValueAt(i, 5).toString()) == 0) {
+
+                        pos.NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
+                        pos.IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
+                        pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+                        pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
+                        pos.AgregarProducto();
+                    } else {
+                        pos.Busqueda_ID_VENTA(TablaDetalles.getValueAt(i, 6).toString());
+                        pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
+                        pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
+                        pos.AgregarProducto();
+
+                    }
+                }
+                Modificar(1);
+                if (VerificarCheckEnVenta == true) {
+                    pos.CheckIngresoAutomatico.setSelected(true);
+                }
             }
-        pos.ConsultarNit_CUIFinal(CajaNit.getText());
-        for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
-            if(Integer.parseInt(TablaDetalles.getValueAt(i, 5).toString())==0){
-                
-                pos.NombreVenta.setText(TablaDetalles.getValueAt(i, 1).toString());
-                pos.IdVenta.setText(TablaDetalles.getValueAt(i, 0).toString());
-                pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-                pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
-                pos.AgregarProducto(); 
-            }else{
-               pos.Busqueda_ID_VENTA(TablaDetalles.getValueAt(i, 6).toString());
-               pos.Final.setText(TablaDetalles.getValueAt(i, 3).toString());
-               pos.CantidadVenta.setText(TablaDetalles.getValueAt(i, 2).toString());
-               pos.AgregarProducto(); 
-               
-            }
-        }
-        Modificar(1);
-        if(VerificarCheckEnVenta == true){
-            pos.CheckIngresoAutomatico.setSelected(true);    
         }
     }
+
+    private synchronized Boolean GUARDAR_KARDEX() {
+        Boolean Estado = false;
+        KardexDao kdDao = new KardexDao();
+        Kardex Kd;
+        for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
+            if (TablaDetalles.getValueAt(i, 5).toString().equals("1")) {
+                Kd = new Kardex();
+                int Id_Producto = VentaDao.BuscarIdProducto(TablaDetalles.getValueAt(i, 0).toString());
+                String CANTIDAD_A_DEVOLVER = TablaDetalles.getValueAt(i, 2).toString();
+                String STOCK_ANTES = String.valueOf(VentaDao.BuscarSTOCKProducto(Id_Producto));
+                String STOCK_DESPUES = String.valueOf(Float.parseFloat(STOCK_ANTES) + Float.parseFloat(CANTIDAD_A_DEVOLVER));
+                Kd.setID_Codigo_Producto_Kardex(Id_Producto);
+                Kd.setTitulo_Kardex(" SE REINGRESO DE " + TipoDocumento.getText() + ": " + Fac.getText());
+                Kd.setEntrada_Kardex(CANTIDAD_A_DEVOLVER);
+                Kd.setSalida_Kardex("0");
+                Kd.setAntes_Kardex(STOCK_ANTES);
+                Kd.setDespues_Kardex(STOCK_DESPUES);
+                Kd.setFecha_Modificacion_Kardex(METODOS_GLOBALES.Fecha() + " " + METODOS_GLOBALES.Hora());
+                Kd.setUsuario_Modifico_Kardex(PARAMETROS_USUARIOS.ID_USUARIO);
+                Kd.setModulo_Kardex("TRASLADOS");
+                Estado = kdDao.RegistrarKARDEX(Kd);
+            }
         }
+        return Estado;
+    }
+
+    public Boolean AumentarStock() {
+        Boolean ResultadoAumento = false;
+        for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
+            if (Integer.parseInt(TablaDetalles.getValueAt(i, 5).toString()) == 1) {
+                String cod = TablaDetalles.getValueAt(i, 0).toString();
+                Float cant = Float.parseFloat(TablaDetalles.getValueAt(i, 2).toString());
+                Productos pro = new Productos();
+                ProductosDao proDao = new ProductosDao();
+                pro = proDao.BuscarPro(cod);
+                Float StockActual = pro.getCantidad() + cant;
+                ResultadoAumento = VentaDao.ActualizarStock(StockActual, cod);
+                if (ResultadoAumento == false) {
+                    DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+                    DesktopNotify.showDesktopMessage("¡FRACASO AL AUMENTAR STOCK!", "¡EL PRODUCTO CON CÓDIGO \n" + cod + " NO EXISTE!", DesktopNotify.ERROR, 10000L);
+                }
+            }
+        }
+        return ResultadoAumento;
+    }
 }

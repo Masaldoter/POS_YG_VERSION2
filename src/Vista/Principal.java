@@ -18,6 +18,7 @@ import Configuraciones.Ventas;
 import PROMOCIONES.ETIQUETAS.Promociones;
 import Reportes.Reportes;
 import ReportesImpresion.Documentos;
+import VERIFICAR_ERRORES.ERRORES_INVENTARIO;
 import Vista.ADMINISTRACION.CLIENTES.CLIENTES;
 import Vista.ADMINISTRACION.PROVEEDORES.PROVEEDORES;
 import Vista.ADMINISTRACION.USUARIOS.ADMINISTRACION_DE_USUARIOS;
@@ -134,6 +135,7 @@ public final class Principal extends javax.swing.JFrame {
         HORA_FECHA();
         CARGAR_INICIO();
         COLOR_FONDO();
+        ERRORES_INVENTARIO.VERIFICAR_ERROR(this);
         if (PARAMETROS_USUARIOS.ROL_USUARIO.equals("Usuario")) {
             ItemInventario.setVisible(false);
             ItemUsuariosSistema.setVisible(false);

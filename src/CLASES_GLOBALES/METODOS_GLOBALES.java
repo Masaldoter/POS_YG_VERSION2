@@ -14,6 +14,9 @@ import com.groupdocs.conversion.options.load.WordProcessingLoadOptions;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.awt.Image;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -48,7 +51,10 @@ public class METODOS_GLOBALES {
     private static Icon icono;
     public static ExecutorService executorService = Executors.newCachedThreadPool();
     public static Timer timer = new Timer();
-    
+    public static SystemTray tray = SystemTray.getSystemTray();
+
+    public static Image image = Toolkit.getDefaultToolkit().createImage("");
+    public static TrayIcon trayIcon = new TrayIcon(image);
 
     public static void PintarImagen_BOTON(JButton boton, String ruta){
         boton.removeAll();

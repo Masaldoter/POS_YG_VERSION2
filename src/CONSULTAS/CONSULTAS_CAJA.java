@@ -69,7 +69,6 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     caja= new CAJA();
-                    System.out.println(rs.getString("ESTADO_DE_CAJA"));
                     caja.setESTADO_DE_CAJA(rs.getString("ESTADO_DE_CAJA"));
                     caja.setTotal_inicial_CAJA(rs.getFloat("Total_inicial_CAJA"));
                     caja.setTotal_Compras_CAJA(rs.getFloat("Total_Compras_CAJA"));

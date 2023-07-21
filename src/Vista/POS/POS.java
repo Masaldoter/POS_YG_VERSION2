@@ -81,6 +81,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,8 +96,11 @@ import javax.swing.table.DefaultTableModel;
 
 public final class POS extends javax.swing.JInternalFrame {
 
-    // Crear un formato decimal personalizado
-    DecimalFormat decimalFormat = new DecimalFormat("0.0000");
+    // Crea un DecimalFormat con el punto como separador decimal
+        DecimalFormat decimalFormat;
+
+        // Establece el punto como separador decimal
+        
 
     private Boolean VENTANA_REVENTA_MOSTRADA = false;
     TextAutoCompleter AutoCompletador_PRODUCTOS, AUTOCOMPLETADOR_CLIENTES_NOMBRE, AUTOCOMPLETADOR_CLIENTE_NIT;
@@ -132,6 +136,12 @@ public final class POS extends javax.swing.JInternalFrame {
         this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        // Crea un DecimalFormatSymbols con el punto como separador decimal
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+
+        // Crea un DecimalFormat con el DecimalFormatSymbols configurado
+        decimalFormat = new DecimalFormat("#0.0000", symbols);
         ATAJOSDETECLADO.clickOnKey(jButton8, "LimpiarCajas2", KeyEvent.VK_F5);
         ATAJOSDETECLADO.clickOnKey(BtnGenerarVentaPOS, "GenerarVenta", KeyEvent.VK_F8);
         ATAJOSDETECLADO.clickOnKey(BtnAgregarPagoPOS, "BtnAgregarPagoPOS", KeyEvent.VK_F12);
