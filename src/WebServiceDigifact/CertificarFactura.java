@@ -75,6 +75,7 @@ public class CertificarFactura {
                 Transformer t = tf.newTransformer();
                 StringWriter sw = new StringWriter();
                 t.transform(new DOMSource(document), new StreamResult(sw));
+                System.out.println(sw.toString());
                 String XMLSinCertificar=sw.toString();
                 byte[] out = XMLSinCertificar.getBytes(StandardCharsets.UTF_8);
                 
