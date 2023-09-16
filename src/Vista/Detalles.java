@@ -27,9 +27,11 @@ import ModeloWebService.RespuestaDatosAnularFactura;
 import ReportesImpresion.DatosClienteYFactura;
 import ReportesImpresion.Documentos;
 import Conexiones.ConexionesSQL;
+import Controlador.Eventos;
 import Controlador.KardexDao;
 import Controlador.ProductosDao;
 import Modelo.Detalle;
+import Modelo.FormaDePago;
 import Modelo.Kardex;
 import Modelo.Productos;
 import Tablas.ActualizarTablaVentasDiariasYGenerales;
@@ -72,15 +74,21 @@ public final class Detalles extends javax.swing.JFrame {
     private String NUMERO_INTERNO_FACTURA_ELECTRONICA="";
     private AVISOS VENTANA_AVISO;
     POS pos;
+    private String NumeroFactura;
+    private int TipoDeVista;
     public Detalles() { 
     }
     
     public Detalles(String NumeroFactura, int ModoAbierto, int TipoDeVista, POS pos, Principal principal) {
         initComponents();
+        jMenu4.setEnabled(false);
         this.principal = principal;
         this.pos = pos;
         //TablaDetalles.setShowHorizontalLines(true);
         this.setLocationRelativeTo(null);
+        Editar();
+        this.NumeroFactura=NumeroFactura;
+        this.TipoDeVista=TipoDeVista;
         CargarTodosLosDetalles(NumeroFactura);
         v.CargarDatosFormatoImpresion(jComboBox1);
         DiariasGenerales= TipoDeVista;
@@ -123,37 +131,147 @@ public final class Detalles extends javax.swing.JFrame {
             VerDetalles();
             VerDetalles2();
             VerDetalles3();  
+            ObtenerPagos();
             ValidarBotones();
         }
         
         public void ValidarBotones(){
+            if(PARAMETROS_USUARIOS.ROL_USUARIO.equals("Usuario")){
+                jMenu2.setVisible(false);
+            }else{
+                jMenu2.setVisible(true);
+            }
             
-            if(TipoDocumento.getText().equals("FACTURA") && EstadoVenta.getText().equals("ANULADO") || !EstadoVenta.getText().equals("ANULADO")){
-            jTabbedPane1.setEnabledAt(5, false);
-            jTabbedPane1.setEnabledAt(4, false);
+            if(TipoDocumento.getText().equals("FACTURA") && EstadoVenta.getSelectedItem().toString().equals("ANULADO") || !EstadoVenta.getSelectedItem().toString().equals("FACTURADO")){
+            jTabbedPane1.setEnabledAt(5, true);
+            jTabbedPane1.setEnabledAt(4, true);
             jMenuItem2.setEnabled(false); 
            jMenuItem1.setEnabled(false);
            jMenu1.setVisible(false);
-        }if(TipoDocumento.getText().equals("FACTURA") && !EstadoVenta.getText().equals("ANULADO")){
+        }if(TipoDocumento.getText().equals("FACTURA") && !EstadoVenta.getSelectedItem().toString().equals("ANULADO")){
             jTabbedPane1.setEnabledAt(5, true);
             jTabbedPane1.setEnabledAt(4, true);
             jMenuItem2.setEnabled(true); 
            jMenuItem1.setEnabled(true);
            jMenu1.setVisible(true);
-        }else if(TipoDocumento.getText().equals("PROFORMA") && EstadoVenta.getText().equals("ANULADO")){
+        }else if(TipoDocumento.getText().equals("PROFORMA") && EstadoVenta.getSelectedItem().toString().equals("ANULADO")){
             jTabbedPane1.setEnabledAt(5, false);
             jTabbedPane1.setEnabledAt(4, false);
             jMenuItem2.setEnabled(false); 
            jMenuItem1.setEnabled(false);
            jMenu1.setVisible(false);
-        }if(TipoDocumento.getText().equals("PROFORMA") && !EstadoVenta.getText().equals("ANULADO")){
-            jTabbedPane1.setEnabledAt(5, true);
-            jTabbedPane1.setEnabledAt(4, true);
+        }if(TipoDocumento.getText().equals("PROFORMA") && !EstadoVenta.getSelectedItem().toString().equals("ANULADO")){
+            jTabbedPane1.setEnabledAt(5, false);
+            jTabbedPane1.setEnabledAt(4, false);
             jMenuItem2.setEnabled(true); 
            jMenuItem1.setEnabled(true);
            jMenu1.setVisible(true);
         }
         }
+        
+        public void Editar(){
+            if(PanelEditar.isVisible()){
+                jButton1.setEnabled(true);
+                jButton2.setEnabled(true);
+                jButton3.setEnabled(true);
+                jMenu3.setEnabled(true);
+                jMenu1.setEnabled(true);
+                jMenuItem1.setEnabled(true);
+                jMenuItem2.setEnabled(false);
+                PanelEditar.setVisible(false);
+                jMenuItem6.setEnabled(true);
+                Fac.setEditable(false);
+                TipoDocumento.setEditable(false);
+                EstadoVenta.setEnabled(false);
+                CajaCliente.setEditable(false);
+                CajaNit.setEditable(false);
+                CajaDireccion.setEditable(false);
+                CajaVendedor.setEditable(false);
+                CajaObservacion.setEditable(false);
+                CajaCertificador.setEditable(false);
+                NitCertificador.setEditable(false);
+                CajaNitEmisor.setEditable(false);
+                NumeroDocumento.setEditable(false);
+                CajaSerieCertificacion.setEditable(false);
+                FechaCertificacion.setEditable(false);
+                CajaNumeroAutorizacion.setEditable(false);
+                Efectivo.setEditable(false);
+                Tarjeta.setEditable(false);
+                Transferencia.setEditable(false);
+                Cheque.setEditable(false);
+                Otro.setEditable(false);
+            }else{
+                jButton1.setEnabled(false);
+                jButton2.setEnabled(false);
+                jButton3.setEnabled(false);
+                jMenu3.setEnabled(false);
+                jMenu1.setEnabled(false);
+                jMenuItem1.setEnabled(false);
+                jMenuItem2.setEnabled(false);
+                PanelEditar.setVisible(true);
+                jMenuItem6.setEnabled(false);
+                Fac.setEditable(true);
+                TipoDocumento.setEditable(true);
+                EstadoVenta.setEnabled(true);
+                CajaCliente.setEditable(true);
+                CajaNit.setEditable(true);
+                CajaDireccion.setEditable(true);
+                CajaVendedor.setEditable(true);
+                CajaObservacion.setEditable(true);
+                CajaCertificador.setEditable(true);
+                NitCertificador.setEditable(true);
+                CajaNitEmisor.setEditable(true);
+                NumeroDocumento.setEditable(true);
+                CajaSerieCertificacion.setEditable(true);
+                FechaCertificacion.setEditable(true);
+                CajaNumeroAutorizacion.setEditable(true);
+                Efectivo.setEditable(true);
+                Tarjeta.setEditable(true);
+                Transferencia.setEditable(true);
+                Cheque.setEditable(true);
+                Otro.setEditable(true);
+        }
+    }
+
+    public void Editar_Logica() {
+        VentaDao V = new VentaDao();
+        Venta datos_venta = new Venta();
+        datos_venta.setNoFactura(Fac.getText());
+        datos_venta.setTipoDocumentoFel(TipoDocumento.getText());
+        datos_venta.setEstado(EstadoVenta.getSelectedItem().toString());
+        datos_venta.setCliente(CajaCliente.getText());
+        datos_venta.setIDENTIFICACION_CLIENTE(CajaNit.getText());
+        datos_venta.setDireccionCliente(CajaDireccion.getText());
+        datos_venta.setUsuario(Integer.parseInt(CajaVendedor.getText()));
+        datos_venta.setObservacion(CajaObservacion.getText());
+        datos_venta.setNombreCertificador(CajaCertificador.getText());
+        datos_venta.setNitCertificador(NitCertificador.getText());
+        datos_venta.setNitEmisor(CajaNitEmisor.getText());
+        datos_venta.setNumeroDocumento(NumeroDocumento.getText());
+        datos_venta.setSerieDocumento(CajaSerieCertificacion.getText());
+        datos_venta.setFechaAutorizacion(FechaCertificacion.getText());
+        datos_venta.setNumeroAutorizacion(CajaNumeroAutorizacion.getText());
+        datos_venta.setIdRegistro(Integer.parseInt(Id.getText()));
+        datos_venta.setPagocon(Float.valueOf(CajaPago.getText()));
+        datos_venta.setCambio(Float.valueOf(CajaCambio.getText()));
+        Boolean Resultado = V.Editar_Registro(datos_venta);
+        
+        FormaDePago formaPago = new FormaDePago();
+        formaPago.setEfectivo(Float.valueOf(Efectivo.getText()));
+        formaPago.setTarjeta(Float.valueOf(Tarjeta.getText()));
+        formaPago.setTransferencia(Float.valueOf(Transferencia.getText()));
+        formaPago.setCheque(Float.valueOf(Cheque.getText()));
+        formaPago.setOtro(Float.valueOf(Otro.getText()));
+        formaPago.setNumero(Fac.getText());
+        V.Editar_Registro_FormaPago(formaPago);
+        if (Resultado == true) {
+            Editar();
+            CargarTodosLosDetalles(NumeroFactura);
+            this.v.CargarDatosFormatoImpresion(jComboBox1);
+            DiariasGenerales = TipoDeVista;
+            ValidarBotones();
+        }
+    }
     
     public void VerDetalles(){
         ActualizarTablaVentasDiariasYGenerales tablas = new ActualizarTablaVentasDiariasYGenerales();
@@ -242,11 +360,38 @@ public final class Detalles extends javax.swing.JFrame {
             NumeroDocumento.setText(ConexionesSQL.rs.getString("NumeroDocumento"));
             CajaSerieCertificacion.setText(ConexionesSQL.rs.getString("SerieDocumento"));
             TipoDocumento.setText(ConexionesSQL.rs.getString("TipoDocumentoFel"));
-            EstadoVenta.setText(ConexionesSQL.rs.getString("Estado"));
+            EstadoVenta.setSelectedItem(ConexionesSQL.rs.getString("Estado"));
             CajaNitEmisor.setText(ConexionesSQL.rs.getString("NitEmisor"));
             }
         } catch (SQLException e) {
             System.err.println("Error en JFRAME Detalles2, " + e);
+        }finally{
+            ConexionesSQL.RsClose(ConexionesSQL.rs);
+            ConexionesSQL.PsClose(ConexionesSQL.ps);
+            ConexionesSQL.ConnectionClose(ConexionesSQL.cn);
+        }
+    
+    }
+    
+    public void ObtenerPagos(){
+        ConexionesSQL.rs = null;
+        ConexionesSQL.ps = null;
+        ConexionesSQL.cn= ConexionesSQL.Unionsis2.getConnection();
+        try {
+            ConexionesSQL.ps = ConexionesSQL.cn.prepareStatement("select Efectivo, Tarjeta, Transferencia, Cheque, Otro from forma_pago where Numero=?");
+            ConexionesSQL.ps.setString(1, Fac.getText());
+            
+            ConexionesSQL.rs = ConexionesSQL.ps.executeQuery();
+            
+            if (ConexionesSQL.rs.next()) {
+                Efectivo.setText(ConexionesSQL.rs.getString("Efectivo"));
+            Tarjeta.setText(ConexionesSQL.rs.getString("Tarjeta"));
+            Transferencia.setText(ConexionesSQL.rs.getString("Transferencia"));
+            Cheque.setText(ConexionesSQL.rs.getString("Cheque"));
+            Otro.setText(ConexionesSQL.rs.getString("Otro"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error en ObtenerPagos, " + e);
         }finally{
             ConexionesSQL.RsClose(ConexionesSQL.rs);
             ConexionesSQL.PsClose(ConexionesSQL.ps);
@@ -304,8 +449,8 @@ public final class Detalles extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         TipoDocumento = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        EstadoVenta = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        EstadoVenta = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         Fechaventa = new javax.swing.JLabel();
         HoraVenta = new javax.swing.JLabel();
@@ -323,6 +468,17 @@ public final class Detalles extends javax.swing.JFrame {
         TotalLetras = new javax.swing.JLabel();
         FormapagoDetalleVenta = new javax.swing.JLabel();
         CajaTransaccionDetalle = new javax.swing.JLabel();
+        jPanel13 = new javax.swing.JPanel();
+        Efectivo = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        Tarjeta = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        Transferencia = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        Cheque = new javax.swing.JTextField();
+        Otro = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         C = new javax.swing.JScrollPane();
         CajaObservacion = new javax.swing.JTextArea();
@@ -357,6 +513,9 @@ public final class Detalles extends javax.swing.JFrame {
         CajaCambio = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        PanelEditar = new javax.swing.JPanel();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -364,12 +523,19 @@ public final class Detalles extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         IR_A_VENTA = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jSeparator6 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem8 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DETALLE DE VENTA");
@@ -379,34 +545,36 @@ public final class Detalles extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(153, 204, 255));
 
+        Fac.setEditable(false);
         Fac.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("NÚMERO INTERNO");
 
+        TipoDocumento.setEditable(false);
         TipoDocumento.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("TIPO DE DOCUMENTO");
 
-        EstadoVenta.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setText("ESTADO DE VENTA");
+
+        EstadoVenta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FACTURADO", "ANULADO" }));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Fac)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TipoDocumento)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(EstadoVenta))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(EstadoVenta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Fac, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TipoDocumento, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -424,10 +592,12 @@ public final class Detalles extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(2, 2, 2)
                 .addComponent(EstadoVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addGap(42, 42, 42))
         );
 
         jPanel7.setBackground(new java.awt.Color(255, 153, 102));
+
+        Id.setEditable(false);
 
         Fechaventa.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Fechaventa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -444,7 +614,7 @@ public final class Detalles extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Id)
+                    .addComponent(Id, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                     .addComponent(Fechaventa, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                     .addComponent(HoraVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -483,11 +653,19 @@ public final class Detalles extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(204, 255, 255));
 
+        CajaVendedor.setEditable(false);
+
         jLabel5.setText("CLIENTE:");
+
+        CajaCliente.setEditable(false);
+
+        CajaNit.setEditable(false);
 
         jLabel6.setText("NIT:");
 
         jLabel7.setText("DIRECCIÓN:");
+
+        CajaDireccion.setEditable(false);
 
         jLabel8.setText("VENDEDOR:");
 
@@ -542,31 +720,145 @@ public final class Detalles extends javax.swing.JFrame {
 
         CajaTransaccionDetalle.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "N° DE TRANSACCIÓN"));
 
+        jPanel13.setBackground(new java.awt.Color(255, 204, 204));
+
+        Efectivo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                EfectivoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                EfectivoKeyTyped(evt);
+            }
+        });
+
+        jLabel13.setText("EFECTIVO:");
+
+        Tarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TarjetaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TarjetaKeyTyped(evt);
+            }
+        });
+
+        jLabel14.setText("TARJETA:");
+
+        Transferencia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TransferenciaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TransferenciaKeyTyped(evt);
+            }
+        });
+
+        jLabel15.setText("TRANSFERENCIA:");
+
+        Cheque.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                ChequeKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ChequeKeyTyped(evt);
+            }
+        });
+
+        Otro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                OtroKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                OtroKeyTyped(evt);
+            }
+        });
+
+        jLabel17.setText("OTRO:");
+
+        jLabel16.setText("CHEQUE:");
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Efectivo)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Tarjeta)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Transferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Cheque)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Otro)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(249, Short.MAX_VALUE))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Efectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Tarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Transferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Cheque, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Otro, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TotalLetras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(FormapagoDetalleVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TotalLetras, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(FormapagoDetalleVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CajaTransaccionDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)))
+                        .addComponent(CajaTransaccionDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(FormapagoDetalleVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(CajaTransaccionDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                        .addGap(3, 3, 3)))
+                    .addComponent(CajaTransaccionDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                    .addComponent(FormapagoDetalleVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TotalLetras, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(86, 86, 86))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -584,6 +876,7 @@ public final class Detalles extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("FORMAS DE PAGO/TOTALES", jPanel9);
 
+        CajaObservacion.setEditable(false);
         CajaObservacion.setColumns(20);
         CajaObservacion.setRows(5);
         CajaObservacion.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "OBSERVACIÓNES"));
@@ -604,14 +897,18 @@ public final class Detalles extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("OBSERVACIÓNES", jPanel2);
 
-        jLabel30.setText("Nombre Certificador:");
+        jLabel30.setText("CERTIFICADOR:");
 
         jLabel33.setText("NIT CERTIFICADOR:");
 
         jLabel35.setText("NIT EMISOR:");
 
+        CajaNitEmisor.setEditable(false);
+
+        NitCertificador.setEditable(false);
         NitCertificador.setText("CF");
 
+        CajaCertificador.setEditable(false);
         CajaCertificador.setText("GUATEFACTURAS, SOCIEDAD ANÓNIMA");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -627,7 +924,7 @@ public final class Detalles extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(NitCertificador)
-                    .addComponent(CajaCertificador, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+                    .addComponent(CajaCertificador, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
                     .addComponent(CajaNitEmisor, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -775,11 +1072,11 @@ public final class Detalles extends javax.swing.JFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -795,7 +1092,7 @@ public final class Detalles extends javax.swing.JFrame {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -806,6 +1103,7 @@ public final class Detalles extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        TablaDetalles.setRowHeight(25);
         TablaDetalles.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(TablaDetalles);
         if (TablaDetalles.getColumnModel().getColumnCount() > 0) {
@@ -861,7 +1159,7 @@ public final class Detalles extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
@@ -880,6 +1178,42 @@ public final class Detalles extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/ACEPTAR_32PX.png"))); // NOI18N
+        jButton6.setText("GUARDAR CAMBIOS");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/CANCELAR_32PX.png"))); // NOI18N
+        jButton7.setText("CANCELAR");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PanelEditarLayout = new javax.swing.GroupLayout(PanelEditar);
+        PanelEditar.setLayout(PanelEditarLayout);
+        PanelEditarLayout.setHorizontalGroup(
+            PanelEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelEditarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6)
+                .addContainerGap())
+        );
+        PanelEditarLayout.setVerticalGroup(
+            PanelEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelEditarLayout.createSequentialGroup()
+                .addGroup(PanelEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
 
         jMenu2.setText("EDITAR VENTA");
 
@@ -909,6 +1243,15 @@ public final class Detalles extends javax.swing.JFrame {
             }
         });
         jMenu2.add(IR_A_VENTA);
+        jMenu2.add(jSeparator4);
+
+        jMenuItem6.setText("EDITAR");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem6);
 
         jMenuBar1.add(jMenu2);
 
@@ -935,7 +1278,7 @@ public final class Detalles extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu1.setText("CONVERTIR A DTE");
+        jMenu1.setText("SAT");
 
         jMenuItem5.setText("FACTURA ELECTRÓNICA");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -944,6 +1287,18 @@ public final class Detalles extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem5);
+        jMenu1.add(jSeparator5);
+
+        jMenu4.setText("NOTAS DE CRÉDITO/DÉBITO");
+
+        jMenuItem7.setText("NOTA DE CRÉDITO");
+        jMenu4.add(jMenuItem7);
+        jMenu4.add(jSeparator6);
+
+        jMenuItem8.setText("NOTA DE DÉBITO");
+        jMenu4.add(jMenuItem8);
+
+        jMenu1.add(jMenu4);
 
         jMenuBar1.add(jMenu1);
 
@@ -956,11 +1311,12 @@ public final class Detalles extends javax.swing.JFrame {
             .addComponent(jTabbedPane1)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(PanelEditar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -970,10 +1326,12 @@ public final class Detalles extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PanelEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -1224,7 +1582,7 @@ public final class Detalles extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ObtenerId(1, DiariasGenerales);
         CargarTodosLosDetalles(Fac.getText());
-        if(EstadoVenta.getText().equals("ANULADO")){
+        if(EstadoVenta.getSelectedItem().toString().equals("ANULADO")){
             jMenuItem2.setEnabled(false);
         }else{
            jMenuItem2.setEnabled(true); 
@@ -1235,7 +1593,7 @@ public final class Detalles extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ObtenerId(0, DiariasGenerales);
         CargarTodosLosDetalles(Fac.getText());
-        if(EstadoVenta.getText().equals("ANULADO")){
+        if(EstadoVenta.getSelectedItem().toString().equals("ANULADO")){
             jMenuItem2.setEnabled(false);
         }else{
            jMenuItem2.setEnabled(true); 
@@ -1288,6 +1646,81 @@ public final class Detalles extends javax.swing.JFrame {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         GUARDAR_KARDEX();
     }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        Editar();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        Editar();
+        CargarTodosLosDetalles(NumeroFactura);
+        v.CargarDatosFormatoImpresion(jComboBox1);
+        DiariasGenerales= TipoDeVista;
+        ValidarBotones();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        Editar_Logica();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void EfectivoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EfectivoKeyTyped
+        Eventos event = new Eventos();
+        event.numberDecimalKeyPress(evt, Efectivo);
+    }//GEN-LAST:event_EfectivoKeyTyped
+
+    private void TarjetaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TarjetaKeyTyped
+        Eventos event = new Eventos();
+        event.numberDecimalKeyPress(evt, Tarjeta);
+    }//GEN-LAST:event_TarjetaKeyTyped
+
+    private void TransferenciaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TransferenciaKeyTyped
+        Eventos event = new Eventos();
+        event.numberDecimalKeyPress(evt, Transferencia);
+    }//GEN-LAST:event_TransferenciaKeyTyped
+
+    private void ChequeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ChequeKeyTyped
+        Eventos event = new Eventos();
+        event.numberDecimalKeyPress(evt, Cheque);
+    }//GEN-LAST:event_ChequeKeyTyped
+
+    private void OtroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_OtroKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_OtroKeyTyped
+
+    private void EfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EfectivoKeyReleased
+        if(Efectivo.getText() != ""){
+            METODOS_GLOBALES.DESVACIAR_CAJAS(jPanel13);
+            SUMAR_CANTIDADES();
+        }
+    }//GEN-LAST:event_EfectivoKeyReleased
+
+    private void TarjetaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TarjetaKeyReleased
+        if(Tarjeta.getText() != ""){
+            METODOS_GLOBALES.DESVACIAR_CAJAS(jPanel13);
+            SUMAR_CANTIDADES();
+        }
+    }//GEN-LAST:event_TarjetaKeyReleased
+
+    private void TransferenciaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TransferenciaKeyReleased
+        if(Transferencia.getText() != ""){
+            METODOS_GLOBALES.DESVACIAR_CAJAS(jPanel13);
+            SUMAR_CANTIDADES();
+        }
+    }//GEN-LAST:event_TransferenciaKeyReleased
+
+    private void ChequeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ChequeKeyReleased
+        if(Cheque.getText() != ""){
+            METODOS_GLOBALES.DESVACIAR_CAJAS(jPanel13);
+            SUMAR_CANTIDADES();
+        }
+    }//GEN-LAST:event_ChequeKeyReleased
+
+    private void OtroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_OtroKeyReleased
+        if(Otro.getText() != ""){
+            METODOS_GLOBALES.DESVACIAR_CAJAS(jPanel13);
+            SUMAR_CANTIDADES();
+        }
+    }//GEN-LAST:event_OtroKeyReleased
 
     
     public boolean AnularTodaLaVenta() {
@@ -1354,7 +1787,9 @@ public final class Detalles extends javax.swing.JFrame {
     private javax.swing.JLabel CajaTotal;
     public javax.swing.JLabel CajaTransaccionDetalle;
     private javax.swing.JTextField CajaVendedor;
-    private javax.swing.JTextField EstadoVenta;
+    private javax.swing.JTextField Cheque;
+    private javax.swing.JTextField Efectivo;
+    private javax.swing.JComboBox<String> EstadoVenta;
     private javax.swing.JTextField Fac;
     private javax.swing.JTextField FechaCertificacion;
     private javax.swing.JLabel Fechaventa;
@@ -1364,19 +1799,30 @@ public final class Detalles extends javax.swing.JFrame {
     public final javax.swing.JTextField Id = new javax.swing.JTextField();
     private javax.swing.JTextField NitCertificador;
     private javax.swing.JTextField NumeroDocumento;
+    private javax.swing.JTextField Otro;
+    private javax.swing.JPanel PanelEditar;
     private javax.swing.JTable TablaDetalles;
+    private javax.swing.JTextField Tarjeta;
     private javax.swing.JTextField TipoDocumento;
     private javax.swing.JLabel TotalLetras;
+    private javax.swing.JTextField Transferencia;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
@@ -1391,16 +1837,21 @@ public final class Detalles extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     public javax.swing.JPanel jPanel2;
     public javax.swing.JPanel jPanel3;
     public javax.swing.JPanel jPanel4;
@@ -1413,6 +1864,9 @@ public final class Detalles extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JPopupMenu.Separator jSeparator6;
     public javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
     
@@ -1707,5 +2161,18 @@ public final class Detalles extends javax.swing.JFrame {
         v.setNoFactura(Fac.getText());
         v.setNUMERO_INTERNO(NUMERO_INTERNO_FACTURA_ELECTRONICA);
         vDao.ConvertirVentaADTE(v);
+    }
+    
+    public void SUMAR_CANTIDADES(){
+        if(METODOS_GLOBALES.VERIFICAR_LLENADO_CAJAS(jPanel13) == true){
+          try {
+            Float TOTAL_FINAL_EN_CAJA_PAGO = Float.parseFloat(Efectivo.getText()) + Float.parseFloat(Tarjeta.getText())
+                + Float.parseFloat(Transferencia.getText()) + Float.parseFloat(Cheque.getText()) + Float.parseFloat(Otro.getText());
+        CajaPago.setText(String.valueOf(TOTAL_FINAL_EN_CAJA_PAGO));
+        CajaCambio.setText(String.valueOf(TOTAL_FINAL_EN_CAJA_PAGO-Float.valueOf(CajaTotal.getText())));
+        } catch (NumberFormatException e) {
+            System.out.println(e.fillInStackTrace());
+        }  
+        }
     }
 }

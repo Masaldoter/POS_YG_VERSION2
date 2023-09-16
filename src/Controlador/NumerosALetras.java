@@ -6,6 +6,8 @@ MANFREDITO
 */
 package Controlador;
 
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+
 public class NumerosALetras {
     
     public String Convertir(String Valor){
@@ -13,16 +15,16 @@ public class NumerosALetras {
         for (int i = 0; i < Valor.length(); i++) {
             String Entrada = String.valueOf(Valor.charAt(i));
             switch (Entrada) {
-                case "1" -> Resultado += "M";
-                case "2" -> Resultado += "A";
-                case "3" -> Resultado += "N";
-                case "4" -> Resultado += "F";
-                case "5" -> Resultado += "R";
-                case "6" -> Resultado += "E";
-                case "7" -> Resultado += "D";
-                case "8" -> Resultado += "I";
-                case "9" -> Resultado += "T";
-                case "0" -> Resultado += "O";
+                case "1" -> Resultado += PARAMETROS_EMPRESA.UNO;
+                case "2" -> Resultado += PARAMETROS_EMPRESA.DOS;
+                case "3" -> Resultado += PARAMETROS_EMPRESA.TRES;
+                case "4" -> Resultado += PARAMETROS_EMPRESA.CUATRO;
+                case "5" -> Resultado += PARAMETROS_EMPRESA.CINCO;
+                case "6" -> Resultado += PARAMETROS_EMPRESA.SEIS;
+                case "7" -> Resultado += PARAMETROS_EMPRESA.SIETE;
+                case "8" -> Resultado += PARAMETROS_EMPRESA.OCHO;
+                case "9" -> Resultado += PARAMETROS_EMPRESA.NUEVE;
+                case "0" -> Resultado += PARAMETROS_EMPRESA.CERO;
                 case "." -> Resultado += "-";
                 case " " -> Resultado += "-";
                 default -> System.out.println("Error");

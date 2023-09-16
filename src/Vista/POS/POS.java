@@ -207,7 +207,7 @@ public final class POS extends javax.swing.JInternalFrame {
         TextPrompt hold;
         hold = new TextPrompt("ID*", IdCliente);
         hold = new TextPrompt("NOMBRE DEL CLIENTE*", nombre);
-        hold = new TextPrompt("NIT*", Caja_IDENTIFICACION);
+        hold = new TextPrompt("IDENTIFICACION*", Caja_IDENTIFICACION);
         hold = new TextPrompt("DIRECCIÓN DE CLIENTE*", direccion);
         hold = new TextPrompt("MUNICIPIO*", MunicipioCliente);
         hold = new TextPrompt("DEPARTAMENTO*", DepartamentoCliente);
@@ -925,6 +925,17 @@ public final class POS extends javax.swing.JInternalFrame {
 
     
 
+    private synchronized void RegistrarFormaDePago(String Numero) {
+        Modelo.FormaDePago FPago = new Modelo.FormaDePago();
+        FPago.setNumero(Numero);
+        FPago.setEfectivo(Float.valueOf(Pagos.EfectivoPagado.getText()));
+        FPago.setTarjeta(Float.valueOf(Pagos.TarjetaPagado.getText()));
+        FPago.setTransferencia(Float.valueOf(Pagos.DepositoPagado.getText()));
+        FPago.setCheque(Float.valueOf(Pagos.ChequePagado.getText()));
+        FPago.setOtro(0f);
+        Vdao.RegistrarFormaPago(FPago);
+    }
+    
     private synchronized void RegistrarVenta() {
         v.setCliente(nombre.getText());
         v.setDireccionCliente(direccion.getText());
@@ -959,6 +970,7 @@ public final class POS extends javax.swing.JInternalFrame {
         v.setNitEmisor(NIT_EMPRESA);
         Boolean ESTADO_REGISTRO_VENTA = Vdao.RegistrarVenta(v);
         if (ESTADO_REGISTRO_VENTA == true) {
+            RegistrarFormaDePago(TIPO_NUMERO_INTERNO());
             GUARDAR_KARDEX();
             RegistarDetalle();
             Pagos.Seleccion(1);
@@ -1291,7 +1303,6 @@ public void GenerarVenta() {
             case 0 -> {
 
                 if (Float.parseFloat(labeltotalenfacturacion.getText()) > Float.parseFloat(pagocon.getText())) {
-                    JOptionPane.showMessageDialog(null, "¡AÚN NO INGRESO LA CANTIDAD DE PAGO!");
                     if (VentanaFormaPago == true) {
                         Pagos.toFront();
                     } else {
@@ -1306,21 +1317,26 @@ public void GenerarVenta() {
                 }
             }
             case 1 -> {
-               
-                if (Float.parseFloat(labeltotalenfacturacion.getText()) > Float.parseFloat(pagocon.getText())) {
-                    JOptionPane.showMessageDialog(null, "¡AÚN NO INGRESO LA CANTIDAD DE PAGO!");
-                    if (VentanaFormaPago == true) {
-                        Pagos.toFront();
-                        Pagos.EfectivoPagado.requestFocus();
-                    } else {
-                        VentanaFormaPago = true;
-                        Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText(),
-                                 Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(),
+                
+                if(Float.parseFloat(labeltotalenfacturacion.getText())>Float.parseFloat(pagocon.getText())){
+                    int seleccion= JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO QUE EL PAGO ("+pagocon.getText()+") SEA MENOR A EL TOTAL ("+labeltotalenfacturacion.getText()+")?");
+                    if(seleccion == 0){
+                        Imprimir();
+                    }else{
+                        if(VentanaFormaPago==true){
+                            Pagos.toFront();
+                            Pagos.EfectivoPagado.requestFocus();
+                        }else{
+                            VentanaFormaPago = true;
+                            Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
+                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
                                 Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
-                        Pagos.setVisible(true);
-                        Pagos.EfectivoPagado.requestFocus();
+                            Pagos.setVisible(true);
+                            Pagos.toFront();
+                            Pagos.EfectivoPagado.requestFocus();
+                        }
                     }
-                } else {
+                }else {
                     Imprimir();
                 }
             }
@@ -1837,9 +1853,7 @@ public void GenerarVenta() {
             if (i == 0) {
                 ConsultarNit_CUIFinal("CF");
                 EnviarParametrosAXML();
-            }else{
-            EnviarParametrosAXML();
-        }
+            }
             }
         }else{
             EnviarParametrosAXML();
@@ -3494,32 +3508,11 @@ public void GenerarVenta() {
             BtnGenerarVentaPOS.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
             TotalLetras.setText(NumLe.Convertir(TotalParaConvertir + "", true));
             IngresoClientes(nombre.getText(), Caja_IDENTIFICACION.getText(), String.valueOf(COMBO_TIPO_IDENTIFICACION.getSelectedItem()), direccion.getText(), MunicipioCliente.getText(), DepartamentoCliente.getText(), PaisCliente.getSelectedItem().toString(), CodigoPostalCliente.getText());
-            if(pagocon.getText().equals("0.00")){
-                GenerarVenta();
-            }else{
-                if(Float.parseFloat(labeltotalenfacturacion.getText())>Float.parseFloat(pagocon.getText())){
-                    int seleccion= JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO QUE EL PAGO ("+pagocon.getText()+") SEA MENOR A EL TOTAL ("+labeltotalenfacturacion.getText()+")?");
-                    if(seleccion == 0){
-                        GenerarVenta();
-                    }else{
-                        if(VentanaFormaPago==true){
-                            Pagos.toFront();
-                        }else{
-                            VentanaFormaPago = true;
-                            Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
-                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
-                                Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
-                            Pagos.setVisible(true);
-                        }
-                    }
-                }else{
-                    GenerarVenta();
-                    //if(Float.parseFloat(labeltotalenfacturacion.getText())<Float.parseFloat(pagocon.getText()))
-                }
-            }
+
+            GenerarVenta();
 
             BtnGenerarVentaPOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "¡AÚN NO HAY PRODUCTOS EN EL CARRITO!");
         }
         //Ticket();
@@ -3821,7 +3814,7 @@ public void GenerarVenta() {
     private static javax.swing.JLabel TOTAL_INGRESADO;
     public javax.swing.JTable TablaVentas;
     public static javax.swing.JLabel Tarjeta;
-    private javax.swing.JComboBox<String> TipoDocumento;
+    public javax.swing.JComboBox<String> TipoDocumento;
     public static javax.swing.JLabel TotalDeProductosVendidos;
     public static javax.swing.JLabel TotalIva;
     public static javax.swing.JTextArea TotalLetras;

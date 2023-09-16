@@ -15,43 +15,6 @@ public class Venta {
     NumeroDocumento, SerieDocumento, TipoDocumentoFel, Estado, NitEmisor, NUMERO_INTERNO;
     private JButton Detalles,Anular;
 
-    public Venta(){
-        
-    }
-
-    public Venta(int IdRegistro, int id_CAJA_registro, String Cliente, String IDENTIFICACION_CLIENTE, String TIPO_IDENTIFICACION_CLIENTE, String DireccionCliente, Float Total, Float pagocon, Float cambio, String FormaPago, String NumeroTransaccion, String TotalEnLetras, String NoFactura, String Fecha, String Hora, int Usuario, String Observacion, String USUARIO_REGISTRO_LETRAS, String NombreCertificador, String NitCertificador, String FechaAutorizacion, String NumeroAutorizacion, String NumeroDocumento, String SerieDocumento, String TipoDocumentoFel, String Estado, String NitEmisor, String NUMERO_INTERNO, JButton Detalles, JButton Anular) {
-        this.IdRegistro = IdRegistro;
-        this.id_CAJA_registro = id_CAJA_registro;
-        this.Cliente = Cliente;
-        this.IDENTIFICACION_CLIENTE = IDENTIFICACION_CLIENTE;
-        this.TIPO_IDENTIFICACION_CLIENTE = TIPO_IDENTIFICACION_CLIENTE;
-        this.DireccionCliente = DireccionCliente;
-        this.Total = Total;
-        this.pagocon = pagocon;
-        this.cambio = cambio;
-        this.FormaPago = FormaPago;
-        this.NumeroTransaccion = NumeroTransaccion;
-        this.TotalEnLetras = TotalEnLetras;
-        this.NoFactura = NoFactura;
-        this.Fecha = Fecha;
-        this.Hora = Hora;
-        this.Usuario = Usuario;
-        this.Observacion = Observacion;
-        this.USUARIO_REGISTRO_LETRAS = USUARIO_REGISTRO_LETRAS;
-        this.NombreCertificador = NombreCertificador;
-        this.NitCertificador = NitCertificador;
-        this.FechaAutorizacion = FechaAutorizacion;
-        this.NumeroAutorizacion = NumeroAutorizacion;
-        this.NumeroDocumento = NumeroDocumento;
-        this.SerieDocumento = SerieDocumento;
-        this.TipoDocumentoFel = TipoDocumentoFel;
-        this.Estado = Estado;
-        this.NitEmisor = NitEmisor;
-        this.NUMERO_INTERNO = NUMERO_INTERNO;
-        this.Detalles = Detalles;
-        this.Anular = Anular;
-    }
-
     public int getIdRegistro() {
         return IdRegistro;
     }
@@ -291,4 +254,6 @@ public class Venta {
     public void setAnular(JButton Anular) {
         this.Anular = Anular;
     }
+
+    
 }

@@ -39,7 +39,6 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
             jButton38.setEnabled(false);
             CajaProductoBusquedaVentasDiarias.setVisible(false);
             jLabel49.setVisible(false);
-            jSeparator47.setVisible(false);
             jTabbedPane6.setEnabledAt(1, false);
         }
     }
@@ -162,7 +161,6 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         jLabel49 = new javax.swing.JLabel();
         jSeparator45 = new javax.swing.JSeparator();
         jSeparator46 = new javax.swing.JSeparator();
-        jSeparator47 = new javax.swing.JSeparator();
         CajaIdVenta = new javax.swing.JTextField();
         jTabbedPane6 = new javax.swing.JTabbedPane();
         jScrollPane10 = new javax.swing.JScrollPane();
@@ -279,8 +277,6 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
 
         jSeparator46.setForeground(new java.awt.Color(0, 0, 0));
 
-        jSeparator47.setForeground(new java.awt.Color(0, 0, 0));
-
         javax.swing.GroupLayout jPanel68Layout = new javax.swing.GroupLayout(jPanel68);
         jPanel68.setLayout(jPanel68Layout);
         jPanel68Layout.setHorizontalGroup(
@@ -290,7 +286,6 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
                 .addGroup(jPanel68Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator45)
                     .addComponent(jSeparator46)
-                    .addComponent(jSeparator47)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel68Layout.createSequentialGroup()
                         .addComponent(jLabel25)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -327,9 +322,7 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
                 .addGroup(jPanel68Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(CajaProductoBusquedaVentasDiarias, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(jLabel49, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(7, 7, 7)
-                .addComponent(jSeparator47, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
@@ -666,7 +659,6 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
     private javax.swing.JSeparator jSeparator30;
     private javax.swing.JSeparator jSeparator45;
     private javax.swing.JSeparator jSeparator46;
-    private javax.swing.JSeparator jSeparator47;
     private static javax.swing.JTabbedPane jTabbedPane6;
     private static javax.swing.JLabel lblTipoDeBusquedaVentasDiarias;
     // End of variables declaration//GEN-END:variables

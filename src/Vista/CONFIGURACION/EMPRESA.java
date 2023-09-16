@@ -65,6 +65,17 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         CajaCodigoEstablecimientoEmpresa.setText(PARAMETROS_EMPRESA.CODIGOESTABLECIMIENTO_EMPRESA);
         LblRutaImagenEmpresaDocumentos.setText(PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
         LblrutaImagenSistema.setText(PARAMETROS_EMPRESA.RUTADEIMAGEN_SISTEMA_EMPRESA);
+        Uno.setText(PARAMETROS_EMPRESA.UNO);
+        Dos.setText(PARAMETROS_EMPRESA.DOS);
+        Tres.setText(PARAMETROS_EMPRESA.TRES);
+        Cuatro.setText(PARAMETROS_EMPRESA.CUATRO);
+        Cinco.setText(PARAMETROS_EMPRESA.CINCO);
+        Seis.setText(PARAMETROS_EMPRESA.SEIS);
+        Siete.setText(PARAMETROS_EMPRESA.SIETE);
+        Ocho.setText(PARAMETROS_EMPRESA.OCHO);
+        Nueve.setText(PARAMETROS_EMPRESA.NUEVE);
+        Cero.setText(PARAMETROS_EMPRESA.CERO);
+        
         
         CajaCertificador.setText(PARAMETROS_EMPRESA.NOMBRE_CERTIFICADOR);
         NitCertificador.setText(PARAMETROS_EMPRESA.NIT_CERTIFICADOR);
@@ -110,6 +121,27 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         CajaNombreEtiqueta = new javax.swing.JTextField();
         jPanel64 = new javax.swing.JPanel();
         jLabel50 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        Uno = new javax.swing.JTextField();
+        Dos = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        Tres = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        Cuatro = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        Cinco = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        Seis = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        Siete = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        Ocho = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        Nueve = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        Cero = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
         jPanel21 = new javax.swing.JPanel();
         jLabel96 = new javax.swing.JLabel();
         DireccionEmpresa = new javax.swing.JTextField();
@@ -282,13 +314,68 @@ public class EMPRESA extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("CLAVE DE COSTOS INTERNO *No pueden ser letras repetidas*");
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("1");
+
+        Uno.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        Dos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("2");
+
+        Tres.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("3");
+
+        Cuatro.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("4");
+
+        Cinco.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("5");
+
+        Seis.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("6");
+
+        Siete.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("7");
+
+        Ocho.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("8");
+
+        Nueve.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("9");
+
+        Cero.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("0");
+
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+            .addComponent(jPanel64, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel102, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -312,9 +399,49 @@ public class EMPRESA extends javax.swing.JInternalFrame {
                             .addComponent(ContraseniaCorreoEmpresa)
                             .addComponent(CorreoEmpresa)))
                     .addComponent(jLabel48, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(CajaNombreEtiqueta))
+                    .addComponent(CajaNombreEtiqueta)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Uno)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Dos)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Tres)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Cuatro)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Cinco)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Seis)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Siete)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Ocho)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Nueve)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Cero, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(jPanel64, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,7 +479,51 @@ public class EMPRESA extends javax.swing.JInternalFrame {
                 .addComponent(jLabel48)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CajaNombreEtiqueta, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Uno, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Dos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Tres, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Cuatro, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Cinco, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Seis, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Siete, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Ocho, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Nueve, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Cero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(16, 16, 16))
         );
 
         jPanel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -653,9 +824,9 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         jPanel80Layout.setHorizontalGroup(
             jPanel80Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel80Layout.createSequentialGroup()
-                .addGap(0, 68, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(LblImagenEmpresaDocumentos, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel80Layout.createSequentialGroup()
                 .addGroup(jPanel80Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel80Layout.createSequentialGroup()
@@ -694,9 +865,9 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         jPanel81Layout.setHorizontalGroup(
             jPanel81Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel81Layout.createSequentialGroup()
-                .addGap(0, 68, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(LblImagenSistema, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel81Layout.createSequentialGroup()
                 .addGroup(jPanel81Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel81Layout.createSequentialGroup()
@@ -836,6 +1007,8 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         DaEm.setCodigoEstablecimiento(CajaCodigoEstablecimientoEmpresa.getText());
         DaEm.setRutaimagenlogo(LblRutaImagenEmpresaDocumentos.getText());
         DaEm.setRutaimagensistema(LblrutaImagenSistema.getText());
+        DaEm.setClaveInternaCostos(Uno.getText()+ Dos.getText()+ Tres.getText()+ Cuatro.getText()+ 
+                Cinco.getText()+ Seis.getText()+ Siete.getText()+ Ocho.getText()+Nueve.getText()+ Cero.getText());
         datosDao.ActualizarDatos(DaEm);
 
         DatosCertificador DaCertificador = new DatosCertificador();
@@ -967,10 +1140,14 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     public static javax.swing.JTextField CajaPropietario;
     public static javax.swing.JTextField CajaSesionUsuarioCertificadoraEmpresa;
     public static javax.swing.JTextArea CajaToken;
+    private javax.swing.JTextField Cero;
+    private javax.swing.JTextField Cinco;
     private static javax.swing.JTextField ContraseniaCorreoEmpresa;
     private static javax.swing.JTextField CorreoCertificador;
     private static javax.swing.JTextField CorreoEmpresa;
+    private javax.swing.JTextField Cuatro;
     public static javax.swing.JTextField DireccionEmpresa;
+    private javax.swing.JTextField Dos;
     private static javax.swing.JTextField EsloganEmpresa;
     private static javax.swing.JTextField IvaEmpresa;
     private static javax.swing.JLabel LblImagenEmpresaDocumentos;
@@ -980,13 +1157,20 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     public static javax.swing.JTextField NitCertificador;
     public static javax.swing.JTextField NitEmpresa;
     public static javax.swing.JTextField NombreEmpresa;
+    private javax.swing.JTextField Nueve;
+    private javax.swing.JTextField Ocho;
+    private javax.swing.JTextField Seis;
+    private javax.swing.JTextField Siete;
     private static javax.swing.JTextField TelEmpresa;
     private static javax.swing.JTextField TelefonoCertificador;
     private static javax.swing.JLabel TituloDatosEmpresa;
+    private javax.swing.JTextField Tres;
+    private javax.swing.JTextField Uno;
     private javax.swing.JButton botonseleccionar;
     private javax.swing.JButton botonseleccionar1;
     private javax.swing.JButton jButton15;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel100;
     private javax.swing.JLabel jLabel101;
     private javax.swing.JLabel jLabel102;
@@ -995,18 +1179,28 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel105;
     private javax.swing.JLabel jLabel106;
     private javax.swing.JLabel jLabel107;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel67;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel93;
     private javax.swing.JLabel jLabel94;
     private javax.swing.JLabel jLabel95;

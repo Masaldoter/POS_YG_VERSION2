@@ -40,7 +40,7 @@ import Vista.Traslados.TrasladosGenerales;
 import Vista.VENTAS.CAJA.INTERNAL_CAJA_PRINCIPAL;
 import Vista.VENTAS.CAJA.VER_CAJAS;
 import Vista.Vales.ValesGenerales;
-import Vista.Vales_Version2.Vales_Principal;
+import Vista.Vista.Compras.Compras;
 import WebServiceDigifact.ObtenerToken;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
@@ -104,11 +104,11 @@ public final class Principal extends javax.swing.JFrame {
     public INVENTARIO I = new INVENTARIO(P_O_S, this);
     //POS P_O_S= new POS();
     INTERNAL_CAJA_PRINCIPAL INTERNAL_CAJA_P = new INTERNAL_CAJA_PRINCIPAL(this);
-    Vales_Principal V_P= new Vales_Principal(this);
     public TrasladosGenerales T_G = new TrasladosGenerales(P_O_S);
     public ValesGenerales V_G = new ValesGenerales(P_O_S);
     MODO_ESPERA M_E = new MODO_ESPERA();
     KARDEX K = new KARDEX();
+    Compras ComprasPrincipal = new Compras(this);
     //VENTANAS EMERGENTES
     public ADMINISTRACION_DE_USUARIOS ADMIN_USUARIOS;
     //NUMERO INTERNO DE VENTA    
@@ -136,6 +136,7 @@ public final class Principal extends javax.swing.JFrame {
         CARGAR_INICIO();
         COLOR_FONDO();
         ERRORES_INVENTARIO.VERIFICAR_ERROR(this);
+        
         if (PARAMETROS_USUARIOS.ROL_USUARIO.equals("Usuario")) {
             ItemInventario.setVisible(false);
             ItemUsuariosSistema.setVisible(false);
@@ -161,7 +162,23 @@ public final class Principal extends javax.swing.JFrame {
             jSeparator41.setVisible(false);
         } else {
         }
-        AlIniciarSesion();
+        
+        if(PARAMETROS_VERSION_SISTEMA.VERSION.equals("BASICA")){
+            jMenuItem32.setEnabled(false);
+            jMenuItem33.setEnabled(false);
+            jMenuItem8.setEnabled(false);
+            P_O_S.TipoDocumento.setEnabled(false);
+            P_O_S.TipoDocumento.setEnabled(false);
+            P_O_S.TipoDocumento.setSelectedIndex(1);
+            ConfigVentas.RecordarTipoDocumento(P_O_S.TipoDocumento);
+        }else{
+            jMenuItem32.setEnabled(true);
+            jMenuItem33.setEnabled(true);
+            jMenuItem8.setEnabled(true);
+            P_O_S.TipoDocumento.setEnabled(true);
+            P_O_S.TipoDocumento.setSelectedIndex(0);
+            ConfigVentas.RecordarTipoDocumento(P_O_S.TipoDocumento);
+        }
         Cerrar();
         
     }
@@ -247,10 +264,6 @@ public final class Principal extends javax.swing.JFrame {
     
     public void AlCerrarSesion(){
             logina.EditarUsuarios2(PARAMETROS_USUARIOS.ID_USUARIO);         
-    }
-    
-    public void AlIniciarSesion(){
-        logina.MovimientosUsuarios(PARAMETROS_USUARIOS.ID_USUARIO);    
     }
     
     public void HORA_FECHA(){
@@ -392,6 +405,8 @@ public final class Principal extends javax.swing.JFrame {
         jMenuItem16 = new javax.swing.JMenuItem();
         jSeparator19 = new javax.swing.JPopupMenu.Separator();
         jMenuItem18 = new javax.swing.JMenuItem();
+        jSeparator46 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem37 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -1035,6 +1050,16 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jMenu9.add(jMenuItem18);
+        jMenu9.add(jSeparator46);
+
+        jMenuItem37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/LICENCIA_32PX.png"))); // NOI18N
+        jMenuItem37.setText("LICENCIA");
+        jMenuItem37.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem37ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem37);
 
         jMenuBar2.add(jMenu9);
 
@@ -1479,7 +1504,8 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem27ActionPerformed
 
     private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
-        
+        //ABRIR_VENTANAS(ComprasPrincipal, true);
+        JOptionPane.showMessageDialog(this, "MÓDULO EN DESARROLLO", "EN DESARROLLO", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItem24ActionPerformed
  
     private void CheckBoxImpresionRapidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckBoxImpresionRapidaActionPerformed
@@ -1600,7 +1626,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem29ActionPerformed
-        if (jLabel4.getText().equals("")) {
+        /*if (jLabel4.getText().equals("")) {
             VER_CAJAS CA = new VER_CAJAS(this, true, this);
             CA.setVisible(true);
             if (jLabel4.getText().equals("")) {
@@ -1610,7 +1636,8 @@ public final class Principal extends javax.swing.JFrame {
             }
         } else {
             EXPORTAR();
-        }
+        }*/
+        JOptionPane.showMessageDialog(this, "¡ESPERAMOS TENER ESTA FUNCIÓN ACTIVA EN VERSIONES POSTERIORES!", "¡FUNCIÓN EN DESARROLLO!", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItem29ActionPerformed
 
     private void jMenuItem23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem23ActionPerformed
@@ -1719,6 +1746,11 @@ public final class Principal extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jMenuItem36ActionPerformed
+
+    private void jMenuItem37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem37ActionPerformed
+        LICENCIA L = new LICENCIA(this, true);
+        L.setVisible(true);
+    }//GEN-LAST:event_jMenuItem37ActionPerformed
 
     public void EXPORTAR() {
         if (P_O_S.TablaVentas.getRowCount() < 1) {
@@ -1966,6 +1998,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem34;
     private javax.swing.JMenuItem jMenuItem35;
     private javax.swing.JMenuItem jMenuItem36;
+    private javax.swing.JMenuItem jMenuItem37;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -2015,6 +2048,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator43;
     private javax.swing.JPopupMenu.Separator jSeparator44;
     private javax.swing.JPopupMenu.Separator jSeparator45;
+    private javax.swing.JPopupMenu.Separator jSeparator46;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator56;
     private javax.swing.JPopupMenu.Separator jSeparator6;

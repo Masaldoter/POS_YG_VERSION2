@@ -89,9 +89,12 @@ public class ERRORES_INVENTARIO extends ConexionesSQL {
                 pro.setRuta(rs.getString("ruta"));
                 TOTAL_REGISTROS = rs.getInt("total_registros");
             }
+            if(TOTAL_REGISTROS<0){
+                TOTAL_REGISTROS=0;
+            }
 
         } catch (SQLException e) {
-            javax.swing.JOptionPane.showMessageDialog(null, e);
+            System.err.println("NO HAY DATOS O HAY ERRORES EN STOCK_MENOR_A_CERO\n"+e);
         } finally {
             PsClose(ps);
             RsClose(rs);

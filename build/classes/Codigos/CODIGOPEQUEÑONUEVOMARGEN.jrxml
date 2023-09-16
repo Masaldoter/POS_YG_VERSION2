@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" columnCount="3" pageWidth="90" pageHeight="62" columnWidth="30" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c70894a0-23a5-499a-b653-f00651bc0809">
+	<property name="ireport.zoom" value="7.400249944258183"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cod" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nom" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pre" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cost" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     productos.`Nombre` AS productos_Nombre,
+     productos.`Publico` AS productos_Publico,
+     productos.`CodigoBarras` AS productos_CodigoBarras,
+     productos.`CodigoLetras` AS productos_CodigoLetras
+FROM
+     `productos` productos
+WHERE
+     productos.`Nombre` = $P{nom}
+ AND productos.`CodigoBarras` = $P{cod}
+ AND productos.`Publico` = $P{pre}
+And productos.`CodigoLetras`= $P{cost}]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="62" splitType="Stretch">
+			<textField>
+				<reportElement x="7" y="0" width="81" height="16" uuid="c02b81fe-5a0e-4b3c-89ee-a93f57bc2b4b"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nom}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement stretchType="RelativeToBandHeight" x="9" y="25" width="79" height="30" uuid="2edd3670-f01c-4527-8fbb-48f8e5c992b7"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom" quietZone="18.0" verticalQuietZone="0.0">
+					<jr:codeExpression><![CDATA[$P{cod}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+			<textField>
+				<reportElement x="7" y="13" width="34" height="12" uuid="d17aa887-a7d0-4f79-831a-9bb75d09c273"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cost}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="13" width="37" height="12" uuid="e5d54531-9608-4bd6-8701-3f4e0ab635b7"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="41" y="13" width="10" height="12" uuid="3a08b86b-e64a-4f63-a2a8-63b91194a1e8"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Q]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="49" width="81" height="10" uuid="8b0a9b11-3ade-45d8-a8e3-fb4200e4f0a2"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Serif" size="7" isItalic="true"/>
+				</textElement>
+				<text><![CDATA["El Amigo"]]></text>
+			</staticText>
+			<image>
+				<reportElement x="75" y="46" width="13" height="12" uuid="5b51e0c6-8854-47d0-b759-02883ca23729"/>
+				<imageExpression><![CDATA["C:\\Sistema Punto de Venta YG\\FerreteríaPequeño.png"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

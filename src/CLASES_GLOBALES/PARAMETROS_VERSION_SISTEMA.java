@@ -47,6 +47,8 @@ public class PARAMETROS_VERSION_SISTEMA {
             + "*SE ARREGLARON BUGS (ARRASTRAR Y SOLTAR Y CONVERTIRT .WEBP A PNG)\n"
             + "*SE AGREGARON NUEVAS FUNCIÓNES EN EL POS";
 
+    public static String LICENCIA="";
+    public static String VERSION="";
 
     
 }

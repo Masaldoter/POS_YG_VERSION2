@@ -5,6 +5,7 @@ import Conexiones.conexion;
 import Modelo.Detalle;
 import Modelo.Venta;
 import Conexiones.ConexionesSQL;
+import Modelo.FormaDePago;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.sql.SQLException;
@@ -230,6 +231,36 @@ public class VentaDao extends ConexionesSQL {
         return ESTADO_REGISTRO;
     }
     
+    public Boolean RegistrarFormaPago(FormaDePago v) {
+        ps = null;
+        cn = conexion.getInstancia().getConnection();
+        Boolean ESTADO_REGISTRO=false;
+
+        String sql = "INSERT INTO  forma_pago (Numero, Efectivo, Tarjeta, Transferencia, Cheque, Otro) "
+                + "VALUES  (?, ?, ?, ?, ?, ?)";
+
+        try {
+            ps = cn.prepareStatement(sql);
+            ps.setString(1, v.getNumero());
+            ps.setFloat(2, v.getEfectivo());
+            ps.setFloat(3, v.getTarjeta());
+            ps.setFloat(4, v.getTransferencia());
+            ps.setFloat(5, v.getCheque());
+            ps.setFloat(6, v.getOtro());
+            ps.execute();
+            ESTADO_REGISTRO=true;
+
+        } catch (SQLException e) {
+            ESTADO_REGISTRO=false;
+            DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
+            DesktopNotify.showDesktopMessage("ERROR EN BASE DE DATOS AL REGISTRAR FORMA DE PAGO", "NO SE PUDO REALIZAR LA ACCIÓN\n"+ e, DesktopNotify.FAIL, 9000L);
+        } finally {
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+        return ESTADO_REGISTRO;
+    }
+    
     public int ConvertirVentaADTE(Venta v) {
         ps = null;
         cn = conexion.getInstancia().getConnection();
@@ -371,5 +402,74 @@ public class VentaDao extends ConexionesSQL {
             ConnectionClose(cn);
         }
         return Estado;
+    }
+    
+    
+    public Boolean Editar_Registro(Venta v){
+        boolean Resultado = false;
+        ps = null;
+        cn = conexion.getInstancia().getConnection();
+        String sql = "UPDATE registro SET NoFactura=?, TipoDocumentoFel=?, Estado=?, Cliente=?, NitCliente=?, "
+                + "DireccionCliente=?, Usuario=?, Observacion=?, NombreCertificador=?, NitCertificador=?, NitEmisor=?, "
+                + "NumeroDocumento=?, SerieDocumento=?, FechaAutorizacion=?, NumeroAutorizacion=?, Pago=?, Cambio=? WHERE idregistro=?";
+        try {
+            ps = cn.prepareStatement(sql);
+            ps.setString(1, v.getNoFactura());
+            ps.setString(2, v.getTipoDocumentoFel());
+            ps.setString(3, v.getEstado());
+            ps.setString(4, v.getCliente());
+            ps.setString(5, v.getIDENTIFICACION_CLIENTE());
+            ps.setString(6, v.getDireccionCliente());
+            ps.setInt(7, v.getUsuario());  
+            ps.setString(8, v.getObservacion());
+            ps.setString(9, v.getNombreCertificador());
+            ps.setString(10, v.getNitCertificador());
+            ps.setString(11, v.getNitEmisor());   
+            ps.setString(12, v.getNumeroDocumento());   
+            ps.setString(13, v.getSerieDocumento());   
+            ps.setString(14, v.getFechaAutorizacion());   
+            ps.setString(15, v.getNumeroAutorizacion());   
+            ps.setFloat(16, v.getPagocon());
+            ps.setFloat(17, v.getCambio());
+            ps.setInt(18, v.getIdRegistro());   
+            ps.execute();
+            Resultado =true;
+
+        } catch (SQLException e) {
+            Resultado =false;
+            DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
+            DesktopNotify.showDesktopMessage("ERROR EN BASE DE DATOS", "ERROR AL EDITAR LOS DATOS\n"+ e, DesktopNotify.ERROR, 9000L);
+        } finally {
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+        return Resultado;
+    }
+    
+    public Boolean Editar_Registro_FormaPago(FormaDePago FormaPago){
+        boolean Resultado = false;
+        ps = null;
+        cn = conexion.getInstancia().getConnection();
+        String sql = "UPDATE forma_pago SET Efectivo=?, Tarjeta=?, Transferencia=?, Cheque=?, Otro=? WHERE Numero=?";
+        try {
+            ps = cn.prepareStatement(sql);
+            ps.setFloat(1, FormaPago.getEfectivo());
+            ps.setFloat(2, FormaPago.getTarjeta());
+            ps.setFloat(3, FormaPago.getTransferencia());
+            ps.setFloat(4, FormaPago.getCheque());
+            ps.setFloat(5, FormaPago.getOtro());
+            ps.setString(6, FormaPago.getNumero());
+            ps.execute();
+            Resultado =true;
+
+        } catch (SQLException e) {
+            Resultado =false;
+            DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
+            DesktopNotify.showDesktopMessage("ERROR EN BASE DE DATOS", "ERROR AL EDITAR LOS DATOS\n"+ e, DesktopNotify.ERROR, 9000L);
+        } finally {
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+        return Resultado;
     }
 }

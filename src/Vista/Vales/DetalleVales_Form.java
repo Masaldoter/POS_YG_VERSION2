@@ -1066,6 +1066,7 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
                     pos.CheckIngresoAutomatico.setSelected(false);
                 }
                 pos.ConsultarNit_CUIFinal(CajaNit.getText());
+                pos.LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
                 for (int i = 0; i < TablaDetalles.getRowCount(); i++) {
                     if (Integer.parseInt(TablaDetalles.getValueAt(i, 5).toString()) == 0) {
 

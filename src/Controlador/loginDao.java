@@ -1,10 +1,13 @@
 
 package Controlador;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
+import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import Modelo.login;
 import Modelo.DatosEmpresaGeneral;
 import Conexiones.ConexionesSQL;
+import static Conexiones.ConexionesSQL.rs;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.sql.SQLException;
@@ -278,8 +281,8 @@ public class loginDao extends ConexionesSQL{
         String slq= "update login1 set Ingreso=?, UltimaVezIngreso=?, Estado=? where idlogin1=?";
         try {
            ps=  cn.prepareStatement(slq);
-           ps.setString(1,Hora()+ " / "+ fecha);
-           ps.setString(2,Hora()+ " / "+ fecha);
+           ps.setString(1,Hora()+ " / "+ METODOS_GLOBALES.Fecha());
+           ps.setString(2,Hora()+ " / "+ METODOS_GLOBALES.Fecha());
            ps.setString(3, "ONLINE");
            ps.setInt(4, IdLogin);
            ps.executeUpdate();
@@ -418,7 +421,7 @@ return false;
                 rs = null;
                 cn = Unionsis2.getConnection();
         DatosEmpresaGeneral DE = null;
-        String sql="SELECT NombreEmpresa, Eslogan, rutaimagenlogo, rutaimagensistema from datosempresa";
+        String sql="SELECT NombreEmpresa, Eslogan, rutaimagenlogo, rutaimagensistema, Version_Sistema from datosempresa";
         try {
             ps = cn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -429,6 +432,8 @@ return false;
              DE.setEslogan(rs.getString("Eslogan"));
              DE.setRutaimagenlogo(rs.getString("rutaimagenlogo"));
              DE.setRutaimagensistema(rs.getString("rutaimagensistema"));
+             DE.setVersion_Sistema(rs.getString("rutaimagensistema"));
+             PARAMETROS_VERSION_SISTEMA.VERSION = rs.getString("Version_Sistema");
             }
             
         } catch (SQLException e) {

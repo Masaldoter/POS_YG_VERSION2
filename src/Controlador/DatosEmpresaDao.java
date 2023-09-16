@@ -6,6 +6,7 @@
 package Controlador;
 
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import FEL.DatosCertificador;
 import Modelo.DatosEmpresaGeneral;
 import Conexiones.ConexionesSQL;
@@ -20,8 +21,9 @@ public class DatosEmpresaDao extends ConexionesSQL {
 
     public DatosEmpresaGeneral VerDatos() {
         DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
-        String sql = "SELECT NombreEmpresa, Direccion, Nit, Tel, Eslogan, Politicas, Correo, ContraseniaCorreo, Iva, NombreEtiquetas, "
-                + "Municipio, Departamento, Pais, CodigoPostal, CajaAfilicacionEmpresa, CodigoEstablecimiento, Propietario, rutaimagenlogo, rutaimagensistema FROM datosempresa";
+        String sql = "SELECT Version_Sistema, NombreEmpresa, Direccion, Nit, Tel, Eslogan, Politicas, Correo, ContraseniaCorreo, Iva, NombreEtiquetas, "
+                + "Municipio, Departamento, Pais, CodigoPostal, CajaAfilicacionEmpresa, CodigoEstablecimiento, Propietario, rutaimagenlogo, rutaimagensistema, "
+                + "ClaveInternaCostos FROM datosempresa";
         ps = null;
         rs = null;
         cn = Unionsis2.getConnection();
@@ -31,6 +33,7 @@ public class DatosEmpresaDao extends ConexionesSQL {
             rs = ps.executeQuery();
 
             if (rs.next()) {
+                DaEm.setVersion_Sistema(rs.getString("Version_Sistema"));
                 DaEm.setNombreEmpresa(rs.getString("NombreEmpresa"));
                 DaEm.setDireccion(rs.getString("Direccion"));
                 DaEm.setNit(rs.getString("Nit"));
@@ -50,7 +53,9 @@ public class DatosEmpresaDao extends ConexionesSQL {
                 DaEm.setPropietario(rs.getString("Propietario"));
                 DaEm.setRutaimagenlogo(rs.getString("rutaimagenlogo"));
                 DaEm.setRutaimagensistema(rs.getString("rutaimagensistema"));
-
+                DaEm.setRutaimagensistema(rs.getString("rutaimagensistema"));
+                
+                PARAMETROS_VERSION_SISTEMA.VERSION = rs.getString("Version_Sistema");
                 PARAMETROS_EMPRESA.NOMBRE_EMPRESA = rs.getString("NombreEmpresa");
                 PARAMETROS_EMPRESA.DIRECCION_EMPRESA = rs.getString("Direccion");
                 PARAMETROS_EMPRESA.NIT_EMPRESA = rs.getString("Nit");
@@ -69,7 +74,8 @@ public class DatosEmpresaDao extends ConexionesSQL {
                 PARAMETROS_EMPRESA.CODIGOESTABLECIMIENTO_EMPRESA = rs.getString("CodigoEstablecimiento");
                 PARAMETROS_EMPRESA.PROPIETARIO_EMPRESA = rs.getString("Propietario");
                 PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA = rs.getString("rutaimagenlogo");
-                PARAMETROS_EMPRESA.RUTADEIMAGEN_SISTEMA_EMPRESA = rs.getString("rutaimagensistema");
+                PARAMETROS_EMPRESA.ClaveInternaCostos = rs.getString("ClaveInternaCostos");
+                PARAMETROS_EMPRESA.ACTUALIZAR_CLAVE();
             }
 
         } catch (SQLException e) {
@@ -139,7 +145,7 @@ public class DatosEmpresaDao extends ConexionesSQL {
                   
         
        String sql="UPDATE datosempresa set NombreEmpresa=?, Direccion=?, Nit=?, Tel=?, Eslogan=?, Politicas=?, Correo=?, ContraseniaCorreo=?, Iva=?, NombreEtiquetas=?, Municipio=?"
-               + ", Departamento=?, Pais=?, CodigoPostal=?, CajaAfilicacionEmpresa=?, CodigoEstablecimiento=?, Propietario=?, rutaimagenlogo=?, rutaimagensistema=? WHERE iddatosempresa=?";
+               + ", Departamento=?, Pais=?, CodigoPostal=?, CajaAfilicacionEmpresa=?, CodigoEstablecimiento=?, Propietario=?, rutaimagenlogo=?, rutaimagensistema=?, ClaveInternaCostos=? WHERE iddatosempresa=?";
     
         try {
             ps= cn.prepareStatement(sql);
@@ -162,7 +168,8 @@ public class DatosEmpresaDao extends ConexionesSQL {
             ps.setString(17, DaEm.getPropietario());
             ps.setString(18, DaEm.getRutaimagenlogo());
             ps.setString(19, DaEm.getRutaimagensistema());
-            ps.setInt(20, 1);
+            ps.setString(20, DaEm.getClaveInternaCostos());
+            ps.setInt(21, 1);
             int Resultado = ps.executeUpdate();
             
             if(Resultado>0){

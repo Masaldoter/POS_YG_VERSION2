@@ -189,6 +189,141 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
        return Total_Final;
     }
     
+    public Float Total_GANANCIAS(int CAJA){
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        String Filtro ="FACTURADO";
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("SELECT "
+                     + "SUM(TotalPrecio) AS SumaTotalPrecio, "
+                     + "SUM(TotalCosto) AS SumaTotalCosto, SUM(Ganancia) AS SumaTotalGanancia "
+                     + "FROM (SELECT d.Cantidad, "
+                     + "SUM(d.Precio * d.Cantidad) AS TotalPrecio, "
+                     + "SUM(p.Costo * d.Cantidad) AS TotalCosto, "
+                     + "SUM((d.Precio * d.Cantidad) - (p.Costo * d.Cantidad)) AS Ganancia "
+                     + "FROM detalle d "
+                     + "INNER JOIN productos p ON d.CodigoBarras = p.CodigoBarras "
+                     + "INNER JOIN registro r ON d.NoFactura = r.NoFactura "
+                     + "WHERE d.ProductoRegistrado = 1 "
+                     + "AND r.id_CAJA_registro = ? "
+                     + "GROUP BY d.Cantidad) AS Subconsulta");
+             ps.setInt(1, CAJA);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                Total_Final = rs.getFloat("SumaTotalGanancia");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error Total_GANANCIAS, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
+    public Float Total_COSTOS(int CAJA){
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        String Filtro ="FACTURADO";
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("SELECT "
+                     + "SUM(TotalPrecio) AS SumaTotalPrecio,"
+                     + "SUM(TotalCosto) AS SumaTotalCosto, SUM(Ganancia) AS SumaTotalGanancia "
+                     + "FROM (SELECT d.Cantidad, "
+                     + "SUM(d.Precio * d.Cantidad) AS TotalPrecio,"
+                     + "SUM(p.Costo * d.Cantidad) AS TotalCosto,"
+                     + "SUM((d.Precio * d.Cantidad) - (p.Costo * d.Cantidad)) AS Ganancia "
+                     + "FROM detalle d "
+                     + "INNER JOIN productos p ON d.CodigoBarras = p.CodigoBarras "
+                     + "INNER JOIN registro r ON d.NoFactura = r.NoFactura "
+                     + "WHERE d.ProductoRegistrado = 1 "
+                     + "AND r.id_CAJA_registro = ? "
+                     + "GROUP BY d.Cantidad) AS Subconsulta");
+             ps.setInt(1, CAJA);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Total_Final = rs.getFloat("SumaTotalCosto");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error Total_COSTOS, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
+    public Float Total_CANTIDAD_PRODUCTOS_PERSONALIZADOS(int CAJA){
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        String Filtro ="FACTURADO";
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("SELECT SUM(d.Cantidad) AS CantidadTotal, "
+                     + "SUM(d.Precio * d.Cantidad) AS TotalProductosPersonalizados "
+                     + "FROM detalle d "
+                     + "INNER JOIN registro r ON d.NoFactura = r.NoFactura "
+                     + "WHERE d.ProductoRegistrado = 0 "
+                     + "AND  r.id_CAJA_registro = ?");
+             ps.setInt(1, CAJA);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Total_Final = rs.getFloat("CantidadTotal");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error Total_COSTOS, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
+    public Float Total_TOTAL_PRODUCTOS_PERSONALIZADOS(int CAJA){
+        cn = Unionsis2.getConnection();
+        ps= null;
+        rs= null;
+        String Filtro ="FACTURADO";
+        Float Total_Final = 0f;
+        try {
+             ps = cn.prepareStatement("SELECT SUM(d.Cantidad) AS CantidadTotal, "
+                     + "SUM(d.Precio * d.Cantidad) AS TotalProductosPersonalizados "
+                     + "FROM detalle d "
+                     + "INNER JOIN registro r ON d.NoFactura = r.NoFactura "
+                     + "WHERE d.ProductoRegistrado = 0 "
+                     + "AND  r.id_CAJA_registro = ?");
+             ps.setInt(1, CAJA);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Total_Final = rs.getFloat("TotalProductosPersonalizados");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error Total_COSTOS, " + e);
+        }finally{
+                RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+       
+       return Total_Final;
+    }
+    
     public List Total_ENTRADAS_SALIDAS_DETALLES(int CAJA, String PARAMETRO){
         cn = Unionsis2.getConnection();
         ps= null;
@@ -248,19 +383,22 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
     public Float Total_EFECTIVO(int CAJA) {
         cn = Unionsis2.getConnection();
         ps= null;
-        rs= null;
+        rs = null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'EFECTIVO' THEN Pago ELSE 0 END) AS total_pago, "
-                     + "SUM(CASE WHEN FormaPago = 'EFECTIVO' THEN Cambio ELSE 0 END) AS total_cambios FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
-            
-             rs = ps.executeQuery();
+            ps = cn.prepareStatement("SELECT SUM(Efectivo) AS Total "
+                    + "FROM forma_pago "
+                    + "INNER JOIN registro AS reg ON forma_pago.Numero = reg.NoFactura " +
+            "WHERE reg.Estado = 'FACTURADO' and reg.id_CAJA_registro=?");
+            ps.setInt(1, CAJA);
+            rs = ps.executeQuery();
 
             if (rs.next()){
-            Total_Final = rs.getFloat("total_pago") - rs.getFloat("total_cambios");
+            Total_Final = rs.getFloat("Total");
             }
 
         } catch (SQLException e) {
+            
             System.err.println("Error Total_EFECTIVO, " + e);
         }finally{
                 RsClose(rs);
@@ -277,12 +415,14 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'CHEQUE' THEN Pago ELSE 0 END) AS total_suma FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
-            
-             rs = ps.executeQuery();
-
+            ps = cn.prepareStatement("SELECT SUM(CHEQUE) AS Total "
+                    + "FROM forma_pago "
+                    + "INNER JOIN registro AS reg ON forma_pago.Numero = reg.NoFactura " +
+            "WHERE reg.Estado = 'FACTURADO' and reg.id_CAJA_registro=?");
+            ps.setInt(1, CAJA);
+            rs = ps.executeQuery();
             if (rs.next()){
-            Total_Final = rs.getFloat("total_suma");
+            Total_Final = rs.getFloat("Total");
             }
 
         } catch (SQLException e) {
@@ -302,12 +442,14 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'DEPÓSITO O TRANSFERENCIA' THEN Pago ELSE 0 END) AS total_suma FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
-           
-             rs = ps.executeQuery();
-
+            ps = cn.prepareStatement("SELECT SUM(TRANSFERENCIA) AS Total "
+                    + "FROM forma_pago "
+                    + "INNER JOIN registro AS reg ON forma_pago.Numero = reg.NoFactura " +
+            "WHERE reg.Estado = 'FACTURADO' and reg.id_CAJA_registro=?");
+            ps.setInt(1, CAJA);
+            rs = ps.executeQuery();
             if (rs.next()){
-            Total_Final = rs.getFloat("total_suma");
+            Total_Final = rs.getFloat("Total");
             }
 
         } catch (SQLException e) {
@@ -327,12 +469,14 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'TARJETA' THEN Pago ELSE 0 END) AS total_suma FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
-            
-             rs = ps.executeQuery();
-
+            ps = cn.prepareStatement("SELECT SUM(TARJETA) AS Total "
+                    + "FROM forma_pago "
+                    + "INNER JOIN registro AS reg ON forma_pago.Numero = reg.NoFactura " +
+            "WHERE reg.Estado = 'FACTURADO' and reg.id_CAJA_registro=?");
+            ps.setInt(1, CAJA);
+            rs = ps.executeQuery();
             if (rs.next()){
-            Total_Final = rs.getFloat("total_suma");
+            Total_Final = rs.getFloat("Total");
             }
 
         } catch (SQLException e) {
@@ -352,12 +496,12 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         rs= null;
         Float Total_Final = 0f;
         try {
-             ps = cn.prepareStatement("SELECT SUM(CASE WHEN FormaPago = 'COMPARTIDO' THEN Pago ELSE 0 END) AS total_pago, "
-                     + "SUM(CASE WHEN FormaPago = 'COMPARTIDO' THEN Cambio ELSE 0 END) AS total_cambios FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro="+CAJA);
-             rs = ps.executeQuery();
+             ps = cn.prepareStatement("SELECT SUM(Cambio) AS total_cambios FROM registro WHERE Estado='FACTURADO' AND id_CAJA_registro=?");
+            ps.setInt(1, CAJA);
+            rs = ps.executeQuery();
 
             if (rs.next()){
-            Total_Final = rs.getFloat("total_pago") - rs.getFloat("total_cambios");
+            Total_Final =rs.getFloat("total_cambios");
             }
 
         } catch (SQLException e) {

@@ -6,6 +6,7 @@ import static CLASES_GLOBALES.METODOS_GLOBALES.CargarDatosRutas;
 import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
 import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import Controlador.DatosEmpresaDao;
 import Controlador.TextPrompt;
@@ -510,8 +511,10 @@ public final class LOGIN extends javax.swing.JFrame {
                 lg = login.log(Nom, con);
                 if (lg.getNombre() != null && lg.getContraseña() != null) {
                     if (lg.getEstado_Registro().equals("ACTIVO")) {
-                        Principal Aldo = new Principal("g");
+                        login.MovimientosUsuarios(PARAMETROS_USUARIOS.ID_USUARIO);    
+                        Principal Aldo = new Principal(PARAMETROS_VERSION_SISTEMA.LICENCIA);
                         Aldo.setVisible(true);
+                        
                         executorService.execute(new Runnable() {
                             @Override
                             public void run() {

@@ -989,17 +989,17 @@ public class FormaDePago extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField ChequePagado;
-    private javax.swing.JTextField DepositoPagado;
+    public javax.swing.JTextField ChequePagado;
+    public javax.swing.JTextField DepositoPagado;
     public javax.swing.JTextField EfectivoPagado;
-    private javax.swing.JTextArea NTransacciones;
-    private static javax.swing.JLabel SeleccionId;
-    private javax.swing.JLabel SeleccionNombre;
-    private javax.swing.JLabel SubTotal;
-    private javax.swing.JTextField TarjetaPagado;
-    private javax.swing.JLabel TotalIva;
-    private javax.swing.JLabel TotalPagado;
-    private javax.swing.JLabel cambio;
+    public javax.swing.JTextArea NTransacciones;
+    public static javax.swing.JLabel SeleccionId;
+    public javax.swing.JLabel SeleccionNombre;
+    public javax.swing.JLabel SubTotal;
+    public javax.swing.JTextField TarjetaPagado;
+    public javax.swing.JLabel TotalIva;
+    public javax.swing.JLabel TotalPagado;
+    public javax.swing.JLabel cambio;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -1011,7 +1011,7 @@ public class FormaDePago extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labeltotal;
+    public javax.swing.JLabel labeltotal;
     // End of variables declaration//GEN-END:variables
 
     public PagosTotales retornarValoresFinales(){

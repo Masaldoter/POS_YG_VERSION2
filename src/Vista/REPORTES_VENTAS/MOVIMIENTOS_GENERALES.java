@@ -19,6 +19,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     CONSULTAS_VENTAS C_V = new CONSULTAS_VENTAS();
     Principal principal;
     int TipoBusqueda = 0;
+    REPORTE_VENTAS R_V= new REPORTE_VENTAS();
     public MOVIMIENTOS_GENERALES() {
         initComponents();
     }
@@ -99,6 +100,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         lblTipoBusquedaVentasGenerales = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jScrollPane5 = new javax.swing.JScrollPane();
         TablaReporteVentas = new javax.swing.JTable();
@@ -360,6 +362,13 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
 
         jLabel1.setText("FILTRADO POR:");
 
+        jButton1.setText("REPORTES");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
         jPanel19Layout.setHorizontalGroup(
@@ -378,7 +387,9 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTipoBusquedaVentasGenerales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(lblTipoBusquedaVentasGenerales, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel19Layout.setVerticalGroup(
@@ -392,7 +403,8 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                     .addComponent(lblTipoBusquedaVentasGenerales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(EstadoVentaGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                     .addComponent(jComboBox1)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -664,6 +676,10 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         CARGAR_TOTALES();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        principal.ABRIR_VENTANAS(R_V, true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JLabel CambiosVentaGeneral;
@@ -675,6 +691,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     private javax.swing.JTable TablaVentasNombreProductos;
     private static javax.swing.JLabel TotalVentaGeneral;
     private com.toedter.calendar.JDateChooser fechabus;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton33;
     private javax.swing.JComboBox<String> jComboBox1;

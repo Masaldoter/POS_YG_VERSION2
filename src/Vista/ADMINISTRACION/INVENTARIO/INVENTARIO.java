@@ -65,6 +65,8 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
         DINAMICA_BOTONES_PRODUCTOS();
         //jCheckBox2.setEnabled(false);
         ATAJOSDETECLADO.clickOnKey(Nuevop, "LIMPIAR", KeyEvent.VK_F5);
+        ATAJOSDETECLADO.clickOnKey(Agregarp, "AGREGAR", KeyEvent.VK_F12);
+        
     }
     
     public void CARGAR_REGISTROS(){
@@ -538,7 +540,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
         });
 
         Agregarp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/GuardarTodo.png"))); // NOI18N
-        Agregarp.setText("INGRESAR");
+        Agregarp.setText("INGRESAR (F12)");
         Agregarp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         Agregarp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         Agregarp.addActionListener(new java.awt.event.ActionListener() {
@@ -939,11 +941,11 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jSeparator58, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rSButtonHover1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addComponent(rSButtonHover1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rSButtonHover2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                .addComponent(rSButtonHover2, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rSButtonHover3, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                .addComponent(rSButtonHover3, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel14Layout.setVerticalGroup(

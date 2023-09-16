@@ -71,7 +71,7 @@ public class AVISO extends javax.swing.JDialog {
 
         jList1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "----------------------------------------------------------------------------------------------------", "1.NO MODIFIQUES COSTO NI STOCK, EJECUTA LA OPCIÓN \"SACAR MEDIA\"", "2. INGRESA EL TOTAL DE TODOS LOS PRODUCTOS NUEVOS", "3. INGRESA EL TOTAL DE PRODUCTOS NUEVOS", "4.LISTO, TENDRÁS LA MEDIA", "5.INGRESA EL TOTAL DE PRODUCTOS NUEVOS AL STOCK", "----------------------------------------------------------------------------------------------------" };
+            String[] strings = { "----------------------------------------------------------------------------------------------------", "1.NO MODIFIQUES COSTO NI STOCK, EJECUTA LA OPCIÓN \"SACAR MEDIA\"", "2. INGRESA EL TOTAL DE TODOS LOS PRODUCTOS NUEVOS", "3. INGRESA LA CANTIDAD DE PRODUCTOS NUEVOS", "4.LISTO, TENDRÁS LA MEDIA", "5.INGRESA EL TOTAL DE PRODUCTOS NUEVOS AL STOCK", "----------------------------------------------------------------------------------------------------" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });

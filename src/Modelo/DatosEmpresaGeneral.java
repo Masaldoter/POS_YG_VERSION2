@@ -11,32 +11,7 @@ package Modelo;
  */
 public class DatosEmpresaGeneral {
     private String NombreEmpresa, Direccion, Nit, Tel, Eslogan, Politicas, Correo, Contrasenia, Iva, NombreEtiquetas, Municipio, Departamento, Pais, CodigoPostal, CajaAfilicacionEmpresa, CodigoEstablecimiento, Propietario;
-    private String rutaimagenlogo, rutaimagensistema;
-    public DatosEmpresaGeneral(){
-        
-    }
-
-    public DatosEmpresaGeneral(String NombreEmpresa, String Direccion, String Nit, String Tel, String Eslogan, String Politicas, String Correo, String Contrasenia, String Iva, String NombreEtiquetas, String Municipio, String Departamento, String Pais, String CodigoPostal, String CajaAfilicacionEmpresa, String CodigoEstablecimiento, String Propietario, String rutaimagenlogo, String rutaimagensistema) {
-        this.NombreEmpresa = NombreEmpresa;
-        this.Direccion = Direccion;
-        this.Nit = Nit;
-        this.Tel = Tel;
-        this.Eslogan = Eslogan;
-        this.Politicas = Politicas;
-        this.Correo = Correo;
-        this.Contrasenia = Contrasenia;
-        this.Iva = Iva;
-        this.NombreEtiquetas = NombreEtiquetas;
-        this.Municipio = Municipio;
-        this.Departamento = Departamento;
-        this.Pais = Pais;
-        this.CodigoPostal = CodigoPostal;
-        this.CajaAfilicacionEmpresa = CajaAfilicacionEmpresa;
-        this.CodigoEstablecimiento = CodigoEstablecimiento;
-        this.Propietario = Propietario;
-        this.rutaimagenlogo = rutaimagenlogo;
-        this.rutaimagensistema = rutaimagensistema;
-    }
+    private String rutaimagenlogo, rutaimagensistema, ClaveInternaCostos, Version_Sistema;
 
     public String getNombreEmpresa() {
         return NombreEmpresa;
@@ -189,4 +164,21 @@ public class DatosEmpresaGeneral {
     public void setRutaimagensistema(String rutaimagensistema) {
         this.rutaimagensistema = rutaimagensistema;
     }
+
+    public String getClaveInternaCostos() {
+        return ClaveInternaCostos;
+    }
+
+    public void setClaveInternaCostos(String ClaveInternaCostos) {
+        this.ClaveInternaCostos = ClaveInternaCostos;
+    }
+
+    public String getVersion_Sistema() {
+        return Version_Sistema;
+    }
+
+    public void setVersion_Sistema(String Version_Sistema) {
+        this.Version_Sistema = Version_Sistema;
+    }
+
 }

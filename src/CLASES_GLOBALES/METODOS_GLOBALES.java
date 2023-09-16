@@ -37,7 +37,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -532,6 +534,30 @@ public class METODOS_GLOBALES {
                 System.out.println("Error al crear las carpetas.");
             }
              */
+        }
+    }
+    
+    public static boolean VERIFICAR_LLENADO_CAJAS(JPanel panel){
+         Boolean Estado = null;
+        for(int i = 0; panel.getComponents().length > i; i++){
+            if(panel.getComponents()[i] instanceof JTextField){
+                if(((JTextField)panel.getComponents()[i]).getText().equals("")){
+                        Estado = false;
+                    
+                }else{
+                     Estado = true;
+                }
+            }
+        }return Estado;
+    }
+    
+    public static void DESVACIAR_CAJAS(JPanel panel){
+        for(int i = 0; panel.getComponents().length > i; i++){
+            if(panel.getComponents()[i] instanceof JTextField){
+                if(((JTextField)panel.getComponents()[i]).getText().equals("")){
+                    ((JTextField)panel.getComponents()[i]).setText("0.00");
+                }
+            }
         }
     }
 }
