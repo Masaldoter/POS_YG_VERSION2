@@ -464,7 +464,7 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
         log = new login();
         log.setIdlogin1(Integer.parseInt(ID_USUARIO));
         logDao.VerDatosTablaLogin(log);
-        PintarImagen(labelimagen, CargarDatosRutas(1) + "\\" + log.getImagen());
+        
         CajaId.setText(String.valueOf(log.getIdlogin1()));
         CajaNombre.setText(log.getNombre());
         CajaContraseña.setText(log.getContraseña());
@@ -476,7 +476,8 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
         Check_AccesoDirecto.setSelected(Boolean.valueOf(log.getAccesoDirecto()));
         jButton47.setVisible(true);
         jButton45.setVisible(false);
-        
+        System.out.println(CargarDatosRutas(1) + "\\" + log.getImagen());
+        PintarImagen(labelimagen, CargarDatosRutas(3) + "\\" + log.getImagen());
     }
 
     public void INGRESAR_USUARIO() {

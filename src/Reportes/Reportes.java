@@ -5,10 +5,13 @@
  */
 package Reportes;
 
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import Conexiones.conexion;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import net.sf.jasperreports.engine.JRException;
@@ -26,13 +29,21 @@ public class Reportes{
 
     public void ReporteProductos() {
         cn = Union.getConnection();
-        String directorio2 = new File("/Sistema Punto de Venta YG/rProductos.jasper").getAbsolutePath();
+        String directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/REPORTES/rProductos.jasper").getAbsolutePath();
+        HashMap<String, Object> par = new HashMap<String, Object>();
+                par.put("nombreempresa", PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
+                par.put("nitempresa", PARAMETROS_EMPRESA.NIT_EMPRESA);
+                par.put("direccionempresa", PARAMETROS_EMPRESA.DIRECCION_EMPRESA);
+                par.put("telempresa", PARAMETROS_EMPRESA.TEL_EMPRESA);
+                par.put("eslogan", PARAMETROS_EMPRESA.ESLOGAN_EMPRESA);
+                par.put("politicas", PARAMETROS_EMPRESA.POLITICAS_EMPRESA);
+                par.put("rutaimagen", PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
         try {
             JasperReport doc = null;
 
             File Prod = new File(directorio2);
             doc = (JasperReport) JRLoader.loadObject(Prod);
-            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, null, cn);
+            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, par, cn);
             JasperViewer vistaReporte = new JasperViewer(Ejecutar, false);
             vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             vistaReporte.setVisible(true);
@@ -49,12 +60,20 @@ public class Reportes{
     
     public void ReporteVentas() {
         cn = Union.getConnection();
+        HashMap<String, Object> par = new HashMap<String, Object>();
+                par.put("nombreempresa", PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
+                par.put("nitempresa", PARAMETROS_EMPRESA.NIT_EMPRESA);
+                par.put("direccionempresa", PARAMETROS_EMPRESA.DIRECCION_EMPRESA);
+                par.put("telempresa", PARAMETROS_EMPRESA.TEL_EMPRESA);
+                par.put("eslogan", PARAMETROS_EMPRESA.ESLOGAN_EMPRESA);
+                par.put("politicas", PARAMETROS_EMPRESA.POLITICAS_EMPRESA);
+                par.put("rutaimagen", PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
         try {
             JasperReport doc = null;
-            String directorio2 = new File ("/Sistema Punto de Venta YG/Ventas.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/REPORTES/Ventas.jasper").getAbsolutePath();
             File Ven = new File(directorio2);
             doc = (JasperReport) JRLoader.loadObject(Ven);
-            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, null, cn);
+            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, par, cn);
             JasperViewer vistaReporte = new JasperViewer(Ejecutar, false);
             vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             vistaReporte.setVisible(true);
@@ -71,12 +90,20 @@ public class Reportes{
     
     public void ReporteClientes() {
         cn = Union.getConnection();
+        HashMap<String, Object> par = new HashMap<String, Object>();
+                par.put("nombreempresa", PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
+                par.put("nitempresa", PARAMETROS_EMPRESA.NIT_EMPRESA);
+                par.put("direccionempresa", PARAMETROS_EMPRESA.DIRECCION_EMPRESA);
+                par.put("telempresa", PARAMETROS_EMPRESA.TEL_EMPRESA);
+                par.put("eslogan", PARAMETROS_EMPRESA.ESLOGAN_EMPRESA);
+                par.put("politicas", PARAMETROS_EMPRESA.POLITICAS_EMPRESA);
+                par.put("rutaimagen", PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
         try {
             JasperReport doc = null;
-            String directorio2 = new File ("/Sistema Punto de Venta YG/Clientes.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/REPORTES/Clientes.jasper").getAbsolutePath();
             File clie = new File(directorio2);
             doc = (JasperReport) JRLoader.loadObject(clie);
-            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, null, cn);
+            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, par, cn);
             JasperViewer vistaReporte = new JasperViewer(Ejecutar, false);
             vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             vistaReporte.setVisible(true);
@@ -91,13 +118,21 @@ public class Reportes{
     }
     
     public void ReporteProveedores() {
+        HashMap<String, Object> par = new HashMap<String, Object>();
+                par.put("nombreempresa", PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
+                par.put("nitempresa", PARAMETROS_EMPRESA.NIT_EMPRESA);
+                par.put("direccionempresa", PARAMETROS_EMPRESA.DIRECCION_EMPRESA);
+                par.put("telempresa", PARAMETROS_EMPRESA.TEL_EMPRESA);
+                par.put("eslogan", PARAMETROS_EMPRESA.ESLOGAN_EMPRESA);
+                par.put("politicas", PARAMETROS_EMPRESA.POLITICAS_EMPRESA);
+                par.put("rutaimagen", PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
         cn = Union.getConnection();
         try {
             JasperReport doc = null;
-            String directorio2 = new File ("/Sistema Punto de Venta YG/Proveedor.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/REPORTES/Proveedor.jasper").getAbsolutePath();
             File prove = new File(directorio2);
             doc = (JasperReport) JRLoader.loadObject(prove);
-            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, null, cn);
+            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, par, cn);
             JasperViewer vistaReporte = new JasperViewer(Ejecutar, false);
             vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             vistaReporte.setVisible(true);
@@ -112,13 +147,21 @@ public class Reportes{
     }
     
     public void ReporteUsuarios() {
+        HashMap<String, Object> par = new HashMap<String, Object>();
+                par.put("nombreempresa", PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
+                par.put("nitempresa", PARAMETROS_EMPRESA.NIT_EMPRESA);
+                par.put("direccionempresa", PARAMETROS_EMPRESA.DIRECCION_EMPRESA);
+                par.put("telempresa", PARAMETROS_EMPRESA.TEL_EMPRESA);
+                par.put("eslogan", PARAMETROS_EMPRESA.ESLOGAN_EMPRESA);
+                par.put("politicas", PARAMETROS_EMPRESA.POLITICAS_EMPRESA);
+                par.put("rutaimagen", PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
         cn = Union.getConnection();
         try {
             JasperReport doc = null;           
-            String directorio2 = new File ("/Sistema Punto de Venta YG/Usuarios.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/REPORTES/Usuarios.jasper").getAbsolutePath();
             File usu = new File(directorio2);
             doc = (JasperReport) JRLoader.loadObject(usu);
-            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, null, cn);
+            JasperPrint Ejecutar = JasperFillManager.fillReport(doc, par, cn);
             JasperViewer vistaReporte = new JasperViewer(Ejecutar, false);
             vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             vistaReporte.setVisible(true);

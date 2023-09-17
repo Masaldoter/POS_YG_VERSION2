@@ -658,7 +658,7 @@ public class ProductosDao extends ConexionesSQL{
         ps = null;
         rs = null;
         cn = Unionsis2.getConnection();
-                String sql= "select idlogin1, NombreUsuario from login1";
+                String sql= "select idlogin1, NombreUsuario from login1 WHERE Estado_Registro='ACTIVO'";
                 
                 List<Usuarios> ListaUsuarios = new ArrayList();
         try {

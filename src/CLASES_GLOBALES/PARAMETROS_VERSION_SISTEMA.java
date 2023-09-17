@@ -10,7 +10,7 @@ package CLASES_GLOBALES;
  */
 public class PARAMETROS_VERSION_SISTEMA {
     public static String NOMBRE_SISTEMA = "POS YG";
-    public static String VERSION_SISTEMA = "3.3.5";
+    public static String VERSION_SISTEMA = "4.0";
     public static String NOMBRE_DESARROLLADOR = "ALDO GUTIÉRREZ";
     public static String TELEFONO_DESARROLLADOR = "50240805837";
     public static String FACEBOOK_DESARROLLADOR = "https://www.facebook.com/Masaldotergt/";
@@ -45,10 +45,13 @@ public class PARAMETROS_VERSION_SISTEMA {
             + "VERSIÓN 3.3.5(ACTUAL):\n"
             + "*SE AGREGÓ EL MODULO DE VALES, SALIDAS O TRASLADOS\n"
             + "*SE ARREGLARON BUGS (ARRASTRAR Y SOLTAR Y CONVERTIRT .WEBP A PNG)\n"
-            + "*SE AGREGARON NUEVAS FUNCIÓNES EN EL POS";
+            + "*SE AGREGARON NUEVAS FUNCIÓNES EN EL POS"+ "\n"
+            + "VERSIÓN 4.0(ACTUAL):\n"
+            + "*SE AGREGARON NUEVAS OPCIÓNES EN DETALLE DE VENTAS, REGISTRO DE VENTAS\n"
+            + "*SE ARREGLARON BUGS";
 
     public static String LICENCIA="";
     public static String VERSION="";
-
+    public static String RUTA_RAIZ="/Sistema Punto de Venta YG";
     
 }

@@ -2655,7 +2655,7 @@ public void GenerarVenta() {
             }
         });
 
-        ID_PRODUCTO_BD.setText("jLabel7");
+        ID_PRODUCTO_BD.setText("0.0");
 
         javax.swing.GroupLayout PanleDatosProductoPOSLayout = new javax.swing.GroupLayout(PanleDatosProductoPOS);
         PanleDatosProductoPOS.setLayout(PanleDatosProductoPOSLayout);

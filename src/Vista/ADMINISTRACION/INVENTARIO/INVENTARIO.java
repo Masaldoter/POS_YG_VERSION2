@@ -70,6 +70,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
     }
     
     public void CARGAR_REGISTROS(){
+        
        // new java.util.Timer().schedule(new java.util.TimerTask() {
        //  @Override
        //  public void run() {
@@ -78,6 +79,7 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
          VaciarYllenarUbicacion();
          REFRESCAR_INVENTARIO();
          //}},0);
+         jCheckBox2.setEnabled(false);
     }
     
     public static void REFRESCAR_INVENTARIO(){

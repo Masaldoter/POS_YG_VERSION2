@@ -77,7 +77,7 @@ public class ERRORES_INVENTARIO extends ConexionesSQL {
         ps = null;
         rs = null;
         cn = conexion.getInstancia().getConnection();
-        String sql = "select CodigoBarras, Nombre, Cantidad, ruta, count(*) AS total_registros from productos where Cantidad < 0";
+        String sql = "select CodigoBarras, Nombre, Cantidad, ruta, count(*) AS total_registros from productos where Cantidad < 0 GROUP BY CodigoBarras, Nombre, Cantidad, ruta";
         try {
             ps = cn.prepareStatement(sql);
             rs = ps.executeQuery();
