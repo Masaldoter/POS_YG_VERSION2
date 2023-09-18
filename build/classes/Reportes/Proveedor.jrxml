@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="65b03927-991f-428f-a718-cd48709bbd0f">
-	<property name="ireport.zoom" value="1.5"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REPORTE DE PROVEEDORES" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ba30a9fc-398b-4edd-be34-ca10d4f254f8">
+	<property name="ireport.zoom" value="1.4641000000000017"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="nombreempresa" class="java.lang.String"/>
+	<parameter name="nitempresa" class="java.lang.String"/>
+	<parameter name="direccionempresa" class="java.lang.String"/>
+	<parameter name="telempresa" class="java.lang.String"/>
+	<parameter name="eslogan" class="java.lang.String"/>
+	<parameter name="politicas" class="java.lang.String"/>
+	<parameter name="rutaimagen" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      proveedores.`idproveedores` AS proveedores_idproveedores,
@@ -20,127 +27,152 @@ FROM
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="138" splitType="Stretch">
-			<staticText>
-				<reportElement x="227" y="99" width="100" height="20" uuid="0846b89f-b44a-48a3-b9a3-7195d43fb73f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Tel: 4035-25-73]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="227" y="79" width="100" height="20" uuid="043b243e-e9e5-4be3-912b-d777ac4fe9ca"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[4789627-2]]></text>
-			</staticText>
-			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="455" y="0" width="100" height="20" uuid="17ee64f0-849b-439f-9ea2-73a19dc8fa4a"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="158" y="59" width="239" height="20" uuid="eb401f1a-f691-4656-8a7c-b13e158b2017"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Zona 1, Las Cruces, Petén, Guatemala]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="156" y="14" width="243" height="45" uuid="011a2d3f-2478-4da7-b377-83754e6f0331"/>
+		<band height="115" splitType="Stretch">
+			<textField>
+				<reportElement x="28" y="2" width="555" height="30" uuid="c80126a5-3ee9-416d-bdcb-8d9b1043bf41"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="26" isBold="true"/>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Ferretería El Amigo]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{nombreempresa}]]></textFieldExpression>
+			</textField>
 			<image>
-				<reportElement x="23" y="14" width="131" height="115" uuid="8a898e91-47b9-4a5d-b2b0-008df7fbe648"/>
-				<imageExpression><![CDATA["C:\\Sistema Punto de Venta YG\\FerreteríaPequeño.png"]]></imageExpression>
+				<reportElement x="0" y="2" width="127" height="110" uuid="e8c1eebf-5c3b-4734-9fb3-afe4595a3ec2"/>
+				<imageExpression><![CDATA[$P{rutaimagen}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="28" y="32" width="555" height="20" uuid="3010fc24-b224-4387-81ba-1ea38c09a9dd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{direccionempresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="28" y="52" width="555" height="20" uuid="abfe720b-138c-419c-9c4d-3b594a260d47"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nitempresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="28" y="72" width="555" height="20" uuid="a6aa01a7-1ef0-4c3f-9f44-d63c0d7c9399"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{telempresa}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch">
+		<band height="48" splitType="Stretch">
 			<staticText>
-				<reportElement x="182" y="0" width="191" height="35" uuid="1067fda9-f428-4a95-95cc-58e3b76f1db1"/>
+				<reportElement x="0" y="0" width="555" height="35" uuid="a58df60d-93ae-4e5f-a178-075548683f9f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font fontName="Times New Roman" size="18" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Reporte de Proveedores]]></text>
+				<text><![CDATA[Reporte De Proveedores]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="23" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<staticText>
-				<reportElement x="54" y="0" width="57" height="20" uuid="751104a8-f77c-41d1-8151-0ca9ff68eed2"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="0" y="0" width="53" height="20" backcolor="#00CCFF" uuid="aa464b12-bffa-4122-9e89-4894668f313c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[id]]></text>
+				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="111" y="0" width="135" height="20" uuid="0125b369-31f6-4096-8bf3-03234e94862e"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="53" y="0" width="230" height="20" backcolor="#00CCFF" uuid="b0d2ec25-7c77-49e4-842b-21726d7ec70b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Proveedor]]></text>
+				<text><![CDATA[NOMBRE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="246" y="0" width="149" height="20" uuid="6a763be2-13b4-4cf4-a102-268e8e8fc369"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="283" y="0" width="109" height="20" backcolor="#00CCFF" uuid="885b9750-c7b3-49f6-9e3b-cd300ff162e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Vendedor]]></text>
+				<text><![CDATA[VENDEDOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="395" y="0" width="100" height="20" uuid="1f04a264-7bbd-4a95-a09e-7d803dd42ccf"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
+				<reportElement x="392" y="0" width="163" height="20" backcolor="#00CCFF" uuid="95f06ff0-f74d-4a80-82ee-0911ff901728"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Tel]]></text>
+				<text><![CDATA[TEL]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="23" splitType="Stretch">
+		<band height="28" splitType="Stretch">
 			<textField>
-				<reportElement x="56" y="0" width="55" height="20" uuid="26b58070-f824-4a79-addb-38c8ebf99ced"/>
+				<reportElement x="0" y="2" width="53" height="26" uuid="b00979d4-0be2-4295-b8d0-5e3ed349c1b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{proveedores_idproveedores}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="111" y="0" width="135" height="20" uuid="0ff37806-39e5-41eb-8053-d363308ee497"/>
+				<reportElement x="53" y="2" width="230" height="26" uuid="4a1fbc1f-7990-45d1-bbd8-25e2f49a99de"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{proveedores_Proveedor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="246" y="0" width="149" height="20" uuid="b5e57c65-71f0-4671-b71d-68bdf2274dd3"/>
+				<reportElement x="283" y="2" width="109" height="26" uuid="b1d36607-2278-4f88-bc71-c2f12f79b848"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{proveedores_Vendedor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="395" y="0" width="100" height="20" uuid="47321f04-cf3c-49c7-afaa-4b0ea87c433e"/>
+				<reportElement x="392" y="2" width="163" height="26" uuid="7808f6ce-6c86-4407-ab6d-eca547b104d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{proveedores_Tel}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="75b45099-070f-4e14-90fb-0c0d0121ea95"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="47" splitType="Stretch">
-			<staticText>
-				<reportElement x="201" y="0" width="152" height="45" uuid="ab09829d-5642-4065-a5a0-93f35b972254"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="false"/>
-				</textElement>
-				<text><![CDATA["El Amigo de tu economía"]]></text>
-			</staticText>
-		</band>
-	</columnFooter>
 	<pageFooter>
-		<band height="40" splitType="Stretch">
-			<textField>
-				<reportElement x="225" y="17" width="80" height="20" uuid="8d94a3eb-f6c8-4e5b-8937-e865b3aa2e97"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
-			</textField>
+		<band height="41" splitType="Stretch">
 			<textField evaluationTime="Report">
-				<reportElement x="305" y="17" width="40" height="20" uuid="a2ece15c-0206-45df-8988-fd9845a7ee65"/>
+				<reportElement x="515" y="20" width="40" height="21" uuid="d3fcc913-e849-438c-a88b-ba31b5f832ab"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="21" width="80" height="20" uuid="33483c1c-544e-42ae-a48b-01cf2058f40e"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="20" width="100" height="20" uuid="9873d4e6-7e6b-42d8-b4b8-0f32ecc0993f"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="20" uuid="90019fd5-7b52-4d0d-b2db-b53bf50bab5f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{eslogan}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

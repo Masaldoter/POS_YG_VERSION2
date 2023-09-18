@@ -9,6 +9,7 @@ import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import CodigosDeBarras.CodigosDeBarras;
 import CodigosDeBarras.ParametrosCodigosDeBarras;
+import Configuraciones.Productos_Config;
 import Controlador.Eventos;
 import Controlador.KardexDao;
 import Controlador.NumerosALetras;
@@ -84,7 +85,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     Image retValue = Toolkit.getDefaultToolkit().
             getImage(ObtenerRutaImagen(0));
     ImageIcon bl = new ImageIcon(retValue);
-
+    Productos_Config productos_config= new Productos_Config();
     public boolean VentanaBusquedaProducto = false;
     public ADMINISTRARPRODUCTO() {
 
@@ -105,6 +106,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         initComponents();
         this.principal = principal;
         this.inventario = inventario;
+        productos_config.CargarDatos(jCheckBoxMenuItem1);
         DRAG_AND_DROP_IMAGEN();
         VaciarYllenarCategoria(ComboCategorias);
         VaciarYllenarProveedor();
@@ -607,7 +609,11 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 proDao.EditarProductoSinImagen(pro);
                 Id.requestFocus();
                 principal.VentanaAdministracionDeProductos=false;
-                this.dispose();
+                if(jCheckBoxMenuItem1.isSelected()){
+                    this.dispose();
+                }else{
+                    limpiarCajas();
+                }
                 inventario.REFRESCAR_INVENTARIO();
                 inventario.pos.ListarProductosPOS_NOMBRE();
             }
@@ -692,6 +698,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jSeparator10 = new javax.swing.JPopupMenu.Separator();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         AgregarItem = new javax.swing.JMenuItem();
@@ -1411,6 +1419,16 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem13);
+        jMenu1.add(jSeparator10);
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("CERRAR DESPÚES DE EDITAR");
+        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jCheckBoxMenuItem1);
 
         jMenuBar1.add(jMenu1);
 
@@ -2060,6 +2078,11 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem36ActionPerformed
 
+    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+    
+        productos_config.Recordar(jCheckBoxMenuItem1.isSelected());
+    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+
     public int ConsultarIdProveedor(JComboBox ComboCategoria) {
         int ResultadoProveedor = 0;
         ResultadoProveedor = proDao.ConsultaIdProveedor(ComboCategoria);
@@ -2193,6 +2216,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private static javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private static javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -2233,6 +2257,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JSeparator jSeparator18;
     private javax.swing.JSeparator jSeparator19;
     private javax.swing.JPopupMenu.Separator jSeparator2;

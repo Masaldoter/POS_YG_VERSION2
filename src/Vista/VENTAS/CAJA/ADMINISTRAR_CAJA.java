@@ -7,6 +7,7 @@ package Vista.VENTAS.CAJA;
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.Fecha;
 import static CLASES_GLOBALES.METODOS_GLOBALES.Hora;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import static CLASES_GLOBALES.PARAMETROS_USUARIOS.ID_USUARIO;
 import CLASES_GLOBALES.PARAMETROS_VENTAS;
@@ -16,6 +17,7 @@ import Controlador.Eventos;
 import Controlador.FullSelectorListener;
 import Modelo.CAJA;
 import Vista.ADMINISTRACION.PROVEEDORES.HISTORIAL_GASTOS;
+import Vista.AVISOS;
 import java.awt.Color;
 import java.util.Objects;
 import javax.swing.JLabel;
@@ -33,6 +35,7 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     String NUMERO_CAJA, Fecha, TotalInicial;
     Float TOTAL_FINAL_EN_CAJA=0F, TOTAL_FINAL= 0F;
     int Usuario;
+    AVISOS AV;
     INTERNAL_CAJA_PRINCIPAL CAJA_PRINCIPAL;
     public ADMINISTRAR_CAJA(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -798,18 +801,32 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         caja_TotalCompartido.setText(C_C.Total_COMPARTIDO(Integer.parseInt(NUMERO_CAJA)).toString());
     }
 
-    public void CARGAR_TOTALES(){
-        CARGAR_VENTAS();
-        CARGAR_COMPRAS();
-        CARGAR_SALIDAS();
-        CARGAR_ENTRADAS();
-        OPERACIONES();
-        SUMAR_CANTIDADES();
-        ARQUEO_DE_CAJA();
-        CARGAR_GANANCIAS();
-        CARGAR_COSTOS();
-        CARGAR_CANTIDAD_PRODUCTOS_PERSONALIZADOS();
-        CARGAR_TOTAL_PRODUCTOS_PERSONALIZADOS();
+    public void CARGAR_TOTALES() {
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                AV = new AVISOS("CARGANDO DATOS", "POR FAVOR, ESPERE");
+                AV.setVisible(true);
+
+                executorService.execute(() -> {
+                    CARGAR_VENTAS();
+                    CARGAR_COMPRAS();
+                    CARGAR_SALIDAS();
+                    CARGAR_ENTRADAS();
+                    OPERACIONES();
+                    SUMAR_CANTIDADES();
+                    ARQUEO_DE_CAJA();
+                    CARGAR_GANANCIAS();
+                    CARGAR_COSTOS();
+                    CARGAR_CANTIDAD_PRODUCTOS_PERSONALIZADOS();
+                    CARGAR_TOTAL_PRODUCTOS_PERSONALIZADOS();
+                    AV.dispose();
+                });
+                AV.dispose();
+            }
+        });
+        
     }
 
     public void CARGAR_VENTAS(){

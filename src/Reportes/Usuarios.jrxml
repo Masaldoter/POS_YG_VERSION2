@@ -1,138 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="712d4750-8207-4241-bd9c-41ee21fa3fe7">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REPORTE DE USUARIOS" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ba30a9fc-398b-4edd-be34-ca10d4f254f8">
+	<property name="ireport.zoom" value="1.4641000000000017"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="nombreempresa" class="java.lang.String"/>
+	<parameter name="nitempresa" class="java.lang.String"/>
+	<parameter name="direccionempresa" class="java.lang.String"/>
+	<parameter name="telempresa" class="java.lang.String"/>
+	<parameter name="eslogan" class="java.lang.String"/>
+	<parameter name="politicas" class="java.lang.String"/>
+	<parameter name="rutaimagen" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
      login1.`idlogin1` AS login1_idlogin1,
      login1.`Nombre` AS login1_Nombre,
-     login1.`Contraseña` AS login1_Contraseña,
-     login1.`Rol` AS login1_Rol
+     login1.`Rol` AS login1_Rol,
+     login1.`NombreUsuario` AS login1_NombreUsuario,
+     login1.`Estado_Registro` AS login1_Estado_Registro
 FROM
      `login1` login1]]>
 	</queryString>
 	<field name="login1_idlogin1" class="java.lang.Integer"/>
 	<field name="login1_Nombre" class="java.lang.String"/>
-	<field name="login1_Contraseña" class="java.lang.String"/>
 	<field name="login1_Rol" class="java.lang.String"/>
+	<field name="login1_NombreUsuario" class="java.lang.String"/>
+	<field name="login1_Estado_Registro" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="138" splitType="Stretch">
-			<textField pattern="dd/MM/yyyy h.mm a">
-				<reportElement x="455" y="0" width="100" height="20" uuid="754a8043-5393-45c4-b9ba-9dd644818906"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="227" y="95" width="100" height="20" uuid="25c2b24a-d551-44c1-9dd0-a52c0c59132d"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Tel: 4035-25-73]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="158" y="55" width="239" height="20" uuid="2087618f-14e8-4749-97ad-259761033af5"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Zona 1, Las Cruces, Petén, Guatemala]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="156" y="10" width="243" height="45" uuid="8f8c32cc-e8e7-43cf-a41c-dad9d6f69760"/>
+		<band height="115" splitType="Stretch">
+			<textField>
+				<reportElement x="28" y="2" width="555" height="30" uuid="c80126a5-3ee9-416d-bdcb-8d9b1043bf41"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="26" isBold="true"/>
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Ferretería El Amigo]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="227" y="75" width="100" height="20" uuid="292549f1-fae9-4121-817b-e2d431c0bc59"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[4789627-2]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{nombreempresa}]]></textFieldExpression>
+			</textField>
 			<image>
-				<reportElement x="26" y="10" width="131" height="115" uuid="47751e8b-c307-4ba6-bbc3-47b647514c68"/>
-				<imageExpression><![CDATA["C:\\Sistema Punto de Venta YG\\FerreteríaPequeño.png"]]></imageExpression>
+				<reportElement x="0" y="2" width="127" height="110" uuid="e8c1eebf-5c3b-4734-9fb3-afe4595a3ec2"/>
+				<imageExpression><![CDATA[$P{rutaimagen}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="28" y="32" width="555" height="20" uuid="3010fc24-b224-4387-81ba-1ea38c09a9dd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{direccionempresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="28" y="52" width="555" height="20" uuid="abfe720b-138c-419c-9c4d-3b594a260d47"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nitempresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="28" y="72" width="555" height="20" uuid="a6aa01a7-1ef0-4c3f-9f44-d63c0d7c9399"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{telempresa}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement x="196" y="0" width="163" height="35" uuid="808af719-adaa-4dac-b152-8d8a5f0f6cdd"/>
+				<reportElement x="0" y="0" width="555" height="35" uuid="a58df60d-93ae-4e5f-a178-075548683f9f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true"/>
+					<font fontName="Times New Roman" size="18" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Usuarios registrados]]></text>
+				<text><![CDATA[Reporte De Usuarios]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="27" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<staticText>
-				<reportElement x="88" y="0" width="71" height="20" uuid="049a41a1-f517-4b1b-a531-8517d30b12fa"/>
-				<textElement verticalAlignment="Bottom">
-					<font isBold="true"/>
+				<reportElement x="0" y="0" width="53" height="20" backcolor="#00CCFF" uuid="aa464b12-bffa-4122-9e89-4894668f313c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[id]]></text>
+				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="159" y="0" width="139" height="20" uuid="7e1d3fe6-931a-478d-9679-b19001a321f5"/>
-				<textElement verticalAlignment="Bottom">
-					<font isBold="true"/>
+				<reportElement x="53" y="0" width="239" height="20" backcolor="#00CCFF" uuid="b0d2ec25-7c77-49e4-842b-21726d7ec70b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Nombre]]></text>
+				<text><![CDATA[NOMBRE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="100" height="20" uuid="25b421f3-632d-4937-9462-cd179e4bc911"/>
-				<textElement verticalAlignment="Bottom">
-					<font isBold="true"/>
+				<reportElement x="451" y="0" width="104" height="20" backcolor="#00CCFF" uuid="95f06ff0-f74d-4a80-82ee-0911ff901728"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Contraseña]]></text>
+				<text><![CDATA[ESTADO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="398" y="0" width="100" height="20" uuid="05f81803-ae52-490f-83af-d5be6ee2fa90"/>
-				<textElement verticalAlignment="Bottom">
-					<font isBold="true"/>
+				<reportElement x="292" y="0" width="159" height="20" backcolor="#00CCFF" uuid="885b9750-c7b3-49f6-9e3b-cd300ff162e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Rol]]></text>
+				<text><![CDATA[USUARIO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="23" splitType="Stretch">
+		<band height="29" splitType="Stretch">
 			<textField>
-				<reportElement x="88" y="1" width="71" height="20" uuid="d57824fa-ca9b-4db2-8b6f-9cf4867c1f0a"/>
+				<reportElement x="0" y="2" width="53" height="26" uuid="b00979d4-0be2-4295-b8d0-5e3ed349c1b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{login1_idlogin1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="159" y="1" width="139" height="20" uuid="f677f9e4-3562-423e-a16d-137941f47275"/>
+				<reportElement x="292" y="2" width="159" height="26" uuid="4a1fbc1f-7990-45d1-bbd8-25e2f49a99de"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{login1_Nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="300" y="1" width="100" height="20" uuid="0de24049-66f6-4c8b-a07d-7c3d847c4d92"/>
-				<textFieldExpression><![CDATA[$F{login1_Contraseña}]]></textFieldExpression>
+				<reportElement x="451" y="2" width="104" height="26" uuid="7808f6ce-6c86-4407-ab6d-eca547b104d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{login1_Estado_Registro}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="75b45099-070f-4e14-90fb-0c0d0121ea95"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
 			<textField>
-				<reportElement x="398" y="1" width="100" height="20" uuid="2b695c05-47d7-4812-92f8-e7b32bbdd8f1"/>
-				<textFieldExpression><![CDATA[$F{login1_Rol}]]></textFieldExpression>
+				<reportElement x="53" y="2" width="239" height="26" uuid="b1d36607-2278-4f88-bc71-c2f12f79b848"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{login1_NombreUsuario}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="15" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="46" splitType="Stretch">
-			<textField>
-				<reportElement x="218" y="16" width="80" height="20" uuid="d614e3c1-113a-479a-b0f8-0653217894ac"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
-			</textField>
+		<band height="41" splitType="Stretch">
 			<textField evaluationTime="Report">
-				<reportElement x="298" y="16" width="40" height="20" uuid="0c80474f-5a67-4101-b921-f49aa394fbce"/>
+				<reportElement x="515" y="20" width="40" height="21" uuid="d3fcc913-e849-438c-a88b-ba31b5f832ab"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="21" width="80" height="20" uuid="33483c1c-544e-42ae-a48b-01cf2058f40e"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="20" width="100" height="20" uuid="9873d4e6-7e6b-42d8-b4b8-0f32ecc0993f"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="20" uuid="90019fd5-7b52-4d0d-b2db-b53bf50bab5f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{eslogan}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

@@ -11,7 +11,7 @@ package Modelo;
  */
 public class DatosEmpresaGeneral {
     private String NombreEmpresa, Direccion, Nit, Tel, Eslogan, Politicas, Correo, Contrasenia, Iva, NombreEtiquetas, Municipio, Departamento, Pais, CodigoPostal, CajaAfilicacionEmpresa, CodigoEstablecimiento, Propietario;
-    private String rutaimagenlogo, rutaimagensistema, ClaveInternaCostos, Version_Sistema;
+    private String rutaimagenlogo, rutaimagenlogo2, rutaimagensistema, ClaveInternaCostos, Version_Sistema;
 
     public String getNombreEmpresa() {
         return NombreEmpresa;
@@ -157,6 +157,14 @@ public class DatosEmpresaGeneral {
         this.rutaimagenlogo = rutaimagenlogo;
     }
 
+    public String getRutaimagenlogo2() {
+        return rutaimagenlogo2;
+    }
+
+    public void setRutaimagenlogo2(String rutaimagenlogo2) {
+        this.rutaimagenlogo2 = rutaimagenlogo2;
+    }
+
     public String getRutaimagensistema() {
         return rutaimagensistema;
     }
@@ -180,5 +188,6 @@ public class DatosEmpresaGeneral {
     public void setVersion_Sistema(String Version_Sistema) {
         this.Version_Sistema = Version_Sistema;
     }
+
 
 }

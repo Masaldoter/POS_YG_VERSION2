@@ -22,7 +22,7 @@ public class DatosEmpresaDao extends ConexionesSQL {
     public DatosEmpresaGeneral VerDatos() {
         DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
         String sql = "SELECT Version_Sistema, NombreEmpresa, Direccion, Nit, Tel, Eslogan, Politicas, Correo, ContraseniaCorreo, Iva, NombreEtiquetas, "
-                + "Municipio, Departamento, Pais, CodigoPostal, CajaAfilicacionEmpresa, CodigoEstablecimiento, Propietario, rutaimagenlogo, rutaimagensistema, "
+                + "Municipio, Departamento, Pais, CodigoPostal, CajaAfilicacionEmpresa, CodigoEstablecimiento, Propietario, rutaimagenlogo, rutaimagenlogo2, rutaimagensistema, "
                 + "ClaveInternaCostos FROM datosempresa";
         ps = null;
         rs = null;
@@ -53,7 +53,7 @@ public class DatosEmpresaDao extends ConexionesSQL {
                 DaEm.setPropietario(rs.getString("Propietario"));
                 DaEm.setRutaimagenlogo(rs.getString("rutaimagenlogo"));
                 DaEm.setRutaimagensistema(rs.getString("rutaimagensistema"));
-                DaEm.setRutaimagensistema(rs.getString("rutaimagensistema"));
+                DaEm.setRutaimagenlogo2(rs.getString("rutaimagenlogo2"));
                 
                 PARAMETROS_VERSION_SISTEMA.VERSION = rs.getString("Version_Sistema");
                 PARAMETROS_EMPRESA.NOMBRE_EMPRESA = rs.getString("NombreEmpresa");
@@ -74,6 +74,7 @@ public class DatosEmpresaDao extends ConexionesSQL {
                 PARAMETROS_EMPRESA.CODIGOESTABLECIMIENTO_EMPRESA = rs.getString("CodigoEstablecimiento");
                 PARAMETROS_EMPRESA.PROPIETARIO_EMPRESA = rs.getString("Propietario");
                 PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA = rs.getString("rutaimagenlogo");
+                PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2= rs.getString("rutaimagenlogo2");
                 PARAMETROS_EMPRESA.ClaveInternaCostos = rs.getString("ClaveInternaCostos");
                 PARAMETROS_EMPRESA.ACTUALIZAR_CLAVE();
             }
@@ -145,7 +146,7 @@ public class DatosEmpresaDao extends ConexionesSQL {
                   
         
        String sql="UPDATE datosempresa set NombreEmpresa=?, Direccion=?, Nit=?, Tel=?, Eslogan=?, Politicas=?, Correo=?, ContraseniaCorreo=?, Iva=?, NombreEtiquetas=?, Municipio=?"
-               + ", Departamento=?, Pais=?, CodigoPostal=?, CajaAfilicacionEmpresa=?, CodigoEstablecimiento=?, Propietario=?, rutaimagenlogo=?, rutaimagensistema=?, ClaveInternaCostos=? WHERE iddatosempresa=?";
+               + ", Departamento=?, Pais=?, CodigoPostal=?, CajaAfilicacionEmpresa=?, CodigoEstablecimiento=?, Propietario=?, rutaimagenlogo=?, rutaimagenlogo2=?, rutaimagensistema=?, ClaveInternaCostos=? WHERE iddatosempresa=?";
     
         try {
             ps= cn.prepareStatement(sql);
@@ -167,9 +168,10 @@ public class DatosEmpresaDao extends ConexionesSQL {
             ps.setString(16, DaEm.getCodigoEstablecimiento());
             ps.setString(17, DaEm.getPropietario());
             ps.setString(18, DaEm.getRutaimagenlogo());
-            ps.setString(19, DaEm.getRutaimagensistema());
-            ps.setString(20, DaEm.getClaveInternaCostos());
-            ps.setInt(21, 1);
+            ps.setString(19, DaEm.getRutaimagenlogo2());
+            ps.setString(20, DaEm.getRutaimagensistema());
+            ps.setString(21, DaEm.getClaveInternaCostos());
+            ps.setInt(22, 1);
             int Resultado = ps.executeUpdate();
             
             if(Resultado>0){

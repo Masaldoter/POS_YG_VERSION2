@@ -2,6 +2,8 @@ package ReportesImpresion;
 
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import Clases_Reportes.DatosEmpresa;
 import Clases_Reportes.Empleado;
 import Clases_Reportes.Fac;
@@ -43,7 +45,7 @@ public class Documentos {
     DatosEmpresaGeneral EmpresaReporte;
     OBTENERIMPRESORAS Impresora = new OBTENERIMPRESORAS();
 
-    public void Facturaa(DatosClienteYFactura datos, DatosEmpresa Empresa, DatosCertificador DatosCertificador, DocumentoFel Fel, String TipoDocumento, JTable tabla, int TipoDocumentoImpresion, String LinkFelQR) {
+            public void Facturaa(DatosClienteYFactura datos, DatosEmpresa Empresa, DatosCertificador DatosCertificador, DocumentoFel Fel, String TipoDocumento, JTable tabla, int TipoDocumentoImpresion, String LinkFelQR) {
         
                 Empleado em;// Instaciamos la clase empleado
                 Fac datoscliente;
@@ -90,6 +92,7 @@ public class Documentos {
 
                 par.put("NombreCertificador", DatosCertificador.getNombreCertificador());
                 par.put("NitCertificador", DatosCertificador.getNitCertificador());
+                
 
                 //LINK
                 //par.put("LinkQR", LinkFelQR);
@@ -98,9 +101,11 @@ public class Documentos {
                     String directorio2 = null;
 
                     if (TipoDocumentoImpresion == 0) {
+                        par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
                         directorio2 = new File("\\Sistema Punto de Venta YG\\Factura_Carta.jasper").getAbsolutePath();
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
                     } else if (TipoDocumentoImpresion == 1) {
+                        par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
                         directorio2 = new File("C:\\Sistema Punto de Venta YG\\TicketFel.jasper").getAbsolutePath();
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
                     }
@@ -184,8 +189,10 @@ public class Documentos {
 
         par.put("NombreCertificador", DatosCertificador.getNombreCertificador());
         par.put("NitCertificador", DatosCertificador.getNitCertificador());
+        par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
         String Doc = "";
         if (Fel.getTipoDocumento().equals("PROFORMA")) {
+            
             Doc = "Factura_Carta_NoFel";
         } else {
             Doc = "Factura_Carta";
@@ -250,9 +257,11 @@ public class Documentos {
 
                     String directorio2 = null;
                     if (TipoDocumentoImpresion == 0) {
+                        par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
                         directorio2 = new File("C:\\Sistema Punto de Venta YG\\Factura_Carta_NoFel.jasper").getAbsolutePath();
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
                     } else if (TipoDocumentoImpresion == 1) {
+                        par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
                         directorio2 = new File("C:\\Sistema Punto de Venta YG\\Factura_Ticket_NoFel_.jasper").getAbsolutePath();
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
                     }
@@ -298,20 +307,20 @@ public class Documentos {
                     lista.add(em); //Agregamos el objeto empleado a la lista
                 }
                 HashMap<String, Object> par = new HashMap<>();
-                par.put("usuario", datoscliente.getUsuario());
-                par.put("nombreempresa", datoscliente.getNombreEmpresa());
-                par.put("nit", datoscliente.getNit());
-                par.put("direccion", datoscliente.getDireccion());
-                par.put("tel", datoscliente.getTel());
-                par.put("lugar", datoscliente.getLugar());
-                par.put("eslogan", datoscliente.getEslogan());
+                par.put("nombreempresa", PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
+                par.put("nitempresa", PARAMETROS_EMPRESA.NIT_EMPRESA);
+                par.put("direccionempresa", PARAMETROS_EMPRESA.DIRECCION_EMPRESA);
+                par.put("telempresa", PARAMETROS_EMPRESA.TEL_EMPRESA);
+                par.put("eslogan", PARAMETROS_EMPRESA.ESLOGAN_EMPRESA);
+                par.put("politicas", PARAMETROS_EMPRESA.POLITICAS_EMPRESA);
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
 
                 try {
                     String directorio2 = null;
                     if (Catalago == true) {
-                        directorio2 = new File("C:/Sistema Punto de Venta YG/REPORTESPRODUCTOS/ProductosParametrosCatalago.jasper").getAbsolutePath();
+                        directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/REPORTES/ProductosParametrosCatalago.jasper").getAbsolutePath();
                     } else if (Catalago == false) {
-                        directorio2 = new File("C:/Sistema Punto de Venta YG/REPORTESPRODUCTOS/ProductosParametros.jasper").getAbsolutePath();
+                        directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/REPORTES/ProductosParametros.jasper").getAbsolutePath();
                     }
                     JasperReport reporte = null;
 
@@ -436,15 +445,18 @@ public class Documentos {
         par.put("politicas", Empresa.getPoliticas());
 
         par.put("TipoDocumento", Fel.getTipoDocumento());
+        
 
         try {
             JasperReport reporte = null;
             
             String directorio2 = null;
             if (TipoDocumentoImpresion == 0) {
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
                 directorio2 = new File("C:\\Sistema Punto de Venta YG\\CotizacionCarta.jasper").getAbsolutePath();
                 ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
             } else if (TipoDocumentoImpresion == 1) {
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
                 directorio2 = new File("C:\\Sistema Punto de Venta YG\\CotizacionTicket.jasper").getAbsolutePath();
                 ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
             }
@@ -520,9 +532,11 @@ public class Documentos {
             JasperReport reporte = null;
             String a = datos.getNoDocumento() + ".pdf";
             if (TipoDocumentoImpresion == 0) {
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
                 directorio2 = new File("C:\\Sistema Punto de Venta YG\\CotizacionCarta.jasper").getAbsolutePath();
                 Impresora.getIMPRESORA_HOJACARTA();
             } else if (TipoDocumentoImpresion == 1) {
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
                 directorio2 = new File("C:\\Sistema Punto de Venta YG\\CotizacionTicket.jasper").getAbsolutePath();
                 Impresora.getIMPRESORA_TICKET();
             }
@@ -598,7 +612,9 @@ public class Documentos {
         par.put("NitCertificador", DatosCertificador.getNitCertificador());
         String Doc = "";
         if (TipoDocumentoImpresion == 0) {
+            par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
             if (Fel.getTipoDocumento().equals("PROFORMA")) {
+                
                 Doc = "Factura_Carta_NoFel";
                 a = datos.getNoDocumento() + ".pdf";
             } else {
@@ -606,6 +622,7 @@ public class Documentos {
                 a = Fel.getNumeroAutorizacion() + ".pdf";
             }
         } else if (TipoDocumentoImpresion == 1) {
+            par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
             if (Fel.getTipoDocumento().equals("FACTURA")) {
                 Doc = "TicketFel";
             a = Fel.getNumeroAutorizacion()+"_TICKET" + ".pdf";

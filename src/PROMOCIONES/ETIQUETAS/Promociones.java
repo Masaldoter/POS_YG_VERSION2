@@ -5,12 +5,16 @@
  */
 package PROMOCIONES.ETIQUETAS;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import CodigosDeBarras.*;
 import Clases_Reportes.Codigos;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -35,11 +39,12 @@ public class Promociones {
                 HashMap<String, Object> par = new HashMap<String, Object>();
                 par.put("nom", Detalle);
                 par.put("empresa", NombreEmpresa);
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
             lista.add(codigos);   
                 try {
             JasperReport reporte = null;
            
-            String directorio2 = new File ("C:\\Sistema Punto de Venta YG\\ModeloDeImpresiones\\Etiquetas\\Promociones.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Etiquetas/Promociones.jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
@@ -69,7 +74,7 @@ public class Promociones {
             lista.add(codigos);   
                 try {
             JasperReport reporte = null;
-            String directorio2 = new File ("C:\\Sistema Punto de Venta YG\\ModeloDeImpresiones\\Etiquetas\\Ofertas.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Etiquetas/Ofertas.jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
@@ -91,14 +96,28 @@ public class Promociones {
     public void Logo1(boolean Visible){
         Codigos codigos;
         codigos= new Codigos("","","", "");
+        int seleccion = JOptionPane.showOptionDialog(null, "¡ELIGE UN LOGO! ", //contenido de la ventana
+                    "Etiquetas", //titulo de la ventana
+                JOptionPane.YES_NO_CANCEL_OPTION, //para 3 botones si/no/cancel
+                JOptionPane.QUESTION_MESSAGE, //tipo de ícono
+                null, // null para icono por defecto.
+                new Object[]{"LOGO 1", "LOGO 2", "CANCELAR"},//objeto para las opciones
+                //null para YES, NO y CANCEL
+                "LOGO 1"); //selección predeterminada
+
         List<Codigos> lista = new ArrayList<>();
-        
-                HashMap<String, Object> par = new HashMap<String, Object>();
-                par.put("ruta", "C:\\Sistema Punto de Venta YG\\LogoConNombre.png");
-            lista.add(codigos);   
-                try {
+
+        HashMap<String, Object> par = new HashMap<String, Object>();
+        par.put("ruta", METODOS_GLOBALES.CargarDatosRutas(0) + "\\" + PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
+        if (seleccion == 0) {
+            par.put("ruta", METODOS_GLOBALES.CargarDatosRutas(0) + "\\" + PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
+        } else {
+            par.put("ruta", METODOS_GLOBALES.CargarDatosRutas(0) + "\\" + PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
+        }
+        lista.add(codigos);
+        try {
             JasperReport reporte = null;
-            String directorio2 = new File ("C:\\Sistema Punto de Venta YG\\ModeloDeImpresiones\\Etiquetas\\Logo1.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Etiquetas/Logo1.jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
@@ -124,15 +143,16 @@ public class Promociones {
         List<Codigos> lista = new ArrayList<>();
         
                 HashMap<String, Object> par = new HashMap<String, Object>();
-                par.put("cod", codigos.getId());
-                par.put("nom", codigos.getNombreproducto());
-                par.put("pre", codigos.getPublico());
-                par.put("cost", codigos.getCostoLetras());
-                par.put("empresa", NombreEmpresa);
-            lista.add(codigos);   
-                try {
+        par.put("cod", codigos.getId());
+        par.put("nom", codigos.getNombreproducto());
+        par.put("pre", codigos.getPublico());
+        par.put("cost", codigos.getCostoLetras());
+        par.put("empresa", NombreEmpresa);
+        par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0) + "\\" + PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
+        lista.add(codigos);
+        try {
             JasperReport reporte = null;
-            String directorio2 = new File ("C:\\Sistema Punto de Venta YG\\CodigoBarrasPequeño.jasper").getAbsolutePath();
+            String directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ + "/CodigoBarrasPequeño.jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));

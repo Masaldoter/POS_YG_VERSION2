@@ -44,6 +44,7 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         datosDao.VerDatos();
         datosDao.VerDatosCertificador();
         PintarImagen(LblImagenEmpresaDocumentos, CargarDatosRutas(0)+"\\" +PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
+        PintarImagen(LblImagenEmpresaDocumentos2, CargarDatosRutas(0)+"\\" +PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
         PintarImagen(LblImagenSistema, METODOS_GLOBALES.CargarDatosRutas(0)+"\\" +PARAMETROS_EMPRESA.RUTADEIMAGEN_SISTEMA_EMPRESA);
         NombreEmpresa.setText(PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
         TituloDatosEmpresa.setText(PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
@@ -193,6 +194,10 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         LblrutaImagenSistema = new javax.swing.JLabel();
         LblImagenSistema = new javax.swing.JLabel();
         botonseleccionar1 = new javax.swing.JButton();
+        jPanel82 = new javax.swing.JPanel();
+        LblRutaImagenEmpresaDocumentos2 = new javax.swing.JLabel();
+        LblImagenEmpresaDocumentos2 = new javax.swing.JLabel();
+        botonseleccionar2 = new javax.swing.JButton();
         jSeparator42 = new javax.swing.JSeparator();
 
         setBorder(null);
@@ -804,7 +809,7 @@ public class EMPRESA extends javax.swing.JInternalFrame {
 
         jPanel66.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "IMAGENES"));
 
-        jPanel80.setBorder(javax.swing.BorderFactory.createTitledBorder("Imagen en DOCUMENTOS"));
+        jPanel80.setBorder(javax.swing.BorderFactory.createTitledBorder("IMAGEN EN DOCUMENTOS"));
 
         LblRutaImagenEmpresaDocumentos.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         LblRutaImagenEmpresaDocumentos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -841,11 +846,11 @@ public class EMPRESA extends javax.swing.JInternalFrame {
                 .addComponent(LblImagenEmpresaDocumentos, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LblRutaImagenEmpresaDocumentos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonseleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel81.setBorder(javax.swing.BorderFactory.createTitledBorder("Imagen en SISTEMA"));
+        jPanel81.setBorder(javax.swing.BorderFactory.createTitledBorder("IMAGEN EN SISTEMA"));
 
         LblrutaImagenSistema.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         LblrutaImagenSistema.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -880,10 +885,50 @@ public class EMPRESA extends javax.swing.JInternalFrame {
             jPanel81Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel81Layout.createSequentialGroup()
                 .addComponent(LblImagenSistema, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LblrutaImagenSistema, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonseleccionar1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jPanel82.setBorder(javax.swing.BorderFactory.createTitledBorder("IMAGEN EN TICKETS"));
+
+        LblRutaImagenEmpresaDocumentos2.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        LblRutaImagenEmpresaDocumentos2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        LblImagenEmpresaDocumentos2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LblImagenEmpresaDocumentos2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        botonseleccionar2.setText("CAMBIAR");
+        botonseleccionar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonseleccionar2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel82Layout = new javax.swing.GroupLayout(jPanel82);
+        jPanel82.setLayout(jPanel82Layout);
+        jPanel82Layout.setHorizontalGroup(
+            jPanel82Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel82Layout.createSequentialGroup()
+                .addGap(0, 129, Short.MAX_VALUE)
+                .addComponent(LblImagenEmpresaDocumentos2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(135, Short.MAX_VALUE))
+            .addGroup(jPanel82Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel82Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(botonseleccionar2, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                    .addComponent(LblRutaImagenEmpresaDocumentos2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel82Layout.setVerticalGroup(
+            jPanel82Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel82Layout.createSequentialGroup()
+                .addComponent(LblImagenEmpresaDocumentos2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LblRutaImagenEmpresaDocumentos2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonseleccionar2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jPanel66Layout = new javax.swing.GroupLayout(jPanel66);
@@ -892,17 +937,22 @@ public class EMPRESA extends javax.swing.JInternalFrame {
             jPanel66Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel66Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel80, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel81, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel66Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel66Layout.createSequentialGroup()
+                        .addComponent(jPanel80, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel81, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel82, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel66Layout.setVerticalGroup(
             jPanel66Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel81, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel66Layout.createSequentialGroup()
-                .addComponent(jPanel80, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel66Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel81, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel80, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel82, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel79Layout = new javax.swing.GroupLayout(jPanel79);
@@ -1006,6 +1056,7 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         DaEm.setCajaAfilicacionEmpresa(CajaAfilicacionEmpresa.getText());
         DaEm.setCodigoEstablecimiento(CajaCodigoEstablecimientoEmpresa.getText());
         DaEm.setRutaimagenlogo(LblRutaImagenEmpresaDocumentos.getText());
+        DaEm.setRutaimagenlogo2(LblRutaImagenEmpresaDocumentos2.getText());
         DaEm.setRutaimagensistema(LblrutaImagenSistema.getText());
         DaEm.setClaveInternaCostos(Uno.getText()+ Dos.getText()+ Tres.getText()+ Cuatro.getText()+ 
                 Cinco.getText()+ Seis.getText()+ Siete.getText()+ Ocho.getText()+Nueve.getText()+ Cero.getText());
@@ -1125,6 +1176,39 @@ public class EMPRESA extends javax.swing.JInternalFrame {
             }
     }//GEN-LAST:event_botonseleccionar1ActionPerformed
 
+    private void botonseleccionar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonseleccionar2ActionPerformed
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos PNG, JPG Y JPEG(*.PNG;*.JPG;*.JPEG)", "PNG", "JPG", "JPEG");
+        FileNameExtensionFilter filtro2 = new FileNameExtensionFilter("JPEG(*.JPEG)", "JPEG");
+        FileNameExtensionFilter filtro3 = new FileNameExtensionFilter("JPG(*.JPG;)", "JPG");
+        FileNameExtensionFilter filtro4 = new FileNameExtensionFilter("PNG(*.PNG;)", "PNG");
+        JFileChooser archivo = new JFileChooser();
+        archivo.setCurrentDirectory(new File(METODOS_GLOBALES.CargarDatosRutasAlBuscarImagen()));
+        archivo.addChoosableFileFilter(filtro);
+        archivo.addChoosableFileFilter(filtro2);
+        archivo.addChoosableFileFilter(filtro3);
+        archivo.addChoosableFileFilter(filtro4);
+        archivo.setFileFilter(filtro);
+        archivo.setDialogTitle("SELECCIONE UNA IMAGEN");
+        int ventana = archivo.showOpenDialog(null);
+        if (ventana == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = archivo.getSelectedFile();
+                String DestinoPath = CargarDatosRutas(0) + "\\"+ file.getName();
+                Path Destino = Paths.get(DestinoPath);
+
+                String OrigenPath = file.getPath();
+                Path Origen = Paths.get(OrigenPath);
+
+                Files.copy(Origen, Destino, StandardCopyOption.REPLACE_EXISTING);
+                javax.swing.JOptionPane.showMessageDialog(null, "EL ARCHIVO FUÉ COPIADO EN "+ DestinoPath);
+                LblRutaImagenEmpresaDocumentos2.setText(file.getName());
+                PintarImagen(LblImagenEmpresaDocumentos2, CargarDatosRutas(0) + "\\"+LblRutaImagenEmpresaDocumentos2.getText());
+                } catch (IOException ex) {
+                    System.out.println("ERROR \n"+ex);
+                }
+            }
+    }//GEN-LAST:event_botonseleccionar2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnGenerarToken;
@@ -1151,8 +1235,10 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     private static javax.swing.JTextField EsloganEmpresa;
     private static javax.swing.JTextField IvaEmpresa;
     private static javax.swing.JLabel LblImagenEmpresaDocumentos;
+    private static javax.swing.JLabel LblImagenEmpresaDocumentos2;
     private static javax.swing.JLabel LblImagenSistema;
     private static javax.swing.JLabel LblRutaImagenEmpresaDocumentos;
+    private static javax.swing.JLabel LblRutaImagenEmpresaDocumentos2;
     private static javax.swing.JLabel LblrutaImagenSistema;
     public static javax.swing.JTextField NitCertificador;
     public static javax.swing.JTextField NitEmpresa;
@@ -1168,6 +1254,7 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     private javax.swing.JTextField Uno;
     private javax.swing.JButton botonseleccionar;
     private javax.swing.JButton botonseleccionar1;
+    private javax.swing.JButton botonseleccionar2;
     private javax.swing.JButton jButton15;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1219,6 +1306,7 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel79;
     private javax.swing.JPanel jPanel80;
     private javax.swing.JPanel jPanel81;
+    private javax.swing.JPanel jPanel82;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane18;
     private javax.swing.JScrollPane jScrollPane19;

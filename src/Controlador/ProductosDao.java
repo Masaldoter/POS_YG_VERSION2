@@ -956,8 +956,8 @@ public class ProductosDao extends ConexionesSQL{
                 producto.setUbicacionNombre2(rs.getString("UBICACIONNOMBRE2"));
                 producto.setEstado_Producto(rs.getString("Estado_Productos"));
                 producto.setAPLICAR_DESCUENTO(rs.getBoolean("Permitir_Descuentos"));
-                producto.setFechaingreso("<html>"+rs.getString("fechaingreso")+ "POR: "+rs.getString("USUARIOINGRESO")+"</html>");
-                producto.setFechamodificacion("<html>"+rs.getString("fechamodificacion")+ "POR: "+rs.getString("USUARIOMODIFICO")+"</html>");
+                producto.setFechaingreso("<html>"+rs.getString("fechaingreso")+ " POR: "+rs.getString("USUARIOINGRESO")+"</html>");
+                producto.setFechamodificacion("<html>"+rs.getString("fechamodificacion")+ " POR: "+rs.getString("USUARIOMODIFICO")+"</html>");
             }
             
         } catch (SQLException e) {

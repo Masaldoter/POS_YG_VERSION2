@@ -224,7 +224,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel6">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="RUTA DE SISTEMA:"/>
+                        <Property name="text" type="java.lang.String" value="RUTA DE USUARIOS:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblrutaservidor_usuarios">

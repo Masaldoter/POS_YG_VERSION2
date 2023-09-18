@@ -204,7 +204,7 @@ public class Config extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("RUTA DE SISTEMA:");
+        jLabel6.setText("RUTA DE USUARIOS:");
 
         jButton6.setText("CAMBIAR");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
