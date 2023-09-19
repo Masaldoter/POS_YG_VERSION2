@@ -102,11 +102,11 @@ public class Documentos {
 
                     if (TipoDocumentoImpresion == 0) {
                         par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
-                        directorio2 = new File("\\Sistema Punto de Venta YG\\Factura_Carta.jasper").getAbsolutePath();
+                        directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/Factura_Carta.jasper").getAbsolutePath();
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
                     } else if (TipoDocumentoImpresion == 1) {
                         par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
-                        directorio2 = new File("C:\\Sistema Punto de Venta YG\\TicketFel.jasper").getAbsolutePath();
+                        directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/TicketFel.jasper").getAbsolutePath();
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
                     }
                     File prove = new File(directorio2);
@@ -201,7 +201,7 @@ public class Documentos {
         try {
             JasperReport reporte = null;
 
-            String directorio2 = new File("/Sistema Punto de Venta YG/" + Doc + ".jasper").getAbsolutePath();
+            String directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/" + Doc + ".jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
@@ -258,11 +258,13 @@ public class Documentos {
                     String directorio2 = null;
                     if (TipoDocumentoImpresion == 0) {
                         par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
-                        directorio2 = new File("C:\\Sistema Punto de Venta YG\\Factura_Carta_NoFel.jasper").getAbsolutePath();
+                        directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/Factura_Carta_NoFel.jasper").getAbsolutePath();
+                        System.out.println(METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
                     } else if (TipoDocumentoImpresion == 1) {
                         par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
-                        directorio2 = new File("C:\\Sistema Punto de Venta YG\\Factura_Ticket_NoFel_.jasper").getAbsolutePath();
+                        System.out.println(METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
+                        directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/Factura_Ticket_NoFel_.jasper").getAbsolutePath();
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
                     }
 
@@ -453,11 +455,11 @@ public class Documentos {
             String directorio2 = null;
             if (TipoDocumentoImpresion == 0) {
                 par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
-                directorio2 = new File("C:\\Sistema Punto de Venta YG\\CotizacionCarta.jasper").getAbsolutePath();
+                directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/CotizacionCarta.jasper").getAbsolutePath();
                 ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
             } else if (TipoDocumentoImpresion == 1) {
                 par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
-                directorio2 = new File("C:\\Sistema Punto de Venta YG\\CotizacionTicket.jasper").getAbsolutePath();
+                directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/CotizacionTicket.jasper").getAbsolutePath();
                 ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
             }
 
@@ -533,11 +535,11 @@ public class Documentos {
             String a = datos.getNoDocumento() + ".pdf";
             if (TipoDocumentoImpresion == 0) {
                 par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
-                directorio2 = new File("C:\\Sistema Punto de Venta YG\\CotizacionCarta.jasper").getAbsolutePath();
+                directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/CotizacionCarta.jasper").getAbsolutePath();
                 Impresora.getIMPRESORA_HOJACARTA();
             } else if (TipoDocumentoImpresion == 1) {
                 par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
-                directorio2 = new File("C:\\Sistema Punto de Venta YG\\CotizacionTicket.jasper").getAbsolutePath();
+                directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/CotizacionTicket.jasper").getAbsolutePath();
                 Impresora.getIMPRESORA_TICKET();
             }
 
@@ -657,7 +659,7 @@ public class Documentos {
         }
             
             ruta2 = selectPath + "\\" + a;
-            String directorio2 = new File("/Sistema Punto de Venta YG/" + Doc + ".jasper").getAbsolutePath();
+            String directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/" + Doc + ".jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));

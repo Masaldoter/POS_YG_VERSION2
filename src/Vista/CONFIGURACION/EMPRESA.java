@@ -7,6 +7,7 @@ package Vista.CONFIGURACION;
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.CargarDatosRutas;
 import static CLASES_GLOBALES.METODOS_GLOBALES.PintarImagen;
+import static CLASES_GLOBALES.METODOS_GLOBALES.validarCorreoElectronico;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import Controlador.DatosEmpresaDao;
 import FEL.DatosCertificador;
@@ -23,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -66,6 +68,7 @@ public class EMPRESA extends javax.swing.JInternalFrame {
         CajaCodigoEstablecimientoEmpresa.setText(PARAMETROS_EMPRESA.CODIGOESTABLECIMIENTO_EMPRESA);
         LblRutaImagenEmpresaDocumentos.setText(PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
         LblrutaImagenSistema.setText(PARAMETROS_EMPRESA.RUTADEIMAGEN_SISTEMA_EMPRESA);
+        LblRutaImagenEmpresaDocumentos2.setText(PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
         Uno.setText(PARAMETROS_EMPRESA.UNO);
         Dos.setText(PARAMETROS_EMPRESA.DOS);
         Tres.setText(PARAMETROS_EMPRESA.TRES);
@@ -1036,6 +1039,11 @@ public class EMPRESA extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        if(validarCorreoElectronico(CorreoEmpresa.getText())==true || CorreoEmpresa.getText().equals("")){
+            
+        }else {
+                JOptionPane.showMessageDialog(null, "INGRESE UN CORREO ELECTRÓNICO VÁLIDO");
+            }
         DatosEmpresaDao datosDao = new DatosEmpresaDao();
         DatosEmpresaGeneral DaEm = new DatosEmpresaGeneral();
         DaEm.setNombreEmpresa(NombreEmpresa.getText());

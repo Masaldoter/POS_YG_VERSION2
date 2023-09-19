@@ -322,6 +322,27 @@ public class ClientesDao extends ConexionesSQL{
         }
     }
     
+    public static void CORREOS_CLIENTES_USUARIOS(JComboBox ComboCorreos){
+        ps = null;
+        rs = null;
+        cn = Unionsis2.getConnection();
+                String sql= "SELECT Correo FROM login1 UNION SELECT Correo FROM clientes";
+        try {
+                ps=cn.prepareStatement(sql);
+                rs=ps.executeQuery();
+            
+            while(rs.next()){
+                ComboCorreos.addItem(rs.getString("Correo"));
+            }
+        } catch (SQLException e) {
+                System.err.println("Error, "+e);
+        }finally {
+            PsClose(ps);
+            RsClose(rs);
+            ConnectionClose(cn);
+        } 
+    }
+    
     public void Pais(JComboBox ComboPaises){
         ps = null;
         rs = null;

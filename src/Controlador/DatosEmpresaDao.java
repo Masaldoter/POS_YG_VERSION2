@@ -74,6 +74,7 @@ public class DatosEmpresaDao extends ConexionesSQL {
                 PARAMETROS_EMPRESA.CODIGOESTABLECIMIENTO_EMPRESA = rs.getString("CodigoEstablecimiento");
                 PARAMETROS_EMPRESA.PROPIETARIO_EMPRESA = rs.getString("Propietario");
                 PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA = rs.getString("rutaimagenlogo");
+                PARAMETROS_EMPRESA.RUTADEIMAGEN_SISTEMA_EMPRESA= rs.getString("rutaimagensistema");
                 PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2= rs.getString("rutaimagenlogo2");
                 PARAMETROS_EMPRESA.ClaveInternaCostos = rs.getString("ClaveInternaCostos");
                 PARAMETROS_EMPRESA.ACTUALIZAR_CLAVE();

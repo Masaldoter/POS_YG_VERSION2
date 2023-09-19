@@ -4,9 +4,6 @@
  */
 package Vista.SESION;
 
-import CLASES_GLOBALES.METODOS_GLOBALES;
-import static CLASES_GLOBALES.METODOS_GLOBALES.CargarDatosRutas;
-import static CLASES_GLOBALES.METODOS_GLOBALES.PintarImagen;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 
 /**
@@ -29,6 +26,9 @@ public class SESION extends javax.swing.JInternalFrame {
         NombreUsuarioVista.setText(PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
         txtRol.setText(PARAMETROS_USUARIOS.ROL_USUARIO);
         IdUsuario.setText(String.valueOf(PARAMETROS_USUARIOS.ID_USUARIO));
+        jLabel55.setText(String.valueOf(PARAMETROS_USUARIOS.CORREO));
+        jLabel58.setText(String.valueOf(PARAMETROS_USUARIOS.CONTRASENIA_CORREO));
+        //PintarImagen(jLabel1, CargarDatosRutas(3) + "/" +PARAMETROS_USUARIOS.RUTAIMAGEN_USUARIO);
     }
 
     /**
@@ -42,7 +42,6 @@ public class SESION extends javax.swing.JInternalFrame {
 
         Reportes = new javax.swing.JPanel();
         jPanel39 = new javax.swing.JPanel();
-        Foto = new javax.swing.JLabel();
         jPanel40 = new javax.swing.JPanel();
         jLabel54 = new javax.swing.JLabel();
         jLabel55 = new javax.swing.JLabel();
@@ -69,20 +68,19 @@ public class SESION extends javax.swing.JInternalFrame {
 
         jPanel39.setBackground(new java.awt.Color(204, 204, 255));
 
-        Foto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Foto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
         jPanel40.setBackground(new java.awt.Color(204, 204, 255));
         jPanel40.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DIRECCION DE CORREO ELECTRÓNICO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 0, 14))); // NOI18N
 
         jLabel54.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel54.setText("CORREO:");
 
+        jLabel55.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel55.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         jLabel56.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel56.setText("CONTRASEÑA:");
 
+        jLabel58.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel58.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         jSeparator52.setForeground(new java.awt.Color(51, 51, 51));
@@ -126,20 +124,16 @@ public class SESION extends javax.swing.JInternalFrame {
         jPanel39.setLayout(jPanel39Layout);
         jPanel39Layout.setHorizontalGroup(
             jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel39Layout.createSequentialGroup()
+            .addGroup(jPanel39Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
+                .addContainerGap())
         );
         jPanel39Layout.setVerticalGroup(
             jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel39Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel39Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -303,7 +297,6 @@ public class SESION extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private static javax.swing.JLabel Foto;
     public static javax.swing.JLabel IdUsuario;
     private static javax.swing.JLabel NombreUsuarioVista;
     private javax.swing.JPanel Reportes;

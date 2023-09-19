@@ -19,6 +19,7 @@ import Modelo.CAJA;
 import Vista.ADMINISTRACION.PROVEEDORES.HISTORIAL_GASTOS;
 import Vista.AVISOS;
 import java.awt.Color;
+import java.text.DecimalFormat;
 import java.util.Objects;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,11 +33,13 @@ import javax.swing.JTextField;
  */
 public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
 
+    DecimalFormat formatea = new DecimalFormat("###,###.##");
     String NUMERO_CAJA, Fecha, TotalInicial;
-    Float TOTAL_FINAL_EN_CAJA=0F, TOTAL_FINAL= 0F;
+    Float TOTAL_FINAL_EN_CAJA = 0F, TOTAL_FINAL = 0F;
     int Usuario;
     AVISOS AV;
     INTERNAL_CAJA_PRINCIPAL CAJA_PRINCIPAL;
+
     public ADMINISTRAR_CAJA(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -54,7 +57,6 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         this.setLocationRelativeTo(parent);
         this.NUMERO_CAJA = NUMERO_CAJA;
         jLabel2.setText(jLabel2.getText()+ " #"+this.NUMERO_CAJA);
-        CARGAR_TOTALES();
         if(EDITAR==false){
             CONSULTAR_DATOS(EDITAR);
         }else{
@@ -639,13 +641,13 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap(133, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(117, Short.MAX_VALUE)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(116, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -772,14 +774,15 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
             jPanel3.setVisible(EDITAR);
         }
     }
+
     public void CONSULTAR_DATOS(Boolean ESTADO) {
-        CONSULTAS_CAJA C_C = new CONSULTAS_CAJA();
-        CAJA caja = new CAJA();
-        caja = C_C.CAJA_CONSULTA_NUMERO(Integer.parseInt(NUMERO_CAJA));
 
         if (ESTADO == true) {
             CARGAR_PAGOS();
         } else {
+            CONSULTAS_CAJA C_C = new CONSULTAS_CAJA();
+            CAJA caja = new CAJA();
+            caja = C_C.CAJA_CONSULTA_NUMERO(Integer.parseInt(NUMERO_CAJA));
             caja_TotalEfectivo.setText(String.valueOf(caja.getTotal_Efectivo_CAJA()));
             caja_TotalTransferencia.setText(String.valueOf(caja.getTotal_Transferencia_CAJA()));
             caja_TotalCheque.setText(String.valueOf(caja.getTotal_Cheque_CAJA()));
@@ -789,7 +792,7 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         CARGAR_TOTALES();
         SUMAR_CANTIDADES();
         ARQUEO_DE_CAJA();
-    }
+    } 
     
     public void CARGAR_PAGOS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
@@ -802,31 +805,26 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     }
 
     public void CARGAR_TOTALES() {
-
+        CARGAR_VENTAS();
+        CARGAR_COMPRAS();
+        CARGAR_SALIDAS();
+        CARGAR_ENTRADAS();
+        OPERACIONES();
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                AV = new AVISOS("CARGANDO DATOS", "POR FAVOR, ESPERE");
-                AV.setVisible(true);
-
                 executorService.execute(() -> {
-                    CARGAR_VENTAS();
-                    CARGAR_COMPRAS();
-                    CARGAR_SALIDAS();
-                    CARGAR_ENTRADAS();
-                    OPERACIONES();
-                    SUMAR_CANTIDADES();
-                    ARQUEO_DE_CAJA();
+
                     CARGAR_GANANCIAS();
                     CARGAR_COSTOS();
                     CARGAR_CANTIDAD_PRODUCTOS_PERSONALIZADOS();
                     CARGAR_TOTAL_PRODUCTOS_PERSONALIZADOS();
-                    AV.dispose();
+                    SUMAR_CANTIDADES();
+                    ARQUEO_DE_CAJA();
                 });
-                AV.dispose();
             }
         });
-        
+
     }
 
     public void CARGAR_VENTAS(){
@@ -851,21 +849,21 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     
     public void CARGAR_GANANCIAS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        caja_TotalGanancias.setText(C_C.Total_GANANCIAS(Integer.parseInt(NUMERO_CAJA)).toString());
+        caja_TotalGanancias.setText(formatea.format(C_C.Total_GANANCIAS(Integer.parseInt(NUMERO_CAJA))));
     }
     
     public void CARGAR_COSTOS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        caja_TotalCostos.setText(C_C.Total_COSTOS(Integer.parseInt(NUMERO_CAJA)).toString());
+        caja_TotalCostos.setText(formatea.format(C_C.Total_COSTOS(Integer.parseInt(NUMERO_CAJA))));
     }
     public void CARGAR_CANTIDAD_PRODUCTOS_PERSONALIZADOS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        caja_CantidadTotalPersonalizados.setText(C_C.Total_CANTIDAD_PRODUCTOS_PERSONALIZADOS(Integer.parseInt(NUMERO_CAJA)).toString());
+        caja_CantidadTotalPersonalizados.setText(formatea.format(C_C.Total_CANTIDAD_PRODUCTOS_PERSONALIZADOS(Integer.parseInt(NUMERO_CAJA))));
     }
     
     public void CARGAR_TOTAL_PRODUCTOS_PERSONALIZADOS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        caja_TotalPersonalizados.setText(C_C.Total_TOTAL_PRODUCTOS_PERSONALIZADOS(Integer.parseInt(NUMERO_CAJA)).toString());
+        caja_TotalPersonalizados.setText(formatea.format(C_C.Total_TOTAL_PRODUCTOS_PERSONALIZADOS(Integer.parseInt(NUMERO_CAJA))));
     }
     
     public void OPERACIONES(){

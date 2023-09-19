@@ -1,6 +1,7 @@
 
 package IMPRESORAS;
 
+import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,7 +22,7 @@ public class OBTENERIMPRESORAS {
         
             try {
             
-            entrada = new FileInputStream(new File ("\\Sistema Punto de Venta YG\\CONFIGURACIONES\\IMPRESORAS.properties").getAbsolutePath());
+            entrada = new FileInputStream(new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/CONFIGURACIONES/IMPRESORAS.properties").getAbsolutePath());
             properties.load(entrada);
             IMPRESORA_HOJACARTA= properties.getProperty("hojascarta");
             IMPRESORA_TICKET = properties.getProperty("tickets");

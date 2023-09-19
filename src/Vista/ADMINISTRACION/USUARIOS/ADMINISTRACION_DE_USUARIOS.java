@@ -10,6 +10,7 @@ import static CLASES_GLOBALES.METODOS_GLOBALES.OBTENER_EXTENSION_ARCHIVO;
 import static CLASES_GLOBALES.METODOS_GLOBALES.PintarImagen;
 import static CLASES_GLOBALES.METODOS_GLOBALES.PintarImagen2;
 import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
+import static CLASES_GLOBALES.METODOS_GLOBALES.validarCorreoElectronico;
 import Controlador.loginDao;
 import Modelo.DatosEmpresaGeneral;
 import Modelo.login;
@@ -464,20 +465,21 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
         log = new login();
         log.setIdlogin1(Integer.parseInt(ID_USUARIO));
         logDao.VerDatosTablaLogin(log);
-        
+
         CajaId.setText(String.valueOf(log.getIdlogin1()));
         CajaNombre.setText(log.getNombre());
         CajaContraseña.setText(log.getContraseña());
         NombreUsuario.setText(log.getNombreUsuario());
         ComboRol.setSelectedItem(log.getRol());
         combo_Estado.setSelectedItem(log.getEstado_Registro());
+        jTextField2.setText(log.getCorreo());
+        jTextField3.setText(log.getContrasenia_Correo());
         Caja_COLOR_FX.setText(log.getColor());
         Cargar_Color(log.getColor());
         Check_AccesoDirecto.setSelected(Boolean.valueOf(log.getAccesoDirecto()));
         jButton47.setVisible(true);
         jButton45.setVisible(false);
-        System.out.println(CargarDatosRutas(1) + "\\" + log.getImagen());
-        PintarImagen(labelimagen, CargarDatosRutas(3) + "\\" + log.getImagen());
+        PintarImagen(labelimagen, CargarDatosRutas(3) + "/" + log.getImagen());
     }
 
     public void INGRESAR_USUARIO() {
@@ -500,6 +502,8 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
                 lg.setEstado_Registro(combo_Estado.getSelectedItem().toString());
                 lg.setAccesoDirecto(String.valueOf(Check_AccesoDirecto.isSelected()));
                 lg.setImagen(labelruta.getText());
+                lg.setCorreo(jTextField2.getText());
+                lg.setCorreo(jTextField3.getText());
                 logina.Registrar(lg);
                 VaciarUsuario();
                 Usuarios();
@@ -525,6 +529,8 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
                     lg.setEstado_Registro(combo_Estado.getSelectedItem().toString());
                     lg.setAccesoDirecto(String.valueOf(Check_AccesoDirecto.isSelected()));
                     lg.setImagen(labelruta.getText());
+                    lg.setCorreo(jTextField2.getText());
+                    lg.setContrasenia_Correo(jTextField3.getText());
                     if (combo_Estado.getSelectedIndex() == 1) {
                         int Seleccion = JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO QUE QUIERE DESACTIVAR EL USUARIO: " + CajaNombre.getText()+"?");
                         if (Seleccion == 0) {
@@ -582,11 +588,19 @@ public class ADMINISTRACION_DE_USUARIOS extends javax.swing.JFrame {
 
     
     private void jButton45ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton45ActionPerformed
-        INGRESAR_USUARIO();
+        if(validarCorreoElectronico(jTextField2.getText())==true){
+            INGRESAR_USUARIO();
+        }else {
+                JOptionPane.showMessageDialog(null, "INGRESE UN CORREO ELECTRÓNICO VÁLIDO");
+            }
     }//GEN-LAST:event_jButton45ActionPerformed
 
     private void jButton47ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton47ActionPerformed
-        EDITAR_USUARIOS();
+        if(validarCorreoElectronico(jTextField2.getText())==true || jTextField2.getText().equals("")){
+            EDITAR_USUARIOS();
+        }else {
+                JOptionPane.showMessageDialog(null, "INGRESE UN CORREO ELECTRÓNICO VÁLIDO");
+            }
     }//GEN-LAST:event_jButton47ActionPerformed
 
     private void jButton46ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton46ActionPerformed

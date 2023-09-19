@@ -92,7 +92,7 @@ public class loginDao extends ConexionesSQL{
                 rs = null;
                 cn = Unionsis2.getConnection();
         
-        String sql="select Nombre, Contraseña, Rol, NombreUsuario, idlogin1, Estado, Estado_Registro, Color, Imagen from login1 where Nombre=? AND Contraseña=?";
+        String sql="select Nombre, Contraseña, Rol, NombreUsuario, idlogin1, Estado, Estado_Registro, Color, Imagen, Correo, Contrasenia_Correo from login1 where Nombre=? AND Contraseña=?";
         try {
             ps= cn.prepareStatement(sql);
             ps.setString(1, Nombre);
@@ -110,6 +110,8 @@ public class loginDao extends ConexionesSQL{
                 l.setEstado(rs.getString("Estado"));
                 l.setEstado_Registro(rs.getString("Estado_Registro"));
                 l.setColor(rs.getString("Color"));
+                l.setCorreo(rs.getString("Correo"));
+                l.setContrasenia_Correo(rs.getString("Contrasenia_Correo"));
                 PARAMETROS_USUARIOS.ID_USUARIO=rs.getInt("idlogin1");
                 PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO=rs.getString("NombreUsuario");   
                 PARAMETROS_USUARIOS.NOMBRE_USUARIO=rs.getString("Nombre");
@@ -118,6 +120,8 @@ public class loginDao extends ConexionesSQL{
                 PARAMETROS_USUARIOS.ESTADO_USUARIO=rs.getString("Estado_Registro");
                 PARAMETROS_USUARIOS.COLOR_USUARIO = rs.getString("Color");
                 PARAMETROS_USUARIOS.RUTAIMAGEN_USUARIO = rs.getString("Imagen");
+                PARAMETROS_USUARIOS.CORREO=rs.getString("Correo");
+                PARAMETROS_USUARIOS.CONTRASENIA_CORREO=rs.getString("Contrasenia_Correo");
                 
             }
 
@@ -168,7 +172,7 @@ public class loginDao extends ConexionesSQL{
                 rs = null;
                 cn = Unionsis2.getConnection();
         
-        String sql="select Nombre, Contraseña, Rol, NombreUsuario, idlogin1, Estado, Estado_Registro, Color, Imagen from login1 where idlogin1=?";
+        String sql="select Nombre, Contraseña, Rol, NombreUsuario, idlogin1, Estado, Estado_Registro, Color, Imagen, Correo, Contrasenia_Correo from login1 where idlogin1=?";
         try {
             ps= cn.prepareStatement(sql);
             ps.setString(1, ID);
@@ -186,6 +190,8 @@ public class loginDao extends ConexionesSQL{
                 l.setEstado_Registro(rs.getString("Estado_Registro"));
                 l.setColor(rs.getString("Color"));
                 l.setImagen(rs.getString("Imagen"));
+                l.setCorreo(rs.getString("Correo"));
+                l.setContrasenia_Correo(rs.getString("Contrasenia_Correo"));
                 PARAMETROS_USUARIOS.ID_USUARIO=rs.getInt("idlogin1");
                 PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO=rs.getString("NombreUsuario");   
                 PARAMETROS_USUARIOS.NOMBRE_USUARIO=rs.getString("Nombre");
@@ -194,7 +200,8 @@ public class loginDao extends ConexionesSQL{
                 PARAMETROS_USUARIOS.ESTADO_USUARIO=rs.getString("Estado_Registro");
                 PARAMETROS_USUARIOS.COLOR_USUARIO = rs.getString("Color");
                 PARAMETROS_USUARIOS.RUTAIMAGEN_USUARIO = rs.getString("Imagen");
-                
+                PARAMETROS_USUARIOS.CORREO=rs.getString("Correo");
+                PARAMETROS_USUARIOS.CONTRASENIA_CORREO=rs.getString("Contrasenia_Correo");
             }
 
         } catch (SQLException e) {
@@ -212,11 +219,11 @@ public class loginDao extends ConexionesSQL{
                 rs = null;
                 cn = Unionsis2.getConnection();
         try {
-            ps = cn.prepareStatement("select idlogin1, Nombre, Contraseña, Rol, NombreUsuario, Color, Estado_Registro, AccesoDirecto, Imagen from login1 where idlogin1=?");
+            ps = cn.prepareStatement("select idlogin1, Nombre, Contraseña, Rol, NombreUsuario, Color, Estado_Registro, AccesoDirecto, Imagen, Correo, Contrasenia_Correo from login1 where idlogin1=?");
             ps.setInt(1, log.getIdlogin1());
             rs = ps.executeQuery();
             
-            while(rs.next()){
+            if(rs.next()){
             log.setIdlogin1(rs.getInt("idlogin1"));
                 log.setNombre(rs.getString("Nombre"));
                 log.setRol(rs.getString("Rol"));
@@ -226,6 +233,8 @@ public class loginDao extends ConexionesSQL{
                 log.setEstado_Registro(rs.getString("Estado_Registro"));
                 log.setAccesoDirecto(rs.getString("AccesoDirecto"));
                 log.setImagen(rs.getString("Imagen"));
+                log.setCorreo(rs.getString("Correo"));
+                log.setContrasenia_Correo(rs.getString("Contrasenia_Correo"));
             }
         } catch (SQLException e) {
             System.out.println("Error en Método Visualizar, "+e);
@@ -240,7 +249,8 @@ public class loginDao extends ConexionesSQL{
         
         ps = null;
         cn = Unionsis2.getConnection();
-        String slq= "insert into login1 (Nombre, Contraseña, Rol, NombreUsuario, FechaIngreso, UltimaVezIngreso, Ingreso,  Color, Estado_Registro, AccesoDirecto, Imagen) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String slq= "insert into login1 (Nombre, Contraseña, Rol, NombreUsuario, FechaIngreso, UltimaVezIngreso, Ingreso,  Color, Estado_Registro, AccesoDirecto, Imagen, Correo, Contrasenia_Correo) "
+                + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try {
            ps=  cn.prepareStatement(slq);
@@ -255,6 +265,8 @@ public class loginDao extends ConexionesSQL{
            ps.setString(9, reg.getEstado_Registro());
            ps.setString(10, reg.getAccesoDirecto());
            ps.setString(11, reg.getImagen());
+           ps.setString(12, reg.getCorreo());
+           ps.setString(13, reg.getContrasenia_Correo());
            Boolean Resultado = ps.execute();
            if(Resultado==true){
            DesktopNotify.setDefaultTheme(NotifyTheme.Light);
@@ -303,7 +315,8 @@ public class loginDao extends ConexionesSQL{
         ps = null;
                 cn = Unionsis2.getConnection();
         
-        String slq= "update login1 set Nombre=?, Contraseña=?, Rol=?, NombreUsuario=?, Color=?, Estado_Registro=?, AccesoDirecto=?, Imagen=? where idlogin1=?";
+        String slq= "update login1 set Nombre=?, Contraseña=?, Rol=?, NombreUsuario=?, Color=?, Estado_Registro=?, AccesoDirecto=?, Imagen=?, Correo=?, Contrasenia_Correo=?"
+                + " where idlogin1=?";
         try {
            ps=  cn.prepareStatement(slq);
            ps.setString(1,reg.getNombre());
@@ -314,7 +327,9 @@ public class loginDao extends ConexionesSQL{
             ps.setString(6, reg.getEstado_Registro());
             ps.setString(7, reg.getAccesoDirecto());
             ps.setString(8, reg.getImagen());
-            ps.setInt(9, reg.getIdlogin1());
+            ps.setString(9, reg.getCorreo());
+           ps.setString(10, reg.getContrasenia_Correo());
+            ps.setInt(11, reg.getIdlogin1());
             Boolean Resultado = ps.execute();
             if (Resultado == true) {
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);
@@ -336,7 +351,8 @@ return false;
         ps = null;
                 cn = Unionsis2.getConnection();
 
-        String slq = "update login1 set Nombre=?, Contraseña=?, Rol=?, NombreUsuario=?, Color=?, Estado_Registro=?, AccesoDirecto=?, Imagen=? where idlogin1=?";
+        String slq = "update login1 set Nombre=?, Contraseña=?, Rol=?, NombreUsuario=?, Color=?, Estado_Registro=?, AccesoDirecto=?, Imagen=?, Correo=?, Contrasenia_Correo=?"
+                + " where idlogin1=?";
         try {
             ps = cn.prepareStatement(slq);
             ps.setString(1, reg.getNombre());
@@ -347,7 +363,9 @@ return false;
             ps.setString(6, reg.getEstado_Registro());
             ps.setString(7, reg.getAccesoDirecto());
             ps.setString(8, reg.getImagen());
-            ps.setInt(9, reg.getIdlogin1());
+            ps.setString(9, reg.getCorreo());
+           ps.setString(10, reg.getContrasenia_Correo());
+            ps.setInt(11, reg.getIdlogin1());
             Boolean Resultado = ps.execute();
             if (Resultado == true) {
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);

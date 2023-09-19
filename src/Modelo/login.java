@@ -7,19 +7,21 @@ public class login {
     private String Contraseña;
     private String Rol;
     private int idlogin1;
-    private String NombreUsuario;
+    private String NombreUsuario, Correo, Contrasenia_Correo;
     private String ruta;
     private String FechaIngreso, UltimaVezIngreso, Estado, Color, Estado_Registro, AccesoDirecto, Imagen;
     public login(){
         
     }
 
-    public login(String Nombre, String Contraseña, String Rol, int idlogin1, String NombreUsuario, String ruta, String FechaIngreso, String UltimaVezIngreso, String Estado, String Color, String Estado_Registro, String AccesoDirecto, String Imagen) {
+    public login(String Nombre, String Contraseña, String Rol, int idlogin1, String NombreUsuario, String Correo, String Contrasenia, String ruta, String FechaIngreso, String UltimaVezIngreso, String Estado, String Color, String Estado_Registro, String AccesoDirecto, String Imagen) {
         this.Nombre = Nombre;
         this.Contraseña = Contraseña;
         this.Rol = Rol;
         this.idlogin1 = idlogin1;
         this.NombreUsuario = NombreUsuario;
+        this.Correo = Correo;
+        this.Contrasenia_Correo = Contrasenia;
         this.ruta = ruta;
         this.FechaIngreso = FechaIngreso;
         this.UltimaVezIngreso = UltimaVezIngreso;
@@ -68,6 +70,22 @@ public class login {
 
     public void setNombreUsuario(String NombreUsuario) {
         this.NombreUsuario = NombreUsuario;
+    }
+
+    public String getCorreo() {
+        return Correo;
+    }
+
+    public void setCorreo(String Correo) {
+        this.Correo = Correo;
+    }
+
+    public String getContrasenia_Correo() {
+        return Contrasenia_Correo;
+    }
+
+    public void setContrasenia_Correo(String Contrasenia_Correo) {
+        this.Contrasenia_Correo = Contrasenia_Correo;
     }
 
     public String getRuta() {

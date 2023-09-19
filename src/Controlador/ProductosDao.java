@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 public class ProductosDao extends ConexionesSQL{
     Productos producto= new Productos();
             
-         public List ListarProductosCombo(){
+        public List ListarProductosCombo(){
         cn= Unionsis2.getConnection();
         List<Productos> Listapr = new ArrayList();
         String sql = "SELECT CodigoBarras, Nombre FROM productos";

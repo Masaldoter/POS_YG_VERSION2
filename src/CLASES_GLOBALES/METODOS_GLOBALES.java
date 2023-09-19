@@ -33,6 +33,8 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -295,9 +297,9 @@ public class METODOS_GLOBALES {
         loginDao login = new loginDao();
         DE = login.VerDatosEmpresaEnLogin();    
         if(Seleccion==0){
-        Ruta = CargarDatosRutas(0)+"\\" +DE.getRutaimagenlogo();
+        Ruta = CargarDatosRutas(0)+"\\" +PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA;
         }else{
-        Ruta = CargarDatosRutas(0)+"\\" +DE.getRutaimagensistema();
+        Ruta = CargarDatosRutas(0)+"\\" +PARAMETROS_EMPRESA.RUTADEIMAGEN_SISTEMA_EMPRESA;
         }
         return Ruta;
     }
@@ -559,5 +561,13 @@ public class METODOS_GLOBALES {
                 }
             }
         }
+    }
+    
+     public static boolean validarCorreoElectronico(String correo) {
+        // Patrón para validar una dirección de correo electrónico
+        String patron = "^[A-Za-z0-9+_.-]+@(.+)$";
+        Pattern pattern = Pattern.compile(patron);
+        Matcher matcher = pattern.matcher(correo);
+        return matcher.matches();
     }
 }

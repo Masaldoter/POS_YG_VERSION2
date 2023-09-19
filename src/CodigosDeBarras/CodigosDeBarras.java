@@ -1,6 +1,9 @@
 
 package CodigosDeBarras;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+import CLASES_GLOBALES.PARAMETROS_VERSION_SISTEMA;
 import Clases_Reportes.Codigos;
 import IMPRESORAS.OBTENERIMPRESORAS;
 import ds.desktop.notify.DesktopNotify;
@@ -12,6 +15,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -28,7 +33,7 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class CodigosDeBarras {
     OBTENERIMPRESORAS Impresora= new OBTENERIMPRESORAS();
-    
+    JasperPrint imprimirReporte;
     
     public void CodigoBarrasMediano(ParametrosCodigosDeBarras parametros, String NombreEmpresa){
         Codigos codigos;
@@ -41,11 +46,12 @@ public class CodigosDeBarras {
                 par.put("pre", codigos.getPublico());
                 par.put("cost", codigos.getCostoLetras());
                 par.put("empresa", NombreEmpresa);
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
             lista.add(codigos);   
                 try {
             JasperReport reporte;
            
-            String directorio2 = new File ("C:\\Sistema Punto de Venta YG\\CodigoBarrasMediano.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Etiquetas/CodigoBarrasMediano.jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
@@ -60,10 +66,16 @@ public class CodigosDeBarras {
             vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             vistaReporte.setVisible(true);
             vistaReporte.setZoomRatio(4);
-            Boolean P=  JasperPrintManager.printReport(imprimirReporte, true);
-            if(P==true){
-              vistaReporte.dispose();
-            }
+            new Thread(() -> {
+                try {
+                    Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
+                    if (P == true) {
+                        vistaReporte.dispose();
+                    }
+                } catch (JRException ex) {
+                    Logger.getLogger(CodigosDeBarras.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    }).start();
             
         } catch (JRException ex) {
             DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
@@ -85,10 +97,11 @@ public class CodigosDeBarras {
                 par.put("cost", codigos.getCostoLetras());
                 par.put("empresa", NombreEmpresa);
                 par.put("empresalargo", NombreEmpresaLargo);
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
             lista.add(codigos);   
                 try {
             JasperReport reporte = null;
-            String directorio2 = new File ("C:\\Sistema Punto de Venta YG\\CodigoBarrasGrande.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Etiquetas/CodigoBarrasGrande.jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
@@ -124,10 +137,11 @@ public class CodigosDeBarras {
                 par.put("pre", codigos.getPublico());
                 par.put("cost", codigos.getCostoLetras());
                 par.put("empresa", NombreEmpresa);
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
             lista.add(codigos);   
                 try {
             JasperReport reporte = null;
-            String directorio2 = new File ("C:\\Sistema Punto de Venta YG\\CodigoBarras3x1.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Etiquetas/CodigoBarras3x1.jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
             JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
@@ -140,10 +154,16 @@ public class CodigosDeBarras {
             vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             vistaReporte.setVisible(true);
             vistaReporte.setZoomRatio(1);
-            Boolean P=  JasperPrintManager.printReport(imprimirReporte, true);
-            if(P==true){
-              vistaReporte.dispose();
-            }
+            new Thread(() -> {
+                try {
+                    Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
+                    if (P == true) {
+                        vistaReporte.dispose();
+                    }
+                } catch (JRException ex) {
+                    Logger.getLogger(CodigosDeBarras.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    }).start();
         } catch (JRException ex) {
             DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
             DesktopNotify.showDesktopMessage("ERROR AL GENERAR CODIGO DE BARRAS 3X1", "NO SE PUDO REALIZAR LA ACCIÓN\n"+ ex, DesktopNotify.SUCCESS, 9000L);
@@ -163,32 +183,39 @@ public class CodigosDeBarras {
                 par.put("pre", codigos.getPublico());
                 par.put("cost", codigos.getCostoLetras());
                 par.put("empresa", NombreEmpresa);
+                par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
             lista.add(codigos);   
                 try {
             JasperReport reporte = null;
-            String directorio2 = new File ("C:\\Sistema Punto de Venta YG\\CodigoBarrasPequeño.jasper").getAbsolutePath();
+            String directorio2 = new File (PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Etiquetas/CodigoBarrasPequeño.jasper").getAbsolutePath();
             File prove = new File(directorio2);
             reporte = (JasperReport) JRLoader.loadObject(prove);
-            JasperPrint imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
+            imprimirReporte = JasperFillManager.fillReport(reporte, par, new JRBeanCollectionDataSource(lista));
             
             Impresora.CargarDatosImpresoras();
             String ImpresoraSeleccionada = Impresora.getIMPRESORA_ETIQUETAS();
             
             estableceImpresoraPredeterminada(ImpresoraSeleccionada);
             JasperViewer vistaReporte = new JasperViewer(imprimirReporte, false);
-            vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            vistaReporte.setVisible(true);
-            vistaReporte.setTitle("ETIQUETA 1X1");
-            //vistaReporte.setExtendedState(10);
-            vistaReporte.setZoomRatio(7);
-            Boolean P=  JasperPrintManager.printReport(imprimirReporte, true);
-            
-            if(P==true){
-              vistaReporte.dispose();
-            }
-        } catch (JRException ex) {
-            DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
-            DesktopNotify.showDesktopMessage("ERROR AL GENERAR CODIGO DE BARRAS GRANDE", "NO SE PUDO REALIZAR LA ACCIÓN\n"+ ex, DesktopNotify.SUCCESS, 9000L);
+                    vistaReporte.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    vistaReporte.setVisible(true);
+                    vistaReporte.setTitle("ETIQUETA 1X1");
+                    //vistaReporte.setExtendedState(10);
+                    vistaReporte.setZoomRatio(7);
+                    new Thread(() -> {
+                try {
+                    Boolean P = JasperPrintManager.printReport(imprimirReporte, true);
+                    if (P == true) {
+                        vistaReporte.dispose();
+                    }
+                } catch (JRException ex) {
+                    Logger.getLogger(CodigosDeBarras.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    }).start();
+
+                } catch (JRException ex) {
+                    DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
+            DesktopNotify.showDesktopMessage("ERROR AL GENERAR CODIGO DE BARRAS PEQUEÑO", "NO SE PUDO REALIZAR LA ACCIÓN\n"+ ex, DesktopNotify.SUCCESS, 9000L);
         }
 
     }

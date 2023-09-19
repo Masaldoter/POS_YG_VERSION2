@@ -65,7 +65,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -167,17 +166,14 @@ public final class Principal extends javax.swing.JFrame {
             jMenuItem32.setEnabled(false);
             jMenuItem33.setEnabled(false);
             jMenuItem8.setEnabled(false);
-            P_O_S.TipoDocumento.setEnabled(false);
-            P_O_S.TipoDocumento.setEnabled(false);
-            P_O_S.TipoDocumento.setSelectedIndex(1);
+            P_O_S.TipoDocumento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"PROFORMA", "COTIZACIÓN"}));
             ConfigVentas.RecordarTipoDocumento(P_O_S.TipoDocumento);
         }else{
             jMenuItem32.setEnabled(true);
             jMenuItem33.setEnabled(true);
             jMenuItem8.setEnabled(true);
-            P_O_S.TipoDocumento.setEnabled(true);
-            P_O_S.TipoDocumento.setSelectedIndex(0);
             ConfigVentas.RecordarTipoDocumento(P_O_S.TipoDocumento);
+            P_O_S.TipoDocumento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FACTURA", "PROFORMA", "COTIZACIÓN", "VALE", "TRASLADO" }));
         }
         Cerrar();
         
@@ -212,7 +208,7 @@ public final class Principal extends javax.swing.JFrame {
     public void CARGAR_TITULO(){
         this.setTitle(PARAMETROS_VERSION_SISTEMA.NOMBRE_SISTEMA+" "+PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA+
         " | "+PARAMETROS_EMPRESA.NOMBRE_EMPRESA.toUpperCase()+ " | "+PARAMETROS_USUARIOS.NOMBRE_USUARIO+ 
-        " | "+PARAMETROS_USUARIOS.ROL_USUARIO.toUpperCase());
+        " | "+PARAMETROS_USUARIOS.ROL_USUARIO.toUpperCase()+" | "+PARAMETROS_VERSION_SISTEMA.VERSION_SISTEMA);
     }
 
     @Override
@@ -1778,61 +1774,6 @@ public final class Principal extends javax.swing.JFrame {
         }
 
     }
-    
-    public static void CAMBIAR_ICONO() {
-        ImageIcon icono = new ImageIcon(ObtenerRutaImagen(1)); // carga el icono desde archivo
-
-        // crea una imagen en blanco del mismo tamaño que el icono
-        BufferedImage imagen = new BufferedImage(icono.getIconWidth(), icono.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-
-        // dibuja el icono sobre la imagen
-        Graphics2D g = imagen.createGraphics();
-        icono.paintIcon(null, g, 0, 0);
-        g.dispose();
-
-        // obtiene la imagen modificada con el nuevo color
-        BufferedImage imagenModificada = cambiarColorImagen(imagen, Color.GREEN); // aquí se cambia el color a rojo
-
-        // crea un nuevo icono a partir de la imagen modificada
-        ImageIcon nuevoIcono = new ImageIcon(imagenModificada);
-
-        // muestra el nuevo icono
-        // por ejemplo, en un JLabel:
-        JLabel etiqueta = new JLabel(nuevoIcono);
-        JOptionPane.showMessageDialog(null, "AQUÍ HAGO UNA PRUEBA DE CAMBIAR EL COLOR DEL ICONO", "MUESTRA DE ICONO", JOptionPane.OK_CANCEL_OPTION, nuevoIcono);
-    }
-    
-    private static BufferedImage cambiarColorImagen(BufferedImage imagen, Color nuevoColor) {
-        // crea una copia de la imagen
-        BufferedImage nuevaImagen = new BufferedImage(imagen.getWidth(), imagen.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        nuevaImagen.createGraphics().drawImage(imagen, 0, 0, null);
-
-        // obtiene los componentes RGB del nuevo color
-        int r = nuevoColor.getRed();
-        int g = nuevoColor.getGreen();
-        int b = nuevoColor.getBlue();
-
-        // recorre los píxeles de la imagen y modifica su color
-        for (int x = 0; x < nuevaImagen.getWidth(); x++) {
-            for (int y = 0; y < nuevaImagen.getHeight(); y++) {
-                int colorActual = nuevaImagen.getRGB(x, y);
-                int alpha = (colorActual >> 24) & 0xff;
-                int red = (colorActual >> 16) & 0xff;
-                int green = (colorActual >> 8) & 0xff;
-                int blue = colorActual & 0xff;
-                if (red == 0 && green == 0 && blue == 0) { // cambia solo los píxeles negros
-                    red = r;
-                    green = g;
-                    blue = b;
-                    int nuevoColorRGB = (alpha << 24) | (red << 16) | (green << 8) | blue;
-                    nuevaImagen.setRGB(x, y, nuevoColorRGB);
-                }
-            }
-        }
-
-        return nuevaImagen;
-    }
-    
     //Redireccionamiento a facebook
     public void Facebook() {
         if (java.awt.Desktop.isDesktopSupported()) {

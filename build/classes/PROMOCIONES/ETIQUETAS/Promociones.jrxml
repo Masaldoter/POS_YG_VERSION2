@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CÓDIGO DE BARRAS 1X1" columnCount="3" pageWidth="90" pageHeight="63" columnWidth="30" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c70894a0-23a5-499a-b653-f00651bc0809">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PROMOCIONES" columnCount="3" pageWidth="90" pageHeight="63" columnWidth="30" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c70894a0-23a5-499a-b653-f00651bc0809">
 	<property name="ireport.zoom" value="7.400249944258183"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -7,6 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="empresa" class="java.lang.String"/>
+	<parameter name="rutaimagen" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -18,18 +19,18 @@
 			<textField>
 				<reportElement x="6" y="0" width="79" height="49" uuid="c02b81fe-5a0e-4b3c-89ee-a93f57bc2b4b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font size="8" isBold="false" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nom}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement x="75" y="49" width="10" height="9" uuid="920b25d1-cbd7-4949-8ce6-8b19d8b99fe6"/>
-				<imageExpression><![CDATA["C:\\Sistema Punto de Venta YG\\FerreteríaPequeño.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{rutaimagen}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="6" y="49" width="79" height="13" uuid="6a7727e0-7f3c-4711-951e-6ea655086852"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Garamond" size="6"/>
+					<font fontName="Garamond" size="6" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{empresa}]]></textFieldExpression>
 			</textField>

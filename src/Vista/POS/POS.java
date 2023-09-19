@@ -1304,8 +1304,8 @@ public final class POS extends javax.swing.JInternalFrame {
     
 public void GenerarVenta() {
         //Detalles D;
-        switch (TipoDocumento.getSelectedIndex()) {
-            case 0 -> {
+        switch (String.valueOf(TipoDocumento.getSelectedItem())) {
+            case "FACTURA" -> {
 
                 if (Float.parseFloat(labeltotalenfacturacion.getText()) > Float.parseFloat(pagocon.getText())) {
                     if (VentanaFormaPago == true) {
@@ -1321,7 +1321,7 @@ public void GenerarVenta() {
                     GenerarFacturaElectronica();
                 }
             }
-            case 1 -> {
+            case "PROFORMA" -> {
                 
                 if(Float.parseFloat(labeltotalenfacturacion.getText())>Float.parseFloat(pagocon.getText())){
                     int seleccion= JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO QUE EL PAGO ("+pagocon.getText()+") SEA MENOR A EL TOTAL ("+labeltotalenfacturacion.getText()+")?");
@@ -1345,7 +1345,7 @@ public void GenerarVenta() {
                     Imprimir();
                 }
             }
-            case 2 -> {
+            case "COTIZACIÓN" -> {
                 if(!"".equals(nombre.getText())){
                     generarserieCotizacion();
                     generarserieCotizacion();
@@ -1356,7 +1356,7 @@ public void GenerarVenta() {
                     DesktopNotify.showDesktopMessage("RELLENAR CAMPO", "DEBE INGRESAR UN NOMBRE DE CLIENTE", DesktopNotify.ERROR, 14000L);
                 }
             }
-            case 3 -> {
+            case "VALE" -> {
                 if(!"".equals(nombre.getText())){
                     generarserieVales();
                     generarserieVales();
@@ -1366,7 +1366,7 @@ public void GenerarVenta() {
                     DesktopNotify.showDesktopMessage("RELLENAR CAMPO", "DEBE INGRESAR UN NOMBRE DE CLIENTE", DesktopNotify.ERROR, 14000L);
                 }
             }
-            case 4 -> {
+            case "TRASLADO" -> {
                 if(!"".equals(nombre.getText())){
                     generarserie_TRASLADOS();
                     generarserie_TRASLADOS();
@@ -2941,15 +2941,14 @@ public void GenerarVenta() {
                     .addComponent(Vale)
                     .addComponent(lblSerie_TRASLADOS))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel69Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSubir, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBajar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(btnBajar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
 
         PanelBotonesPOS.setBackground(new java.awt.Color(51, 153, 255));
@@ -3818,6 +3817,7 @@ public void GenerarVenta() {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         jTextField1.setText("");
+        jTextField1.requestFocus();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased

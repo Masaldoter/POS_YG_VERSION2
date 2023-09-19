@@ -6,6 +6,10 @@
 
 package Gmail;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
+import static CLASES_GLOBALES.METODOS_GLOBALES.validarCorreoElectronico;
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+import Controlador.ClientesDao;
 import Modelo.DatosEmpresaGeneral;
 import Vista.AVISOS;
 import ds.desktop.notify.DesktopNotify;
@@ -17,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -40,11 +45,11 @@ public class InterfazGmail extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         CargarDatosEmpresa();
         ArchivoAdjunto.setText(RUTA);
-        CuerpoMensaje.setText("¡HOLA, TE ADJUNTAMOS EL DETALLE DE TU "+TIPO_DOCUMENTO+"!\n" +
-" GRACIAS POR TU PREFERENCIA! :)");
-        AsuntoMensaje.setText("TE ADJUNTAMOS TU "+TIPO_DOCUMENTO+" #"+Factura.getText());
+        CuerpoMensaje.setText("¡HOLA, TE ADJUNTAMOS EL DETALLE DE TU " + TIPO_DOCUMENTO + "!\n"
+                + " GRACIAS POR TU PREFERENCIA! :)");
+        AsuntoMensaje.setText("TE ADJUNTAMOS TU " + TIPO_DOCUMENTO + " #" + Factura.getText());
         //CargarDocumento();
-        CajaCorreoReceptor.requestFocus();
+        jComboBox1.requestFocus();
         I_G = this;
     }
 
@@ -59,12 +64,13 @@ public class InterfazGmail extends javax.swing.JFrame {
         String DetalleCompleto;
         DetalleCompleto = Detalle + "\n"+Empresa.getNombreEmpresa()+"\n"+Empresa.getDireccion();
         AsuntoMensaje.setText("TE ADJUNTAMOS TU FACTURA "+Factura.getText());
+        ClientesDao.CORREOS_CLIENTES_USUARIOS(jComboBox1);
     }
     
     public void CargarDocumento(){
-        ArchivoAdjunto.setText("C:\\"+jLabel8.getText()+"\\FACTURAS DE "+jLabel8.getText()+" ENVIADAS POR CORREO\\"+Factura.getText()+".pdf");
+        ArchivoAdjunto.setText("C:\\"+jLabel8.getText()+"\\DOCUMENTOS DE "+jLabel8.getText()+" ENVIADAS POR CORREO\\"+Factura.getText()+".pdf");
         Archivo = new File(ArchivoAdjunto.getText());
-         ArchivoFoto = new File("C:\\Sistema Punto de Venta YG\\FerreteríaPequeño.png");
+         ArchivoFoto = new File(METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
         ArchivoAdjunto.setText(Archivo.toString());
         
     }
@@ -78,7 +84,7 @@ public class InterfazGmail extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        CajaCorreoReceptor = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         AsuntoMensaje = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -126,7 +132,7 @@ public class InterfazGmail extends javax.swing.JFrame {
 
         jLabel3.setText("CORREO RECEPTOR:");
 
-        CajaCorreoReceptor.setText("aldomusic179@gmail.com");
+        jComboBox1.setEditable(true);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -136,15 +142,15 @@ public class InterfazGmail extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CajaCorreoReceptor)
+                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CajaCorreoReceptor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -465,8 +471,8 @@ public class InterfazGmail extends javax.swing.JFrame {
             DesktopNotify.showDesktopMessage("¡ERROR!","¡DEBE INGRESAR EL CORREO DEL CLIENTE!", DesktopNotify.FAIL, 9000L);
         
         }*/
-        
-        Runnable runnable_AVISO = new Runnable() {
+        if(validarCorreoElectronico(jComboBox1.getSelectedItem().toString())==true){
+          Runnable runnable_AVISO = new Runnable() {
             @Override
             public void run() {
                 VENTANA_AVISO= new AVISOS("ENVIANDO CORREO, ¡ESPERE!", "ESPERE UN MOMENTO");
@@ -480,9 +486,9 @@ public class InterfazGmail extends javax.swing.JFrame {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (CajaCorreoReceptor.getText() != null) {
+                if (jComboBox1.getSelectedItem().toString() != null) {
                     EmailSender E = new EmailSender();
-                    Boolean ESTADO = E.ENVIAR_CORREO(CajaRemitente.getText(), ContraseniaRemitente.getText(), CajaCorreoReceptor.getText(), AsuntoMensaje.getText(), CuerpoMensaje.getText(), ArchivoAdjunto.getText());
+                    Boolean ESTADO = E.ENVIAR_CORREO(CajaRemitente.getText(), ContraseniaRemitente.getText(), jComboBox1.getSelectedItem().toString(), AsuntoMensaje.getText(), CuerpoMensaje.getText(), ArchivoAdjunto.getText());
                     if (ESTADO == true) {
                         VENTANA_AVISO.dispose();
                         I_G.dispose();
@@ -497,7 +503,10 @@ public class InterfazGmail extends javax.swing.JFrame {
             }
         };
         Thread hilo = new Thread(runnable);
-        hilo.start();
+        hilo.start();  
+        }else {
+                JOptionPane.showMessageDialog(null, "INGRESE UN CORREO ELECTRÓNICO VÁLIDO");
+            }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -550,6 +559,8 @@ public class InterfazGmail extends javax.swing.JFrame {
         }
     }
     
+   
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -585,7 +596,6 @@ public class InterfazGmail extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ArchivoAdjunto;
     private javax.swing.JTextField AsuntoMensaje;
-    private javax.swing.JTextField CajaCorreoReceptor;
     private javax.swing.JTextField CajaRemitente;
     private javax.swing.JTextField ContraseniaRemitente;
     private javax.swing.JTextArea CuerpoMensaje;
@@ -596,6 +606,7 @@ public class InterfazGmail extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
