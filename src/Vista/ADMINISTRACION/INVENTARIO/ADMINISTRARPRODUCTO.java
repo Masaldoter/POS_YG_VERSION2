@@ -608,8 +608,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 pro.setAPLICAR_DESCUENTO(jCheckBox1.isSelected());
                 proDao.EditarProductoSinImagen(pro);
                 Id.requestFocus();
-                principal.VentanaAdministracionDeProductos=false;
+               
                 if(jCheckBoxMenuItem1.isSelected()){
+                     principal.VentanaAdministracionDeProductos=false;
                     this.dispose();
                 }else{
                     limpiarCajas();

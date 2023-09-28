@@ -1132,6 +1132,8 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
                     DesktopNotify.setDefaultTheme(NotifyTheme.Light);
                     DesktopNotify.showDesktopMessage("¡FRACASO AL AUMENTAR STOCK!", "¡EL PRODUCTO CON CÓDIGO \n" + cod + " NO EXISTE!", DesktopNotify.ERROR, 10000L);
                 }
+            }else{
+                ResultadoAumento = true;
             }
         }
         return ResultadoAumento;

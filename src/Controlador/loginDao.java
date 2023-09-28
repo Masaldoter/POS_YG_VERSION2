@@ -172,7 +172,7 @@ public class loginDao extends ConexionesSQL{
                 rs = null;
                 cn = Unionsis2.getConnection();
         
-        String sql="select Nombre, Contraseña, Rol, NombreUsuario, idlogin1, Estado, Estado_Registro, Color, Imagen, Correo, Contrasenia_Correo from login1 where idlogin1=?";
+        String sql="select Nombre, Contraseña, Rol, NombreUsuario, idlogin1, Estado, Estado_Registro, Color, Imagen from login1 where idlogin1=?";
         try {
             ps= cn.prepareStatement(sql);
             ps.setString(1, ID);
@@ -190,8 +190,6 @@ public class loginDao extends ConexionesSQL{
                 l.setEstado_Registro(rs.getString("Estado_Registro"));
                 l.setColor(rs.getString("Color"));
                 l.setImagen(rs.getString("Imagen"));
-                l.setCorreo(rs.getString("Correo"));
-                l.setContrasenia_Correo(rs.getString("Contrasenia_Correo"));
                 PARAMETROS_USUARIOS.ID_USUARIO=rs.getInt("idlogin1");
                 PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO=rs.getString("NombreUsuario");   
                 PARAMETROS_USUARIOS.NOMBRE_USUARIO=rs.getString("Nombre");
@@ -200,8 +198,6 @@ public class loginDao extends ConexionesSQL{
                 PARAMETROS_USUARIOS.ESTADO_USUARIO=rs.getString("Estado_Registro");
                 PARAMETROS_USUARIOS.COLOR_USUARIO = rs.getString("Color");
                 PARAMETROS_USUARIOS.RUTAIMAGEN_USUARIO = rs.getString("Imagen");
-                PARAMETROS_USUARIOS.CORREO=rs.getString("Correo");
-                PARAMETROS_USUARIOS.CONTRASENIA_CORREO=rs.getString("Contrasenia_Correo");
             }
 
         } catch (SQLException e) {

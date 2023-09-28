@@ -1322,31 +1322,28 @@ public void GenerarVenta() {
                 }
             }
             case "PROFORMA" -> {
-                
-                if(Float.parseFloat(labeltotalenfacturacion.getText())>Float.parseFloat(pagocon.getText())){
-                    int seleccion= JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO QUE EL PAGO ("+pagocon.getText()+") SEA MENOR A EL TOTAL ("+labeltotalenfacturacion.getText()+")?");
-                    if(seleccion == 0){
-                        Imprimir();
-                    }else{
-                        if(VentanaFormaPago==true){
-                            Pagos.toFront();
-                            Pagos.EfectivoPagado.requestFocus();
-                        }else{
-                            VentanaFormaPago = true;
-                            Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText()
-                                , Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(), 
+
+                if (Float.parseFloat(labeltotalenfacturacion.getText()) > Float.parseFloat(pagocon.getText())) {
+
+                    if (VentanaFormaPago == true) {
+                        Pagos.toFront();
+                        Pagos.EfectivoPagado.requestFocus();
+                    } else {
+                        VentanaFormaPago = true;
+                        Pagos.RELLENAR_PARAMETROS_FORMA_DE_PAGO(labeltotal.getText(), pagocon.getText(), cambio.getText(), Efectivo.getText(), Tarjeta.getText(),
+                                 Deposito.getText(), Cheque.getText(), CajaNumeroTransacción.getText(), ComboFormaPago.getText(),
                                 Integer.parseInt(MetodoPagoEntero.getText()), TotalIva.getText(), IVA_EMPRESA, SubTotal.getText());
-                            Pagos.setVisible(true);
-                            Pagos.toFront();
-                            Pagos.EfectivoPagado.requestFocus();
-                        }
+                        Pagos.setVisible(true);
+                        Pagos.toFront();
+                        Pagos.EfectivoPagado.requestFocus();
                     }
-                }else {
+
+                } else {
                     Imprimir();
                 }
             }
             case "COTIZACIÓN" -> {
-                if(!"".equals(nombre.getText())){
+                if (!"".equals(nombre.getText())) {
                     generarserieCotizacion();
                     generarserieCotizacion();
                     AumentarStock();

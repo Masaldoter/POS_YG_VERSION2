@@ -113,9 +113,11 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
         ConexionesSQL.cn = ConexionesSQL.Unionsis2.getConnection();
         try {
 
-            ConexionesSQL.ps = ConexionesSQL.cn.prepareStatement("select CodigoBarras, NombreProducto, "
-                    + "CantidadProductos, PrecioUnitario, Total, ProductoRegistrado, IdProducto "
-                    + "from detalle_traslados where NoTraslado=?");
+            ConexionesSQL.ps = ConexionesSQL.cn.prepareStatement("SELECT dt.CodigoBarras, CONCAT(dt.NombreProducto, ' | ', COALESCE(p.CodigoLetras, 0)) AS NombreCosto,  "
+                    + "dt.CantidadProductos, dt.PrecioUnitario, dt.Total, dt.ProductoRegistrado, dt.IdProducto "
+                    + "FROM detalle_traslados dt "
+                    + "LEFT JOIN productos p ON dt.IdProducto = p.IdProductos "
+                    + "WHERE dt.NoTraslado = ?");
             ConexionesSQL.ps.setString(1, NoF);
 
             ConexionesSQL.rs = ConexionesSQL.ps.executeQuery();

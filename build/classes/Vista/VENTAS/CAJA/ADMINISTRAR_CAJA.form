@@ -224,20 +224,25 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel3" max="32767" attributes="0"/>
-                          <Component id="jLabel6" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jLabel4" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel5" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel7" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="caja_TotalCompartido" max="32767" attributes="0"/>
-                          <Component id="caja_TotalCheque" alignment="0" pref="199" max="32767" attributes="0"/>
-                          <Component id="caja_TotalTransferencia" pref="199" max="32767" attributes="0"/>
-                          <Component id="caja_TotalTarjeta" pref="199" max="32767" attributes="0"/>
-                          <Component id="caja_TotalEfectivo" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="jLabel3" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel6" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jLabel4" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel5" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel7" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="caja_TotalCambios" max="32767" attributes="0"/>
+                                  <Component id="caja_TotalCheque" alignment="0" pref="199" max="32767" attributes="0"/>
+                                  <Component id="caja_TotalTransferencia" pref="199" max="32767" attributes="0"/>
+                                  <Component id="caja_TotalTarjeta" pref="199" max="32767" attributes="0"/>
+                                  <Component id="caja_TotalEfectivo" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="jLabel20" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -268,9 +273,11 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="caja_TotalCompartido" alignment="0" max="32767" attributes="0"/>
+                          <Component id="caja_TotalCambios" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabel7" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel20" min="-2" pref="39" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -342,16 +349,24 @@
                 <Property name="text" type="java.lang.String" value="TOTAL CAMBIOS:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="caja_TotalCompartido">
+            <Component class="javax.swing.JTextField" name="caja_TotalCambios">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="text" type="java.lang.String" value="0.00"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="caja_TotalCompartidoActionPerformed"/>
-                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="caja_TotalCompartidoKeyReleased"/>
-                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="caja_TotalCompartidoKeyTyped"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="caja_TotalCambiosActionPerformed"/>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="caja_TotalCambiosKeyReleased"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="caja_TotalCambiosKeyTyped"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel20">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="*INGRESA LOS TOTALES REALES"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jLabel20.setText(&quot;&lt;html&gt;&quot;+&quot;*ESTOS DATOS SE CARGAN AUTOM&#xc1;TICAMENTE, ESTOS TOTALES DEBEN SER LOS MISMOS DE LOS QUE TENGA EN EFECTIVO&quot;+&quot;&lt;/html&gt;&quot;);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -385,12 +400,12 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jTextField10" max="32767" attributes="0"/>
-                                  <Component id="jTextField8" pref="208" max="32767" attributes="0"/>
+                                  <Component id="Total_Entrada" max="32767" attributes="0"/>
+                                  <Component id="Total_Salida" pref="208" max="32767" attributes="0"/>
                                   <Component id="jTextField6" max="32767" attributes="0"/>
-                                  <Component id="jTextField7" max="32767" attributes="0"/>
+                                  <Component id="Total_Compras" max="32767" attributes="0"/>
                                   <Component id="jTextField5" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="jTextField9" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="Total_Inicial" alignment="1" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -404,7 +419,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel12" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                          <Component id="jTextField9" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="Total_Inicial" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -413,18 +428,18 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jTextField10" pref="30" max="32767" attributes="0"/>
+                          <Component id="Total_Entrada" pref="30" max="32767" attributes="0"/>
                           <Component id="jLabel13" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel10" min="-2" pref="30" max="-2" attributes="0"/>
-                          <Component id="jTextField8" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="Total_Salida" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel9" min="-2" pref="30" max="-2" attributes="0"/>
-                          <Component id="jTextField7" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="Total_Compras" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="jSeparator2" min="-2" max="-2" attributes="0"/>
@@ -469,19 +484,19 @@
                 <Property name="text" type="java.lang.String" value="TOTAL SALIDAS (-):"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField7">
+            <Component class="javax.swing.JTextField" name="Total_Compras">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="text" type="java.lang.String" value="0.00"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField8">
+            <Component class="javax.swing.JTextField" name="Total_Salida">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="text" type="java.lang.String" value="0.00"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField9">
+            <Component class="javax.swing.JTextField" name="Total_Inicial">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="text" type="java.lang.String" value="0.00"/>
@@ -504,13 +519,13 @@
                 <Property name="text" type="java.lang.String" value="TOTAL ENTRADAS (+):"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField10">
+            <Component class="javax.swing.JTextField" name="Total_Entrada">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="text" type="java.lang.String" value="0.00"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField10ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Total_EntradaActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

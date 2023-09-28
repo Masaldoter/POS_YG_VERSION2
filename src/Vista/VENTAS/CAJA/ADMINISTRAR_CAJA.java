@@ -53,7 +53,7 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         this.TotalInicial = Total_Inicial;
         this.Usuario = ID_USUARIO;
         this.Fecha = Fecha;
-        this.jTextField9.setText(Total_Inicial);
+        this.Total_Inicial.setText(Total_Inicial);
         this.setLocationRelativeTo(parent);
         this.NUMERO_CAJA = NUMERO_CAJA;
         jLabel2.setText(jLabel2.getText()+ " #"+this.NUMERO_CAJA);
@@ -87,21 +87,22 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         caja_TotalTarjeta = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        caja_TotalCompartido = new javax.swing.JTextField();
+        caja_TotalCambios = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jTextField5 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        Total_Compras = new javax.swing.JTextField();
+        Total_Salida = new javax.swing.JTextField();
+        Total_Inicial = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel13 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        Total_Entrada = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -239,40 +240,46 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
 
         jLabel7.setText("TOTAL CAMBIOS:");
 
-        caja_TotalCompartido.setEditable(false);
-        caja_TotalCompartido.setText("0.00");
-        caja_TotalCompartido.addActionListener(new java.awt.event.ActionListener() {
+        caja_TotalCambios.setEditable(false);
+        caja_TotalCambios.setText("0.00");
+        caja_TotalCambios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                caja_TotalCompartidoActionPerformed(evt);
+                caja_TotalCambiosActionPerformed(evt);
             }
         });
-        caja_TotalCompartido.addKeyListener(new java.awt.event.KeyAdapter() {
+        caja_TotalCambios.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                caja_TotalCompartidoKeyReleased(evt);
+                caja_TotalCambiosKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                caja_TotalCompartidoKeyTyped(evt);
+                caja_TotalCambiosKeyTyped(evt);
             }
         });
+
+        jLabel20.setText("<html>"+"*ESTOS DATOS SE CARGAN AUTOMÁTICAMENTE, ESTOS TOTALES DEBEN SER LOS MISMOS DE LOS QUE TENGA EN EFECTIVO"+"</html>");
+        jLabel20.setText("*INGRESA LOS TOTALES REALES");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(caja_TotalCompartido)
-                    .addComponent(caja_TotalCheque, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(caja_TotalTransferencia, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(caja_TotalTarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addComponent(caja_TotalEfectivo))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(caja_TotalCambios)
+                            .addComponent(caja_TotalCheque, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                            .addComponent(caja_TotalTransferencia, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                            .addComponent(caja_TotalTarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                            .addComponent(caja_TotalEfectivo)))
+                    .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -296,8 +303,10 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(caja_TotalCompartido)
+                    .addComponent(caja_TotalCambios)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -316,14 +325,14 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
 
         jLabel10.setText("TOTAL SALIDAS (-):");
 
-        jTextField7.setEditable(false);
-        jTextField7.setText("0.00");
+        Total_Compras.setEditable(false);
+        Total_Compras.setText("0.00");
 
-        jTextField8.setEditable(false);
-        jTextField8.setText("0.00");
+        Total_Salida.setEditable(false);
+        Total_Salida.setText("0.00");
 
-        jTextField9.setEditable(false);
-        jTextField9.setText("0.00");
+        Total_Inicial.setEditable(false);
+        Total_Inicial.setText("0.00");
 
         jLabel12.setText("TOTAL INICIAL:");
 
@@ -331,11 +340,11 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
 
         jLabel13.setText("TOTAL ENTRADAS (+):");
 
-        jTextField10.setEditable(false);
-        jTextField10.setText("0.00");
-        jTextField10.addActionListener(new java.awt.event.ActionListener() {
+        Total_Entrada.setEditable(false);
+        Total_Entrada.setText("0.00");
+        Total_Entrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField10ActionPerformed(evt);
+                Total_EntradaActionPerformed(evt);
             }
         });
 
@@ -356,12 +365,12 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
                             .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField10)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                            .addComponent(Total_Entrada)
+                            .addComponent(Total_Salida, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                             .addComponent(jTextField6)
-                            .addComponent(jTextField7)
+                            .addComponent(Total_Compras)
                             .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(Total_Inicial, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -370,23 +379,23 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Total_Inicial, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(Total_Entrada, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Total_Salida, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Total_Compras, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -751,7 +760,7 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
             }  
             }
         }
-        caja_TotalCompartido.setEnabled(false);
+        caja_TotalCambios.setEnabled(false);
     }
     
     public void VALIDAR_CAJAS(JPanel panel, boolean EDITAR){
@@ -776,7 +785,7 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     }
 
     public void CONSULTAR_DATOS(Boolean ESTADO) {
-
+        CARGAR_TOTALES();
         if (ESTADO == true) {
             CARGAR_PAGOS();
         } else {
@@ -787,21 +796,28 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
             caja_TotalTransferencia.setText(String.valueOf(caja.getTotal_Transferencia_CAJA()));
             caja_TotalCheque.setText(String.valueOf(caja.getTotal_Cheque_CAJA()));
             caja_TotalTarjeta.setText(String.valueOf(caja.getTotal_Tarjeta_CAJA()));
-            caja_TotalCompartido.setText(String.valueOf(caja.getTotal_Compartido_CAJA()));
+            caja_TotalCambios.setText(String.valueOf(caja.getTotal_Compartido_CAJA()));
         }
-        CARGAR_TOTALES();
         SUMAR_CANTIDADES();
         ARQUEO_DE_CAJA();
-    } 
-    
-    public void CARGAR_PAGOS(){
-        CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        Float EfectivoEnCaja = C_C.Total_EFECTIVO(Integer.parseInt(NUMERO_CAJA))+C_C.Total_ENTRADAS(Integer.parseInt(NUMERO_CAJA));
-        caja_TotalEfectivo.setText(String.valueOf(EfectivoEnCaja));
+    }
+
+    public void CARGAR_PAGOS() {
+        CONSULTAS_CAJA C_C = new CONSULTAS_CAJA();
+
         caja_TotalCheque.setText(C_C.Total_CHEQUE(Integer.parseInt(NUMERO_CAJA)).toString());
         caja_TotalTarjeta.setText(C_C.Total_TARJETA(Integer.parseInt(NUMERO_CAJA)).toString());
         caja_TotalTransferencia.setText(C_C.Total_TRANSFERENCIA(Integer.parseInt(NUMERO_CAJA)).toString());
-        caja_TotalCompartido.setText(C_C.Total_COMPARTIDO(Integer.parseInt(NUMERO_CAJA)).toString());
+        
+        Float EfectivoEnCaja = C_C.Total_EFECTIVO(Integer.parseInt(NUMERO_CAJA));
+        
+        caja_TotalCambios.setText(String.valueOf(EfectivoEnCaja-Float.valueOf(jTextField6.getText())));
+        
+        
+        Float TOTAL_EFECTIVO = EfectivoEnCaja+ Float.parseFloat(Total_Inicial.getText()) - Float.parseFloat(Total_Salida.getText())- Float.parseFloat(caja_TotalCambios.getText())
+        -Float.parseFloat(caja_TotalCheque.getText())-Float.parseFloat(caja_TotalTarjeta.getText())-Float.parseFloat(caja_TotalTransferencia.getText());
+        
+        caja_TotalEfectivo.setText(String.valueOf(TOTAL_EFECTIVO));
     }
 
     public void CARGAR_TOTALES() {
@@ -834,17 +850,17 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     
     public void CARGAR_COMPRAS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        jTextField7.setText(C_C.Total_Compras(Integer.parseInt(NUMERO_CAJA)).toString());
+        Total_Compras.setText(C_C.Total_Compras(Integer.parseInt(NUMERO_CAJA)).toString());
     }
     
     public void CARGAR_SALIDAS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        jTextField8.setText(C_C.Total_SALIDAS(Integer.parseInt(NUMERO_CAJA)).toString());
+        Total_Salida.setText(C_C.Total_SALIDAS(Integer.parseInt(NUMERO_CAJA)).toString());
     }
     
     public void CARGAR_ENTRADAS(){
         CONSULTAS_CAJA C_C= new CONSULTAS_CAJA();
-        jTextField10.setText(C_C.Total_ENTRADAS(Integer.parseInt(NUMERO_CAJA)).toString());
+        Total_Entrada.setText(C_C.Total_ENTRADAS(Integer.parseInt(NUMERO_CAJA)).toString());
     }
     
     public void CARGAR_GANANCIAS(){
@@ -867,7 +883,7 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     }
     
     public void OPERACIONES(){
-        TOTAL_FINAL = Float.parseFloat(TotalInicial)+Float.parseFloat(jTextField6.getText())+Float.parseFloat(jTextField10.getText())-Float.parseFloat(jTextField7.getText())-Float.parseFloat(jTextField8.getText());
+        TOTAL_FINAL = Float.parseFloat(TotalInicial)+Float.parseFloat(jTextField6.getText())+Float.parseFloat(Total_Entrada.getText())-Float.parseFloat(Total_Compras.getText())-Float.parseFloat(Total_Salida.getText());
         jTextField5.setText(TOTAL_FINAL.toString());
     }
     
@@ -881,7 +897,7 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         if(METODOS_GLOBALES.VERIFICAR_LLENADO_CAJAS(jPanel4) == true){
           try {
             TOTAL_FINAL_EN_CAJA = Float.parseFloat(caja_TotalEfectivo.getText()) + Float.parseFloat(caja_TotalTransferencia.getText())
-                + Float.parseFloat(caja_TotalCheque.getText()) + Float.parseFloat(caja_TotalTarjeta.getText()) - Float.parseFloat(caja_TotalCompartido.getText());
+                + Float.parseFloat(caja_TotalCheque.getText()) + Float.parseFloat(caja_TotalTarjeta.getText());
         
         Total = String.valueOf(TOTAL_FINAL_EN_CAJA - TOTAL_FINAL);
         } catch (NumberFormatException e) {
@@ -922,13 +938,13 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         caja.setUSUARIO_CERRO_CAJA(PARAMETROS_USUARIOS.ID_USUARIO);
         caja.setARQUEO_DE_CAJA(jLabel11.getText());
         caja.setTotal_Ventas_CAJA(Float.parseFloat(jTextField6.getText()));
-        caja.setTotal_Compras_CAJA(Float.parseFloat(jTextField7.getText()));
-        caja.setTotal_Gastos_CAJA(Float.parseFloat(jTextField8.getText()));
+        caja.setTotal_Compras_CAJA(Float.parseFloat(Total_Compras.getText()));
+        caja.setTotal_Gastos_CAJA(Float.parseFloat(Total_Salida.getText()));
         caja.setTotal_Efectivo_CAJA(Float.parseFloat(caja_TotalEfectivo.getText()));
         caja.setTotal_Transferencia_CAJA(Float.parseFloat(caja_TotalTransferencia.getText()));
         caja.setTotal_Cheque_CAJA(Float.parseFloat(caja_TotalCheque.getText()));
         caja.setTotal_Tarjeta_CAJA(Float.parseFloat(caja_TotalTarjeta.getText()));
-        caja.setTotal_Compartido_CAJA(Float.parseFloat(caja_TotalCompartido.getText()));
+        caja.setTotal_Compartido_CAJA(Float.parseFloat(caja_TotalCambios.getText()));
         caja.setIdcaja(Integer.parseInt(NUMERO_CAJA));
         CDao.EDITAR_CIERRES_DE_CAJA(caja);
         PARAMETROS_VENTAS.NUMERO_CAJA = "";
@@ -1041,9 +1057,9 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         event.numberDecimalKeyPress(evt, caja_TotalTarjeta);
     }//GEN-LAST:event_caja_TotalTarjetaKeyTyped
 
-    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
+    private void Total_EntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Total_EntradaActionPerformed
         
-    }//GEN-LAST:event_jTextField10ActionPerformed
+    }//GEN-LAST:event_Total_EntradaActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         HISTORIAL_GASTOS H_G = new HISTORIAL_GASTOS(null, true, Integer.parseInt(NUMERO_CAJA));
@@ -1059,23 +1075,23 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
         D_V_A.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
-    private void caja_TotalCompartidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_caja_TotalCompartidoKeyReleased
-        if(caja_TotalCompartido.getText() == ""){
+    private void caja_TotalCambiosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_caja_TotalCambiosKeyReleased
+        if(caja_TotalCambios.getText() == ""){
         }else{
             METODOS_GLOBALES.DESVACIAR_CAJAS(jPanel4);
             SUMAR_CANTIDADES();
             ARQUEO_DE_CAJA();
         }
-    }//GEN-LAST:event_caja_TotalCompartidoKeyReleased
+    }//GEN-LAST:event_caja_TotalCambiosKeyReleased
 
-    private void caja_TotalCompartidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_caja_TotalCompartidoKeyTyped
+    private void caja_TotalCambiosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_caja_TotalCambiosKeyTyped
         Eventos event = new Eventos();
         event.numberDecimalKeyPress(evt, caja_TotalTarjeta);
-    }//GEN-LAST:event_caja_TotalCompartidoKeyTyped
+    }//GEN-LAST:event_caja_TotalCambiosKeyTyped
 
-    private void caja_TotalCompartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caja_TotalCompartidoActionPerformed
+    private void caja_TotalCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caja_TotalCambiosActionPerformed
         caja_TotalCheque.addFocusListener(new FullSelectorListener());
-    }//GEN-LAST:event_caja_TotalCompartidoActionPerformed
+    }//GEN-LAST:event_caja_TotalCambiosActionPerformed
 
     private void caja_TotalCostosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caja_TotalCostosActionPerformed
         // TODO add your handling code here:
@@ -1181,9 +1197,13 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Total_Compras;
+    private javax.swing.JTextField Total_Entrada;
+    private javax.swing.JTextField Total_Inicial;
+    private javax.swing.JTextField Total_Salida;
     private javax.swing.JTextField caja_CantidadTotalPersonalizados;
+    private javax.swing.JTextField caja_TotalCambios;
     private javax.swing.JTextField caja_TotalCheque;
-    private javax.swing.JTextField caja_TotalCompartido;
     private javax.swing.JTextField caja_TotalCostos;
     private javax.swing.JTextField caja_TotalEfectivo;
     private javax.swing.JTextField caja_TotalGanancias;
@@ -1207,6 +1227,7 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1234,11 +1255,7 @@ public final class ADMINISTRAR_CAJA extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }

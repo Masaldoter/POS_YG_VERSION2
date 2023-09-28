@@ -137,9 +137,9 @@ public final class Detalles extends javax.swing.JFrame {
         
         public void ValidarBotones(){
             if(PARAMETROS_USUARIOS.ROL_USUARIO.equals("Usuario")){
-                jMenu2.setVisible(false);
+                jMenuItem6.setVisible(false);
             }else{
-                jMenu2.setVisible(true);
+                jMenuItem6.setVisible(true);
             }
             
             if(TipoDocumento.getText().equals("FACTURA") && EstadoVenta.getSelectedItem().toString().equals("ANULADO") || !EstadoVenta.getSelectedItem().toString().equals("FACTURADO")){

@@ -60,13 +60,14 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
         ps = null;
         rs = null;
         cn = conexion.getInstancia().getConnection();
-        String sql = "SELECT ESTADO_DE_CAJA, Total_inicial_CAJA, Total_Compras_CAJA, Total_Ventas_CAJA, Total_Gastos_CAJA, Total_Efectivo_CAJA, Total_Transferencia_CAJA, Total_Cheque_CAJA,"
-                + " Total_Tarjeta_CAJA, Total_Compartido_CAJA, ARQUEO_DE_CAJA "
-                + "from caja "
-                + "WHERE idcaja="+NUMERO_CAJA;
-            try {
-                ps = cn.prepareStatement(sql);
-                rs = ps.executeQuery();
+        String sql = "SELECT ESTADO_DE_CAJA, Total_inicial_CAJA, Total_Compras_CAJA, Total_Ventas_CAJA, "
+                + "Total_Gastos_CAJA, Total_Efectivo_CAJA, Total_Transferencia_CAJA, Total_Cheque_CAJA," 
+              + " Total_Tarjeta_CAJA, Total_Compartido_CAJA, ARQUEO_DE_CAJA " 
+               + "from caja " 
+               + "WHERE idcaja=" + NUMERO_CAJA;
+        try {
+            ps = cn.prepareStatement(sql);
+            rs = ps.executeQuery();
                 if (rs.next()) {
                     caja= new CAJA();
                     caja.setESTADO_DE_CAJA(rs.getString("ESTADO_DE_CAJA"));
@@ -208,6 +209,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
                      + "INNER JOIN registro r ON d.NoFactura = r.NoFactura "
                      + "WHERE d.ProductoRegistrado = 1 "
                      + "AND r.id_CAJA_registro = ? "
+                     + "AND r.Estado= 'Facturado' "
                      + "GROUP BY d.Cantidad) AS Subconsulta");
              ps.setInt(1, CAJA);
             rs = ps.executeQuery();
@@ -246,6 +248,7 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
                      + "INNER JOIN registro r ON d.NoFactura = r.NoFactura "
                      + "WHERE d.ProductoRegistrado = 1 "
                      + "AND r.id_CAJA_registro = ? "
+                     + "AND r.Estado= 'Facturado' "
                      + "GROUP BY d.Cantidad) AS Subconsulta");
              ps.setInt(1, CAJA);
             rs = ps.executeQuery();
@@ -276,7 +279,8 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
                      + "FROM detalle d "
                      + "INNER JOIN registro r ON d.NoFactura = r.NoFactura "
                      + "WHERE d.ProductoRegistrado = 0 "
-                     + "AND  r.id_CAJA_registro = ?");
+                     + " AND  r.id_CAJA_registro = ?"
+                     + " AND r.Estado= 'Facturado' ");
              ps.setInt(1, CAJA);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -306,7 +310,8 @@ public class CONSULTAS_CAJA extends ConexionesSQL{
                      + "FROM detalle d "
                      + "INNER JOIN registro r ON d.NoFactura = r.NoFactura "
                      + "WHERE d.ProductoRegistrado = 0 "
-                     + "AND  r.id_CAJA_registro = ?");
+                     + " AND  r.id_CAJA_registro = ?"
+                     + " AND r.Estado= 'Facturado'");
              ps.setInt(1, CAJA);
             rs = ps.executeQuery();
             if (rs.next()) {
