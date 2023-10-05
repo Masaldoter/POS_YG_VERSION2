@@ -548,15 +548,21 @@
                                               <Component id="NombrePrecio2" max="32767" attributes="0"/>
                                               <Component id="NombrePrecio1" max="32767" attributes="0"/>
                                           </Group>
-                                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="jTextField2" alignment="0" pref="0" max="32767" attributes="0"/>
+                                              <Component id="jTextField1" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                              <Component id="jTextField3" pref="0" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="1" attributes="0">
-                                              <Component id="Es" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="Publico" max="32767" attributes="0"/>
-                                              <Group type="102" alignment="0" attributes="0">
+                                              <Group type="102" alignment="1" attributes="0">
                                                   <Component id="Reve" max="32767" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="jCheckBox1" min="-2" pref="110" max="-2" attributes="0"/>
                                               </Group>
+                                              <Component id="Es" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="Publico" alignment="1" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
@@ -640,22 +646,25 @@
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jTextField1" max="32767" attributes="0"/>
                               <Component id="NombrePrecio1" pref="35" max="32767" attributes="0"/>
                               <Component id="jLabel8" alignment="1" pref="35" max="32767" attributes="0"/>
                               <Component id="Publico" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jTextField2" max="32767" attributes="0"/>
                               <Component id="jLabel9" pref="35" max="32767" attributes="0"/>
                               <Component id="NombrePrecio2" pref="35" max="32767" attributes="0"/>
                               <Component id="Es" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="NombrePrecio3" pref="35" max="32767" attributes="0"/>
                               <Component id="jLabel10" pref="35" max="32767" attributes="0"/>
                               <Component id="Reve" alignment="0" max="32767" attributes="0"/>
                               <Component id="jCheckBox1" max="32767" attributes="0"/>
+                              <Component id="jTextField3" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jSeparator7" min="-2" pref="4" max="-2" attributes="0"/>
@@ -1298,6 +1307,22 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="jTextField1">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField1KeyReleased"/>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField1KeyTyped"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="jTextField2">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField2KeyReleased"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="jTextField3">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField3KeyReleased"/>
                   </Events>
                 </Component>
               </SubComponents>

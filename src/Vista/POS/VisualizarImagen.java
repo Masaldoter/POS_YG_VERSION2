@@ -20,6 +20,7 @@ import javax.swing.JPanel;
  */
 public class VisualizarImagen extends javax.swing.JDialog {
      private Image imagen;
+     private double scaleFactor = 1.0;
     /**
      * Creates new form VisualizarImagen
      * @param parent
@@ -34,6 +35,28 @@ public class VisualizarImagen extends javax.swing.JDialog {
         initComponents();
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
+                // Agregar un MouseWheelListener al JPanel
+        addMouseWheelListener(new ZoomHandler());
+    }
+    
+    private class ZoomHandler implements MouseWheelListener {
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            int notches = e.getWheelRotation();
+            if (notches < 0) {
+                // Zoom in
+                scaleFactor *= 1.1;
+            } else {
+                // Zoom out
+                scaleFactor /= 1.1;
+            }
+
+            // Limita el scaleFactor dentro de ciertos límites si es necesario
+            scaleFactor = Math.max(0.1, Math.min(scaleFactor, 5.0));
+
+            // Redibuja el JPanel con el nuevo scaleFactor
+            repaint();
+        }
     }
 
     @SuppressWarnings("unchecked")

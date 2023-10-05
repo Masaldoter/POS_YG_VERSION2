@@ -15,6 +15,7 @@ import Controlador.KardexDao;
 import Controlador.NumerosALetras;
 import Controlador.ProductosDao;
 import Controlador.ProveedoresDao;
+import Controlador.TextPrompt;
 import Controlador.loginDao;
 import Modelo.Categoria;
 import Modelo.Combo;
@@ -33,6 +34,7 @@ import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -69,6 +71,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     Principal principal;
     INVENTARIO inventario;
     PARAMETROS_EMPRESA P_E = new PARAMETROS_EMPRESA();
+    TextAutoCompleter AutoCompletador_PRODUCTOS;
     public String ESTADO_PRODUCTO = null;
     private Float STOCK_INGRESADO;
     String DestinoPath;
@@ -111,14 +114,6 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         VaciarYllenarCategoria(ComboCategorias);
         VaciarYllenarProveedor();
         VaciarYllenarUbicacion();
-        
-        AutoCompletador = new TextAutoCompleter(Nombreproducto, new AutoCompleterCallback() {
-            @Override
-            public void callback(Object selectedItem) {
-            }
-        });
-        
-        ListarProductosTienda(Nombreproducto);
         NombreUsuarioVista.setText("<html>"+PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO+"</html>");
         limpiarCajas();
         this.setLocationRelativeTo(null);
@@ -126,7 +121,13 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         
         CajaDescripcion.setLineWrap(true);
         CajaDescripcion.setWrapStyleWord(true);
-
+        AutoCompletador_PRODUCTOS = new TextAutoCompleter(Nombreproducto, new AutoCompleterCallback() {
+            @Override
+            public void callback(Object selectedItem) {
+                //InsertarProductosPorNombre(String.valueOf(selectedItem));
+            }
+        });
+        ListarProductosTienda();
     }
 
     public void Cerrar() {
@@ -207,6 +208,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                                         labelruta.removeAll();
                                         labelruta.setText(NombreFinal_Webp);
                                         METODOS_GLOBALES.PintarImagen(labelimagen, RutaFinal_Webp);
+                                        RutaDeImagen = CargarDatosRutas(1) + "\\"+RutaFinal_Webp;
                                     }
                                 }
 
@@ -219,6 +221,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                                 rsdragdropfiles.RSDragDropFiles.setCopiar(files[0].getCanonicalPath(), RutaFinal);
                                 METODOS_GLOBALES.PintarImagen(labelimagen, RutaFinal);
                                 labelruta.setText(NombreFinal);
+                                RutaDeImagen =CargarDatosRutas(1) + "\\"+NombreFinal;
                             }
                         } catch (IOException ex) {
                             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
@@ -230,6 +233,13 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         }
     });
 }
+    
+    private void TextoEnCajas() {
+        TextPrompt hold;
+        hold = new TextPrompt("%*", jTextField1);
+        hold = new TextPrompt("%", jTextField2);
+        hold = new TextPrompt("%", jTextField3);
+    }
 
     
     public void ActualizarEstado(){
@@ -312,11 +322,14 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         EstadoProducto2.setText("NO");
         EstadoProducto3.setVisible(false);
         EstadoProducto4.setVisible(false);
-        jSeparator6.setVisible(false);
-        jMenuItem8.setVisible(false);
+        jMenuItem8.setText("OBTENER COSTO");
+        jTextField1.setText(null);
+        jTextField2.setText(null);
+        jTextField3.setText(null);
         Id.requestFocus();
         CargarImagen();
         ValidarBotones();
+        VALIDAR_PORCENTAJE();
     }
     
     public void ValidarBotones(){
@@ -383,6 +396,18 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
 
         return EstadoCajas;
     }
+    
+    private void VALIDAR_PORCENTAJE(){
+        if(Costo.getText().equals("") || Costo.getText().equals(null)){
+            jTextField1.setEnabled(false);
+            jTextField2.setEnabled(false);
+            jTextField3.setEnabled(false);
+        }else{
+            jTextField1.setEnabled(true);
+            jTextField2.setEnabled(true);
+            jTextField3.setEnabled(true);
+        }
+    }
 
     public void InsertarDatos(String codigo) {
         proDao = new ProductosDao();
@@ -393,8 +418,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         if (proo.getNombre() != null) {
             EstadoProducto3.setVisible(true);
             EstadoProducto4.setVisible(true);
-            jSeparator6.setVisible(true);
-            jMenuItem8.setVisible(true);
+            jMenuItem8.setText("SACAR MEDIA");
             idbodega.setText(String.valueOf(proo.getIdProductos()));
             Id.setText(proo.getCodigoBarras());
             Nombreproducto.setText(proo.getNombre());
@@ -422,12 +446,14 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             EstadoProducto3.setText(proo.getFechaingreso());
             EstadoProducto4.setText(proo.getFechamodificacion());
             ValidarBotones();
-
+            VALIDAR_PORCENTAJE();
+            
             if (proo.getRuta() != null || !"".equals(proo.getRuta())) {
-                
+                RutaDeImagen = CargarDatosRutas(1) + "\\"+ proo.getRuta();
                 labelruta.setText(proo.getRuta()); 
                 PintarImagen(labelimagen, CargarDatosRutas(1) + "\\"+ proo.getRuta());
             } else {
+                RutaDeImagen =ObtenerRutaImagen(2);
                 PintarImagen2(labelimagen, bl);
                 labelruta.setText(ObtenerRutaImagen(2));
             }
@@ -446,8 +472,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         if (pro.getNombre() != null) {
             EstadoProducto3.setVisible(true);
             EstadoProducto4.setVisible(true);
-            jSeparator6.setVisible(true);
-            jMenuItem8.setVisible(true);
+            jMenuItem8.setText("SACAR MEDIA");
             Id.setText("" + pro.getCodigoBarras());
             idbodega.setText("" + pro.getIdProductos());
             Nombreproducto.setText("" + pro.getNombre());
@@ -465,6 +490,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             EstadoProducto.setText("INGRESADO");
             EstadoProducto2.setText("NO");
             PintarImagen(labelimagen, CargarDatosRutas(1) + "\\" + pro.getRuta());
+            RutaDeImagen = CargarDatosRutas(1) + "\\" + pro.getRuta();
             NombrePrecio1.setSelectedItem("" + pro.getNombreTiposDePrecio1());
             NombrePrecio2.setSelectedItem("" + pro.getNombreTiposDePrecio2());
             NombrePrecio3.setSelectedItem("" + pro.getNombreTiposDePrecio3());
@@ -478,7 +504,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             EstadoProducto4.setText(pro.getFechamodificacion());
 
             ValidarBotones();
-
+            VALIDAR_PORCENTAJE();
         } else if (pro.getNombre() == null) {
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("VERIFIQUE EL NOMBRE", "EL PRODUCTO " + Valor + " NO EXISTE!", DesktopNotify.ERROR, 14000L);
@@ -550,7 +576,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 Boolean ResultadoIngreso = proDao.RegistrarProductos(pro);
                 if (ResultadoIngreso == true) {
                     Ingreso_Kardex("SE INGRESÓ | PRODUCTO NUEVO");
-                    ListarProductosTienda(Nombreproducto);
+                    ListarProductosTienda();
                     limpiarCajas();
                     inventario.REFRESCAR_INVENTARIO();
                     inventario.pos.ListarProductosPOS_NOMBRE();
@@ -687,6 +713,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton7 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         Agregarp = new javax.swing.JButton();
         Editarp = new javax.swing.JButton();
@@ -1122,6 +1151,27 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             }
         });
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField2KeyReleased(evt);
+            }
+        });
+
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField3KeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel34Layout = new javax.swing.GroupLayout(jPanel34);
         jPanel34.setLayout(jPanel34Layout);
         jPanel34Layout.setHorizontalGroup(
@@ -1158,13 +1208,18 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                                     .addComponent(NombrePrecio2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(NombrePrecio1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(Es, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Publico)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel34Layout.createSequentialGroup()
+                                    .addGroup(jPanel34Layout.createSequentialGroup()
                                         .addComponent(Reve)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(Es)
+                                    .addComponent(Publico)))
                             .addGroup(jPanel34Layout.createSequentialGroup()
                                 .addComponent(Cantidad)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1228,11 +1283,13 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                     .addComponent(Letras))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextField1)
                     .addComponent(NombrePrecio1, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                     .addComponent(Publico))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextField2)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                     .addComponent(NombrePrecio2, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                     .addComponent(Es))
@@ -1241,7 +1298,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                     .addComponent(NombrePrecio3, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                     .addComponent(Reve)
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1585,7 +1643,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         VaciarYllenarCategoria(ComboCategorias);
         VaciarYllenarUbicacion();
         VaciarYllenarProveedor();
-        ListarProductosTienda(Nombreproducto);
+        ListarProductosTienda();
         Id.requestFocus();
     }//GEN-LAST:event_ActualizarActionPerformed
 
@@ -1677,7 +1735,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         VaciarYllenarCategoria(ComboCategorias);
         VaciarYllenarProveedor();
-        ListarProductosTienda(Nombreproducto);
+        ListarProductosTienda();
         Id.requestFocus();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
@@ -1869,6 +1927,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
 
     private void ReveKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ReveKeyReleased
         ActualizarEstado();
+        jTextField3.setText(CALCULAR_PORCENTAJE(Costo.getText(), Reve.getText(), 2).toString());
     }//GEN-LAST:event_ReveKeyReleased
 
     private void EsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EsKeyTyped
@@ -1878,6 +1937,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
 
     private void EsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EsKeyReleased
         ActualizarEstado();
+        jTextField2.setText(CALCULAR_PORCENTAJE(Costo.getText(), Es.getText(), 2).toString());
     }//GEN-LAST:event_EsKeyReleased
 
     private void LetrasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LetrasKeyReleased
@@ -1891,6 +1951,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
 
     private void PublicoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PublicoKeyReleased
         ActualizarEstado();
+        jTextField1.setText(CALCULAR_PORCENTAJE(Costo.getText(), Publico.getText(), 2).toString());
     }//GEN-LAST:event_PublicoKeyReleased
 
     private void PublicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PublicoActionPerformed
@@ -1906,6 +1967,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         ActualizarEstado();
         NumerosALetras NAL= new NumerosALetras();
         Letras.setText(NAL.Convertir(Costo.getText()));
+        VALIDAR_PORCENTAJE();
     }//GEN-LAST:event_CostoKeyReleased
 
     private void CostoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CostoKeyPressed
@@ -1991,19 +2053,26 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     }//GEN-LAST:event_VISUALIZARActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        if (METODOS_GLOBALES.AVISO_MEDIA_ESTADO == false) {
-            AVISO A = new AVISO(this, true);
-            SACAR_MEDIA();
-        } else {
-            SACAR_MEDIA();
+        /*if (METODOS_GLOBALES.AVISO_MEDIA_ESTADO == false) {
+            AVISO A = new AVISO(this, true);*/
+        if(jMenuItem8.getText().equals("SACAR MEDIA")){
+            SACAR_MEDIA(1);
+        }else{
+            SACAR_MEDIA(2);
         }
+        VALIDAR_PORCENTAJE();
+      /*  } else {
+            SACAR_MEDIA();
+        }*/
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
-    public void SACAR_MEDIA() {
-        if (Costo.getText().equals("") || Costo.getText().equals(null)) {
+    public void SACAR_MEDIA(int TIPO) {
+        try {
+            if(TIPO==1){
+                if (Costo.getText().equals("") || Costo.getText().equals(null)) {
             JOptionPane.showMessageDialog(this, "EL CAMPO DEL COSTO ESTÁ VACÍO", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
         }
-        DecimalFormat formato = new DecimalFormat("#.##");
+        //DecimalFormat formato = new DecimalFormat("#.##");
         Float TOTAL = Float.valueOf(JOptionPane.showInputDialog(this, "INGRESA EL TOTAL DE TODOS LOS PRODUCTOS:", "INGRESE TOTAL", JOptionPane.QUESTION_MESSAGE));
         Float CANTIDAD = Float.valueOf(JOptionPane.showInputDialog(this, "INGRESA LA CANTIDAD DE PRODUCTOS:", "INGRESE CANTIDAD", JOptionPane.QUESTION_MESSAGE));
         Float STOCK_ANTERIOR = Float.valueOf(Cantidad.getText());
@@ -2012,11 +2081,26 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         Float STOCK_TOTAL = CANTIDAD + STOCK_ANTERIOR;
 
         Float RESULTADO = ((STOCK_ANTERIOR * COSTO_ANTERIOR) + TOTAL) / STOCK_TOTAL;
-        Costo.setText(formato.format(RESULTADO));
-
+        //Costo.setText(formato.format(RESULTADO));
+        Costo.setText(String.format("%.2f", RESULTADO));
         ActualizarEstado();
         NumerosALetras NAL = new NumerosALetras();
         Letras.setText(NAL.Convertir(Costo.getText()));
+            }else{
+        //DecimalFormat formato = new DecimalFormat("#.##");
+        Float TOTAL = Float.valueOf(JOptionPane.showInputDialog(this, "INGRESA EL PRECIO TOTAL DE TODOS LOS PRODUCTOS:", "INGRESE TOTAL", JOptionPane.QUESTION_MESSAGE));
+        Float CANTIDAD = Float.valueOf(JOptionPane.showInputDialog(this, "INGRESA LA CANTIDAD DE PRODUCTOS:", "INGRESE CANTIDAD", JOptionPane.QUESTION_MESSAGE));
+
+        Float RESULTADO = TOTAL / CANTIDAD;
+        //Costo.setText(formato.format(RESULTADO));
+        Costo.setText(String.format("%.2f", RESULTADO));
+        ActualizarEstado();
+        NumerosALetras NAL = new NumerosALetras();
+        Letras.setText(NAL.Convertir(Costo.getText()));
+            }
+            
+        } catch (HeadlessException | NumberFormatException e) {
+        }
     }
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -2083,6 +2167,22 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     
         productos_config.Recordar(jCheckBoxMenuItem1.isSelected());
     }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        Publico.setText(CALCULAR_PORCENTAJE(Costo.getText(), jTextField1.getText(), 1).toString());
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
+        Es.setText(CALCULAR_PORCENTAJE(Costo.getText(), jTextField2.getText(), 1).toString());
+    }//GEN-LAST:event_jTextField2KeyReleased
+
+    private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
+        Reve.setText(CALCULAR_PORCENTAJE(Costo.getText(), jTextField3.getText(), 1).toString());
+    }//GEN-LAST:event_jTextField3KeyReleased
 
     public int ConsultarIdProveedor(JComboBox ComboCategoria) {
         int ResultadoProveedor = 0;
@@ -2271,23 +2371,29 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private static javax.swing.JLabel labelimagen;
     private static javax.swing.JLabel labelruta;
     // End of variables declaration//GEN-END:variables
 
-    public void ListarProductosTienda(JTextField Parametro) {
-        try {
-            tablasVentas = new ActualizarTablaVentas();
-            AutoCompletador.removeAllItems();
-            AutoCompletador.setMode(0); // infijo
-            List<Productos> ListarPr = tablasVentas.ListarProductosTiendaNombre(Nombreproducto.getText());
+    public void ListarProductosTienda() {
+         try {
+            AutoCompletador_PRODUCTOS.removeAllItems();
+            AutoCompletador_PRODUCTOS.setMode(0);
+            ActualizarTablaVentas tablasVentas = new ActualizarTablaVentas();
             Object[] ob = new Object[1];
+            List<Productos> ListarPr = null;
+            ListarPr = tablasVentas.ListarProductosTiendaNombre("");
+            AutoCompletador_PRODUCTOS.setMode(0); // infijo
             for (int i = 0; i < ListarPr.size(); i++) {
                 ob[0] = ListarPr.get(i).getNombre();
-                AutoCompletador.addItems(ob);
+                AutoCompletador_PRODUCTOS.addItems(ob);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "NO SE PUDO CARGAR LOS DATOS");
+            DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+            DesktopNotify.showDesktopMessage("FATAL", "ÉRROR AL ACTUALIZAR LOS PRODUCTOS", DesktopNotify.FAIL, 10000L);
         }
     }
 
@@ -2319,5 +2425,25 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         }catch(IOException e){
         }  
             return RutaDeBusquedas;
+    }
+    
+    private Float CALCULAR_PORCENTAJE(String PRECIO, String PORCENTAJE, int TIPO) {
+        Float TOTAL=0f;
+        if(TIPO==1){
+            if(PRECIO.equals("") || PORCENTAJE.equals("") || PRECIO.equals(null) || PORCENTAJE.equals(null)){
+            
+        }else{
+            TOTAL = Float.parseFloat(PRECIO) + (Float.parseFloat(PRECIO) * Float.parseFloat(PORCENTAJE) / 100);
+        }
+        }else{
+            if(PRECIO.equals("") || PORCENTAJE.equals("") || PRECIO.equals(null) || PORCENTAJE.equals(null)){
+            
+        }else{
+                Float diferencia = Float.parseFloat(PORCENTAJE) - Float.parseFloat(PRECIO);
+            TOTAL = (diferencia / Float.parseFloat(PRECIO)) * 100;
+            String.format("%.2f", TOTAL);
+        }
+        }
+        return TOTAL;
     }
 }
