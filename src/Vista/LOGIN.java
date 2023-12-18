@@ -1,6 +1,7 @@
 //[52,118,243]
 package Vista;
 
+import CLASES_GLOBALES.AL_INICIAR;
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.CargarDatosRutas;
 import static CLASES_GLOBALES.METODOS_GLOBALES.ObtenerRutaImagen;
@@ -514,6 +515,8 @@ public final class LOGIN extends javax.swing.JFrame {
                         login.MovimientosUsuarios(PARAMETROS_USUARIOS.ID_USUARIO);    
                         Principal Aldo = new Principal(PARAMETROS_VERSION_SISTEMA.LICENCIA);
                         Aldo.setVisible(true);
+                        AL_INICIAR AI= new AL_INICIAR();
+                        AI.CARGAR_CONFIGURACIONES();
                         
                         executorService.execute(new Runnable() {
                             @Override

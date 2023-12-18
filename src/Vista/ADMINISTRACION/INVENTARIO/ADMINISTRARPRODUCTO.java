@@ -38,6 +38,8 @@ import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -49,7 +51,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -90,6 +92,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     ImageIcon bl = new ImageIcon(retValue);
     Productos_Config productos_config= new Productos_Config();
     public boolean VentanaBusquedaProducto = false;
+    private List<JLabel> IMAGENES;
+    private int indice;
+    ADMINISTRARPRODUCTO AP;
     public ADMINISTRARPRODUCTO() {
 
     }
@@ -107,9 +112,13 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
 
     public ADMINISTRARPRODUCTO(Principal principal, INVENTARIO inventario) {
         initComponents();
+        this.AP= this;
         this.principal = principal;
         this.inventario = inventario;
         productos_config.CargarDatos(jCheckBoxMenuItem1);
+        IMAGENES = new ArrayList<>();
+        indice=0;
+        jMenu3.setVisible(false);
         DRAG_AND_DROP_IMAGEN();
         VaciarYllenarCategoria(ComboCategorias);
         VaciarYllenarProveedor();
@@ -206,6 +215,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                                             Logger.getLogger(ADMINISTRARPRODUCTO.class.getName()).log(Level.SEVERE, null, ex);
                                         }
                                         labelruta.removeAll();
+                                        labelimagen.setSize(211, 157);
                                         labelruta.setText(NombreFinal_Webp);
                                         METODOS_GLOBALES.PintarImagen(labelimagen, RutaFinal_Webp);
                                         RutaDeImagen = CargarDatosRutas(1) + "\\"+RutaFinal_Webp;
@@ -216,6 +226,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                                 hilo_CARGAR_IMAGEN_CONVERTIR.start();
                             } else {
                                 labelruta.removeAll();
+                                labelimagen.setSize(211, 157);
                                 String NombreFinal = String.valueOf(new Random().nextLong()).substring(7) + "-" + files[0].getName();
                                 String RutaFinal = CargarDatosRutas(1) + "\\" + NombreFinal;
                                 rsdragdropfiles.RSDragDropFiles.setCopiar(files[0].getCanonicalPath(), RutaFinal);
@@ -233,6 +244,49 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         }
     });
 }
+    
+    public void AGREGAR_OTRA_IMAGEN(){
+        JLabel Nuevo = new JLabel();
+        Nuevo.setSize(50, 50);
+        PintarImagen(Nuevo, RutaDeImagen);
+        jPanel5.add(Nuevo);
+        IMAGENES.add(Nuevo);
+        indice++;
+        jPanel5.updateUI();
+        IMAGENES();
+        CargarImagen();
+        Nuevo.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int Restultado = JOptionPane.showConfirmDialog(AP, "ESTÁ SEGURO DE ELIMINAR?");
+                if(Restultado==0){
+                     jPanel5.remove(Nuevo);
+                     jPanel5.updateUI();
+                }
+               
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+               // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+               // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+               // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+        });
+    }
     
     private void TextoEnCajas() {
         TextPrompt hold;
@@ -289,6 +343,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     }
 
     public void PintarImagen(JLabel lbl, String ruta) {
+        labelimagen.setSize(211, 157);
         ADMINISTRARPRODUCTO.imagenI = new ImageIcon(ruta);
         ADMINISTRARPRODUCTO.icono = new ImageIcon(ADMINISTRARPRODUCTO.imagenI.getImage().getScaledInstance(
                 lbl.getWidth(),
@@ -299,6 +354,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     }
 
     public void PintarImagen2(JLabel lbl, ImageIcon ruta) {
+        labelimagen.setSize(211, 157);
         ADMINISTRARPRODUCTO.imagenI = new ImageIcon();
         ADMINISTRARPRODUCTO.icono = new ImageIcon(ruta.getImage().getScaledInstance(
                 lbl.getWidth(),
@@ -306,6 +362,14 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 Image.SCALE_DEFAULT));
         lbl.setIcon(ADMINISTRARPRODUCTO.icono);
         this.repaint();
+    }
+    
+    public void IMAGENES(){
+        if (jPanel5.getComponentCount() == 0) {
+            jScrollPane3.setVisible(false);
+        } else {
+            jScrollPane3.setVisible(true);
+        }
     }
 
     public void limpiarCajas() {
@@ -330,6 +394,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         CargarImagen();
         ValidarBotones();
         VALIDAR_PORCENTAJE();
+        IMAGENES();
     }
     
     public void ValidarBotones(){
@@ -416,6 +481,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         proDao.ActualizarTabla(proo);
 
         if (proo.getNombre() != null) {
+            jMenu3.setVisible(true);
             EstadoProducto3.setVisible(true);
             EstadoProducto4.setVisible(true);
             jMenuItem8.setText("SACAR MEDIA");
@@ -449,10 +515,12 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             VALIDAR_PORCENTAJE();
             
             if (proo.getRuta() != null || !"".equals(proo.getRuta())) {
+                labelimagen.setSize(211, 157);
                 RutaDeImagen = CargarDatosRutas(1) + "\\"+ proo.getRuta();
                 labelruta.setText(proo.getRuta()); 
                 PintarImagen(labelimagen, CargarDatosRutas(1) + "\\"+ proo.getRuta());
             } else {
+                labelimagen.setSize(211, 157);
                 RutaDeImagen =ObtenerRutaImagen(2);
                 PintarImagen2(labelimagen, bl);
                 labelruta.setText(ObtenerRutaImagen(2));
@@ -470,6 +538,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         pro = proDao.BuscarProNombre(Valor);
 
         if (pro.getNombre() != null) {
+            labelimagen.setSize(211, 157);
             EstadoProducto3.setVisible(true);
             EstadoProducto4.setVisible(true);
             jMenuItem8.setText("SACAR MEDIA");
@@ -624,7 +693,6 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 pro.setNombreTiposDePrecio1(NombrePrecio1.getSelectedItem().toString());
                 pro.setNombreTiposDePrecio2(NombrePrecio2.getSelectedItem().toString());
                 pro.setNombreTiposDePrecio3(NombrePrecio3.getSelectedItem().toString());
-                
                 pro.setCategoria(ConsultarIdCategoria(ComboCategorias));
                 pro.setIdProveedores(ConsultarIdProveedor(ProveedoresCombo));
                 pro.setSubcategoria(ConsultarIdSubCategoria(ComboSubCategorias, ComboCategorias));
@@ -643,6 +711,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 }
                 inventario.REFRESCAR_INVENTARIO();
                 inventario.pos.ListarProductosPOS_NOMBRE();
+                ListarProductosTienda();
             }
             }
     }
@@ -661,6 +730,10 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         Eliminarp = new javax.swing.JButton();
         VerFoto_Previa = new javax.swing.JPopupMenu();
         VISUALIZAR = new javax.swing.JMenuItem();
+        jPanel7 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jPanel8 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         NombreUsuarioVista = new javax.swing.JLabel();
         EstadoProducto = new javax.swing.JLabel();
@@ -706,8 +779,12 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jSeparator18 = new javax.swing.JSeparator();
         jSeparator19 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
-        labelimagen = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        labelimagen = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jPanel5 = new javax.swing.JPanel();
+        jButton8 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -751,6 +828,10 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jMenuItem35 = new javax.swing.JMenuItem();
         jSeparator45 = new javax.swing.JPopupMenu.Separator();
         jMenuItem36 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jSeparator11 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem14 = new javax.swing.JMenuItem();
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         jMenuItem1.setText("jMenuItem1");
@@ -793,11 +874,43 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         });
         VerFoto_Previa.add(VISUALIZAR);
 
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane4.setViewportView(jList1);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 642, Short.MAX_VALUE)
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("ADMINISTRACIÓN DE PRODUCTOS");
         setIconImage(getIconImage());
         setMinimumSize(new java.awt.Dimension(500, 200));
-        setPreferredSize(new java.awt.Dimension(725, 750));
 
         NombreUsuarioVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         NombreUsuarioVista.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "NOMBRE DE USUARIO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 10))); // NOI18N
@@ -1076,8 +1189,16 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         comboubicacion2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tienda" }));
         comboubicacion2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton2.setText("LIMPIAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         labelimagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelimagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        labelimagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         labelimagen.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labelimagenMouseClicked(evt);
@@ -1087,11 +1208,35 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton2.setText("Nuevo");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jScrollPane3.setBorder(null);
+
+        jPanel5.setLayout(new java.awt.GridLayout(0, 1));
+        jScrollPane3.setViewportView(jPanel5);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelimagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelimagen, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jButton8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton8.setText("NUEVO");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton8ActionPerformed(evt);
             }
         });
 
@@ -1099,21 +1244,23 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         jButton4.setText("+");
@@ -1215,7 +1362,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel34Layout.createSequentialGroup()
-                                        .addComponent(Reve)
+                                        .addComponent(Reve, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(Es)
@@ -1252,9 +1399,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                     .addComponent(jSeparator18, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator8, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel34Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(13, 13, 13))
         );
         jPanel34Layout.setVerticalGroup(
@@ -1334,12 +1481,10 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel34Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane2.setViewportView(jPanel34);
@@ -1607,6 +1752,22 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu16);
 
+        jMenu3.setText("HISTORIAL");
+
+        jMenuItem9.setText("TODO");
+        jMenu3.add(jMenuItem9);
+        jMenu3.add(jSeparator11);
+
+        jMenuItem14.setText("KARDEX");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem14);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1631,6 +1792,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     }
 
     public void CargarImagen() {
+        labelimagen.setSize(211, 157);
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(ObtenerRutaImagen(0));
         ImageIcon bl = new ImageIcon(retValue);
@@ -2184,6 +2346,14 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         Reve.setText(CALCULAR_PORCENTAJE(Costo.getText(), jTextField3.getText(), 1).toString());
     }//GEN-LAST:event_jTextField3KeyReleased
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        AGREGAR_OTRA_IMAGEN();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        principal.KARDEX(true, Id.getText());
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
     public int ConsultarIdProveedor(JComboBox ComboCategoria) {
         int ResultadoProveedor = 0;
         ResultadoProveedor = proDao.ConsultaIdProveedor(ComboCategoria);
@@ -2263,6 +2433,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ADMINISTRARPRODUCTO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
@@ -2316,6 +2487,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private static javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private static javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
@@ -2331,15 +2503,18 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu16;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem34;
@@ -2350,15 +2525,23 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private static javax.swing.JPanel jPanel34;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
+    private javax.swing.JPopupMenu.Separator jSeparator11;
     private javax.swing.JSeparator jSeparator18;
     private javax.swing.JSeparator jSeparator19;
     private javax.swing.JPopupMenu.Separator jSeparator2;

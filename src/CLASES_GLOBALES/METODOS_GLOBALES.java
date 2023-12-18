@@ -123,6 +123,7 @@ public class METODOS_GLOBALES {
     }
     
     public static void PintarImagen(JLabel lbl, String ruta){
+        
         lbl.removeAll();
         lbl.setHorizontalAlignment(SwingConstants.CENTER);
         METODOS_GLOBALES.imagenI = new ImageIcon(ruta);
@@ -183,6 +184,8 @@ public class METODOS_GLOBALES {
         lbl.setIcon(METODOS_GLOBALES.icono);
         lbl.repaint();
     }
+    
+   
 
     public static Boolean VALIDAR_ANULAR_DOCUMENTO(String Fecha) {
         Boolean Estado = false;
@@ -305,9 +308,9 @@ public class METODOS_GLOBALES {
     }
    
     public static void CONVERSION_WEBP_IMAGE(String RUTA_ORIGEN, String RUTA_DESTINO, ImageFileType TIPO_IMAGEN) {
-        Locale.setDefault(new Locale("es"));
+      /* Locale.setDefault(new Locale("es"));
         WordProcessingLoadOptions loadOptions = new WordProcessingLoadOptions();
-        loadOptions.setPassword("12345");
+        loadOptions.setPassword("12345");*/
         Converter converter = new Converter(RUTA_ORIGEN);
         ImageConvertOptions options = new ImageConvertOptions();
                 options.setFormat(TIPO_IMAGEN);

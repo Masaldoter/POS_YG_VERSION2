@@ -1,5 +1,6 @@
 package Vista.Traslados;
 
+import Controlador.Eventos;
 import Modelo.Traslados;
 import Tablas.ConsultasTraslados;
 import Tablas.RenderTablas;
@@ -29,8 +30,8 @@ public class TrasladosGenerales extends javax.swing.JInternalFrame {
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         FiltroBusqueda = 1;
-        ActualizarTablaEstado(FiltroBusqueda, this.Parametro1, this.Parametro2);
-        lblTipoDeBusquedaRealizada.setText("ORDENADO POR ID");
+       /* ActualizarTablaEstado(FiltroBusqueda, this.Parametro1, this.Parametro2);
+        lblTipoDeBusquedaRealizada.setText("ORDENADO POR ID");*/
     }
     public static void LimpiarTabla(JTable Tabla){
         DefaultTableModel modelo = new DefaultTableModel();
@@ -110,6 +111,9 @@ public class TrasladosGenerales extends javax.swing.JInternalFrame {
         CajaNumero.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 CajaNumeroKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CajaNumeroKeyTyped(evt);
             }
         });
 
@@ -471,6 +475,11 @@ public class TrasladosGenerales extends javax.swing.JInternalFrame {
         this.Parametro2 = Fecha_Final_2;
         ActualizarTablaEstado(FiltroBusqueda, this.Parametro1, this.Parametro2);
     }//GEN-LAST:event_BtnBuscarPorFechasActionPerformed
+
+    private void CajaNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CajaNumeroKeyTyped
+        Eventos event = new Eventos();
+        event.numberKeyPress(evt);
+    }//GEN-LAST:event_CajaNumeroKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

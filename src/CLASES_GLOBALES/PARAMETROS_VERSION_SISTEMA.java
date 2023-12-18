@@ -10,7 +10,7 @@ package CLASES_GLOBALES;
  */
 public class PARAMETROS_VERSION_SISTEMA {
     public static String NOMBRE_SISTEMA = "POS YG";
-    public static String VERSION_SISTEMA = "4.0";
+    public static String VERSION_SISTEMA = "4.1";
     public static String NOMBRE_DESARROLLADOR = "ALDO GUTIÉRREZ";
     public static String TELEFONO_DESARROLLADOR = "50240805837";
     public static String FACEBOOK_DESARROLLADOR = "https://www.facebook.com/Masaldotergt/";
@@ -46,7 +46,7 @@ public class PARAMETROS_VERSION_SISTEMA {
             + "*SE AGREGÓ EL MODULO DE VALES, SALIDAS O TRASLADOS\n"
             + "*SE ARREGLARON BUGS (ARRASTRAR Y SOLTAR Y CONVERTIRT .WEBP A PNG)\n"
             + "*SE AGREGARON NUEVAS FUNCIÓNES EN EL POS"+ "\n"
-            + "VERSIÓN 4.0(ACTUAL):\n"
+            + "VERSIÓN 4.0:\n"
             + "*SE AGREGARON NUEVAS OPCIÓNES EN DETALLE DE VENTAS, REGISTRO DE VENTAS\n"
             + "*SE ARREGLARON BUGS";
 

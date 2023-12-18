@@ -472,4 +472,41 @@ public class VentaDao extends ConexionesSQL {
         }
         return Resultado;
     }
+    
+    public Venta BUSCAR_REGISTRO(String id){
+        Venta v = null;
+        boolean Resultado = false;
+        ps = null;
+        rs = null;
+        cn = conexion.getInstancia().getConnection();
+        try {
+            ps = cn.prepareStatement("select Cliente, NitCliente, Usuario, Hora, Fecha, FormaPago, Observacion, TotalEnLetras, NombreCertificador, NitCertificador, FechaAutorizacion, NumeroAutorizacion, NumeroDocumento"
+                    + ", SerieDocumento, TipoDocumentoFel, Estado, NitEmisor from registro where idregistro=?");
+            ps.setString(1, id);
+            
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                v= new Venta();
+                v.setCliente(rs.getString("Cliente"));
+                v.setNitEmisor(rs.getString("NitCliente"));
+                v.setTipoDocumentoFel(rs.getString("TipoDocumentoFel"));
+                v.setNumeroAutorizacion(rs.getString("NumeroAutorizacion"));
+                v.setNumeroDocumento(rs.getString("NumeroDocumento"));
+                v.setSerieDocumento(rs.getString("SerieDocumento"));
+                v.setFechaAutorizacion(rs.getString("FechaAutorizacion"));
+                v.setFecha(rs.getString("Fecha"));
+                v.setHora(rs.getString("Hora"));
+                Resultado = true;
+            }
+        } catch (SQLException e) {
+            Resultado = false;
+            System.err.println("Error en BUSCAR_REGISTRO, " + e);
+        }finally{
+            RsClose(rs);
+            PsClose(ps);
+            ConnectionClose(cn);
+        }
+        return v;
+    }
 }

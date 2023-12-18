@@ -4,6 +4,7 @@
  */
 package Vista.REPORTES_VENTAS;
 
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CONSULTAS.CONSULTAS_VENTAS;
 import Vista.Detalles;
@@ -28,7 +29,9 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         initComponents();
         this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
+        
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            
     }
     
     public void CARGAR_TOTALES(){

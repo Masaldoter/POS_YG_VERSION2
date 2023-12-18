@@ -1,5 +1,6 @@
 package Vista.Vales;
 
+import Controlador.Eventos;
 import Modelo.Vales;
 import Tablas.ConsultasVales;
 import Tablas.RenderTablas;
@@ -29,8 +30,8 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         FiltroBusqueda = 1;
-        ActualizarTablaEstado(FiltroBusqueda, this.Parametro1, this.Parametro2);
-        lblTipoDeBusquedaRealizada.setText("ORDENADO POR ID");
+       /* ActualizarTablaEstado(FiltroBusqueda, this.Parametro1, this.Parametro2);
+        lblTipoDeBusquedaRealizada.setText("ORDENADO POR ID");*/
     }
     public static void LimpiarTabla(JTable Tabla){
         DefaultTableModel modelo = new DefaultTableModel();
@@ -110,6 +111,9 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
         CajaNumeroDeCotizacion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 CajaNumeroDeCotizacionKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CajaNumeroDeCotizacionKeyTyped(evt);
             }
         });
 
@@ -471,6 +475,11 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
         this.Parametro2 = Fecha_Final_2;
         ActualizarTablaEstado(FiltroBusqueda, this.Parametro1, this.Parametro2);
     }//GEN-LAST:event_BtnBuscarPorFechasActionPerformed
+
+    private void CajaNumeroDeCotizacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CajaNumeroDeCotizacionKeyTyped
+        Eventos event = new Eventos();
+        event.numberKeyPress(evt);
+    }//GEN-LAST:event_CajaNumeroDeCotizacionKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

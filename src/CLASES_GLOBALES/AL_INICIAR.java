@@ -4,23 +4,22 @@
  */
 package CLASES_GLOBALES;
 
-import Conexiones.ConexionesSQL;
-import static Conexiones.ConexionesSQL.ConnectionClose;
-import static Conexiones.ConexionesSQL.PsClose;
-import static Conexiones.ConexionesSQL.RsClose;
-import static Conexiones.ConexionesSQL.cn;
-import static Conexiones.ConexionesSQL.ps;
-import static Conexiones.ConexionesSQL.rs;
-import Conexiones.conexion;
-import java.sql.SQLException;
+import ds.desktop.notify.DesktopNotify;
+import ds.desktop.notify.NotifyTheme;
+import java.util.Locale;
 
 /**
  *
  * @author MASALDOTER_GT
  */
-public class AL_INICIAR extends ConexionesSQL{
-    
-    public void VERIFICAR_FULLTEXT_PRODUCTOS(){
+public class AL_INICIAR {
+    Locale local;
+    public void CARGAR_CONFIGURACIONES(){
+        Locale.setDefault(Locale.US);
+
+        // Imprimir la localización actual
+        DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+            DesktopNotify.showDesktopMessage("CONFIGURACION", "LA REGIÓN ACTUAL ES: " + Locale.getDefault(), DesktopNotify.INFORMATION, 14000L);
          /*           try {
             cn = conexion.getInstancia().getConnection();
             String tableName = "productos";
@@ -56,4 +55,8 @@ public class AL_INICIAR extends ConexionesSQL{
 
     }
     
+    public static void OBTENER_REGION(){
+        DesktopNotify.setDefaultTheme(NotifyTheme.Light);
+            DesktopNotify.showDesktopMessage("CONFIGURACION", "LA REGIÓN ACTUAL ES: " + Locale.getDefault(), DesktopNotify.INFORMATION, 14000L);
+    }
 }

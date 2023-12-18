@@ -5,6 +5,7 @@
  */
 package Tablas;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
 import Conexiones.ConexionesSQL;
 import static Conexiones.ConexionesSQL.ConnectionClose;
 import Conexiones.conexion;
@@ -78,6 +79,7 @@ public class ActualizarTablaVentas extends ConexionesSQL{
     }
 
     public List ListarProductosTiendaNombre(String PARAMETRO) {
+        JLabel Imagen_Label;
 
         List<Productos> Listapro = new ArrayList();
         Productos pro;
@@ -100,8 +102,12 @@ for (String palabra : palabras) {
 //ps.setString(1, PARAMETRO);
            rs = ps.executeQuery();
             while (rs.next()) {
+                /*Imagen_Label = new JLabel();
+                METODOS_GLOBALES.PintarImagen(Imagen_Label, rs.getString("Nombre"));
+                Imagen_Label.setSize(50, 50);*/
                 pro = new Productos();
                 pro.setNombre(rs.getString("Nombre"));
+               // pro.setImagen(Imagen_Label);
                 Listapro.add(pro);
             }
         } catch (SQLException e) {

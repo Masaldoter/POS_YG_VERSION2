@@ -1,5 +1,6 @@
 package Excel;
 import CLASES_GLOBALES.METODOS_GLOBALES;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import java.awt.Desktop;
 import java.io.File;
@@ -15,10 +16,12 @@ import javax.swing.JOptionPane;
 import Modelo.login;
 import Conexiones.ConexionesSQL;
 import Tablas.RenderTablas;
+import Vista.AVISOS;
 import Vista.POS.POS;
 import Vista.Principal;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URISyntaxException;
@@ -57,19 +60,42 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Excel extends ConexionesSQL {
 
-    String NombreEmpresa = PARAMETROS_EMPRESA.NOMBRE_EMPRESA;
     int item;
     public void reporte() throws URISyntaxException {
-        Principal p = new Principal();
+        
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                
+            
+        JFileChooser chooser = new JFileChooser();
+        /*
+* De acuerdo con JFileChooser para seleccionar el cuadro de carpeta emergente 1. Sólo seleccione el directorio JFileChooser.DIRECTORIES_ONLY
+ * 2. Seleccione solo el archivo JFileChooser.FILES_ONLY
+ * 3. Tanto los directorios como los archivos pueden ser JFileChooser.FILES_AND_DIRECTORIES
+             */
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setCurrentDirectory(new File(METODOS_GLOBALES.CargarDatosRutasAlBuscarImagen()));
+            String selectPath = null;
+            // Guardar el directorio seleccionado chooser.showSaveDialog (parent);
+            Component parent = null;
+            int returnVal = chooser.showSaveDialog(parent);
+
+        // Obtener el objeto de archivo seleccionado JFileChooser.APPROVE_OPTION
+        // Si el directorio guardado es consistente con el objeto de archivo seleccionado, devolverá 0 si tiene éxito
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            AVISOS AV = new AVISOS("CARGANDO DATOS", "POR FAVOR, ESPERE");
+                                AV.setVisible(true);
+
+            // obtener ruta
+            selectPath = chooser.getSelectedFile().getPath();
+        
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN TIENDA");
 
         try {
 
-            //String imag= "C:\\Imágenes de Sistema de Ferretería El Amigo\\FerreteríaPequeño.png";
-            String rutaimagen = System.getProperty("user.dir") + System.getProperty("file.separator") + "src" + System.getProperty("file.separator") + "imagenes" + System.getProperty("file.separator")
-                    + System.getProperty("file.separator") + "FerreteríaPequeño" + ".png";
-            String directorio2 = new File ("/Sistema Punto de Venta YG/FerreteríaPequeño.png").getAbsolutePath();
+            String directorio2 = new File (METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA).getAbsolutePath();
             InputStream is = new FileInputStream(directorio2);
             byte[] bytes = IOUtils.toByteArray(is);
             int imgIndex = book.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
@@ -82,15 +108,15 @@ public class Excel extends ConexionesSQL {
             anchor.setCol1(0);
             anchor.setRow1(0);
             Picture pict = draw.createPicture(anchor, imgIndex);
-            pict.resize(1.5, 3);
+            pict.resize(1, 3.5);
  
             CellStyle tituloEstilo = book.createCellStyle();
             tituloEstilo.setAlignment(HorizontalAlignment.CENTER);
             tituloEstilo.setVerticalAlignment(VerticalAlignment.CENTER);
             Font fuenteTitulo = book.createFont();
-            fuenteTitulo.setFontName("Arial");
+            fuenteTitulo.setFontName("Times New Roman");
             fuenteTitulo.setBold(true);
-            fuenteTitulo.setFontHeightInPoints((short) 14);
+            fuenteTitulo.setFontHeightInPoints((short) 16);
             tituloEstilo.setFont(fuenteTitulo);
  
             Row filaTitulo = sheet.createRow(1);
@@ -100,8 +126,9 @@ public class Excel extends ConexionesSQL {
  
             sheet.addMergedRegion(new CellRangeAddress(1, 2, 1, 3));
  
-            String[] cabecera = new String[]{"Codigo", "Nombre", "Stock", "Precio Costo", " Costo en Letras", "Precio Público,", "Precio Especial", "Precio Reventa", "Categoría", "Proveedor", "Fecha de Ingreso", "Registrado Por", 
-            "Última vez modificado", "Modifcado Por", "Ruta", "Ubicacion", "Descripción"};
+            String[] cabecera = new String[]{"CÓDIGO", "NOMBRE", "STOCK", "COSTO", " COSTO LETRAS", "PRECIO 1", "PRECIO 2", "PRECIO 3", "ID CATEGORÍA", "ID PROVEEDOR", 
+                "INGRESO", "ID USUARIO REGISTRO", 
+            "MODIFICACIÓN", "ID USUARIO MODIFICÓ", "RUTA IMAGEN", "UBICACION", "DESCRIPCIÓN"};
  
             CellStyle headerStyle = book.createCellStyle();
             headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
@@ -112,7 +139,7 @@ public class Excel extends ConexionesSQL {
             headerStyle.setBorderBottom(BorderStyle.THIN);
  
             Font font = book.createFont();
-            font.setFontName("Arial");
+            font.setFontName("Times New Roman");
             font.setBold(true);
             font.setColor(IndexedColors.WHITE.getIndex());
             font.setFontHeightInPoints((short) 12);
@@ -179,25 +206,20 @@ public class Excel extends ConexionesSQL {
             sheet.autoSizeColumn(19);
             
             sheet.setZoom(90);
-            String fileName = "Reporte_de_Productos_TIENDA";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
             
-
-             if (!directorio.exists()) {
-            if (directorio.mkdirs()) {
-                JOptionPane.showMessageDialog(null,"DIRECTORIO CREADO\n"+directorio.toString());
-            } else {
-               JOptionPane.showMessageDialog(null,"Error al crear directorio");
-            }
-             }
+            
+            String fileName = "REPORTE_DE_PRODUCTOS_"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"_"+METODOS_GLOBALES.Fecha()+"_";
+           
+            
+             
+             
       
-            File file = new File(directorio+"\\"+fileName + ".xlsx");
+            File file = new File(selectPath+"\\"+fileName + ".xlsx");
             FileOutputStream fileOut = new FileOutputStream(file);
             book.write(fileOut);
             fileOut.close();
             
             Desktop.getDesktop().open(file);
-            JOptionPane.showMessageDialog(null, "¡REPORTE GENERADO EXITOSAMENTE!");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error, "+ex);
@@ -208,7 +230,13 @@ public class Excel extends ConexionesSQL {
             PsClose(ps);
             RsClose(rs);
             ConnectionClose(cn);
+            AV.dispose();
         }
+        
+        }
+        
+        }
+        });
  
     }
     
@@ -279,7 +307,7 @@ public class Excel extends ConexionesSQL {
             
             sheet.setZoom(90);
             String fileName = "Reporte_de_Productos_TIENDA";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
+            File directorio = new File("/"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"/Reporte de Productos");
             
 
              if (!directorio.exists()) {
@@ -435,7 +463,7 @@ public class Excel extends ConexionesSQL {
             
             sheet.setZoom(90);
             String fileName = "Reporte_de_Productos_Parametros";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
+            File directorio = new File("/"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"/Reporte de Productos");
             
 
              if (!directorio.exists()) {
@@ -459,158 +487,6 @@ public class Excel extends ConexionesSQL {
         } catch (IOException e) {
         } catch (SQLException ex) {
             Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            PsClose(ps);
-            RsClose(rs);
-            ConnectionClose(cn);
-        }
- 
-    }
-    
-    public void reporteBodega() throws URISyntaxException {
-        Workbook book = new XSSFWorkbook();
-        Sheet sheet = book.createSheet("INVENTARIO DE PRODUCTOS EN BODEGA");
- 
-        try {
-            
-            //String imag= "C:\\Imágenes de Sistema de Ferretería El Amigo\\FerreteríaPequeño.png";
-            String rutaimagen= System.getProperty("user.dir") + System.getProperty("file.separator")+"src"+System.getProperty("file.separator")+"imagenes"+System.getProperty("file.separator")+
-            System.getProperty("file.separator")+"FerreteríaPequeño"+".png";
-            String directorio2 = new File ("/Sistema Punto de Venta YG/FerreteríaPequeño.png").getAbsolutePath();
-            InputStream is = new FileInputStream(directorio2);
-            byte[] bytes = IOUtils.toByteArray(is);
-            int imgIndex = book.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
-            is.close();
- 
-            CreationHelper help = book.getCreationHelper();
-            Drawing draw = sheet.createDrawingPatriarch();
- 
-            ClientAnchor anchor = help.createClientAnchor();
-            anchor.setCol1(0);
-            anchor.setRow1(0);
-            Picture pict = draw.createPicture(anchor, imgIndex);
-            pict.resize(1.5, 3);
- 
-            CellStyle tituloEstilo = book.createCellStyle();
-            tituloEstilo.setAlignment(HorizontalAlignment.CENTER);
-            tituloEstilo.setVerticalAlignment(VerticalAlignment.CENTER);
-            Font fuenteTitulo = book.createFont();
-            fuenteTitulo.setFontName("Arial");
-            fuenteTitulo.setBold(true);
-            fuenteTitulo.setFontHeightInPoints((short) 14);
-            tituloEstilo.setFont(fuenteTitulo);
- 
-            Row filaTitulo = sheet.createRow(1);
-            Cell celdaTitulo = filaTitulo.createCell(1);
-            celdaTitulo.setCellStyle(tituloEstilo);
-            celdaTitulo.setCellValue("PRODUCTOS EN INVENTARIO");
- 
-            sheet.addMergedRegion(new CellRangeAddress(1, 2, 1, 3));
- 
-            String[] cabecera = new String[]{"Codigo", "Nombre", "Stock", "Precio Costo", " Costo en Letras", "Precio Público,", "Precio Especial", "Precio Reventa", "Fecha de Ingreso", "Última vez modificado", "Ruta", "Ubicación", "Decripción "};
- 
-            CellStyle headerStyle = book.createCellStyle();
-            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
- 
-            Font font = book.createFont();
-            font.setFontName("Arial");
-            font.setBold(true);
-            font.setColor(IndexedColors.WHITE.getIndex());
-            font.setFontHeightInPoints((short) 12);
-            headerStyle.setFont(font);
- 
-            Row filaEncabezados = sheet.createRow(4);
- 
-            for (int i = 0; i < cabecera.length; i++) {
-                Cell celdaEnzabezado = filaEncabezados.createCell(i);
-                celdaEnzabezado.setCellStyle(headerStyle);
-                celdaEnzabezado.setCellValue(cabecera[i]);
-            }
- 
-            
-            ps = null;
-            rs = null;
-            cn = Unionsis2.getConnection();
- 
-            int numFilaDatos = 5;
- 
-            CellStyle datosEstilo = book.createCellStyle();
-            datosEstilo.setBorderBottom(BorderStyle.THIN);
-            datosEstilo.setBorderLeft(BorderStyle.THIN);
-            datosEstilo.setBorderRight(BorderStyle.THIN);
-            datosEstilo.setBorderBottom(BorderStyle.THIN);
- 
-            ps = cn.prepareStatement("SELECT CodigoBarras, Nombre,  Cantidad, Costo, CodigoLetras, Publico, PrecioEs, PrecioRe, fechaingreso, UsuarioIngreso, fechamodificacion, ruta, Ubicacion, Descripcion FROM productos");
-            
-            rs = ps.executeQuery();
- 
-            int numCol = rs.getMetaData().getColumnCount();
- 
-            while (rs.next()) {
-                Row filaDatos = sheet.createRow(numFilaDatos);
- 
-                for (int a = 0; a < numCol; a++) {
- 
-                    Cell CeldaDatos = filaDatos.createCell(a);
-                    CeldaDatos.setCellStyle(datosEstilo);
-                    CeldaDatos.setCellValue(rs.getString(a + 1));
-                }
- 
- 
-                numFilaDatos++;
-            }
-            sheet.autoSizeColumn(0);
-            sheet.autoSizeColumn(1);
-            sheet.autoSizeColumn(2);
-            sheet.autoSizeColumn(3);
-            sheet.autoSizeColumn(4);
-            sheet.autoSizeColumn(5);
-            sheet.autoSizeColumn(6);
-            sheet.autoSizeColumn(7);
-            sheet.autoSizeColumn(8);
-            sheet.autoSizeColumn(9);
-            sheet.autoSizeColumn(10);
-            sheet.autoSizeColumn(11);
-            sheet.autoSizeColumn(12);
-            sheet.autoSizeColumn(13);
-            sheet.autoSizeColumn(14);
-            sheet.autoSizeColumn(15);
-            sheet.autoSizeColumn(16);
-            sheet.autoSizeColumn(17);
-            sheet.autoSizeColumn(18);
-            sheet.autoSizeColumn(19);
-            
-            sheet.setZoom(90);
-            String fileName = "Reporte_de_Productos_BODEGA";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
-            
-
-             if (!directorio.exists()) {
-            if (directorio.mkdirs()) {
-                JOptionPane.showMessageDialog(null,"DIRECTORIO CREADO\n"+directorio.toString());
-            } else {
-               JOptionPane.showMessageDialog(null,"Error al crear directorio");
-            }
-             }
-      
-            File file = new File(directorio+"\\"+fileName + ".xlsx");
-            FileOutputStream fileOut = new FileOutputStream(file);
-            book.write(fileOut);
-            fileOut.close();
-            
-            Desktop.getDesktop().open(file);
-            JOptionPane.showMessageDialog(null, "¡REPORTE GENERADO EXITOSAMENTE!");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error, "+ex);
-        } catch (IOException | SQLException ex) {
-            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error dos, "+ex);
         }finally{
             PsClose(ps);
             RsClose(rs);
@@ -740,7 +616,7 @@ public class Excel extends ConexionesSQL {
             
             sheet.setZoom(90);
             String fileName = "Reporte_de_Productos_TIENDA";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
+            File directorio = new File("/"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"/Reporte de Productos");
             
 
              if (!directorio.exists()) {
@@ -892,7 +768,7 @@ public class Excel extends ConexionesSQL {
             
             sheet.setZoom(90);
             String fileName = "Reporte_de_Productos_TIENDA";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
+            File directorio = new File("/"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"/Reporte de Productos");
             
 
              if (!directorio.exists()) {
@@ -1044,7 +920,7 @@ public class Excel extends ConexionesSQL {
             
             sheet.setZoom(90);
             String fileName = "Reporte_de_Productos_TIENDA";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
+            File directorio = new File("/"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"/Reporte de Productos");
             
 
              if (!directorio.exists()) {
@@ -1196,7 +1072,7 @@ public class Excel extends ConexionesSQL {
             
             sheet.setZoom(90);
             String fileName = "Reporte_de_Productos_TIENDA";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
+            File directorio = new File("/"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"/Reporte de Productos");
             
 
              if (!directorio.exists()) {
@@ -1348,7 +1224,7 @@ public class Excel extends ConexionesSQL {
             
             sheet.setZoom(90);
             String fileName = "Reporte_de_Productos_TIENDA";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
+            File directorio = new File("/"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"/Reporte de Productos");
             
 
              if (!directorio.exists()) {
@@ -1500,7 +1376,7 @@ public class Excel extends ConexionesSQL {
             
             sheet.setZoom(90);
             String fileName = "Reporte_de_Productos_TIENDA";
-            File directorio = new File("/"+NombreEmpresa+"/Reporte de Productos");
+            File directorio = new File("/"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"/Reporte de Productos");
             
 
              if (!directorio.exists()) {

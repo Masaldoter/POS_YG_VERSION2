@@ -428,18 +428,22 @@ public class FormaDePago extends javax.swing.JFrame {
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         
         Seleccion(1);
+        EfectivoPagado.addFocusListener(new FullSelectorListener());
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         Seleccion(2);
+        TarjetaPagado.addFocusListener(new FullSelectorListener());
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         Seleccion(3);
+        DepositoPagado.addFocusListener(new FullSelectorListener());
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         Seleccion(4);
+        ChequePagado.addFocusListener(new FullSelectorListener());
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
@@ -473,6 +477,7 @@ public class FormaDePago extends javax.swing.JFrame {
 
                 TotalPagado.setText("0.00");
                 cambio.setText("0.00");
+                EfectivoPagado.requestFocus();
                 EfectivoPagado.addFocusListener(new FullSelectorListener());
                 break;
 
@@ -501,6 +506,7 @@ public class FormaDePago extends javax.swing.JFrame {
 
                 TotalPagado.setText("0.00");
                 cambio.setText("0.00");
+                TarjetaPagado.requestFocus();
                 TarjetaPagado.addFocusListener(new FullSelectorListener());
                 break;
 
@@ -528,6 +534,7 @@ public class FormaDePago extends javax.swing.JFrame {
 
                 TotalPagado.setText("0.00");
                 cambio.setText("0.00");
+                DepositoPagado.requestFocus();
                 DepositoPagado.addFocusListener(new FullSelectorListener());
                 break;
 
@@ -557,6 +564,7 @@ public class FormaDePago extends javax.swing.JFrame {
 
                 TotalPagado.setText("0.00");
                 cambio.setText("0.00");
+                ChequePagado.requestFocus();
                 ChequePagado.addFocusListener(new FullSelectorListener());
                 break;
 

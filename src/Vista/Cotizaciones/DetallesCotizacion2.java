@@ -21,7 +21,6 @@ import Modelo.Productos;
 import ReportesImpresion.DatosClienteYFactura;
 import ReportesImpresion.Documentos;
 import Conexiones.ConexionesSQL;
-import static Vista.Cotizaciones.CotizacionesGenerales.ActualizarTablaEstado;
 import Vista.Detalles;
 import Vista.POS.POS;
 import Vista.Principal;
@@ -798,7 +797,7 @@ public class DetallesCotizacion2 extends javax.swing.JInternalFrame {
         int seleccion= JOptionPane.showConfirmDialog(this, "¿ESTÁ SEGURO DE ELIMINAR ESTA COTIZACIÓN?\n*Esto no se puede deshacer");
         if(seleccion==0){
             ModificarCotizacion(0);
-            ActualizarTablaEstado();
+            pos.principal.CG.ActualizarTablaEstado(pos.principal.CG.FiltroBusqueda, pos.principal.CG.Parametro1, pos.principal.CG.Parametro2);
             this.dispose();
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -840,7 +839,7 @@ public class DetallesCotizacion2 extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         RealizarVenta();
-        ActualizarTablaEstado();
+        pos.principal.CG.ActualizarTablaEstado(pos.principal.CG.FiltroBusqueda, pos.principal.CG.Parametro1, pos.principal.CG.Parametro2);
     }//GEN-LAST:event_jButton4ActionPerformed
 
 

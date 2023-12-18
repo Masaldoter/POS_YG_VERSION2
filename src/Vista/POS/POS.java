@@ -232,7 +232,6 @@ public final class POS extends javax.swing.JInternalFrame {
         generarserieVales();
         generarserie_TRASLADOS();
     }
-    
     //Limpiar cajas de Venta
     public void LIMPIAR_CAJA_CONSULTA_PRODUCTOS() {
         IdVenta.setText(null);
@@ -875,8 +874,8 @@ public final class POS extends javax.swing.JInternalFrame {
             TotalPagar = TotalPagar + cal;
 
         }
-        labeltotal.setText(String.format("%.2f",TotalPagar));
-        labeltotalenfacturacion.setText(String.format("%.2f",TotalPagar));
+        labeltotal.setText(String.format("%.4f",TotalPagar));
+        labeltotalenfacturacion.setText(String.format("%.4f",TotalPagar));
     }
     
     public Boolean VALIDAR_CAJAS_CLIENTE_POS(){
@@ -919,10 +918,11 @@ public final class POS extends javax.swing.JInternalFrame {
     public String TIPO_NUMERO_INTERNO(){
         String NUMERO_INTERNO = null;
         
-        if(TipoDocumento.getSelectedIndex()==0 || TipoDocumento.getSelectedIndex()==1){
+        if(TipoDocumento.getSelectedItem().toString().equals("FACTURA") || TipoDocumento.getSelectedItem().toString().equals("PROFORMA")){
            NUMERO_INTERNO = NumeroInternoFinal ;
-        }else if(TipoDocumento.getSelectedIndex()==3){
-           generarserie_TRASLADOS();
+        }else if(TipoDocumento.getSelectedItem().toString().equals("VALE")){
+           NUMERO_INTERNO = Vale.getText();
+        }else if(TipoDocumento.getSelectedItem().toString().equals("TRASLADO")){
            NUMERO_INTERNO = lblSerie_TRASLADOS.getText();
         }
         return NUMERO_INTERNO;
@@ -1102,7 +1102,6 @@ public final class POS extends javax.swing.JInternalFrame {
         TrasladoDao = new TrasladosDao();
         if (!"".equals(nombre.getText()) && !"".equals(Caja_IDENTIFICACION.getText())) {
             generarserie_TRASLADOS();
-            GUARDAR_KARDEX();
             RegistrarTraslado();
         } else if (nombre.getText().equals("") && !"".equals(Caja_IDENTIFICACION.getText())) {
             JOptionPane.showMessageDialog(null, "DEBE RELLENAR EL NOMBRE");
@@ -1538,9 +1537,9 @@ public void GenerarVenta() {
                 double cal = Double.parseDouble(String.valueOf(TablaVentas.getModel().getValueAt(i, 2)));
                 TotalStock23 = TotalStock23 + cal;
             }
-            TotalDeProductosVendidos.setText(String.format("%.2f", TotalStock23));
+            TotalDeProductosVendidos.setText(String.format("%.4f", TotalStock23));
             TotalTipoDeProductosPOS.setText(String.valueOf(nu));
-            jLabel44.setText(String.format("%.2f", TotalStock23));
+            jLabel44.setText(String.format("%.4f", TotalStock23));
         }
     }
     
@@ -1703,11 +1702,11 @@ public void GenerarVenta() {
                 CantidadVenta.setText("1");
                 CantidadVenta.requestFocus();
                 CantidadVenta.addFocusListener(new FullSelectorListener());
-                if ("0".equals(Cantidad2.getText()) || Cantidad2.getText() == "0.00") {
-                    Cantidad2.setForeground(Color.red);
-                } else {
-                    Cantidad2.setForeground(Color.GREEN);
-                }
+                if (Float.parseFloat(Cantidad2.getText()) == 0) {
+                        Cantidad2.setForeground(Color.red);
+                    } else {
+                        Cantidad2.setForeground(Color.GREEN);
+                    }
 
                 if (CheckIngresoAutomatico.isSelected()) {
                     AgregarProducto();
@@ -1722,9 +1721,12 @@ public void GenerarVenta() {
     }
 
     public void BuscarProductoVentaPorNombre(String Nombre) {
-        PrecioPublico.setFont(new Font("Consolas", Font.BOLD, 18));
-        PrecioRe.setFont(new Font("Consolas", Font.BOLD, 16));
-        PrecioEs.setFont(new Font("Consolas", Font.BOLD, 16));
+            PrecioRe.setSelected(false);
+            PrecioEs.setSelected(false);
+            Final.setText(PrecioPublico.getText());
+            PrecioPublico.setFont(new Font("Consolas", Font.BOLD, 18));
+            PrecioRe.setFont(new Font("Consolas", Font.BOLD, 16));
+            PrecioEs.setFont(new Font("Consolas", Font.BOLD, 16));
         if (!"".equals(Nombre)) {
             pro = new Productos();
             proDao = new ProductosDao();
@@ -3529,6 +3531,10 @@ public void GenerarVenta() {
                     BuscarProductoVenta(IdVenta.getText());
                     SumarProductos();
                     if (TablaVentas.getRowCount() < 1) {
+                        FORMA_DE_PAGO();
+                        if (VentanaFormaPago == true) {
+                            Pagos.setVisible(false);
+                        }
                         LIMPIAR_DATOS_RESUMEN_VENTA();
                     } else {
                         FORMA_DE_PAGO();
@@ -3537,6 +3543,10 @@ public void GenerarVenta() {
                     EliminarVentaSinAumentarStock();
                     SumarProductos();
                     if (TablaVentas.getRowCount() < 1) {
+                        FORMA_DE_PAGO();
+                        if (VentanaFormaPago == true) {
+                            Pagos.setVisible(false);
+                        }
                         LIMPIAR_DATOS_RESUMEN_VENTA();
                     } else {
                         FORMA_DE_PAGO();
@@ -3606,6 +3616,7 @@ public void GenerarVenta() {
     }//GEN-LAST:event_BtnBuscarProductoPOSActionPerformed
 
     private void BtnAgregarPagoPOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarPagoPOSActionPerformed
+        principal.MoverEntreSistema();
         if(jLabel44.getText().equals("0") || jLabel44.getText().equals("0.00") || jLabel44.getText().equals("0.0")){
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("¡ACCIÓN NO VÁLIDA!", "¡DEBE INGRESAR ALGÚN PRODUCTO!", DesktopNotify.FAIL, 20000L);

@@ -21,6 +21,12 @@ public class KARDEX extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
     
+    public KARDEX(String BUSCAR) {
+        TIPO_BUSQUEDA_MODULO_KARDEX.setText("FILTRADO");
+        jTextField1.setText(BUSCAR);
+        REFRESCAR_KARDEX();
+    }
+    
     public static void REFRESCAR_KARDEX(){
         if(TIPO_BUSQUEDA_MODULO_KARDEX.getText().equals("FILTRADO")){
             CONSULTAS_KARDEX.ListarKardex(Tabla_Kardex, jTextField1.getText(), 2, jCheckBox1.isSelected());
@@ -137,9 +143,9 @@ public class KARDEX extends javax.swing.JInternalFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TIPO_BUSQUEDA_MODULO_KARDEX)
-                    .addComponent(jCheckBox1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TIPO_BUSQUEDA_MODULO_KARDEX, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(8, 8, 8))
         );
 
@@ -231,7 +237,7 @@ public class KARDEX extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private static javax.swing.JLabel TIPO_BUSQUEDA_MODULO_KARDEX;
+    public static javax.swing.JLabel TIPO_BUSQUEDA_MODULO_KARDEX;
     private static javax.swing.JTable Tabla_Kardex;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -242,6 +248,6 @@ public class KARDEX extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private static javax.swing.JTextField jTextField1;
+    public static javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
