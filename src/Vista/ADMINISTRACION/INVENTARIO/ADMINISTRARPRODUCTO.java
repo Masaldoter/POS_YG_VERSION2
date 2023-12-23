@@ -734,6 +734,12 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
         jPanel1 = new javax.swing.JPanel();
         NombreUsuarioVista = new javax.swing.JLabel();
         EstadoProducto = new javax.swing.JLabel();
@@ -905,6 +911,30 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jSplitPane1.setDividerLocation(100);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(5);
+        jScrollPane5.setViewportView(jTextArea1);
+
+        jSplitPane1.setRightComponent(jScrollPane5);
+
+        jScrollPane6.setViewportView(jList2);
+
+        jSplitPane1.setLeftComponent(jScrollPane6);
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 653, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -1755,6 +1785,11 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         jMenu3.setText("HISTORIAL");
 
         jMenuItem9.setText("TODO");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem9);
         jMenu3.add(jSeparator11);
 
@@ -2354,6 +2389,17 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         principal.KARDEX(true, Id.getText());
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+                HISTORIAL();
+                JFrame VentanaHistorial = new JFrame();
+                VentanaHistorial.setSize(500, 500);
+                VentanaHistorial.setVisible(true);
+                VentanaHistorial.setLocationRelativeTo(this);
+                VentanaHistorial.setAlwaysOnTop(true);
+                VentanaHistorial.add(jPanel9);
+                jPanel9.setVisible(true);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     public int ConsultarIdProveedor(JComboBox ComboCategoria) {
         int ResultadoProveedor = 0;
         ResultadoProveedor = proDao.ConsultaIdProveedor(ComboCategoria);
@@ -2504,6 +2550,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jList2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu16;
     private javax.swing.JMenu jMenu2;
@@ -2535,10 +2582,13 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator11;
@@ -2554,6 +2604,8 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -2628,5 +2680,41 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         }
         }
         return TOTAL;
+    }
+    
+    
+    
+    public void HISTORIAL(){
+        proDao = new ProductosDao();
+        Productos proo;
+        List<Productos> ListarPr = proDao.BuscarProHistorial_Id(idbodega.getText());
+         for (int i = 0; i < ListarPr.size(); i++) {
+                    jTextArea1.setText(jTextArea1.getText()+"\n\n===============================\n"+
+                    "FECHA HISTORIAL: "+ListarPr.get(i).getFecha_Historial()+" | HORA: "+ListarPr.get(i).getHora_Historial()+
+                    "\n================================\n"+
+                    "ID: "+String.valueOf(ListarPr.get(i).getIdProductos())+"\n"+
+                    " CÓDIGO DE BARRAS: "+ListarPr.get(i).getCodigoBarras()+"\n"+
+                    " NOMBRE: "+ListarPr.get(i).getNombre()+"\n"+
+                    " STOCK: "+ListarPr.get(i).getCantidad()+"\n"+
+                    " COSTO: "+String.valueOf(ListarPr.get(i).getCosto())+"\n"+
+                    " COSTO EN LETRAS: "+ListarPr.get(i).getCodigoLetras()+"\n"+
+                    " PRECIO 1: "+ListarPr.get(i).getNombreTiposDePrecio1()+" | "+String.valueOf(ListarPr.get(i).getPublico())+"\n"+
+                    " PRECIO 2: "+ListarPr.get(i).getNombreTiposDePrecio2()+" | "+String.valueOf(ListarPr.get(i).getPrecioEs())+"\n"+
+                    " PRECIO 3: "+ListarPr.get(i).getNombreTiposDePrecio3()+" | "+String.valueOf(ListarPr.get(i).getPrecioRe())+"\n"+
+                    " CATEGORIA: "+ListarPr.get(i).getCategoria()+" | " +ListarPr.get(i).getCategoriaNombre()+"\n"+
+                    " SUBCATEGORIA: "+ListarPr.get(i).getSubcategoriaNombre()+"\n"+
+                    " PROVEEDOR: "+ListarPr.get(i).getIdProveedores()+" "+ ListarPr.get(i).getProveedorNombre()+"\n"+
+                    " UBICACION: "+ListarPr.get(i).getUbicacionNombre1()+"\n"+
+                    " UBICACION SECUNDARIA: "+ListarPr.get(i).getUbicacionNombre2()+"\n"+
+                    " DESCRIPCION: "+ListarPr.get(i).getDescripcion()+"\n"+
+                    "ESTADO DEL PRODUCTO: "+ ListarPr.get(i).getEstado_Producto()+"\n"+
+                    "SE APLICA DESCUENTO: "+ ListarPr.get(i).getAPLICAR_DESCUENTO()+"\n"+
+                    "FECHA SE INGRESÓ: "+ ListarPr.get(i).getFechaingreso()+"\n"+
+                    "FECHA SE MODIFICÓ: "+ ListarPr.get(i).getFechamodificacion()+"\n"+
+                    "SE APLICA DESCUENTO: "+ ListarPr.get(i).getAPLICAR_DESCUENTO()+"\n"+
+                    "RUTA DE IMAGEN: "+ ListarPr.get(i).getRuta()+"\n"+
+                    "================================\n"+
+                    "================================\n\n");
+        } 
     }
 }

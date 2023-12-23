@@ -30,12 +30,13 @@ public class Productos {
     private String subcategoriaNombre, UbicacionNombre1, UbicacionNombre2, NombreImagen, Estado_Producto;
     private int subcategoria, Ubicacion1, Ubicacion2, idservidorimagenes;
     private Boolean APLICAR_DESCUENTO;
+    private String Fecha_Historial, Hora_Historial;
     
     public Productos(){
         
     }
 
-    public Productos(int idProductos, String Nombre, Float Cantidad, Float Costo, Float Publico, int IdProveedores, String ProveedorNombre, String CodigoBarras, String CodigoLetras, Float PrecioRe, Float PrecioEs, int Categoria, String CategoriaNombre, String ruta, String fechaingreso, String fechamodificacion, int UsuarioIngreso, int UsuarioModifico, String Descripcion, String UsuarioIngresoLetras, String UsuarioModificoLetras, JButton botoneditar, JButton botoneliminar, JLabel Imagen, JLabel Label1Adicional, JLabel Label2Adicional, String NombreTiposDePrecio1, String NombreTiposDePrecio2, String NombreTiposDePrecio3, String subcategoriaNombre, String UbicacionNombre1, String UbicacionNombre2, String NombreImagen, String Estado_Producto, int subcategoria, int Ubicacion1, int Ubicacion2, int idservidorimagenes, Boolean APLICAR_DESCUENTO) {
+    public Productos(int idProductos, String Nombre, Float Cantidad, Float Costo, Float Publico, int IdProveedores, String ProveedorNombre, String CodigoBarras, String CodigoLetras, Float PrecioRe, Float PrecioEs, int Categoria, String CategoriaNombre, String ruta, String fechaingreso, String fechamodificacion, int UsuarioIngreso, int UsuarioModifico, String Descripcion, String UsuarioIngresoLetras, String UsuarioModificoLetras, JButton botoneditar, JButton botoneliminar, JLabel Imagen, JLabel Label1Adicional, JLabel Label2Adicional, String NombreTiposDePrecio1, String NombreTiposDePrecio2, String NombreTiposDePrecio3, String subcategoriaNombre, String UbicacionNombre1, String UbicacionNombre2, String NombreImagen, String Estado_Producto, int subcategoria, int Ubicacion1, int Ubicacion2, int idservidorimagenes, Boolean APLICAR_DESCUENTO, String Fecha_Historial, String Fecha_Modificacion_Historial) {
         this.idProductos = idProductos;
         this.Nombre = Nombre;
         this.Cantidad = Cantidad;
@@ -75,6 +76,8 @@ public class Productos {
         this.Ubicacion2 = Ubicacion2;
         this.idservidorimagenes = idservidorimagenes;
         this.APLICAR_DESCUENTO = APLICAR_DESCUENTO;
+        this.Fecha_Historial = Fecha_Historial;
+        this.Hora_Historial = Fecha_Modificacion_Historial;
     }
 
     public int getIdProductos() {
@@ -387,6 +390,22 @@ public class Productos {
 
     public void setAPLICAR_DESCUENTO(Boolean APLICAR_DESCUENTO) {
         this.APLICAR_DESCUENTO = APLICAR_DESCUENTO;
+    }
+
+    public String getFecha_Historial() {
+        return Fecha_Historial;
+    }
+
+    public void setFecha_Historial(String Fecha_Historial) {
+        this.Fecha_Historial = Fecha_Historial;
+    }
+
+    public String getHora_Historial() {
+        return Hora_Historial;
+    }
+
+    public void setHora_Historial(String Hora_Historial) {
+        this.Hora_Historial = Hora_Historial;
     }
    
 }

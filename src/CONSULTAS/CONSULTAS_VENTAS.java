@@ -27,7 +27,7 @@ public class CONSULTAS_VENTAS {
     ActualizarTablaVentasDiariasYGenerales tablaVentasDiariasGenerales = new ActualizarTablaVentasDiariasYGenerales();
 
     public synchronized void ActualizarRegistroVenta(JTable TABLA, JComboBox EstadoVentaGeneral, JComboBox TipoDocumento) {
-
+        
         LIMPIAR_TABLA(TABLA);
         TABLA.setDefaultRenderer(Object.class, new RenderTablas());
         DefaultTableModel modelo2 = new DefaultTableModel();

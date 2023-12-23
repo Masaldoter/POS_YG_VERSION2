@@ -11,6 +11,10 @@ import Vista.Detalles;
 import Vista.Principal;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -35,6 +39,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     }
     
     public void CARGAR_TOTALES(){
+        
         Double TotalPagar2 = 0.00;
         int numFila = TablaReporteVentas.getRowCount();
         for (int i = 0; i < numFila; i++) {
@@ -59,6 +64,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
 
         }
         CambiosVentaGeneral.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA+PARAMETROS_EMPRESA.formatea.format(pago3));
+        filtro("", TablaReporteVentas, 1);
     }
     
     public void CARGAR_REGISTROS(){
@@ -110,6 +116,8 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         jPanel75 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         TablaVentasNombreProductos = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        Prov = new javax.swing.JTextField();
 
         jPanel18.setBackground(new java.awt.Color(255, 153, 102));
 
@@ -490,10 +498,19 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         );
         jPanel75Layout.setVerticalGroup(
             jPanel75Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
         );
 
         jTabbedPane3.addTab("", jPanel75);
+
+        jLabel2.setText("BÚSQUEDA SOBRE BÚSQUEDA:");
+
+        Prov.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        Prov.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                ProvKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout ReporteDeVentasLayout = new javax.swing.GroupLayout(ReporteDeVentas);
         ReporteDeVentas.setLayout(ReporteDeVentasLayout);
@@ -504,6 +521,12 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
                     .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
+            .addGroup(ReporteDeVentasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Prov)
+                .addContainerGap())
             .addComponent(jTabbedPane3, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         ReporteDeVentasLayout.setVerticalGroup(
@@ -511,7 +534,11 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
             .addGroup(ReporteDeVentasLayout.createSequentialGroup()
                 .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                .addGroup(ReporteDeVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Prov, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11))
@@ -683,12 +710,29 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
         principal.ABRIR_VENTANAS(R_V, true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void ProvKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ProvKeyReleased
+        if(Prov.getText().equals("")){
+            filtro("", TablaReporteVentas, 1);
+        }else{
+            filtro(Prov.getText(), TablaReporteVentas, 1);
+        }
+    }//GEN-LAST:event_ProvKeyReleased
 
+
+    private void filtro(String consulta, JTable jtableBuscar, int TipoBusqueda) {
+        DefaultTableModel dm;
+        dm = (DefaultTableModel) jtableBuscar.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(dm);
+        jtableBuscar.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter("(?i)" + consulta, TipoBusqueda));
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JLabel CambiosVentaGeneral;
     private static javax.swing.JLabel EfectivoPagadoVentaGeneral;
     private static javax.swing.JComboBox<String> EstadoVentaGeneral;
     private com.toedter.calendar.JDateChooser Fecha2;
+    private javax.swing.JTextField Prov;
     private javax.swing.JPanel ReporteDeVentas;
     private static javax.swing.JTable TablaReporteVentas;
     private javax.swing.JTable TablaVentasNombreProductos;
@@ -699,6 +743,7 @@ public class MOVIMIENTOS_GENERALES extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton33;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel45;

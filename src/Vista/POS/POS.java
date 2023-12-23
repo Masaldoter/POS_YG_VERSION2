@@ -321,6 +321,7 @@ public final class POS extends javax.swing.JInternalFrame {
                 ob[0] = ListarPr.get(i).getNombre();
                 AutoCompletador_PRODUCTOS.addItems(ob);
             }
+            ContadorDeActualizaciones=0;
         } catch (Exception e) {
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("FATAL", "ÉRROR AL ACTUALIZAR LOS PRODUCTOS", DesktopNotify.FAIL, 10000L);
@@ -438,6 +439,7 @@ public final class POS extends javax.swing.JInternalFrame {
                         DepartamentoCliente.setText(DPC.getDepartamento());
                         PaisCliente.setSelectedItem(DPC.getPais());
                         CodigoPostalCliente.setText("0");
+                        IngresoClientes(nombre.getText(), Caja_IDENTIFICACION.getText(), String.valueOf(COMBO_TIPO_IDENTIFICACION.getSelectedItem()), direccion.getText(), MunicipioCliente.getText(), DepartamentoCliente.getText(), PaisCliente.getSelectedItem().toString(), CodigoPostalCliente.getText());
                  }
              }else{
               ObtenerCliente(Nit);   
@@ -882,7 +884,7 @@ public final class POS extends javax.swing.JInternalFrame {
         Boolean Estado = false;
         if (nombre.getText().equals("") || Caja_IDENTIFICACION.getText().equals("") || direccion.getText().equals("")
                 || MunicipioCliente.getText().equals("") || DepartamentoCliente.getText().equals("")
-                || PaisCliente.getSelectedItem().equals("") || SiglaPais.getText().equals("") || CodigoPostalCliente.getText().equals("")) {
+                || PaisCliente.getSelectedIndex()<0 || PaisCliente.getSelectedItem().equals(null) || SiglaPais.getText().equals("") || CodigoPostalCliente.getText().equals("")) {
             Estado = false;
             JOptionPane.showMessageDialog(null, "DEBE RELLENAR TODOS LOS CAMPOS DEL CLIENTE");
         } else {
@@ -1301,7 +1303,7 @@ public final class POS extends javax.swing.JInternalFrame {
 
     }
     
-public void GenerarVenta() {
+    public void GenerarVenta() {
         //Detalles D;
         switch (String.valueOf(TipoDocumento.getSelectedItem())) {
             case "FACTURA" -> {
@@ -3436,11 +3438,16 @@ public void GenerarVenta() {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         AGREGAR();
     }//GEN-LAST:event_jButton7ActionPerformed
-
+    int ContadorDeActualizaciones=0;
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         IdVenta.requestFocus();
         LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
         LISTAR_CLIENTES_CAJAS_NOMBRES();
+        ContadorDeActualizaciones++;
+        if(ContadorDeActualizaciones==3){
+            ListarProductosPOS_NOMBRE();
+        }
+        
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void CheckIngresoAutomaticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckIngresoAutomaticoActionPerformed
@@ -3570,13 +3577,19 @@ public void GenerarVenta() {
         Double TotalParaConvertir= Double.parseDouble(labeltotal.getText());
         Numero_Letras NumLe= new Numero_Letras();
         if(TablaVentas.getRowCount() > 0){
-            BtnGenerarVentaPOS.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
+            if(PaisCliente.getSelectedIndex()<0){
+                JOptionPane.showMessageDialog(this, "¡DEBE SELECCIONAR ALGÚN PAÍS!");
+            }else{
+                BtnGenerarVentaPOS.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
             TotalLetras.setText(NumLe.Convertir(TotalParaConvertir + "", true));
-            IngresoClientes(nombre.getText(), Caja_IDENTIFICACION.getText(), String.valueOf(COMBO_TIPO_IDENTIFICACION.getSelectedItem()), direccion.getText(), MunicipioCliente.getText(), DepartamentoCliente.getText(), PaisCliente.getSelectedItem().toString(), CodigoPostalCliente.getText());
+            IngresoClientes(nombre.getText(), Caja_IDENTIFICACION.getText(), String.valueOf(COMBO_TIPO_IDENTIFICACION.getSelectedItem()),
+            direccion.getText(), MunicipioCliente.getText(), DepartamentoCliente.getText(), PaisCliente.getSelectedItem().toString(), CodigoPostalCliente.getText());
 
             GenerarVenta();
 
             BtnGenerarVentaPOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            }
+            
         } else {
             JOptionPane.showMessageDialog(null, "¡AÚN NO HAY PRODUCTOS EN EL CARRITO!");
         }

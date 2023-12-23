@@ -1054,4 +1054,77 @@ public class ProductosDao extends ConexionesSQL{
         }
         return producto;
     }
+   
+   public List BuscarProHistorial_Id(String Id){
+       List<Productos> ListaHistorial = null;
+        Productos producto = null;
+        ps = null;
+        rs = null;
+        cn = Unionsis2.getConnection();
+    String sql= """
+                SELECT historial_productos.IdProductos,historial_productos.CodigoBarras, historial_productos.Nombre, historial_productos.Cantidad, historial_productos.Costo, 
+                historial_productos.Publico, historial_productos.CodigoLetras, 
+                categoria.Categoria AS CategoriaNombre,
+                historial_productos.Proveedores, historial_productos.Categoria,historial_productos.Proveedores, historial_productos.Permitir_Descuentos,
+                proveedores.Proveedor AS ProveedoresNombre, 
+                historial_productos.PrecioEs, historial_productos.PrecioRe, historial_productos.Descripcion,  historial_productos.Precio1, 
+                historial_productos.Precio2, historial_productos.Precio3, historial_productos.ruta,
+                subcategoria.NombreSubCategoria AS SUBCATEGORIANOMBRE, 
+                ubicaciones.NombreUbicacion AS UBICACIONNOMBRE, 
+                ubicacionesTabla2.NombreUbicacion AS UBICACIONNOMBRE2,
+                historial_productos.Fecha_Historial,
+                historial_productos.Hora_Historial 
+                FROM historial_productos 
+                INNER JOIN proveedores ON (historial_productos.Proveedores = proveedores.idproveedores) 
+                INNER JOIN categoria ON (historial_productos.Categoria = categoria.idCategoria) 
+                INNER JOIN subcategoria ON (historial_productos.subcategoria = subcategoria.idsubcategoria) 
+                INNER JOIN ubicaciones ON (historial_productos.Ubicacion1 = ubicaciones.idubicaciones) 
+                INNER JOIN ubicaciones AS ubicacionesTabla2 ON (historial_productos.Ubicacion2 = ubicacionesTabla2.idubicaciones) 
+                WHERE historial_productos.idProductos=?""";
+        try {
+            
+            ps=(PreparedStatement) cn.prepareStatement(sql);
+            ps.setInt(1, Integer.parseInt(Id));
+            rs= ps.executeQuery();
+             ListaHistorial = new ArrayList();
+            while(rs.next()){
+                System.out.println(rs.getString("historial_productos.Nombre"));
+                producto = new Productos();
+                 producto.setIdProductos(rs.getInt("historial_productos.IdProductos"));
+                producto.setCodigoBarras(rs.getString("historial_productos.CodigoBarras"));
+                producto.setNombre(rs.getString("historial_productos.Nombre"));
+                producto.setCantidad(rs.getFloat("historial_productos.Cantidad"));
+                producto.setCosto(rs.getFloat("historial_productos.Costo"));
+                producto.setPublico(rs.getFloat("historial_productos.Publico"));
+                producto.setIdProveedores(rs.getInt("historial_productos.Proveedores"));
+                producto.setCodigoLetras(rs.getString("historial_productos.CodigoLetras"));
+                producto.setCategoriaNombre(rs.getString("CategoriaNombre"));
+                producto.setProveedorNombre(rs.getString("ProveedoresNombre"));
+                producto.setPrecioRe(rs.getFloat("historial_productos.PrecioRe"));
+                producto.setPrecioEs(rs.getFloat("historial_productos.PrecioEs"));
+                producto.setCategoria(rs.getInt("historial_productos.Categoria"));
+                producto.setDescripcion(rs.getString("Descripcion"));
+                producto.setNombreTiposDePrecio1(rs.getString("historial_productos.Precio1"));
+                producto.setNombreTiposDePrecio2(rs.getString("historial_productos.Precio2"));
+                producto.setNombreTiposDePrecio3(rs.getString("historial_productos.Precio3"));
+                producto.setRuta(rs.getString("ruta"));
+                
+                producto.setSubcategoriaNombre(rs.getString("SUBCATEGORIANOMBRE"));
+                producto.setUbicacionNombre1(rs.getString("UBICACIONNOMBRE"));
+                producto.setUbicacionNombre2(rs.getString("UBICACIONNOMBRE2"));
+                producto.setAPLICAR_DESCUENTO(rs.getBoolean("historial_productos.Permitir_Descuentos"));
+                producto.setFecha_Historial(rs.getString("historial_productos.Fecha_Historial"));
+                producto.setHora_Historial(rs.getString("historial_productos.Hora_Historial"));
+                ListaHistorial.add(producto);
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error, "+e);
+        }finally {
+            PsClose(ps);
+            RsClose(rs);
+            ConnectionClose(cn);
+        }
+        return ListaHistorial;
+    }
 }
