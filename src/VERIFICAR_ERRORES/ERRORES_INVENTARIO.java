@@ -81,16 +81,13 @@ public class ERRORES_INVENTARIO extends ConexionesSQL {
         try {
             ps = cn.prepareStatement(sql);
             rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 pro = new Productos();
                 pro.setCodigoBarras(rs.getString("CodigoBarras"));
                 pro.setNombre(rs.getString("Nombre"));
                 pro.setCantidad(rs.getFloat("Cantidad"));
                 pro.setRuta(rs.getString("ruta"));
-                TOTAL_REGISTROS = rs.getInt("total_registros");
-            }
-            if(TOTAL_REGISTROS<0){
-                TOTAL_REGISTROS=0;
+                TOTAL_REGISTROS = rs.getRow();
             }
 
         } catch (SQLException e) {

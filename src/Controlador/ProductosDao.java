@@ -1080,7 +1080,7 @@ public class ProductosDao extends ConexionesSQL{
                 INNER JOIN subcategoria ON (historial_productos.subcategoria = subcategoria.idsubcategoria) 
                 INNER JOIN ubicaciones ON (historial_productos.Ubicacion1 = ubicaciones.idubicaciones) 
                 INNER JOIN ubicaciones AS ubicacionesTabla2 ON (historial_productos.Ubicacion2 = ubicacionesTabla2.idubicaciones) 
-                WHERE historial_productos.idProductos=?""";
+                WHERE historial_productos.Cambios LIKE '%OtrasColumnas%' AND historial_productos.idProductos=? """;
         try {
             
             ps=(PreparedStatement) cn.prepareStatement(sql);
@@ -1088,7 +1088,6 @@ public class ProductosDao extends ConexionesSQL{
             rs= ps.executeQuery();
              ListaHistorial = new ArrayList();
             while(rs.next()){
-                System.out.println(rs.getString("historial_productos.Nombre"));
                 producto = new Productos();
                  producto.setIdProductos(rs.getInt("historial_productos.IdProductos"));
                 producto.setCodigoBarras(rs.getString("historial_productos.CodigoBarras"));
@@ -1117,6 +1116,7 @@ public class ProductosDao extends ConexionesSQL{
                 producto.setHora_Historial(rs.getString("historial_productos.Hora_Historial"));
                 ListaHistorial.add(producto);
             }
+            
             
         } catch (SQLException e) {
             System.err.println("Error, "+e);

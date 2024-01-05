@@ -538,6 +538,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         pro = proDao.BuscarProNombre(Valor);
 
         if (pro.getNombre() != null) {
+            jMenu3.setVisible(true);
             labelimagen.setSize(211, 157);
             EstadoProducto3.setVisible(true);
             EstadoProducto4.setVisible(true);
@@ -941,6 +942,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
         setTitle("ADMINISTRACIÓN DE PRODUCTOS");
         setIconImage(getIconImage());
         setMinimumSize(new java.awt.Dimension(500, 200));
+        setPreferredSize(new java.awt.Dimension(730, 700));
 
         NombreUsuarioVista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         NombreUsuarioVista.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "NOMBRE DE USUARIO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 10))); // NOI18N
@@ -2390,7 +2392,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-                HISTORIAL();
+
                 JFrame VentanaHistorial = new JFrame();
                 VentanaHistorial.setSize(500, 500);
                 VentanaHistorial.setVisible(true);
@@ -2398,6 +2400,7 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                 VentanaHistorial.setAlwaysOnTop(true);
                 VentanaHistorial.add(jPanel9);
                 jPanel9.setVisible(true);
+                HISTORIAL(); 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     public int ConsultarIdProveedor(JComboBox ComboCategoria) {
@@ -2685,11 +2688,12 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
     
     
     public void HISTORIAL(){
+        String Datos= "";
         proDao = new ProductosDao();
         Productos proo;
         List<Productos> ListarPr = proDao.BuscarProHistorial_Id(idbodega.getText());
          for (int i = 0; i < ListarPr.size(); i++) {
-                    jTextArea1.setText(jTextArea1.getText()+"\n\n===============================\n"+
+                    Datos += "\n\n===============================\n"+
                     "FECHA HISTORIAL: "+ListarPr.get(i).getFecha_Historial()+" | HORA: "+ListarPr.get(i).getHora_Historial()+
                     "\n================================\n"+
                     "ID: "+String.valueOf(ListarPr.get(i).getIdProductos())+"\n"+
@@ -2714,7 +2718,9 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
                     "SE APLICA DESCUENTO: "+ ListarPr.get(i).getAPLICAR_DESCUENTO()+"\n"+
                     "RUTA DE IMAGEN: "+ ListarPr.get(i).getRuta()+"\n"+
                     "================================\n"+
-                    "================================\n\n");
+                    "================================\n\n";
+                    
         } 
+         jTextArea1.setText(Datos);
     }
 }

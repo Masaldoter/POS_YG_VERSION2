@@ -753,6 +753,7 @@ public class ActualizarTablaVentasDiariasYGenerales extends ConexionesSQL{
 
         } catch (SQLException e) {
             System.err.println("Error ListarVentasDiarias, " + e);
+            System.err.println(e.getCause());
         }finally{
                 RsClose(rs);
             PsClose(ps);

@@ -299,7 +299,7 @@ public class GenerarXML {
                         Cantidad.setTextContent(TablaVentas.getValueAt(i, 2).toString());
                         UnidadMedida.setTextContent("UN");
                         Descripcion.setTextContent(TablaVentas.getValueAt(i, 1).toString());
-                        PrecioUnitario.setTextContent(TablaVentas.getValueAt(i, 3).toString());
+                        PrecioUnitario.setTextContent(TablaVentas.getValueAt(i, 5).toString());
                         Precio.setTextContent(TablaVentas.getValueAt(i, 6).toString());
                         Descuento.setTextContent("0.00");
 
@@ -475,7 +475,7 @@ public class GenerarXML {
                 } catch (ParserConfigurationException | TransformerException ex) {
                     Logger.getLogger(GenerarXML.class.getName()).log(Level.SEVERE, null, ex);
                     DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
-                    DesktopNotify.showDesktopMessage("XML FALLÓ", "¡NO SE PUDO REALIZAR LA CERTIFICACIÓN POR MALO INGRESO DE DATOS AL XML\n"+ex, DesktopNotify.ERROR, 10000L);
+                    DesktopNotify.showDesktopMessage("XML FALLÓ", "¡NO SE PUDO REALIZAR LA CERTIFICACIÓN POR MAL INGRESO DE DATOS AL XML\n"+ex, DesktopNotify.ERROR, 10000L);
                   EstadoGeneracionXML= false;
                 }
           return EstadoGeneracionXML;

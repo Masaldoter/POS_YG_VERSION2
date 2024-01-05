@@ -1,7 +1,9 @@
 package Excel;
 import CLASES_GLOBALES.METODOS_GLOBALES;
+import static CLASES_GLOBALES.METODOS_GLOBALES.CargarDatosRutas;
 import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
+import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,20 +17,21 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import Modelo.login;
 import Conexiones.ConexionesSQL;
+import static Conexiones.ConexionesSQL.rs;
 import Tablas.RenderTablas;
 import Vista.AVISOS;
 import Vista.POS.POS;
-import Vista.Principal;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -1719,5 +1722,257 @@ public class Excel extends ConexionesSQL {
         }
     }
     
+    
+    public void EXPORTAR_EXCEL_JTABLE(JTable Tabla, int Columna, int Columna2, String Traslado) throws URISyntaxException {
+        
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                
+            
+        JFileChooser chooser = new JFileChooser();
+        /*
+* De acuerdo con JFileChooser para seleccionar el cuadro de carpeta emergente 1. Sólo seleccione el directorio JFileChooser.DIRECTORIES_ONLY
+ * 2. Seleccione solo el archivo JFileChooser.FILES_ONLY
+ * 3. Tanto los directorios como los archivos pueden ser JFileChooser.FILES_AND_DIRECTORIES
+             */
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setCurrentDirectory(new File(METODOS_GLOBALES.CargarDatosRutasAlBuscarImagen()));
+            String selectPath = null;
+            // Guardar el directorio seleccionado chooser.showSaveDialog (parent);
+            Component parent = null;
+            int returnVal = chooser.showSaveDialog(parent);
+            
+
+        // Obtener el objeto de archivo seleccionado JFileChooser.APPROVE_OPTION
+        // Si el directorio guardado es consistente con el objeto de archivo seleccionado, devolverá 0 si tiene éxito
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            AVISOS AV = new AVISOS("CARGANDO DATOS", "POR FAVOR, ESPERE");
+                                AV.setVisible(true);
+         // obtener ruta
+            selectPath = chooser.getSelectedFile().getPath();
+            // Copiar imágenes a una nueva carpeta
+            String nuevaCarpeta = selectPath + "\\TRASLADO "+Traslado;
+            File nuevaCarpetaFile = new File(nuevaCarpeta);
+            if (!nuevaCarpetaFile.exists()) {
+                nuevaCarpetaFile.mkdir();
+            }
+            
+        
+        Workbook book = new XSSFWorkbook();
+        Sheet sheet = book.createSheet("TRASLADO DE PRODUCTOS DE "+PARAMETROS_EMPRESA.NOMBRE_EMPRESA);
+
+        try {
+
+            String directorio2 = new File (METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA).getAbsolutePath();
+            InputStream is = new FileInputStream(directorio2);
+            byte[] bytes = IOUtils.toByteArray(is);
+            int imgIndex = book.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+            is.close();
+ 
+            CreationHelper help = book.getCreationHelper();
+            Drawing draw = sheet.createDrawingPatriarch();
+ 
+            ClientAnchor anchor = help.createClientAnchor();
+            anchor.setCol1(0);
+            anchor.setRow1(0);
+            Picture pict = draw.createPicture(anchor, imgIndex);
+            pict.resize(1, 3.5);
+ 
+            CellStyle tituloEstilo = book.createCellStyle();
+            tituloEstilo.setAlignment(HorizontalAlignment.CENTER);
+            tituloEstilo.setVerticalAlignment(VerticalAlignment.CENTER);
+            Font fuenteTitulo = book.createFont();
+            fuenteTitulo.setFontName("Times New Roman");
+            fuenteTitulo.setBold(true);
+            fuenteTitulo.setFontHeightInPoints((short) 16);
+            tituloEstilo.setFont(fuenteTitulo);
+ 
+            Row filaTitulo = sheet.createRow(1);
+            Cell celdaTitulo = filaTitulo.createCell(1);
+            celdaTitulo.setCellStyle(tituloEstilo);
+            celdaTitulo.setCellValue("TRASLADO DE PRODUCTOS DE "+PARAMETROS_EMPRESA.NOMBRE_EMPRESA +" | FECHA: "+ METODOS_GLOBALES.Fecha() + " | POR: "+PARAMETROS_USUARIOS.ID_USUARIO+"-"+ PARAMETROS_USUARIOS.NOMBREVISTA_USUARIO);
+            sheet.addMergedRegion(new CellRangeAddress(1, 2, 1, 12));
+ 
+            String[] cabecera = new String[]{"CÓDIGO", "NOMBRE", "CANTIDAD", "COSTO", "PRECIO 1", "PRECIO 2", "PRECIO 3", "NOMBRE PRECIO 1", "NOMBRE PRECIO 2",
+                "NOMBRE PRECIO 3", "RUTA IMAGEN", "DESCRIPCIÓN"};
+ 
+            CellStyle headerStyle = book.createCellStyle();
+            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+ 
+            Font font = book.createFont();
+            font.setFontName("Times New Roman");
+            font.setBold(true);
+            font.setColor(IndexedColors.WHITE.getIndex());
+            font.setFontHeightInPoints((short) 12);
+            headerStyle.setFont(font);
+ 
+            Row filaEncabezados = sheet.createRow(4);
+            
+            for (int i = 0; i < cabecera.length; i++) {
+                Cell celdaEnzabezado = filaEncabezados.createCell(i);
+                celdaEnzabezado.setCellStyle(headerStyle);
+                celdaEnzabezado.setCellValue(cabecera[i]);
+            }
+ 
+            ps = null;
+            rs = null;
+            cn = Unionsis2.getConnection();
+ 
+            int numFilaDatos = 1;
+ 
+            CellStyle datosEstilo = book.createCellStyle();
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+            datosEstilo.setBorderLeft(BorderStyle.THIN);
+            datosEstilo.setBorderRight(BorderStyle.THIN);
+            datosEstilo.setBorderBottom(BorderStyle.THIN);
+            int filaInicio = 5;
+            for (int i = 0; i < Tabla.getRowCount(); i++) {
+                
+            
+            ps = cn.prepareStatement("SELECT CodigoBarras, Nombre, Costo,Precio1, Precio2, Precio3, Publico, PrecioEs, PrecioRe, ruta, Descripcion FROM productos where idProductos=?");
+            ps.setInt(1, Integer.parseInt(Tabla.getValueAt(i, Columna2).toString()));
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                
+                    Row fila = sheet.createRow(filaInicio);
+                
+                    Cell CeldaCodigoBarras = fila.createCell(0);
+                    CeldaCodigoBarras.setCellStyle(datosEstilo);
+                    CeldaCodigoBarras.setCellValue(rs.getString("CodigoBarras"));
+                    
+                    Cell CeldaNombre = fila.createCell(1);
+                    CeldaNombre.setCellStyle(datosEstilo);
+                    CeldaNombre.setCellValue(rs.getString("Nombre"));
+                    
+                    Cell CeldaCantidad = fila.createCell(2);
+                    CeldaCantidad.setCellStyle(datosEstilo);
+                    CeldaCantidad.setCellValue(Tabla.getValueAt(i, Columna).toString());
+                    
+                    Cell CeldaCosto = fila.createCell(3);
+                    CeldaCosto.setCellStyle(datosEstilo);
+                    CeldaCosto.setCellValue(rs.getString("Costo"));
+                    
+                    Cell CeldaPublico = fila.createCell(4);
+                    CeldaPublico.setCellStyle(datosEstilo);
+                    CeldaPublico.setCellValue(rs.getString("Publico"));
+                    
+                    Cell CeldaPrecioEs = fila.createCell(5);
+                    CeldaPrecioEs.setCellStyle(datosEstilo);
+                    CeldaPrecioEs.setCellValue(rs.getString("PrecioEs"));
+                    
+                    Cell CeldaPrecioRe = fila.createCell(6);
+                    CeldaPrecioRe.setCellStyle(datosEstilo);
+                    CeldaPrecioRe.setCellValue(rs.getString("PrecioRe"));
+                    
+                    Cell CeldaPrecio1 = fila.createCell(7);
+                    CeldaPrecio1.setCellStyle(datosEstilo);
+                    CeldaPrecio1.setCellValue(rs.getString("Precio1"));
+                    
+                    Cell CeldaPrecio2 = fila.createCell(8);
+                    CeldaPrecio2.setCellStyle(datosEstilo);
+                    CeldaPrecio2.setCellValue(rs.getString("Precio2"));
+                    
+                    Cell CeldaPrecio3 = fila.createCell(9);
+                    CeldaPrecio3.setCellStyle(datosEstilo);
+                    CeldaPrecio3.setCellValue(rs.getString("Precio3"));
+                    
+                    Cell Celdaruta = fila.createCell(10);
+                    Celdaruta.setCellStyle(datosEstilo);
+                    Celdaruta.setCellValue(rs.getString("ruta"));
+                    
+                    Cell CeldaDescripcion = fila.createCell(11);
+                    CeldaDescripcion.setCellStyle(datosEstilo);
+                    CeldaDescripcion.setCellValue(rs.getString("Descripcion"));
+                    
+                    executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if(rs.getString("ruta").equals("FerreteríaPequeño.png")){
+                        
+                    }else{
+                     // Construir la ruta de destino para la nueva carpeta
+                    String nuevaRutaImagen = nuevaCarpeta +"\\"+ rs.getString("ruta");
+                    
+                    // Copiar el archivo
+                    try {
+                        Files.copy(Paths.get(CargarDatosRutas(1) + "\\" + rs.getString("ruta")), Paths.get(nuevaRutaImagen), StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException ex) {
+                        DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
+                    DesktopNotify.showDesktopMessage("ERROR", "NO SE PUDO OBTENER LAS IMAGENES\n"+ex.toString(), DesktopNotify.ERROR, 14000L);
+                        ex.printStackTrace();  // Manejar la excepción apropiadamente en tu aplicación
+                    }
+                }
+                   
+                } catch (SQLException ex) {
+                    DesktopNotify.setDefaultTheme(NotifyTheme.Dark);
+                    DesktopNotify.showDesktopMessage("ERROR", "NO SE PUDO OBTENER LAS IMAGENES\n"+ex.toString(), DesktopNotify.ERROR, 14000L);
+                }
+            }
+        });
+                
+
+                numFilaDatos++;
+
+            
+                
+            }
+            filaInicio++;
+            }
+            sheet.autoSizeColumn(0);
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+            sheet.autoSizeColumn(3);
+            sheet.autoSizeColumn(4);
+            sheet.autoSizeColumn(5);
+            sheet.autoSizeColumn(6);
+            sheet.autoSizeColumn(7);
+            sheet.autoSizeColumn(8);
+            sheet.autoSizeColumn(9);
+            sheet.autoSizeColumn(10);
+            sheet.autoSizeColumn(11);
+            sheet.autoSizeColumn(12);
+            
+            sheet.setZoom(90);
+            
+            
+            String fileName = "TRASLADO_DE_PRODUCTOS_"+PARAMETROS_EMPRESA.NOMBRE_EMPRESA+"_"+METODOS_GLOBALES.Fecha()+"_";
+           
+            
+             
+             
+      
+            File file = new File(nuevaCarpeta+"\\"+fileName + ".xlsx");
+            FileOutputStream fileOut = new FileOutputStream(file);
+            book.write(fileOut);
+            fileOut.close();
+            
+            Desktop.getDesktop().open(file);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error, "+ex);
+        } catch (IOException | SQLException ex) {
+            Logger.getLogger(Excel.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error dos, "+ex);
+        }finally{
+            PsClose(ps);
+            RsClose(rs);
+            ConnectionClose(cn);
+            AV.dispose();
+        }
+        
+        }
+        
+        }
+        });
+ 
+    }
     
 }

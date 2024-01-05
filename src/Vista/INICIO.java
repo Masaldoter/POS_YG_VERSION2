@@ -4,6 +4,7 @@
  */
 package Vista;
 
+import Conexiones.conexion;
 import javax.swing.UIManager;
 
 /**
@@ -12,6 +13,8 @@ import javax.swing.UIManager;
  */
 public class INICIO {
    public static void main(String[] args) {
+       conexion cn= new conexion();
+       if(cn.verificarConexion()==true){
         LICENCIA L = new LICENCIA();
         try {
             // Establecemos el "look and feel" que deseamos usar.
@@ -19,6 +22,8 @@ public class INICIO {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }   
+       }
+        
     }
 }

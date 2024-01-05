@@ -39,6 +39,7 @@ import Controlador.Eventos;
 import Controlador.FullSelectorListener;
 import Controlador.KardexDao;
 import Controlador.ProductosDao;
+import Controlador.PromocionesDao;
 import Controlador.TextPrompt;
 import Controlador.TrasladosDao;
 import Controlador.ValesDao;
@@ -52,6 +53,7 @@ import Modelo.DetalleTraslados;
 import Modelo.DetalleVales;
 import Modelo.Kardex;
 import Modelo.Productos;
+import Modelo.Promociones;
 import Modelo.Traslados;
 import Modelo.Vales;
 import Modelo.Venta;
@@ -105,6 +107,8 @@ public final class POS extends javax.swing.JInternalFrame {
     private Boolean VENTANA_REVENTA_MOSTRADA = false;
     TextAutoCompleter AutoCompletador_PRODUCTOS, AUTOCOMPLETADOR_CLIENTES_NOMBRE, AUTOCOMPLETADOR_CLIENTE_NIT;
     double TotalPagar = 0.00;
+    double DESCUENTO_TOTAL= .00;
+    double DESCUENTO_SUBTOTAL= .00;
     int item;
     private String NUMERO_INTERNO_FACTURA_ELECTRONICA="";
     private String NumeroInternoFinal;
@@ -184,7 +188,7 @@ public final class POS extends javax.swing.JInternalFrame {
                 ConsultarNit_CUIFinal(String.valueOf(o));
             }
         });
-        
+        CARGAR_PROMOCIONES();
         LISTAR_CLIENTES_CAJAS_NOMBRES();
         LISTAR_CLIENTES_CAJAS_NIT();
         LIMPIAR_DATOS_RESUMEN_VENTA();
@@ -271,6 +275,16 @@ public final class POS extends javax.swing.JInternalFrame {
                 ImagenAmigoVenta();
     }
     
+    private void CARGAR_PROMOCIONES() {
+        PromocionesDao PromosDao = new PromocionesDao();
+        ComboPromociones.removeAllItems();
+
+        List<Promociones> lista = PromosDao.ListarPromociones();
+        for (int i = 0; i < lista.size(); i++) {
+            ComboPromociones.addItem(lista.get(i).getIdpromociones()+" | "+lista.get(i).getCodigoPromocion().toString());
+        }
+    }
+    
     private void LIMPIAR_DATOS_RESUMEN_VENTA(){
        TotalLetras.setText("CERO QUETZALES");
        pagocon.setText("0.00");
@@ -278,7 +292,7 @@ public final class POS extends javax.swing.JInternalFrame {
        labeltotal.setText("0.00");
        TotalTipoDeProductosPOS.setText("0");
        jLabel44.setText("0.00");
-       labeltotalenfacturacion.setText("0.00");
+       labeltotalenfacturacion.setText("0.0000");
        Efectivo.setText("0.00");
        Deposito.setText("0.00");
        Tarjeta.setText("0.00");
@@ -286,6 +300,10 @@ public final class POS extends javax.swing.JInternalFrame {
        labeltotal.setText("0.00");
            TotalLetras.setText("0.00");
         ObservacionVenta.setText(null); 
+        if(VentanaObservacion == true){
+            VentanaObservacion = false;
+            observaciones.dispose();
+        }
         
     }
 
@@ -362,9 +380,9 @@ public final class POS extends javax.swing.JInternalFrame {
         Clientes cl = new Clientes();
         if (Nombre.equals("")) {
         } else if (IDENTIFICACION.equals("")) {
-            JOptionPane.showMessageDialog(null, "¡EL NIT DEL CLIENTE NO PUEDE IR VACÍO!");
+            JOptionPane.showMessageDialog(principal, "¡EL NIT DEL CLIENTE NO PUEDE IR VACÍO!");
         } else if (Direccion.equals("")) {
-            JOptionPane.showMessageDialog(null, "¡LA DIRECCIÓN DEL CLIENTE NO PUEDE IR VACÍA!");
+            JOptionPane.showMessageDialog(principal, "¡LA DIRECCIÓN DEL CLIENTE NO PUEDE IR VACÍA!");
         } else {
             String Resultado = clDao.RetornarNit(IDENTIFICACION);
             if (Resultado == null) {
@@ -386,7 +404,7 @@ public final class POS extends javax.swing.JInternalFrame {
     public void BUSCAR_CLIENTE_NOMBRE(String Parametro){
         Clientes cli;
         if (Parametro.equals("")) {
-            JOptionPane.showMessageDialog(null, "¡DEBE INGRESAR UN NOMBRE DE CLIENTE");
+            JOptionPane.showMessageDialog(principal, "¡DEBE INGRESAR UN NOMBRE DE CLIENTE");
         } else {
             cli = new Clientes();
             cli = cliDao.BuscarClieNombre(Parametro);
@@ -540,13 +558,15 @@ public final class POS extends javax.swing.JInternalFrame {
     }*/
     
     public void APLICAR_DESCUENTO_TABLA(Float DESCUENTO_PORCENTAJE){
-        Float PRECIO_NORMAL, DESCUENTO = 0F;
+        Float CANTIDAD = 0F, PRECIO_NORMAL = 0F, DESCUENTO = 0F;
         for (int i = 0; i < TablaVentas.getRowCount(); i++) {
             if(TablaVentas.getValueAt(i, 7).toString().equals("true")){
              PRECIO_NORMAL = Float.parseFloat(TablaVentas.getValueAt(i, 3).toString());
+             CANTIDAD = Float.parseFloat(TablaVentas.getValueAt(i, 2).toString());
             //DESCUENTO = (PRECIO_NORMAL/100)*DESCUENTO;
             DESCUENTO = (PRECIO_NORMAL*DESCUENTO_PORCENTAJE)/100;
             TablaVentas.setValueAt(String.valueOf(DESCUENTO), i, 4);   
+            TablaVentas.setValueAt(String.valueOf((PRECIO_NORMAL-DESCUENTO)*CANTIDAD), i, 6);   
             }
             }
         //SUMAR_TABLA();
@@ -554,11 +574,30 @@ public final class POS extends javax.swing.JInternalFrame {
     }
     
     public void VERIFICAR_DESCUENTO(JComboBox COMBO){
+        String selectedValue = (String) ComboPromociones.getSelectedItem();
+
+if (selectedValue != null) {
+    int indexOfSeparator = selectedValue.indexOf('|');
+
+    if (indexOfSeparator != -0) {
+        String id = selectedValue.substring(0, indexOfSeparator).trim();
+        // Ahora tienes el ID seleccionado que puedes utilizar según tus necesidades
+        PromocionesDao PromosDao= new PromocionesDao();
+        Float Total_PORCENTAJE= PromosDao.Consulta_ComboBox(id);
+        LBL_PROCENTAJE_POS.setText(id);
         if(COMBO.getSelectedIndex()==0){
-            APLICAR_DESCUENTO_TABLA(0f);
+            jLabel10.setText(selectedValue);
         }else{
-            APLICAR_DESCUENTO_TABLA(5f);
+            jLabel10.setText(selectedValue);
+            LBL_PROCENTAJE_POS.setText(String.valueOf(Total_PORCENTAJE));
+            APLICAR_DESCUENTO_TABLA(Total_PORCENTAJE);
         }
+    }
+} else {
+    // Manejar el caso en que no hay objeto seleccionado
+}
+        
+        
     }
 
     public synchronized void AgregarProductoSinExistenciaEnTabla() {
@@ -607,7 +646,7 @@ public final class POS extends javax.swing.JInternalFrame {
                         lista.add(cod);
                         lista.add(descripcion);
                         lista.add(String.valueOf(decimalFormat.format(cantidad)));
-                        lista.add(String.valueOf(decimalFormat.format(PRECIO_FINAL)));
+                        lista.add(String.valueOf(decimalFormat.format(PrecioNormal)));
                         lista.add(String.valueOf(decimalFormat.format(TotalDescuento)));
                         lista.add(String.valueOf(decimalFormat.format(PRECIO_FINAL)));
                         lista.add(String.valueOf(decimalFormat.format(TOTAL)));
@@ -635,7 +674,7 @@ public final class POS extends javax.swing.JInternalFrame {
                         RestarStock();
                         SumarProductos();
                         TotalPagar();
-                        VERIFICAR_DESCUENTO(jComboBox1);
+                        VERIFICAR_DESCUENTO(ComboPromociones);
                         LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
                         FORMA_DE_PAGO();
                         IdVenta.requestFocus();
@@ -702,7 +741,7 @@ public final class POS extends javax.swing.JInternalFrame {
                         lista.add(cod);
                         lista.add(descripcion);
                         lista.add(String.valueOf(decimalFormat.format(cantidad)));
-                        lista.add(String.valueOf(decimalFormat.format(PRECIO_FINAL)));
+                        lista.add(String.valueOf(decimalFormat.format(PrecioNormal)));
                         lista.add(String.valueOf(decimalFormat.format(TotalDescuento)));
                         lista.add(String.valueOf(decimalFormat.format(PRECIO_FINAL)));
                         lista.add(String.valueOf(decimalFormat.format(TOTAL)));
@@ -730,7 +769,7 @@ public final class POS extends javax.swing.JInternalFrame {
                         RestarStock();
                         SumarProductos();
                         TotalPagar();
-                        VERIFICAR_DESCUENTO(jComboBox1);
+                        VERIFICAR_DESCUENTO(ComboPromociones);
                         LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
                         FORMA_DE_PAGO();
                         IdVenta.requestFocus();
@@ -803,7 +842,7 @@ public final class POS extends javax.swing.JInternalFrame {
                     TablaVentas.setModel(modelo);
                     //SUMAR_TABLA();
                     SumarProductos();
-                    VERIFICAR_DESCUENTO(jComboBox1);
+                    VERIFICAR_DESCUENTO(ComboPromociones);
                     TotalPagar();
                     LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
                     FORMA_DE_PAGO();
@@ -870,14 +909,20 @@ public final class POS extends javax.swing.JInternalFrame {
     
     private synchronized void TotalPagar() {
         TotalPagar = 0.00;
+        DESCUENTO_TOTAL = 0.00;
+        DESCUENTO_SUBTOTAL = 0.00;
         int numFila = TablaVentas.getRowCount();
         for (int i = 0; i < numFila; i++) {
             double cal = Double.parseDouble(String.valueOf(TablaVentas.getModel().getValueAt(i, 6)));
             TotalPagar = TotalPagar + cal;
-
+            DESCUENTO_TOTAL = DESCUENTO_TOTAL + (Double.parseDouble(String.valueOf(TablaVentas.getModel().getValueAt(i, 4)))*Double.parseDouble(String.valueOf(TablaVentas.getModel().getValueAt(i, 2))));
+            DESCUENTO_SUBTOTAL = DESCUENTO_SUBTOTAL + 
+            (Double.parseDouble(String.valueOf(TablaVentas.getModel().getValueAt(i, 3))) *Double.parseDouble(String.valueOf(TablaVentas.getModel().getValueAt(i, 2))));
         }
         labeltotal.setText(String.format("%.4f",TotalPagar));
         labeltotalenfacturacion.setText(String.format("%.4f",TotalPagar));
+        lbl_DESCUENTO_VISTA.setText(String.valueOf(DESCUENTO_TOTAL));
+        lbl_SUBTOTAL_VISTA.setText(String.valueOf(DESCUENTO_SUBTOTAL));
     }
     
     public Boolean VALIDAR_CAJAS_CLIENTE_POS(){
@@ -965,7 +1010,11 @@ public final class POS extends javax.swing.JInternalFrame {
         v.setNumeroTransaccion(CajaNumeroTransacción.getText());
         v.setTotalEnLetras(TotalLetras.getText());
 
-        v.setObservacion(ObservacionVenta.getText());
+        if(Float.parseFloat(LBL_PROCENTAJE_POS.getText())>0){
+            v.setObservacion(ObservacionVenta.getText()+"PROMOCIÓN:"+jLabel10.getText()+" DESCUENTO: "+lbl_DESCUENTO_VISTA.getText());
+        }else{
+            v.setObservacion(ObservacionVenta.getText());
+        }
         v.setNombreCertificador(NOMBRE_CERTIFICADOR);
         v.setNitCertificador(NIT_CERTIFICADOR);
         v.setFechaAutorizacion(CajaFechaAutorizacion.getText());
@@ -1597,7 +1646,7 @@ public final class POS extends javax.swing.JInternalFrame {
             BusquedaCodigoBarras(Codigo);
 
         } else {
-            JOptionPane.showMessageDialog(null, "DEBE INGRESAR UN CÓDIGO DE BARRAS", "CAMPO VACÍO", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(principal, "DEBE INGRESAR UN CÓDIGO DE BARRAS", "CAMPO VACÍO", JOptionPane.ERROR_MESSAGE);
             IdVenta.requestFocus();
         }
     }
@@ -1735,7 +1784,7 @@ public final class POS extends javax.swing.JInternalFrame {
             pro = proDao.BuscarProPorNombre(Nombre);
             if (pro.getNombre() != null) {
                 if (pro.getEstado_Producto().equals("INACTIVO")) {
-                    JOptionPane.showMessageDialog(null, "¡PRODUCTO INACTIVO!\nNECESITA DARSE DE ALTA PARA PODER VENDER", "¡ATENCIÓN!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(principal, "¡PRODUCTO INACTIVO!\nNECESITA DARSE DE ALTA PARA PODER VENDER", "¡ATENCIÓN!", JOptionPane.ERROR_MESSAGE);
                     IdVenta.requestFocus();
                 } else {
                     ID_PRODUCTO_BD.setText(""+pro.getIdProductos());
@@ -1780,7 +1829,7 @@ public final class POS extends javax.swing.JInternalFrame {
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "DEBE INGRESAR UN NOMBRE", "CAMPO VACÍO", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(principal, "DEBE INGRESAR UN NOMBRE", "CAMPO VACÍO", JOptionPane.ERROR_MESSAGE);
             NombreVenta.requestFocus();
         }
     }
@@ -1853,7 +1902,7 @@ public final class POS extends javax.swing.JInternalFrame {
     public void GenerarFacturaElectronica(){
         if (VALIDAR_CAJAS_CLIENTE_POS() == false) {
             if(Float.parseFloat(labeltotalenfacturacion.getText())>=2500){
-            JOptionPane.showMessageDialog(this, "¡DEBE INGRESAR UN NÚMERO DE NIT O CUI PARA PODER GENERAR ESTA FACTURA!", "*****MAYOR A 2500****", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(principal, "¡DEBE INGRESAR UN NÚMERO DE NIT O CUI PARA PODER GENERAR ESTA FACTURA!", "*****MAYOR A 2500****", JOptionPane.ERROR_MESSAGE);
         }else{
               int i = JOptionPane.showConfirmDialog(null, "¿DESEA COMPLETAR LA VENTA SIN UN CLIENTE?\n *Esta acción asignará automaticamente un CONSUMIDOR FINAL a la venta");
             if (i == 0) {
@@ -2087,6 +2136,14 @@ public final class POS extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         btnSubir = new javax.swing.JButton();
         btnBajar = new javax.swing.JButton();
+        jLabel44 = new javax.swing.JLabel();
+        TotalTipoDeProductosPOS = new javax.swing.JLabel();
+        lbl_SUBTOTAL_VISTA = new javax.swing.JLabel();
+        lbl_DESCUENTO_VISTA = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        LBL_PROCENTAJE_POS = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
         PanelBotonesPOS = new javax.swing.JPanel();
         BtnGenerarVentaPOS = new javax.swing.JButton();
         BtnCancelarVentaPOS = new javax.swing.JButton();
@@ -2095,14 +2152,13 @@ public final class POS extends javax.swing.JInternalFrame {
         BtnAgregarObservacionPOS = new javax.swing.JButton();
         TipoDocumento = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        ComboPromociones = new javax.swing.JComboBox<>();
         Fecha_Movimiento = new com.toedter.calendar.JDateChooser();
+        jButton2 = new javax.swing.JButton();
         PanelTotalVentaPOS = new javax.swing.JPanel();
-        jLabel44 = new javax.swing.JLabel();
         cambio = new javax.swing.JLabel();
         pagocon = new javax.swing.JLabel();
         labeltotalenfacturacion = new javax.swing.JLabel();
-        TotalTipoDeProductosPOS = new javax.swing.JLabel();
         PanelClientePOS = new javax.swing.JPanel();
         IdCliente = new javax.swing.JTextField();
         Caja_IDENTIFICACION = new javax.swing.JTextField();
@@ -2885,6 +2941,41 @@ public final class POS extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel44.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel44.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel44.setText("0");
+        jLabel44.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "UNIDADES"));
+
+        TotalTipoDeProductosPOS.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        TotalTipoDeProductosPOS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        TotalTipoDeProductosPOS.setText("0");
+        TotalTipoDeProductosPOS.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "ITEMS"));
+
+        lbl_SUBTOTAL_VISTA.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_SUBTOTAL_VISTA.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_SUBTOTAL_VISTA.setText("0");
+        lbl_SUBTOTAL_VISTA.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "SUBTOTAL"));
+
+        lbl_DESCUENTO_VISTA.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_DESCUENTO_VISTA.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_DESCUENTO_VISTA.setText("0");
+        lbl_DESCUENTO_VISTA.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "DESCUENTO"));
+
+        jLabel9.setText("PROMOCION:");
+
+        jLabel10.setForeground(new java.awt.Color(255, 0, 26));
+        jLabel10.setText("SIN PROMOCION");
+
+        LBL_PROCENTAJE_POS.setForeground(new java.awt.Color(255, 0, 26));
+
+        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jButton4.setText("QUITAR");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel69Layout = new javax.swing.GroupLayout(jPanel69);
         jPanel69.setLayout(jPanel69Layout);
         jPanel69Layout.setHorizontalGroup(
@@ -2914,15 +3005,33 @@ public final class POS extends javax.swing.JInternalFrame {
                 .addGroup(jPanel69Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel69Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBajar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSubir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel69Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel69Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBajar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSubir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel69Layout.createSequentialGroup()
+                                .addComponent(jLabel44, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TotalTipoDeProductosPOS, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbl_SUBTOTAL_VISTA, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbl_DESCUENTO_VISTA, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+                            .addGroup(jPanel69Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(LBL_PROCENTAJE_POS, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4)))
                         .addContainerGap())))
         );
         jPanel69Layout.setVerticalGroup(
@@ -2949,7 +3058,19 @@ public final class POS extends javax.swing.JInternalFrame {
                     .addComponent(btnSubir, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBajar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel69Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LBL_PROCENTAJE_POS, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel69Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel44)
+                    .addComponent(TotalTipoDeProductosPOS)
+                    .addComponent(lbl_SUBTOTAL_VISTA)
+                    .addComponent(lbl_DESCUENTO_VISTA)))
         );
 
         PanelBotonesPOS.setBackground(new java.awt.Color(51, 153, 255));
@@ -3014,31 +3135,40 @@ public final class POS extends javax.swing.JInternalFrame {
 
         jPanel1.setBackground(new java.awt.Color(51, 153, 255));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--SIN PROMOCIÓN--" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        ComboPromociones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--SIN PROMOCIÓN--" }));
+        ComboPromociones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                ComboPromocionesActionPerformed(evt);
             }
         });
 
         Fecha_Movimiento.setDateFormatString(" y-MM-dd");
         Fecha_Movimiento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/RELOAD_16PX.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Fecha_Movimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Fecha_Movimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(ComboPromociones, 0, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ComboPromociones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Fecha_Movimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -3077,7 +3207,7 @@ public final class POS extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BtnCancelarVentaPOS, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnGenerarVentaPOS, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                .addComponent(BtnGenerarVentaPOS, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -3086,11 +3216,6 @@ public final class POS extends javax.swing.JInternalFrame {
                 PanelTotalVentaPOSMouseClicked(evt);
             }
         });
-
-        jLabel44.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel44.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel44.setText("0");
-        jLabel44.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "ITEMS UNIDAD"));
 
         cambio.setBackground(new java.awt.Color(226, 226, 226));
         cambio.setFont(new java.awt.Font("Times New Roman", 0, 48)); // NOI18N
@@ -3106,13 +3231,8 @@ public final class POS extends javax.swing.JInternalFrame {
         labeltotalenfacturacion.setFont(new java.awt.Font("Times New Roman", 0, 48)); // NOI18N
         labeltotalenfacturacion.setForeground(new java.awt.Color(255, 0, 51));
         labeltotalenfacturacion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labeltotalenfacturacion.setText("0.00");
+        labeltotalenfacturacion.setText("0.0000");
         labeltotalenfacturacion.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "TOTAL"));
-
-        TotalTipoDeProductosPOS.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        TotalTipoDeProductosPOS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        TotalTipoDeProductosPOS.setText("0");
-        TotalTipoDeProductosPOS.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "ITEMS"));
 
         javax.swing.GroupLayout PanelTotalVentaPOSLayout = new javax.swing.GroupLayout(PanelTotalVentaPOS);
         PanelTotalVentaPOS.setLayout(PanelTotalVentaPOSLayout);
@@ -3120,10 +3240,6 @@ public final class POS extends javax.swing.JInternalFrame {
             PanelTotalVentaPOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTotalVentaPOSLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel44, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TotalTipoDeProductosPOS, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labeltotalenfacturacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pagocon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -3137,10 +3253,8 @@ public final class POS extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(PanelTotalVentaPOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(pagocon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labeltotalenfacturacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel44, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cambio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TotalTipoDeProductosPOS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(labeltotalenfacturacion, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cambio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -3403,7 +3517,7 @@ public final class POS extends javax.swing.JInternalFrame {
         if(CheckReventa.isSelected()){
             if(VENTANA_REVENTA_MOSTRADA==false){
                 VENTANA_REVENTA_MOSTRADA = true;
-                JOptionPane.showMessageDialog(this, "¡EL MODO REVENTA ESTA ACTIVADO!", "IMPORTANTE", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(principal, "¡EL MODO REVENTA ESTA ACTIVADO!", "IMPORTANTE", JOptionPane.ERROR_MESSAGE);
                 if(jButton7.getText().equals("AGREGAR")){
                 AgregarProducto();
             }else{
@@ -3467,7 +3581,7 @@ public final class POS extends javax.swing.JInternalFrame {
 
     private void lblImagenVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImagenVentaMouseClicked
         if(IdVenta.getText().equals("") || IdVenta.getText() == null){
-            JOptionPane.showMessageDialog(null, "¡AÚN NO HA SELECCIONADO NINGÚN PRODUCTO!");
+            JOptionPane.showMessageDialog(principal, "¡AÚN NO HA SELECCIONADO NINGÚN PRODUCTO!");
         }else{
             DETALLE_PRODUCTO DP= new DETALLE_PRODUCTO();
             DP.VerProducto(IdVenta.getText());
@@ -3481,7 +3595,7 @@ public final class POS extends javax.swing.JInternalFrame {
 
     private void DescripcionProductoVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DescripcionProductoVentaMouseClicked
         if(IdVenta.getText().equals("") || IdVenta.getText() == null){
-            JOptionPane.showMessageDialog(null, "¡AÚN NO HA SELECCIONADO NINGÚN PRODUCTO!");
+            JOptionPane.showMessageDialog(principal, "¡AÚN NO HA SELECCIONADO NINGÚN PRODUCTO!");
         }else{
             DETALLE_PRODUCTO DP= new DETALLE_PRODUCTO();
             DP.VerProducto(IdVenta.getText());
@@ -3578,7 +3692,7 @@ public final class POS extends javax.swing.JInternalFrame {
         Numero_Letras NumLe= new Numero_Letras();
         if(TablaVentas.getRowCount() > 0){
             if(PaisCliente.getSelectedIndex()<0){
-                JOptionPane.showMessageDialog(this, "¡DEBE SELECCIONAR ALGÚN PAÍS!");
+                JOptionPane.showMessageDialog(principal, "¡DEBE SELECCIONAR ALGÚN PAÍS!");
             }else{
                 BtnGenerarVentaPOS.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
             TotalLetras.setText(NumLe.Convertir(TotalParaConvertir + "", true));
@@ -3591,7 +3705,7 @@ public final class POS extends javax.swing.JInternalFrame {
             }
             
         } else {
-            JOptionPane.showMessageDialog(null, "¡AÚN NO HAY PRODUCTOS EN EL CARRITO!");
+            JOptionPane.showMessageDialog(principal, "¡AÚN NO HAY PRODUCTOS EN EL CARRITO!");
         }
         //Ticket();
     }//GEN-LAST:event_BtnGenerarVentaPOSActionPerformed
@@ -3654,6 +3768,7 @@ public final class POS extends javax.swing.JInternalFrame {
             observaciones= new Observaciones(ObservacionVenta.getText(), pos);
             observaciones.setVisible(true);
         }else{
+            observaciones.toFront();
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("¡ACCIÓN NO VÁLIDA!", "¡YA HAY UNA VENTANA DE OBSERVACIÓN ABIERTA!", DesktopNotify.FAIL, 20000L);
         }
@@ -3801,9 +3916,9 @@ public final class POS extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_PanelTotalVentaPOSMouseClicked
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-         VERIFICAR_DESCUENTO(jComboBox1);
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void ComboPromocionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboPromocionesActionPerformed
+         VERIFICAR_DESCUENTO(ComboPromociones);
+    }//GEN-LAST:event_ComboPromocionesActionPerformed
 
     private void facturaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facturaMouseClicked
         Principal.DESKTOP_PRINCIPAL.add(jLayeredPane1);
@@ -3877,6 +3992,17 @@ public final class POS extends javax.swing.JInternalFrame {
        actualizarBotones();
     }//GEN-LAST:event_btnBajarActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CARGAR_PROMOCIONES();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+         ComboPromociones.setSelectedIndex(0);
+        jLabel10.setText(ComboPromociones.getSelectedItem().toString());
+            LBL_PROCENTAJE_POS.setText("0");
+            APLICAR_DESCUENTO_TABLA(0f);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void seleccionarFila(int row) {
     if (row >= 0 && row < matchingRows.size()) {
         int rowIndex = matchingRows.get(row);
@@ -3913,6 +4039,7 @@ public final class POS extends javax.swing.JInternalFrame {
     public static javax.swing.JLabel Cheque;
     private javax.swing.JTextField CodigoPostalCliente;
     public static javax.swing.JLabel ComboFormaPago;
+    private javax.swing.JComboBox<String> ComboPromociones;
     private static javax.swing.JTextArea DESCRIPCION;
     private javax.swing.JTextField DepartamentoCliente;
     public static javax.swing.JLabel Deposito;
@@ -3927,6 +4054,7 @@ public final class POS extends javax.swing.JInternalFrame {
     private javax.swing.JLabel IMAGEN;
     private javax.swing.JTextField IdCliente;
     public javax.swing.JTextField IdVenta;
+    private javax.swing.JLabel LBL_PROCENTAJE_POS;
     public static javax.swing.JLabel MetodoPagoEntero;
     private javax.swing.JTextField MunicipioCliente;
     public javax.swing.JTextField NombreVenta;
@@ -3958,11 +4086,13 @@ public final class POS extends javax.swing.JInternalFrame {
     private javax.swing.JTextField direccion;
     private javax.swing.JTextField factura;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private static javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel37;
@@ -3976,6 +4106,7 @@ public final class POS extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel99;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
@@ -4011,6 +4142,8 @@ public final class POS extends javax.swing.JInternalFrame {
     public static javax.swing.JLabel lblVentaPrecio1;
     public static javax.swing.JLabel lblVentaPrecio2;
     public static javax.swing.JLabel lblVentaPrecio3;
+    public javax.swing.JLabel lbl_DESCUENTO_VISTA;
+    public javax.swing.JLabel lbl_SUBTOTAL_VISTA;
     private javax.swing.JTextField nombre;
     public javax.swing.JLabel pagocon;
     // End of variables declaration//GEN-END:variables

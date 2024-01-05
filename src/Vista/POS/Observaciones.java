@@ -46,7 +46,6 @@ public class Observaciones extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("OBSERVACIÓNES");
-        setAlwaysOnTop(true);
         setIconImages(getIconImages());
 
         jTextArea1.setColumns(20);

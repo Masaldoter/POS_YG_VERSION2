@@ -10,7 +10,7 @@ package CLASES_GLOBALES;
  */
 public class PARAMETROS_VERSION_SISTEMA {
     public static String NOMBRE_SISTEMA = "POS YG";
-    public static String VERSION_SISTEMA = "4.1";
+    public static String VERSION_SISTEMA = "4.2";
     public static String NOMBRE_DESARROLLADOR = "ALDO GUTIÉRREZ";
     public static String TELEFONO_DESARROLLADOR = "50240805837";
     public static String FACEBOOK_DESARROLLADOR = "https://www.facebook.com/Masaldotergt/";
@@ -48,7 +48,15 @@ public class PARAMETROS_VERSION_SISTEMA {
             + "*SE AGREGARON NUEVAS FUNCIÓNES EN EL POS"+ "\n"
             + "VERSIÓN 4.0:\n"
             + "*SE AGREGARON NUEVAS OPCIÓNES EN DETALLE DE VENTAS, REGISTRO DE VENTAS\n"
-            + "*SE ARREGLARON BUGS";
+            + "*SE ARREGLARON BUGS\n\n"
+            + "VERSIÓN 4.1 BETA:\n"
+            + "*SE ARREGLARON BUGS\n"
+            + "*SE CAMBIABA DE REGIÓN, Y LOS TOTALES SALIAN CON ',' POR ENDE FALLABA\n\n"
+            + "VERSIÓN 4.2 (ACTUAL):\n"
+            + "*SE AGREGO EL MODULO DE PROMOCIONES, SE PUEDEN APLICAR DESCUENTOS"
+            + "CAMBIOS EN LA INTERFAZ GRÁFICA DEL POS\n"
+            + "*SE ARREGLARON BUGS\n"
+            + "*AL BUSCAR UNA VENTA EN MOVIMIENTOS GENERALES O VENTAS GENERALES SE QUEDABA TRABADO";
 
     public static String LICENCIA="";
     public static String VERSION="";

@@ -20,6 +20,7 @@ import PROMOCIONES.ETIQUETAS.Promociones;
 import Reportes.Reportes;
 import ReportesImpresion.Documentos;
 import VERIFICAR_ERRORES.ERRORES_INVENTARIO;
+import VERIFICAR_ERRORES.ERRORES_INVENTARIO_PRODUCTOS;
 import Vista.ADMINISTRACION.CLIENTES.CLIENTES;
 import Vista.ADMINISTRACION.PROVEEDORES.PROVEEDORES;
 import Vista.ADMINISTRACION.USUARIOS.ADMINISTRACION_DE_USUARIOS;
@@ -31,11 +32,13 @@ import Vista.ADMINISTRACION.INVENTARIO.ADMINISTRARPRODUCTO;
 import Vista.ADMINISTRACION.INVENTARIO.INVENTARIO;
 import Vista.ADMINISTRACION.INVENTARIO.ImportarExcel;
 import Vista.ADMINISTRACION.INVENTARIO.KARDEX;
+import Vista.ADMINISTRACION.PROMOCIONES.PROMOCIONES;
 import Vista.ADMINISTRACION.PROVEEDORES.GASTOS_NUEVO;
 import Vista.POS.MODO_ESPERA;
 import Vista.POS.POS;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_DIARIOS;
 import Vista.REPORTES_VENTAS.MOVIMIENTOS_GENERALES;
+import Vista.REPORTES_VENTAS.VISTA_VENTAS;
 import Vista.SESION.SESION;
 import Vista.Traslados.TrasladosGenerales;
 import Vista.VENTAS.CAJA.INTERNAL_CAJA_PRINCIPAL;
@@ -71,7 +74,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public final class Principal extends javax.swing.JFrame {
-
+    Principal prin;
     Ventas ConfigVentas = new Ventas();
 
     Reportes Re = new Reportes();
@@ -95,6 +98,7 @@ public final class Principal extends javax.swing.JFrame {
     USUARIOS_INTERNOS UI = new USUARIOS_INTERNOS(this);
     public CLIENTES C = new CLIENTES(this);
     public PROVEEDORES P = new PROVEEDORES();
+    PROMOCIONES PROMO= new PROMOCIONES();
     SESION S = new SESION();
     DASHBOARD D = new DASHBOARD(this);
     EMPRESA E = new EMPRESA(this);
@@ -119,6 +123,7 @@ public final class Principal extends javax.swing.JFrame {
 
     public Principal(String Validar) {
         initComponents();
+        this.prin = this;
         this.setExtendedState(Principal.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         /*Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -353,6 +358,8 @@ public final class Principal extends javax.swing.JFrame {
         jMenuItem28 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         ItemInventario = new javax.swing.JMenuItem();
+        jSeparator50 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem41 = new javax.swing.JMenuItem();
         jSeparator17 = new javax.swing.JPopupMenu.Separator();
         jMenu14 = new javax.swing.JMenu();
         ItemProveedores1 = new javax.swing.JMenuItem();
@@ -368,6 +375,8 @@ public final class Principal extends javax.swing.JFrame {
         jMenuItem13 = new javax.swing.JMenuItem();
         jSeparator34 = new javax.swing.JPopupMenu.Separator();
         jMenuItem31 = new javax.swing.JMenuItem();
+        jSeparator49 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem39 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         ItemVentasGenerales = new javax.swing.JMenuItem();
         jSeparator11 = new javax.swing.JPopupMenu.Separator();
@@ -396,6 +405,8 @@ public final class Principal extends javax.swing.JFrame {
         jMenuItem26 = new javax.swing.JMenuItem();
         jSeparator39 = new javax.swing.JPopupMenu.Separator();
         jMenuItem25 = new javax.swing.JMenuItem();
+        jSeparator51 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem42 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         jMenuItem15 = new javax.swing.JMenuItem();
         jSeparator18 = new javax.swing.JPopupMenu.Separator();
@@ -798,6 +809,16 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jMenu4.add(ItemInventario);
+        jMenu4.add(jSeparator50);
+
+        jMenuItem41.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/ADVERTENCIA_32PX.png"))); // NOI18N
+        jMenuItem41.setText("ERRORES DE INVENTARIO");
+        jMenuItem41.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem41ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem41);
         jMenu4.add(jSeparator17);
 
         jMenu14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/PROVEEDORES_32PX.png"))); // NOI18N
@@ -880,6 +901,17 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem31);
+        jMenu4.add(jSeparator49);
+
+        jMenuItem39.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_9, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/PRMOCIONES_32PX.png"))); // NOI18N
+        jMenuItem39.setText("PROMOCIONES");
+        jMenuItem39.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem39ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem39);
 
         jMenuBar2.add(jMenu4);
 
@@ -1019,6 +1051,15 @@ public final class Principal extends javax.swing.JFrame {
         jMenu12.add(jMenuItem25);
 
         jMenu6.add(jMenu12);
+        jMenu6.add(jSeparator51);
+
+        jMenuItem42.setText("VISTA DE VENTAS");
+        jMenuItem42.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem42ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem42);
 
         jMenuBar2.add(jMenu6);
 
@@ -1815,6 +1856,20 @@ public final class Principal extends javax.swing.JFrame {
         DESKTOP_PRINCIPAL.updateUI();
     }//GEN-LAST:event_jMenuItem38ActionPerformed
 
+    private void jMenuItem39ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem39ActionPerformed
+        ABRIR_VENTANAS(PROMO, true);
+    }//GEN-LAST:event_jMenuItem39ActionPerformed
+
+    private void jMenuItem41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem41ActionPerformed
+        ERRORES_INVENTARIO_PRODUCTOS E= new ERRORES_INVENTARIO_PRODUCTOS();
+       E.setVisible(true);
+    }//GEN-LAST:event_jMenuItem41ActionPerformed
+
+    private void jMenuItem42ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem42ActionPerformed
+        VISTA_VENTAS V_V= new VISTA_VENTAS();
+        V_V.setVisible(true);
+    }//GEN-LAST:event_jMenuItem42ActionPerformed
+
     public void EXPORTAR() {
         if (P_O_S.TablaVentas.getRowCount() < 1) {
             JOptionPane.showMessageDialog(this, "AÚN NO HAY NADA EN EL CARRITO", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -2009,8 +2064,11 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem36;
     private javax.swing.JMenuItem jMenuItem37;
     private javax.swing.JMenuItem jMenuItem38;
+    private javax.swing.JMenuItem jMenuItem39;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem40;
+    private javax.swing.JMenuItem jMenuItem41;
+    private javax.swing.JMenuItem jMenuItem42;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
@@ -2062,7 +2120,10 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator46;
     private javax.swing.JPopupMenu.Separator jSeparator47;
     private javax.swing.JPopupMenu.Separator jSeparator48;
+    private javax.swing.JPopupMenu.Separator jSeparator49;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JPopupMenu.Separator jSeparator50;
+    private javax.swing.JPopupMenu.Separator jSeparator51;
     private javax.swing.JPopupMenu.Separator jSeparator56;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;

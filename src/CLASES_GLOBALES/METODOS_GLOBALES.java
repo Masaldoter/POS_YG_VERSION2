@@ -6,6 +6,7 @@ package CLASES_GLOBALES;
 
 import Controlador.loginDao;
 import Modelo.DatosEmpresaGeneral;
+import Vista.Conexion;
 import WebServiceDigifact.ObtenerToken;
 import com.groupdocs.conversion.Converter;
 import com.groupdocs.conversion.filetypes.ImageFileType;
@@ -23,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -59,7 +61,8 @@ public class METODOS_GLOBALES {
 
     public static Image image = Toolkit.getDefaultToolkit().createImage("");
     public static TrayIcon trayIcon = new TrayIcon(image);
-
+    public static boolean VENTANA_CONEXION_ESTADO = false;
+    public static Conexion Conexion_JFrame;
     public static void PintarImagen_BOTON(JButton boton, String ruta){
         boton.removeAll();
         boton.setHorizontalAlignment(SwingConstants.CENTER);
@@ -479,6 +482,22 @@ public class METODOS_GLOBALES {
         String fechaFormateada = fecha.format(formatter);
         
         return fechaFormateada;
+    }
+    
+    public static Date CONVERTIR_FECHA_STRING_A_DATE(String fecha) {
+        try {
+            // Crear un objeto SimpleDateFormat para el formato actual
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            // Parsear la cadena de fecha a un objeto Date
+            Date date = sdf.parse(fecha);
+
+            // Si necesitas un java.util.Date, simplemente devuelve el resultado del parsing
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace(); // Manejar la excepción apropiadamente en tu aplicación
+            return null;
+        }
     }
     
     public static String CONVERTIR_HORA(String Hora){

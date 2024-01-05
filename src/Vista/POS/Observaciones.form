@@ -4,7 +4,6 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="OBSERVACI&#xd3;NES"/>
-    <Property name="alwaysOnTop" type="boolean" value="true"/>
     <Property name="iconImages" type="java.util.List" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
       <Connection component="Form" name="getIconImages" type="method"/>
     </Property>

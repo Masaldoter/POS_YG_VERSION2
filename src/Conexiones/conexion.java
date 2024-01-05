@@ -4,6 +4,8 @@ Conexion a la base de datos
 
 package Conexiones;
 
+import CLASES_GLOBALES.METODOS_GLOBALES;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_BASE_DE_DATOS;
 import Vista.Conexion;
 import java.io.File;
@@ -27,7 +29,7 @@ public class conexion{
 
     
     
-    conexion(){
+    public conexion(){
         datos = new modeloconexion();
         datos = PropiedadesSistema();
         String URL2 = URL+datos.getIp()+":"+datos.getPuerto()+"/"+datos.getNombreBase()+SSL;
@@ -70,8 +72,13 @@ public class conexion{
             Union = this.basicDataSource.getConnection();
 
         } catch (SQLException e) {
-            Conexion BasesdeDatos = new Conexion();
-            BasesdeDatos.setVisible(true);
+            if(METODOS_GLOBALES.VENTANA_CONEXION_ESTADO==false){
+                METODOS_GLOBALES.VENTANA_CONEXION_ESTADO= true;
+                METODOS_GLOBALES.Conexion_JFrame = new Conexion();
+            METODOS_GLOBALES.Conexion_JFrame.setVisible(true);
+            }else{
+                METODOS_GLOBALES.Conexion_JFrame.toFront();
+            }
         }
 
         return Union;
@@ -85,5 +92,35 @@ public class conexion{
         } 
         return datasource;
     
+    }
+    
+    public boolean verificarConexion() {
+        boolean conexionExitosa = false;
+        Connection conexion = null;
+        
+
+        try {
+            conexion = this.basicDataSource.getConnection();
+            conexionExitosa = true;
+        } catch (SQLException e) {
+            conexionExitosa = false;
+            if(METODOS_GLOBALES.VENTANA_CONEXION_ESTADO==false){
+                METODOS_GLOBALES.VENTANA_CONEXION_ESTADO= true;
+                METODOS_GLOBALES.Conexion_JFrame = new Conexion();
+            METODOS_GLOBALES.Conexion_JFrame.setVisible(true);
+            }else{
+                METODOS_GLOBALES.Conexion_JFrame.toFront();
+            }
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                }
+            } catch (SQLException e) {
+                // Manejar la excepción según tus necesidades
+            }
+        }
+
+        return conexionExitosa;
     }
 }

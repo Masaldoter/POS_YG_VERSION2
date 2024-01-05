@@ -425,7 +425,6 @@ public final class Detalles extends javax.swing.JFrame {
             Fechaventa.setText(ConexionesSQL.rs.getString("Fecha"));
             FormapagoDetalleVenta.setText(ConexionesSQL.rs.getString("FormaPago"));
             CajaObservacion.setText(ConexionesSQL.rs.getString("Observacion"));
-            TotalLetras.setText(ConexionesSQL.rs.getString("Observacion"));
             TotalLetras.setText(ConexionesSQL.rs.getString("TotalEnLetras"));
             CajaCertificador.setText(ConexionesSQL.rs.getString("NombreCertificador"));
             

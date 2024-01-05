@@ -17,6 +17,7 @@ import Conexiones.ConexionesSQL;
 import Controlador.KardexDao;
 import Controlador.ProductosDao;
 import Controlador.VentaDao;
+import Excel.Excel;
 import Modelo.Kardex;
 import Modelo.Productos;
 import Vista.POS.POS;
@@ -28,6 +29,7 @@ import java.awt.Toolkit;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -308,6 +310,8 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DETALLE DE VALE");
@@ -727,6 +731,16 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
             }
         });
         jMenu3.add(jMenuItem4);
+        jMenu3.add(jSeparator2);
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IconosSOciales/microsoft_office_excel_logo_icon_145720.png"))); // NOI18N
+        jMenuItem1.setText("EXPORTAR");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
 
         jMenuBar1.add(jMenu3);
 
@@ -985,6 +999,15 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
         jTextField1.requestFocus();
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        try {
+            Excel Ex= new Excel();
+            Ex.EXPORTAR_EXCEL_JTABLE(TablaDetalles, 2, 6, Fac.getText());
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(DetalleTrasladosForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     public void FacturaCopiaSinImprimir(Boolean Guardar, int TipoDocumentoImpresion) {
         Documentos documentos = new Documentos();
         DatosEmpresaDao datosDao = new DatosEmpresaDao();
@@ -1151,6 +1174,7 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -1166,6 +1190,7 @@ public final class DetalleTrasladosForm extends javax.swing.JFrame {
     public javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     public javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
