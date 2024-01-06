@@ -566,6 +566,7 @@ public final class POS extends javax.swing.JInternalFrame {
             //DESCUENTO = (PRECIO_NORMAL/100)*DESCUENTO;
             DESCUENTO = (PRECIO_NORMAL*DESCUENTO_PORCENTAJE)/100;
             TablaVentas.setValueAt(String.valueOf(DESCUENTO), i, 4);   
+            TablaVentas.setValueAt(String.valueOf((PRECIO_NORMAL-DESCUENTO)), i, 5);   
             TablaVentas.setValueAt(String.valueOf((PRECIO_NORMAL-DESCUENTO)*CANTIDAD), i, 6);   
             }
             }
@@ -1958,7 +1959,7 @@ if (selectedValue != null) {
 
             EDF.setTipoFrase("1");
             EDF.setCodigoEscenario("1");
-
+/*
             for (int i = 0; i < TablaVentas.getRowCount(); i++) {
                 EDF.setTotalDeProductos(Integer.parseInt(TotalTipoDeProductosPOS.getText()));
                 EDF.setNumeroLineaProducto(String.valueOf(i + 1));
@@ -1979,7 +1980,7 @@ if (selectedValue != null) {
                 EDF.setMontoGravableImpuesto(String.format("%.4f", CalcularImpuestoMontoGravable));
                 EDF.setMontoImpuesto(String.format("%.4f", CalcularImpuestoMontoImpuesto));
 
-            }
+            }*/
 
             EDF.setNombreCortoTotales("IVA");
             EDF.setTotalMontoImpuestoTotales(String.format("%.4f", Total));
