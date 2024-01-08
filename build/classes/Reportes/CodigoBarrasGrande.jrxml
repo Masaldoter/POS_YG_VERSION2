@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="288" pageHeight="288" columnWidth="248" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0277a6b7-2dad-4f2c-ad70-69fbcc2b8c4b">
+	<property name="ireport.zoom" value="2.5937424601000023"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cost" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pre" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nom" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cod" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="empresa" class="java.lang.String"/>
+	<parameter name="empresalargo" class="java.lang.String"/>
+	<parameter name="rutaimagen" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="248" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="52" width="248" height="20" uuid="f06e7530-6195-4075-b716-681b9bd32118"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Baskerville Old Face" size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresalargo}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="100" y="0" width="49" height="50" uuid="72f2fde6-3de5-4e92-ba4f-c092c237514c"/>
+				<imageExpression><![CDATA[$P{rutaimagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="72" width="248" height="73" uuid="e99c3d16-5831-411a-a0fc-1cde4fbe9708"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nom}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="74" y="180" width="120" height="68" uuid="168536cc-8cb1-4569-9e54-3d3cbb8565f5"/>
+				<jr:Codabar xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{cod}]]></jr:codeExpression>
+				</jr:Codabar>
+			</componentElement>
+			<textField>
+				<reportElement x="128" y="136" width="120" height="44" uuid="f9a7a2dc-0bd2-401c-a409-65edf0f60dfa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="26" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="136" width="100" height="44" uuid="94849104-0c5b-4609-beb7-e671089f65cd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Serif" size="24"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cost}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="136" width="28" height="44" uuid="2a7cb53b-541d-4275-a20e-94ef9a7ce001"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Serif" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Q]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

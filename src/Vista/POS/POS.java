@@ -1726,6 +1726,7 @@ if (selectedValue != null) {
                 ESTADO_BUSQUEDA=false;
             } else {
                 ESTADO_BUSQUEDA=true;
+                ID_PRODUCTO.setText("");
                 ID_PRODUCTO_BD.setText(""+pro.getIdProductos());
                 IdVenta.setText("" + pro.getCodigoBarras());
                 NombreVenta.setText("" + pro.getNombre());
@@ -1788,6 +1789,7 @@ if (selectedValue != null) {
                     JOptionPane.showMessageDialog(principal, "¡PRODUCTO INACTIVO!\nNECESITA DARSE DE ALTA PARA PODER VENDER", "¡ATENCIÓN!", JOptionPane.ERROR_MESSAGE);
                     IdVenta.requestFocus();
                 } else {
+                    ID_PRODUCTO.setText("");
                     ID_PRODUCTO_BD.setText(""+pro.getIdProductos());
                     IdVenta.setText("" + pro.getCodigoBarras());
                     NombreVenta.setText("" + pro.getNombre());
@@ -3619,26 +3621,27 @@ if (selectedValue != null) {
         int FormaqueIngreso = Integer.parseInt(TablaVentas.getValueAt(Seleccion, 8).toString());
         jButton7.setText("EDITAR");
         if (Integer.parseInt(TablaVentas.getValueAt(Seleccion, 8).toString()) == 1) {
-            ID_PRODUCTO.setText("1");
+            
             TOTAL_INGRESADO.setText(TablaVentas.getValueAt(Seleccion, 2).toString());
             EstadoProducto.setText("INGRESADO");    
             BuscarProductoVenta(TablaVentas.getValueAt(Seleccion, 0).toString());
             CantidadVenta.setText(TablaVentas.getValueAt(Seleccion, 2).toString());
-            Final.setText(TablaVentas.getValueAt(Seleccion, 3).toString());
+            Final.setText(TablaVentas.getValueAt(Seleccion, 5).toString());
             CantidadVenta.requestFocus();
             CantidadVenta.addFocusListener(new FullSelectorListener());
             jButton7.setText("EDITAR");
+            ID_PRODUCTO.setText("1");
         } else {
             LIMPIAR_CAJA_CONSULTA_PRODUCTOS();
             jButton7.setText("EDITAR");
-            ID_PRODUCTO.setText("0");
+            
             IdVenta.setText(TablaVentas.getValueAt(Seleccion, 0).toString());
             NombreVenta.setText(String.valueOf(TablaVentas.getValueAt(Seleccion, 1)));
             CantidadVenta.setText(String.valueOf(TablaVentas.getValueAt(Seleccion, 2)));
-            Final.setText(String.valueOf(TablaVentas.getValueAt(Seleccion, 3)));
+            Final.setText(String.valueOf(TablaVentas.getValueAt(Seleccion, 5)));
             CantidadVenta.requestFocus();
             CantidadVenta.addFocusListener(new FullSelectorListener());
-
+            ID_PRODUCTO.setText("0");
         }
 
         int Columna = TablaVentas.getColumnModel().getColumnIndexAtX(evt.getX());

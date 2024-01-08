@@ -7,6 +7,7 @@ package Vista.VENTAS.CAJA;
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.Fecha_DATE;
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
+import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import Modelo.CAJA;
 import Tablas.ACTUALIZA_CAJA;
 import Vista.Principal;
@@ -18,10 +19,11 @@ import javax.swing.table.DefaultTableModel;
  * @author aldoy
  */
 public class INTERNAL_CAJA_PRINCIPAL extends javax.swing.JInternalFrame {
-
+INTERNAL_CAJA_PRINCIPAL I_C_P;
     Principal principal;
     public INTERNAL_CAJA_PRINCIPAL(Principal principal) {
         initComponents();
+        this.I_C_P = this;
         this.principal = principal;
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -244,10 +246,18 @@ public class INTERNAL_CAJA_PRINCIPAL extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ADMINISTRAR_CAJA A_C = new ADMINISTRAR_CAJA(null, true, jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString(), 
-                jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString(), jTable1.getValueAt(jTable1.getSelectedRow(), 8).toString(), true, this);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                executorService.execute(() -> {
+                    ADMINISTRAR_CAJA A_C = new ADMINISTRAR_CAJA(null, true, jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString(), 
+                jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString(), jTable1.getValueAt(jTable1.getSelectedRow(), 8).toString(), true, I_C_P);
             
         A_C.setVisible(true);
+                });
+            }
+        });
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked

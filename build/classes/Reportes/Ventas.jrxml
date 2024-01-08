@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REPORTE DE VENTAS" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ba30a9fc-398b-4edd-be34-ca10d4f254f8">
+	<property name="ireport.zoom" value="1.3310000000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="nombreempresa" class="java.lang.String"/>
+	<parameter name="nitempresa" class="java.lang.String"/>
+	<parameter name="direccionempresa" class="java.lang.String"/>
+	<parameter name="telempresa" class="java.lang.String"/>
+	<parameter name="eslogan" class="java.lang.String"/>
+	<parameter name="politicas" class="java.lang.String"/>
+	<parameter name="rutaimagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     registro.`Total` AS registro_Total,
+     registro.`Hora` AS registro_Hora,
+     registro.`Fecha` AS registro_Fecha,
+     registro.`Cliente` AS registro_Cliente,
+     registro.`FormaPago` AS registro_FormaPago,
+     registro.`Usuario` AS registro_Usuario,
+     registro.`id_CAJA_registro` AS registro_id_CAJA_registro,
+     registro.`TipoDocumentoFel` AS registro_TipoDocumentoFel,
+     registro.`NoFactura` AS registro_NoFactura,
+     registro.`NitCliente` AS registro_NitCliente,
+     registro.`TIPO_IDENTIFICACION` AS registro_TIPO_IDENTIFICACION
+FROM
+     `registro` registro]]>
+	</queryString>
+	<field name="registro_Total" class="java.lang.Float"/>
+	<field name="registro_Hora" class="java.sql.Time"/>
+	<field name="registro_Fecha" class="java.sql.Date"/>
+	<field name="registro_Cliente" class="java.lang.String"/>
+	<field name="registro_FormaPago" class="java.lang.String"/>
+	<field name="registro_Usuario" class="java.lang.Integer"/>
+	<field name="registro_id_CAJA_registro" class="java.lang.Integer"/>
+	<field name="registro_TipoDocumentoFel" class="java.lang.String"/>
+	<field name="registro_NoFactura" class="java.lang.String"/>
+	<field name="registro_NitCliente" class="java.lang.String"/>
+	<field name="registro_TIPO_IDENTIFICACION" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="2" width="802" height="30" uuid="c80126a5-3ee9-416d-bdcb-8d9b1043bf41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true" isItalic="false" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreempresa}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="2" width="127" height="110" uuid="e8c1eebf-5c3b-4734-9fb3-afe4595a3ec2"/>
+				<imageExpression><![CDATA[$P{rutaimagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="32" width="802" height="20" uuid="3010fc24-b224-4387-81ba-1ea38c09a9dd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{direccionempresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="52" width="802" height="20" uuid="abfe720b-138c-419c-9c4d-3b594a260d47"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nitempresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="72" width="802" height="20" uuid="a6aa01a7-1ef0-4c3f-9f44-d63c0d7c9399"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{telempresa}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="35" uuid="a58df60d-93ae-4e5f-a178-075548683f9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="18" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Reporte De Ventas]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="53" height="20" backcolor="#00CCFF" uuid="aa464b12-bffa-4122-9e89-4894668f313c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[NUMERO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="53" y="0" width="215" height="20" backcolor="#00CCFF" uuid="b0d2ec25-7c77-49e4-842b-21726d7ec70b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="393" y="0" width="104" height="20" backcolor="#00CCFF" uuid="95f06ff0-f74d-4a80-82ee-0911ff901728"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[DOCUMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="268" y="0" width="125" height="20" backcolor="#00CCFF" uuid="885b9750-c7b3-49f6-9e3b-cd300ff162e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="497" y="0" width="104" height="20" backcolor="#00CCFF" uuid="94b5b806-0ac5-429b-b1d5-f071e05f4420"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[HORA Y FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="601" y="0" width="90" height="20" backcolor="#00CCFF" uuid="32a12e46-67b6-4910-892e-69abe7b60ea8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ID USUARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="691" y="0" width="111" height="20" backcolor="#00CCFF" uuid="e71d403a-70b4-4e7a-a83e-ab9cf1642347"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true" pdfFontName="Times-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ID CAJA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="2" width="53" height="26" uuid="b00979d4-0be2-4295-b8d0-5e3ed349c1b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registro_NoFactura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="268" y="2" width="125" height="26" uuid="4a1fbc1f-7990-45d1-bbd8-25e2f49a99de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registro_Total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="2" width="104" height="26" uuid="7808f6ce-6c86-4407-ab6d-eca547b104d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registro_TipoDocumentoFel}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="75b45099-070f-4e14-90fb-0c0d0121ea95"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="53" y="2" width="215" height="26" uuid="b1d36607-2278-4f88-bc71-c2f12f79b848"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registro_Cliente}+"|"+$F{registro_NitCliente}+"|"+$F{registro_TIPO_IDENTIFICACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="497" y="2" width="104" height="26" uuid="a9050645-7fbb-42c4-99fb-ebd51759356a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registro_Hora}+" | "+$F{registro_Fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="601" y="2" width="90" height="26" uuid="d0425296-89e6-473b-964f-5be97f79698f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registro_Usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="691" y="2" width="111" height="26" uuid="cbc44928-661b-4117-b966-43154b9a808b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registro_id_CAJA_registro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="41" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="762" y="20" width="40" height="21" uuid="d3fcc913-e849-438c-a88b-ba31b5f832ab"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="682" y="21" width="80" height="20" uuid="33483c1c-544e-42ae-a48b-01cf2058f40e"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="20" width="100" height="20" uuid="9873d4e6-7e6b-42d8-b4b8-0f32ecc0993f"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="802" height="20" uuid="90019fd5-7b52-4d0d-b2db-b53bf50bab5f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{eslogan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

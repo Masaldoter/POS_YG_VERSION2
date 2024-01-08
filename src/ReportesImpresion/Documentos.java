@@ -259,11 +259,9 @@ public class Documentos {
                     if (TipoDocumentoImpresion == 0) {
                         par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
                         directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/Factura_Carta_NoFel.jasper").getAbsolutePath();
-                        System.out.println(METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA);
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_HOJACARTA();
                     } else if (TipoDocumentoImpresion == 1) {
                         par.put("rutaimagen", METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
-                        System.out.println(METODOS_GLOBALES.CargarDatosRutas(0)+"\\"+PARAMETROS_EMPRESA.RUTADEIMAGEN_DOCUMENTOS_EMPRESA2);
                         directorio2 = new File(PARAMETROS_VERSION_SISTEMA.RUTA_RAIZ+"/ModeloDeImpresiones/Facturas/Factura_Ticket_NoFel_.jasper").getAbsolutePath();
                         ImpresoraSeleccionada = Impresora.getIMPRESORA_TICKET();
                     }
@@ -421,7 +419,7 @@ public class Documentos {
         List<Empleado> lista = new ArrayList<>(); //Creamos una lista de empleados con ArrayList para obtener cada empleado
         for (int i = 0; i < tabla.getRowCount(); i++) { // Iterena cada fila de la tabla
             em = new Empleado(tabla.getValueAt(i, 0).toString(), tabla.getValueAt(i, 1).toString(), //Tomamos de la tabla el valor de cada columna y creamos un objeto empleado
-                    tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 5).toString(), tabla.getValueAt(i, 4).toString());
+                    tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 3).toString(), tabla.getValueAt(i, 4).toString());
             lista.add(em); //Agregamos el objeto empleado a la lista
         }
         HashMap<String, Object> par = new HashMap<String, Object>();
@@ -503,7 +501,7 @@ public class Documentos {
         List<Empleado> lista = new ArrayList<>(); //Creamos una lista de empleados con ArrayList para obtener cada empleado
         for (int i = 0; i < tabla.getRowCount(); i++) { // Iterena cada fila de la tabla
             em = new Empleado(tabla.getValueAt(i, 0).toString(), tabla.getValueAt(i, 1).toString(), //Tomamos de la tabla el valor de cada columna y creamos un objeto empleado
-                    tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 5).toString(), tabla.getValueAt(i, 4).toString());
+                    tabla.getValueAt(i, 2).toString(), tabla.getValueAt(i, 3).toString(), tabla.getValueAt(i, 4).toString());
             lista.add(em); //Agregamos el objeto empleado a la lista
         }
         HashMap<String, Object> par = new HashMap<String, Object>();
