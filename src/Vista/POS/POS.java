@@ -1187,8 +1187,8 @@ if (selectedValue != null) {
             String cod = TablaVentas.getValueAt(i, 0).toString();
             int ID_PRODUCTO = Integer.parseInt(TablaVentas.getValueAt(i, 9).toString());
             Float cant = Float.parseFloat(TablaVentas.getValueAt(i, 2).toString());
-            Float precio = Float.parseFloat(TablaVentas.getValueAt(i, 3).toString());
-            Float Desc = Float.parseFloat(TablaVentas.getValueAt(i, 5).toString());
+            Float precio = Float.parseFloat(TablaVentas.getValueAt(i, 5).toString());
+            Float Desc = Float.parseFloat(TablaVentas.getValueAt(i, 4).toString());
             String Total = TablaVentas.getValueAt(i, 6).toString();
             String Nombre = TablaVentas.getValueAt(i, 1).toString();
             DetallesValesParametros.setNoTraslado(String.valueOf(lblSerie_TRASLADOS.getText()));
@@ -1255,8 +1255,8 @@ if (selectedValue != null) {
             String cod = TablaVentas.getValueAt(i, 0).toString();
             int ID_PRODUCTO = Integer.parseInt(TablaVentas.getValueAt(i, 9).toString());
             Float cant = Float.parseFloat(TablaVentas.getValueAt(i, 2).toString());
-            Float precio = Float.parseFloat(TablaVentas.getValueAt(i, 3).toString());
-            Float Desc = Float.parseFloat(TablaVentas.getValueAt(i, 5).toString());
+            Float precio = Float.parseFloat(TablaVentas.getValueAt(i, 5).toString());
+            Float Desc = Float.parseFloat(TablaVentas.getValueAt(i, 4).toString());
             String Total = TablaVentas.getValueAt(i, 6).toString();
             String Nombre = TablaVentas.getValueAt(i, 1).toString();
             DetallesValesParametros.setNoVale(String.valueOf(Vale.getText()));
@@ -1325,8 +1325,8 @@ if (selectedValue != null) {
         for (int i = 0; i < TablaVentas.getRowCount(); i++) {
             String cod = TablaVentas.getValueAt(i, 0).toString();
             Float cant = Float.parseFloat(TablaVentas.getValueAt(i, 2).toString());
-            Float precio = Float.parseFloat(TablaVentas.getValueAt(i, 3).toString());
-            Float Desc = Float.parseFloat(TablaVentas.getValueAt(i, 5).toString());
+            Float precio = Float.parseFloat(TablaVentas.getValueAt(i, 5).toString());
+            Float Desc = Float.parseFloat(TablaVentas.getValueAt(i, 4).toString());
             String Total = TablaVentas.getValueAt(i, 6).toString();
             String Nombre = TablaVentas.getValueAt(i, 1).toString();
             DetallesCotizacionesParametros.setNoCotizacion(String.valueOf(lblNumeroSerieCotizacion.getText()));
