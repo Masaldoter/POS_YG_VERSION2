@@ -542,6 +542,7 @@ public class Documentos {
             }
 
             JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new File(METODOS_GLOBALES.CargarDatosRutasAlBuscarImagen()));
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             String selectPath = null;
             Component parent = null;

@@ -453,12 +453,12 @@ public class MOVIMIENTOS_DIARIOS extends javax.swing.JInternalFrame {
         jLabel14.setText("TIPO DE BUSQUEDA:");
 
         fechas.setBackground(new java.awt.Color(204, 204, 255));
-        fechas.setFont(new java.awt.Font("DialogInput", 3, 24)); // NOI18N
+        fechas.setFont(new java.awt.Font("Times New Roman", 0, 28)); // NOI18N
         fechas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         fechas.setText("Fecha");
 
-        jLabel73.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel73.setText("FECHA DE VENTAS:");
+        jLabel73.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel73.setText("VENTAS DEL DÍA:");
 
         jSeparator30.setForeground(new java.awt.Color(0, 0, 0));
         jSeparator30.setOrientation(javax.swing.SwingConstants.VERTICAL);

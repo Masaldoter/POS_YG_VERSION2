@@ -485,7 +485,7 @@ public class Config extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("SELECCIONE LA RUTA DE IMAGENES");
-        chooser.setCurrentDirectory(new File(RutaBusqueda.getText()));
+        chooser.setCurrentDirectory(new File(lblrutaservidor_imagenes_productos.getText()));
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         Component parent = null;
         int returnVal = chooser.showSaveDialog(parent);
@@ -510,7 +510,7 @@ public class Config extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("SELECCIONE LA RUTA DE IMAGENES");
-        chooser.setCurrentDirectory(new File(RutaBusqueda.getText()));
+        chooser.setCurrentDirectory(new File(lblrutaservidor_sistema.getText()));
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         Component parent = null;
         int returnVal = chooser.showSaveDialog(parent);
@@ -532,7 +532,7 @@ public class Config extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("SELECCIONE LA RUTA DE IMAGENES");
-        chooser.setCurrentDirectory(new File(RutaBusqueda.getText()));
+        chooser.setCurrentDirectory(new File(lblrutaservidor_usuarios.getText()));
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         Component parent = null;
         int returnVal = chooser.showSaveDialog(parent);

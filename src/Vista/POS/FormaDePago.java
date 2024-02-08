@@ -13,6 +13,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
@@ -30,6 +31,19 @@ public class FormaDePago extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         Cerrar();
         this.pos = pos;
+        
+        // Manejar el evento de minimizar la ventana
+        this.addWindowStateListener(new WindowStateListener() {
+            public void windowStateChanged(WindowEvent e) {
+                if (e.getNewState() == JFrame.ICONIFIED) {
+                    // La ventana se ha minimizado
+                    System.out.println("La ventana FormaDePago se ha minimizado");
+                } else if (e.getNewState() == JFrame.NORMAL) {
+                    // La ventana se ha restaurado
+                    System.out.println("La ventana FormaDePago se ha restaurado");
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -738,7 +752,7 @@ public class FormaDePago extends javax.swing.JFrame {
                 case 1 -> {
                     if(EfectivoPagado.getText().equals("")){
                         EfectivoPagado.requestFocus();
-                        JOptionPane.showMessageDialog(null, "DEBE INGRESAR ALGUN PAGO EN EFECTIVO", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "DEBE INGRESAR ALGUN PAGO EN EFECTIVO", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
                     }else{
                         Totales();
                     }
@@ -746,7 +760,7 @@ public class FormaDePago extends javax.swing.JFrame {
                 case 2 -> {
                     if(TarjetaPagado.getText().equals("")){
                         TarjetaPagado.requestFocus();
-                        JOptionPane.showMessageDialog(null, "DEBE INGRESAR LO PAGADO CON TARJETA", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "DEBE INGRESAR LO PAGADO CON TARJETA", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
                     }else{
                         Totales();
                     }
@@ -754,7 +768,7 @@ public class FormaDePago extends javax.swing.JFrame {
                 case 3 -> {
                     if(DepositoPagado.getText().equals("")){
                         DepositoPagado.requestFocus();
-                        JOptionPane.showMessageDialog(null, "DEBE INGRESAR LO PAGADO EN DEPOSITO O TRANSFERENCIA", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "DEBE INGRESAR LO PAGADO EN DEPOSITO O TRANSFERENCIA", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
                     }else{
                         Totales();
                     }
@@ -762,7 +776,7 @@ public class FormaDePago extends javax.swing.JFrame {
                 case 4 -> {
                     if(ChequePagado.getText().equals("")){
                         ChequePagado.requestFocus();
-                        JOptionPane.showMessageDialog(null, "DEBE INGRESAR LO PAGADO CON CHEQUE", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "DEBE INGRESAR LO PAGADO CON CHEQUE", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
                     }else{
                         Totales();
                     }
@@ -770,7 +784,7 @@ public class FormaDePago extends javax.swing.JFrame {
                 case 5 -> {
                     if(EfectivoPagado.getText().equals("") || TarjetaPagado.getText().equals("") || DepositoPagado.getText().equals("") || ChequePagado.getText().equals("")){
                         EfectivoPagado.requestFocus();
-                        JOptionPane.showMessageDialog(null, "DEBE INGRESAR LAS FORMAS DE PAGO", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "DEBE INGRESAR LAS FORMAS DE PAGO", "NO SE PERMITE UN VALOR NULO", JOptionPane.ERROR_MESSAGE);
                     }else{
                         Totales();
                     }
@@ -805,7 +819,7 @@ public class FormaDePago extends javax.swing.JFrame {
             this.pos.VentanaFormaPago = false;
                     this.setVisible(false);
         }else{
-            int Seleccion = JOptionPane.showConfirmDialog(null, "AÚN NO HA TERMINADO EL PROCESO.\n¿ESTÁ SEGURO DE TERMINAR?","ALERTA", JOptionPane.WARNING_MESSAGE);
+            int Seleccion = JOptionPane.showConfirmDialog(this, "AÚN NO HA TERMINADO EL PROCESO.\n¿ESTÁ SEGURO DE TERMINAR?","ALERTA", JOptionPane.WARNING_MESSAGE);
             if(Seleccion == 0){
                 this.pos.RellenarMetodoPago(this.TotalPagado.getText(), this.cambio.getText(), this.EfectivoPagado.getText(), this.DepositoPagado.getText(), this.TarjetaPagado.getText(), this.ChequePagado.getText()
                     , this.NTransacciones.getText(), this.SeleccionNombre.getText(), this.SeleccionId.getText(), this.TotalIva.getText(), this.SubTotal.getText()); 

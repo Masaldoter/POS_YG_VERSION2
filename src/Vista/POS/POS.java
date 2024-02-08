@@ -92,6 +92,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -876,7 +877,7 @@ if (selectedValue != null) {
             FORMA_DE_PAGO();
             ID_PRODUCTO.setText("");
         } else {
-            JOptionPane.showMessageDialog(null, "DEBE SELECCIONAR UN PRODUCTO");
+            JOptionPane.showMessageDialog(principal, "DEBE SELECCIONAR UN PRODUCTO");
         }
     }
 
@@ -932,7 +933,7 @@ if (selectedValue != null) {
                 || MunicipioCliente.getText().equals("") || DepartamentoCliente.getText().equals("")
                 || PaisCliente.getSelectedIndex()<0 || PaisCliente.getSelectedItem().equals(null) || SiglaPais.getText().equals("") || CodigoPostalCliente.getText().equals("")) {
             Estado = false;
-            JOptionPane.showMessageDialog(null, "DEBE RELLENAR TODOS LOS CAMPOS DEL CLIENTE");
+            JOptionPane.showMessageDialog(principal, "DEBE RELLENAR TODOS LOS CAMPOS DEL CLIENTE");
         } else {
             Estado = true;
         }
@@ -943,7 +944,7 @@ if (selectedValue != null) {
     public synchronized void Imprimir() {
         //Detalles D= new Detalles(factura.getText(), factura.getText());
         if (VALIDAR_CAJAS_CLIENTE_POS() == false) {
-            int i = JOptionPane.showConfirmDialog(null, "¿DESEA COMPLETAR LA VENTA SIN UN CLIENTE?\n *Esta acción asignará automaticamente un CONSUMIDOR FINAL a la venta");
+            int i = JOptionPane.showConfirmDialog(principal, "¿DESEA COMPLETAR LA VENTA SIN UN CLIENTE?\n *Esta acción asignará automaticamente un CONSUMIDOR FINAL a la venta");
             if (i == 0) {
                 ConsultarNit_CUIFinal("CF");
                 ObtenerNumeroInterno();
@@ -1156,8 +1157,8 @@ if (selectedValue != null) {
             generarserie_TRASLADOS();
             RegistrarTraslado();
         } else if (nombre.getText().equals("") && !"".equals(Caja_IDENTIFICACION.getText())) {
-            JOptionPane.showMessageDialog(null, "DEBE RELLENAR EL NOMBRE");
-            JOptionPane.showMessageDialog(null, "DEBE COMPLETAR EL NIT");
+            JOptionPane.showMessageDialog(principal, "DEBE RELLENAR EL NOMBRE");
+            JOptionPane.showMessageDialog(principal, "DEBE COMPLETAR EL NIT");
         }
     }
     
@@ -1226,8 +1227,8 @@ if (selectedValue != null) {
             RegistraVale();
             ValeDao.numeroserieIncrementarVales(Integer.parseInt(Vale.getText()));
         } else if (nombre.getText().equals("") && !"".equals(Caja_IDENTIFICACION.getText())) {
-            JOptionPane.showMessageDialog(null, "DEBE RELLENAR EL NOMBRE");
-            JOptionPane.showMessageDialog(null, "DEBE COMPLETAR EL NIT");
+            JOptionPane.showMessageDialog(principal, "DEBE RELLENAR EL NOMBRE");
+            JOptionPane.showMessageDialog(principal, "DEBE COMPLETAR EL NIT");
         }
     }
     
@@ -1289,7 +1290,7 @@ if (selectedValue != null) {
         CotizacionDao = new CotizacionesDao();
         //Detalles D= new Detalles(factura.getText(), factura.getText());
         if (nombre.getText().equals("") && Caja_IDENTIFICACION.getText().equals("")) {
-            int i = JOptionPane.showConfirmDialog(null, "¿DESEA COMPLETAR LA VENTA SIN UN CLIENTE?\n *Esta acción asignará automaticamente un CONSUMIDOR FINAL a la venta");
+            int i = JOptionPane.showConfirmDialog(principal, "¿DESEA COMPLETAR LA VENTA SIN UN CLIENTE?\n *Esta acción asignará automaticamente un CONSUMIDOR FINAL a la venta");
             if (i == 0) {
                 generarserieCotizacion();
                 ConsultarNit_CUIFinal("CF");
@@ -1300,8 +1301,8 @@ if (selectedValue != null) {
             RegistraCotizacion();
             CotizacionDao.numeroserieIncrementarCotizacion(Integer.parseInt(lblNumeroSerieCotizacion.getText()));
         } else if (nombre.getText().equals("") && !"".equals(Caja_IDENTIFICACION.getText())) {
-            JOptionPane.showMessageDialog(null, "DEBE RELLENAR EL NOMBRE");
-            JOptionPane.showMessageDialog(null, "DEBE COMPLETAR EL NIT");
+            JOptionPane.showMessageDialog(principal, "DEBE RELLENAR EL NOMBRE");
+            JOptionPane.showMessageDialog(principal, "DEBE COMPLETAR EL NIT");
         }
     }
 
@@ -1467,7 +1468,7 @@ if (selectedValue != null) {
             }
             
         }else{
-            JOptionPane.showMessageDialog(null, "¡DEBE INGRESAR UN NÚMERO DE FACTURA!", "CONSULTA ERRÓNEA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(principal, "¡DEBE INGRESAR UN NÚMERO DE FACTURA!", "CONSULTA ERRÓNEA", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -1503,7 +1504,7 @@ if (selectedValue != null) {
             
             
         }else{
-            JOptionPane.showMessageDialog(null, "¡DEBE INGRESAR UN NÚMERO DE FACTURA!", "CONSULTA ERRÓNEA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(principal, "¡DEBE INGRESAR UN NÚMERO DE FACTURA!", "CONSULTA ERRÓNEA", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -1539,7 +1540,7 @@ if (selectedValue != null) {
             
             
         }else{
-            JOptionPane.showMessageDialog(null, "¡DEBE INGRESAR UN NÚMERO DE FACTURA!", "CONSULTA ERRÓNEA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(principal, "¡DEBE INGRESAR UN NÚMERO DE FACTURA!", "CONSULTA ERRÓNEA", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -1575,7 +1576,7 @@ if (selectedValue != null) {
             
             
         }else{
-            JOptionPane.showMessageDialog(null, "¡DEBE INGRESAR UN NÚMERO DE FACTURA!", "CONSULTA ERRÓNEA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(principal, "¡DEBE INGRESAR UN NÚMERO DE FACTURA!", "CONSULTA ERRÓNEA", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -1629,7 +1630,7 @@ if (selectedValue != null) {
             Busqueda_ID_VENTA(Codigo);
 
         } else {
-            JOptionPane.showMessageDialog(null, "DEBE INGRESAR UN CÓDIGO DE BARRAS", "CAMPO VACÍO", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(principal, "DEBE INGRESAR UN CÓDIGO DE BARRAS", "CAMPO VACÍO", JOptionPane.ERROR_MESSAGE);
             IdVenta.requestFocus();
         }
     }
@@ -1661,7 +1662,7 @@ if (selectedValue != null) {
         pro = proDao.BuscarProID_VENTA(Codigo);
         if (pro.getNombre() != null) {
             if (pro.getEstado_Producto().equals("INACTIVO")) {
-                JOptionPane.showMessageDialog(null, "¡PRODUCTO INACTIVO!\nNECESITA DARSE DE ALTA PARA PODER VENDER", "¡ATENCIÓN!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(principal, "¡PRODUCTO INACTIVO!\nNECESITA DARSE DE ALTA PARA PODER VENDER", "¡ATENCIÓN!", JOptionPane.ERROR_MESSAGE);
                 IdVenta.requestFocus();
                 ESTADO_BUSQUEDA=false;
             } else {
@@ -1706,7 +1707,7 @@ if (selectedValue != null) {
             }
         } else {
             ESTADO_BUSQUEDA=false;
-            JOptionPane.showMessageDialog(null, "¡EL PRODUCO NO EXISTE");
+            JOptionPane.showMessageDialog(principal, "¡EL PRODUCO NO EXISTE");
             IdVenta.requestFocus();
         }
         return ESTADO_BUSQUEDA;
@@ -1721,7 +1722,7 @@ if (selectedValue != null) {
         pro = proDao.BuscarProCodigoBarras(Codigo);
         if (pro.getNombre() != null) {
             if (pro.getEstado_Producto().equals("INACTIVO")) {
-                JOptionPane.showMessageDialog(null, "¡PRODUCTO INACTIVO!\nNECESITA DARSE DE ALTA PARA PODER VENDER", "¡ATENCIÓN!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(principal, "¡PRODUCTO INACTIVO!\nNECESITA DARSE DE ALTA PARA PODER VENDER", "¡ATENCIÓN!", JOptionPane.ERROR_MESSAGE);
                 IdVenta.requestFocus();
                 ESTADO_BUSQUEDA=false;
             } else {
@@ -1767,7 +1768,7 @@ if (selectedValue != null) {
             }
         } else {
             ESTADO_BUSQUEDA=false;
-            JOptionPane.showMessageDialog(null, "¡EL PRODUCO NO EXISTE");
+            JOptionPane.showMessageDialog(principal, "¡EL PRODUCO NO EXISTE");
             IdVenta.requestFocus();
         }
         return ESTADO_BUSQUEDA;
@@ -1907,7 +1908,7 @@ if (selectedValue != null) {
             if(Float.parseFloat(labeltotalenfacturacion.getText())>=2500){
             JOptionPane.showMessageDialog(principal, "¡DEBE INGRESAR UN NÚMERO DE NIT O CUI PARA PODER GENERAR ESTA FACTURA!", "*****MAYOR A 2500****", JOptionPane.ERROR_MESSAGE);
         }else{
-              int i = JOptionPane.showConfirmDialog(null, "¿DESEA COMPLETAR LA VENTA SIN UN CLIENTE?\n *Esta acción asignará automaticamente un CONSUMIDOR FINAL a la venta");
+              int i = JOptionPane.showConfirmDialog(principal, "¿DESEA COMPLETAR LA VENTA SIN UN CLIENTE?\n *Esta acción asignará automaticamente un CONSUMIDOR FINAL a la venta");
             if (i == 0) {
                 ConsultarNit_CUIFinal("CF");
                 EnviarParametrosAXML();
@@ -3715,7 +3716,7 @@ if (selectedValue != null) {
     }//GEN-LAST:event_BtnGenerarVentaPOSActionPerformed
 
     private void BtnCancelarVentaPOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarVentaPOSActionPerformed
-        int seleccion= JOptionPane.showConfirmDialog(null, "¿ESTÁ SEGURO DE ANULAR LA VENTA?\n SE ELIMINARÁN TODOS LOS DATOS QUE HAYAS INGRESADO", "¡IMPORTANTE!", JOptionPane.WARNING_MESSAGE);
+        int seleccion= JOptionPane.showConfirmDialog(principal, "¿ESTÁ SEGURO DE ANULAR LA VENTA?\n SE ELIMINARÁN TODOS LOS DATOS QUE HAYAS INGRESADO", "¡IMPORTANTE!", JOptionPane.WARNING_MESSAGE);
         if(seleccion==0){
             AumentarStock();
             LIMPIAR_CLIENTE_POS();
@@ -3739,6 +3740,10 @@ if (selectedValue != null) {
                     BP.setVisible(true);
                     BtnBuscarProductoPOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
                 } else {
+                    // Si la ventana ya ha sido creada, lo restauramos si está minimizado
+                    if ((BP.getExtendedState() & JFrame.ICONIFIED) != 0) {
+                        BP.setExtendedState(BP.getExtendedState() & ~JFrame.ICONIFIED);
+                    }
                     BP.toFront();
                     BP.jTextField1.requestFocus();
                 }
@@ -3753,7 +3758,10 @@ if (selectedValue != null) {
             DesktopNotify.showDesktopMessage("¡ACCIÓN NO VÁLIDA!", "¡DEBE INGRESAR ALGÚN PRODUCTO!", DesktopNotify.FAIL, 20000L);
         }else{
             if(VentanaFormaPago == true){
-                Pagos.toFront();
+                // Si Pagos ya ha sido creado, lo restauramos si está minimizado
+                    if ((Pagos.getExtendedState() & JFrame.ICONIFIED) != 0) {
+                        Pagos.setExtendedState(Pagos.getExtendedState() & ~JFrame.ICONIFIED);
+                    }
                 Pagos.toFront();
             }else{
                 VentanaFormaPago = true;
@@ -3772,6 +3780,10 @@ if (selectedValue != null) {
             observaciones= new Observaciones(ObservacionVenta.getText(), pos);
             observaciones.setVisible(true);
         }else{
+            // Si la ventana ya ha sido creada, lo restauramos si está minimizado
+                    if ((observaciones.getExtendedState() & JFrame.ICONIFIED) != 0) {
+                        observaciones.setExtendedState(observaciones.getExtendedState() & ~JFrame.ICONIFIED);
+                    }
             observaciones.toFront();
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("¡ACCIÓN NO VÁLIDA!", "¡YA HAY UNA VENTANA DE OBSERVACIÓN ABIERTA!", DesktopNotify.FAIL, 20000L);

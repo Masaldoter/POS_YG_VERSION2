@@ -243,18 +243,18 @@ public final class Principal extends javax.swing.JFrame {
     
     public void ConfirmarSalida(){
         if(P_O_S.TablaVentas.getRowCount() > 0){
-            JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTA PENDIENTE, TERMINELA O CANCELELA!");
+            JOptionPane.showMessageDialog(this, "¡TIENE UNA VENTA PENDIENTE, TERMINELA O CANCELELA!");
         } else if (VentanaAdministracionDeProductos == true) {
-            JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN ABIERTA, TERMÍNELA O CIÉRRELA!");
+            JOptionPane.showMessageDialog(this, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN ABIERTA, TERMÍNELA O CIÉRRELA!");
             AdminProduct.toFront();
         } else if (VENTANA_ADMINISTRACION_DE_USUARIOS == true) {
-            JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN DE USUARIOS ABIERTA, TERMÍNELA O CIÉRRELA!");
+            JOptionPane.showMessageDialog(this, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN DE USUARIOS ABIERTA, TERMÍNELA O CIÉRRELA!");
             ADMIN_USUARIOS.toFront();
         } else {
-            int seleccion = JOptionPane.showConfirmDialog(null, "¿ESTA SEGURO DE SALIR DEL SISTEMA?", "SISTEMA EL AMIGO", JOptionPane.YES_NO_OPTION);
+            int seleccion = JOptionPane.showConfirmDialog(this, "¿ESTA SEGURO DE SALIR DEL SISTEMA?", "SISTEMA EL AMIGO", JOptionPane.YES_NO_OPTION);
             if (seleccion == 0) {
                 AlCerrarSesion();
-                JOptionPane.showMessageDialog(null, "¡FUE UN GUSTO VERTE " + PARAMETROS_USUARIOS.NOMBRE_USUARIO.toUpperCase() + " ! :)", "SISTEMA EL AMIGO", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "¡FUE UN GUSTO VERTE " + PARAMETROS_USUARIOS.NOMBRE_USUARIO.toUpperCase() + " ! :)", "SISTEMA EL AMIGO", JOptionPane.INFORMATION_MESSAGE);
                 METODOS_GLOBALES.executorService.shutdown();
                 dispose();
                 System.exit(0);
@@ -1400,7 +1400,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         if(P_O_S.TablaVentas.getRowCount() > 0){
-            JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTA PENDIENTE, TERMINELA O CANCELELA!");
+            JOptionPane.showMessageDialog(this, "¡TIENE UNA VENTA PENDIENTE, TERMINELA O CANCELELA!");
             
         }else{
             if(VentanaCategoria==true){
@@ -1412,13 +1412,13 @@ public final class Principal extends javax.swing.JFrame {
         }else if(VentanaConfiguraciones==true){
             conf.toFront();
         }else if(VentanaAdministracionDeProductos==true){
-            JOptionPane.showMessageDialog(null, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN ABIERTA, TERMÍNELA O CIÉRRELA!");
+            JOptionPane.showMessageDialog(this, "¡TIENE UNA VENTANA DE ADMINISTRACIÓN ABIERTA, TERMÍNELA O CIÉRRELA!");
             AdminProduct.toFront();
         }else if(VENTANA_ADMINISTRACION_DE_USUARIOS==true){
             ADMIN_USUARIOS.toFront();
         }else{
             AlCerrarSesion();
-            JOptionPane.showMessageDialog(null, "¡FUE UN GUSTO VERTE "+PARAMETROS_USUARIOS.NOMBRE_USUARIO.toUpperCase() +" ! :)", "SISTEMA EL AMIGO", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "¡FUE UN GUSTO VERTE "+PARAMETROS_USUARIOS.NOMBRE_USUARIO.toUpperCase() +" ! :)", "SISTEMA EL AMIGO", JOptionPane.INFORMATION_MESSAGE);
            LOGIN Aldo = new LOGIN();
         Aldo.setVisible(true);
         this.dispose(); 

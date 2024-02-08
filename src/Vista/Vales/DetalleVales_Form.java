@@ -25,6 +25,11 @@ import ds.desktop.notify.NotifyTheme;
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
@@ -37,10 +42,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 public final class DetalleVales_Form extends javax.swing.JFrame {
-
+    private static final int TIEMPO_INACTIVIDAD = 15 * 60 * 1000; // 10 minutos en milisegundos
+    private Timer temporizador;
+    private long tiempoTranscurrido;
+    DetalleVales_Form DetaVale= null;
     Ventas v = new Ventas();
     int DiariasGenerales;
     Date fech = new Date();
@@ -60,6 +69,7 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
         this.V_G = V_G;
         this.pos = pos;
         this.setLocationRelativeTo(null);
+        DetaVale = this;
         CargarTodosLosDetalles(NumeroFactura);
         v.CargarDatosFormatoImpresion(jComboBox1);
         DiariasGenerales = TipoDeVista;
@@ -81,7 +91,68 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
             );
         }
 
+    // Agrega un manejador de eventos del ratón para reiniciar el temporizador en cada interacción del usuario
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                reiniciarTemporizador();
+            }
+        });
+
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                //reiniciarTemporizador();
+            }
+        });
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                reiniciarTemporizador();
+                super.mouseClicked(e); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+            }
+            
+        });
+        jTabbedPane1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                reiniciarTemporizador();
+            }
+        });
+
+        // Configura el temporizador para que cierre la aplicación después de 30 minutos de inactividad
+        jMenu4.setText("SE CIERRA EN: 00:00");
+
+        temporizador = new Timer(1000, new ActionListener() { // Actualiza cada segundo
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tiempoTranscurrido += 1000;
+                actualizarTiempoLabel();
+                
+                if (tiempoTranscurrido >= TIEMPO_INACTIVIDAD) {
+                    DetaVale.dispose();
+                }
+            }
+        });
+        temporizador.start();
+        
     }
+    
+    private void reiniciarTemporizador() {
+    tiempoTranscurrido = 0;
+    actualizarTiempoLabel();
+    temporizador.restart();
+}
+
+    private void actualizarTiempoLabel() {
+    long tiempoRestante = (TIEMPO_INACTIVIDAD - tiempoTranscurrido) / 1000; // Tiempo restante en segundos
+    long horas = tiempoRestante / 3600;
+    long minutos = (tiempoRestante % 3600) / 60;
+    long segundos = tiempoRestante % 60;
+
+    String tiempoRestanteFormato = String.format("%02d:%02d:%02d", horas, minutos, segundos);
+    jMenu4.setText("SE CIERRA EN: " + tiempoRestanteFormato);
+}
 
     public void Cerrar() {
         this.dispose();
@@ -303,6 +374,7 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DETALLE DE VALE");
@@ -724,6 +796,7 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
         jMenu3.add(jMenuItem4);
 
         jMenuBar1.add(jMenu3);
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -868,7 +941,7 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
 
         } catch (IOException ex) {
 
-            JOptionPane.showMessageDialog(null, "¡El archivo no existe o se eliminó!" + ex);
+            JOptionPane.showMessageDialog(this, "¡El archivo no existe o se eliminó!" + ex);
 
         }
 
@@ -1113,6 +1186,7 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -1167,7 +1241,7 @@ public final class DetalleVales_Form extends javax.swing.JFrame {
     }
 
     public void RealizarVenta() {
-        int Seleccion = JOptionPane.showConfirmDialog(null, """
+        int Seleccion = JOptionPane.showConfirmDialog(this, """
                                                            ESTA ACCI\u00d3N ELIMINARA ESTE VALE Y LA PASARA
                                                             A LA SECCI\u00d3N DE VENTAS.
                                                            TENGA EN CUENTA QUE SI TIENE PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTAR\u00c1""", "¿ESTÁ SEGURO DE REALIZAR LA VENTA?", JOptionPane.YES_NO_OPTION);

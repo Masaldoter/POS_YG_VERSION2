@@ -411,7 +411,7 @@ public class VentaDao extends ConexionesSQL {
         cn = conexion.getInstancia().getConnection();
         String sql = "UPDATE registro SET NoFactura=?, TipoDocumentoFel=?, Estado=?, Cliente=?, NitCliente=?, "
                 + "DireccionCliente=?, Usuario=?, Observacion=?, NombreCertificador=?, NitCertificador=?, NitEmisor=?, "
-                + "NumeroDocumento=?, SerieDocumento=?, FechaAutorizacion=?, NumeroAutorizacion=?, Pago=?, Cambio=? WHERE idregistro=?";
+                + "NumeroDocumento=?, SerieDocumento=?, FechaAutorizacion=?, NumeroAutorizacion=?, Pago=?, Cambio=?, FormaPago=? WHERE idregistro=?";
         try {
             ps = cn.prepareStatement(sql);
             ps.setString(1, v.getNoFactura());
@@ -431,7 +431,8 @@ public class VentaDao extends ConexionesSQL {
             ps.setString(15, v.getNumeroAutorizacion());   
             ps.setFloat(16, v.getPagocon());
             ps.setFloat(17, v.getCambio());
-            ps.setInt(18, v.getIdRegistro());   
+            ps.setString(18, v.getFormaPago());
+            ps.setInt(19, v.getIdRegistro());   
             ps.execute();
             Resultado =true;
 

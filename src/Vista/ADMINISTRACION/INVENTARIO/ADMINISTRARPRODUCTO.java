@@ -42,6 +42,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -137,6 +138,18 @@ public final class ADMINISTRARPRODUCTO extends javax.swing.JFrame {
             }
         });
         ListarProductosTienda();
+        // Manejar el evento de minimizar la ventana
+        this.addWindowStateListener(new WindowStateListener() {
+            public void windowStateChanged(WindowEvent e) {
+                if (e.getNewState() == JFrame.ICONIFIED) {
+                    // La ventana ADMINISTRARPRODUCTO se ha minimizado
+                    System.out.println("La ventana ADMINISTRARPRODUCTO se ha minimizado");
+                } else if (e.getNewState() == JFrame.NORMAL) {
+                    // La ventana ADMINISTRARPRODUCTO se ha restaurado
+                    System.out.println("La ventana ADMINISTRARPRODUCTO se ha restaurado");
+                }
+            }
+        });
     }
 
     public void Cerrar() {

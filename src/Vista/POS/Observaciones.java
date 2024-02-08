@@ -10,6 +10,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import javax.swing.JFrame;
 
 /**
@@ -27,6 +28,18 @@ public class Observaciones extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         jTextArea1.setText(Observacion);
         Cerrar();
+        // Manejar el evento de minimizar la ventana
+        this.addWindowStateListener(new WindowStateListener() {
+            public void windowStateChanged(WindowEvent e) {
+                if (e.getNewState() == JFrame.ICONIFIED) {
+                    // La ventana se ha minimizado
+                    System.out.println("La ventana Observaciones se ha minimizado");
+                } else if (e.getNewState() == JFrame.NORMAL) {
+                    // La ventana se ha restaurado
+                    System.out.println("La ventana Observaciones se ha restaurado");
+                }
+            }
+        });
     }
 
     @Override

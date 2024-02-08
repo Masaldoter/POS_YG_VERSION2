@@ -37,6 +37,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -1048,9 +1049,13 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
                     principal.AdminProduct = new ADMINISTRARPRODUCTO(principal, principal.I);
                     principal.AdminProduct.setVisible(true);
                 } else {
+                    if ((principal.AdminProduct.getExtendedState() & JFrame.ICONIFIED) != 0) {
+                        principal.AdminProduct.setExtendedState(principal.AdminProduct.getExtendedState() & ~JFrame.ICONIFIED);
+                    }
+                    principal.AdminProduct.toFront();
                     DesktopNotify.setDefaultTheme(NotifyTheme.Light);
                     DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
-                    principal.AdminProduct.toFront();
+                    // Si la ventana ya ha sido creada, lo restauramos si está minimizado  
                 }
     }//GEN-LAST:event_AgregarpActionPerformed
 
@@ -1063,6 +1068,9 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
         }else{
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
+            if ((principal.AdminProduct.getExtendedState() & JFrame.ICONIFIED) != 0) {
+                        principal.AdminProduct.setExtendedState(principal.AdminProduct.getExtendedState() & ~JFrame.ICONIFIED);
+                    }
             principal.AdminProduct.toFront();
         }
     }//GEN-LAST:event_EditarpActionPerformed
@@ -1225,6 +1233,9 @@ public class INVENTARIO extends javax.swing.JInternalFrame {
                     } else {
                         DesktopNotify.setDefaultTheme(NotifyTheme.Light);
                         DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE PRODUCTOS", DesktopNotify.ERROR, 10000L);
+                        if ((principal.AdminProduct.getExtendedState() & JFrame.ICONIFIED) != 0) {
+                        principal.AdminProduct.setExtendedState(principal.AdminProduct.getExtendedState() & ~JFrame.ICONIFIED);
+                    }
                         principal.AdminProduct.toFront();
                     }
                 }

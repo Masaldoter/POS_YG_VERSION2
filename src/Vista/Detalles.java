@@ -2,7 +2,6 @@ package Vista;
 
 import CLASES_GLOBALES.METODOS_GLOBALES;
 import static CLASES_GLOBALES.METODOS_GLOBALES.LIMPIAR_TABLA;
-import static CLASES_GLOBALES.METODOS_GLOBALES.executorService;
 import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import CLASES_GLOBALES.PARAMETROS_USUARIOS;
 import Clases_Reportes.DatosEmpresa;
@@ -41,11 +40,9 @@ import WebServiceDigifact.CertificarFactura;
 import WebServiceDigifact.ConsultarDTE;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
-import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.print.PrinterException;
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -57,7 +54,6 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import Vista.REPORTES_VENTAS.MOVIMIENTOS_DIARIOS;
 import Vista.VENTAS.CAJA.NOTAS_CREDITO_DEBITO.NOTAS_DEBITO_CREDITO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -69,7 +65,7 @@ import java.util.List;
 import javax.swing.Timer;
 
 public final class Detalles extends javax.swing.JFrame {
-    private static final int TIEMPO_INACTIVIDAD = 30 * 60 * 1000; // 30 minutos en milisegundos
+    private static final int TIEMPO_INACTIVIDAD = 15 * 60 * 1000; // 15 minutos en milisegundos
     private Timer temporizador;
     private long tiempoTranscurrido;
     Ventas v= new Ventas();
@@ -330,6 +326,7 @@ public final class Detalles extends javax.swing.JFrame {
         datos_venta.setIdRegistro(Integer.parseInt(Id.getText()));
         datos_venta.setPagocon(Float.valueOf(CajaPago.getText()));
         datos_venta.setCambio(Float.valueOf(CajaCambio.getText()));
+        datos_venta.setFormaPago(FormapagoDetalleVenta.getSelectedItem().toString());
         Boolean Resultado = V.Editar_Registro(datos_venta);
         
         FormaDePago formaPago = new FormaDePago();
@@ -423,7 +420,7 @@ public final class Detalles extends javax.swing.JFrame {
             CajaVendedor.setText(ConexionesSQL.rs.getString("Usuario"));
             HoraVenta.setText(ConexionesSQL.rs.getString("Hora"));
             Fechaventa.setText(ConexionesSQL.rs.getString("Fecha"));
-            FormapagoDetalleVenta.setText(ConexionesSQL.rs.getString("FormaPago"));
+            FormapagoDetalleVenta.setSelectedItem(ConexionesSQL.rs.getString("FormaPago"));
             CajaObservacion.setText(ConexionesSQL.rs.getString("Observacion"));
             TotalLetras.setText(ConexionesSQL.rs.getString("TotalEnLetras"));
             CajaCertificador.setText(ConexionesSQL.rs.getString("NombreCertificador"));
@@ -541,7 +538,6 @@ public final class Detalles extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         TotalLetras = new javax.swing.JLabel();
-        FormapagoDetalleVenta = new javax.swing.JLabel();
         CajaTransaccionDetalle = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         Efectivo = new javax.swing.JTextField();
@@ -554,6 +550,7 @@ public final class Detalles extends javax.swing.JFrame {
         Otro = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        FormapagoDetalleVenta = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         C = new javax.swing.JScrollPane();
         CajaObservacion = new javax.swing.JTextArea();
@@ -793,8 +790,6 @@ public final class Detalles extends javax.swing.JFrame {
 
         TotalLetras.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "TOTAL EN LETRAS:"));
 
-        FormapagoDetalleVenta.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "FORMA DE PAGO"));
-
         CajaTransaccionDetalle.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "N° DE TRANSACCIÓN"));
 
         jPanel13.setBackground(new java.awt.Color(255, 204, 204));
@@ -909,6 +904,8 @@ public final class Detalles extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        FormapagoDetalleVenta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EFECTIVO", "TARJETA", "DEPÓSITO O TRANSFERENCIA", "CHEQUE", "COMPARTIDO" }));
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -919,7 +916,8 @@ public final class Detalles extends javax.swing.JFrame {
                     .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(TotalLetras, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(FormapagoDetalleVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)
+                        .addComponent(FormapagoDetalleVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(CajaTransaccionDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -932,7 +930,7 @@ public final class Detalles extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(CajaTransaccionDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
-                    .addComponent(FormapagoDetalleVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(FormapagoDetalleVenta))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TotalLetras, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1534,7 +1532,7 @@ public final class Detalles extends javax.swing.JFrame {
         
         DatosClienteYFactura datos;
         datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), CajaDireccion.getText(), Fac.getText(), CajaTotal.getText(), CajaPago.getText(), CajaCambio.getText(), Fac.getText(), Fac.getText(), 
-        FormapagoDetalleVenta.getText(), CajaTransaccionDetalle.getText(), CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " "+Fechaventa.getText(), Fechaventa.getText());
+        FormapagoDetalleVenta.getSelectedItem().toString(), CajaTransaccionDetalle.getText(), CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " "+Fechaventa.getText(), Fechaventa.getText());
         if(TipoDocumentoImpresion == 0){
             try {
                 documentos.Facturaa(datos, datosempresa, DatosCertificador, Fel, "N° Interno", TablaDetalles, 0, "https://felpub.c.sat.gob.gt/verificador-web/publico/vistas/verificacionDte.jsf?tipo=autorizacion&\n"
@@ -1576,7 +1574,7 @@ public final class Detalles extends javax.swing.JFrame {
         Fel.setTipoDocumento(TipoDocumento.getText());
         DatosClienteYFactura datos;
         datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), CajaDireccion.getText(), Fac.getText(), CajaTotal.getText(), CajaPago.getText(), CajaCambio.getText(), Fac.getText(), Fac.getText(),
-                FormapagoDetalleVenta.getText(), CajaTransaccionDetalle.getText(), CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " " + Fechaventa.getText(), Fechaventa.getText());
+                FormapagoDetalleVenta.getSelectedItem().toString(), CajaTransaccionDetalle.getText(), CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " " + Fechaventa.getText(), Fechaventa.getText());
 
         if (TipoDocumentoImpresion == 0) {
             try {
@@ -1630,7 +1628,7 @@ public final class Detalles extends javax.swing.JFrame {
         
         DatosClienteYFactura datos;
         datos = new DatosClienteYFactura(CajaCliente.getText(), CajaNit.getText(), CajaDireccion.getText(), Fac.getText(), CajaTotal.getText(), CajaPago.getText(), CajaCambio.getText(), Fac.getText(), Fac.getText(), 
-        FormapagoDetalleVenta.getText(), CajaTransaccionDetalle.getText(), CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " "+Fechaventa.getText(), Fechaventa.getText());
+        FormapagoDetalleVenta.getSelectedItem().toString(), CajaTransaccionDetalle.getText(), CajaVendedor.getText(), CajaObservacion.getText(), TotalLetras.getText(), HoraVenta.getText() + " "+Fechaventa.getText(), Fechaventa.getText());
         if(Guardar == false){
            //documentos.FacturaaCrearSinImprimir(datos, datosempresa,DatosCertificador, Fel,"N° Interno", TablaDetalles); 
         }else{
@@ -1646,7 +1644,7 @@ public final class Detalles extends javax.swing.JFrame {
     }
     
     public void REABRIR() {
-        int Seleccion = JOptionPane.showConfirmDialog(null, """
+        int Seleccion = JOptionPane.showConfirmDialog(this, """
                                                             ESTA ACCI\u00d3N REABRIRA LA VENTA, POR LO TANTO ESTA SE ANULAR\u00c1
                                                             TENGA EN CUENTA QUE SI TIENE PRODUCTOS EN LA TABLA DE VENTAS, ESTA LA COMPLEMENTAR\u00c1""", "¿ESTÁ SEGURO DE RE-ABRIR LA VENTA?", JOptionPane.YES_NO_OPTION);
         Boolean VerificarCheckEnVenta = pos.CheckIngresoAutomatico.isSelected();
@@ -1764,7 +1762,7 @@ public final class Detalles extends javax.swing.JFrame {
     }
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         if(VALIDAR_TOTAL()==true){
-        int Seleccion= JOptionPane.showConfirmDialog(null, "ESTA ACCIÓN CONVERTIRÁ ESTA VENTA A FACTURA ELECTRÓNICA\n ¿ESTÁ SEGURO DE REALIZAR LA ACCIÓN?");
+        int Seleccion= JOptionPane.showConfirmDialog(this, "ESTA ACCIÓN CONVERTIRÁ ESTA VENTA A FACTURA ELECTRÓNICA\n ¿ESTÁ SEGURO DE REALIZAR LA ACCIÓN?");
         if(Seleccion== 0) {
                 GenerarFacturaElectronica();
             }
@@ -2000,7 +1998,7 @@ public final class Detalles extends javax.swing.JFrame {
     private javax.swing.JTextField Fac;
     private javax.swing.JTextField FechaCertificacion;
     private javax.swing.JLabel Fechaventa;
-    public javax.swing.JLabel FormapagoDetalleVenta;
+    private javax.swing.JComboBox<String> FormapagoDetalleVenta;
     private javax.swing.JLabel HoraVenta;
     private javax.swing.JMenuItem IR_A_VENTA;
     public final javax.swing.JTextField Id = new javax.swing.JTextField();
@@ -2173,7 +2171,7 @@ public final class Detalles extends javax.swing.JFrame {
         DCDTE = CDTE.ObtenerDTE(DCDTE);
         if (DCDTE.getEstado() == true) {
             VENTANA_AVISO.dispose();
-            JOptionPane.showMessageDialog(null, "ESTADO: " + DCDTE.getESTATUS() + "\nTIPO DE DTE: " + DCDTE.getTIPO_DTE() + "\nAUTH: " + DCDTE.getGUID() + "\nSERIE: " + DCDTE.getSERIE() + "\nNIT CLIENTE: " + DCDTE.getNIT_COMPRADOR()
+            JOptionPane.showMessageDialog(principal, "ESTADO: " + DCDTE.getESTATUS() + "\nTIPO DE DTE: " + DCDTE.getTIPO_DTE() + "\nAUTH: " + DCDTE.getGUID() + "\nSERIE: " + DCDTE.getSERIE() + "\nNIT CLIENTE: " + DCDTE.getNIT_COMPRADOR()
                             + "\nCLIENTE: " + DCDTE.getNIT_COMPRADOR() + "\nACUSE DTE: " + DCDTE.getACUSE_RECIBO_SAT_DTE() + "\nACUSE ANULACIÓN: " + DCDTE.getACUSE_RECIBO_ANULACION(), "CONSULTA DE DTE", JOptionPane.INFORMATION_MESSAGE);
                 }
             }

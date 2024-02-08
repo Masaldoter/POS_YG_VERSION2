@@ -1,5 +1,6 @@
 package Vista.Vales;
 
+import CLASES_GLOBALES.PARAMETROS_EMPRESA;
 import Controlador.Eventos;
 import Modelo.Vales;
 import Tablas.ConsultasVales;
@@ -44,12 +45,23 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
         }
         }
     }
+    
+    private void TOTALES_REGISTROS(){
+        Float TOTAL=0f, TOTAL_PRODUCTOS=0f;
+        for (int i = 0; i < TablaVales.getRowCount(); i++) {
+            TOTAL += Float.parseFloat(TablaVales.getValueAt(i, 4).toString());
+            TOTAL_PRODUCTOS += Float.parseFloat(TablaVales.getValueAt(i, 5).toString());
+            jLabel8.setText(String.valueOf(i));
+        }
+        jLabel4.setText(String.valueOf(TOTAL_PRODUCTOS));
+        jLabel5.setText(PARAMETROS_EMPRESA.SIGNO_MONEDA+PARAMETROS_EMPRESA.formatea.format(TOTAL));
+    }
     public void ActualizarTablaEstado(int Filtro_Busqueda, String Parametro1, String Parametro2){
         ConsultasVales tablas = new ConsultasVales();
-        TablaCotizaciones.setDefaultRenderer(Object.class, new RenderTablas());
-        LimpiarTabla(TablaCotizaciones);
+        TablaVales.setDefaultRenderer(Object.class, new RenderTablas());
+        LimpiarTabla(TablaVales);
         DefaultTableModel modelo;
-        modelo = (DefaultTableModel) TablaCotizaciones.getModel();
+        modelo = (DefaultTableModel) TablaVales.getModel();
         List<Vales> ListarPr = tablas.ListarValesPorEstado(EstadoCotizacion, Filtro_Busqueda, Parametro1, Parametro2);
         Object[] ob = new Object[10];
         for (int i = 0; i < ListarPr.size(); i++) {
@@ -66,7 +78,8 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
             modelo.addRow(ob);
            //[255,230,205]
         }
-        TablaCotizaciones.setModel(modelo);
+        TablaVales.setModel(modelo);
+        TOTALES_REGISTROS();
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -92,15 +105,19 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         EstadoCotizacion = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaCotizaciones = new javax.swing.JTable();
+        TablaVales = new javax.swing.JTable();
         lblTipoDeBusquedaRealizada = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         id_TipoBusqueda = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setBorder(null);
-        setTitle("ADMINISTRACIÓN DE COTIZACIÓNES");
+        setTitle("ADMINISTRACIÓN DE VALES");
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
@@ -269,7 +286,7 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -291,19 +308,37 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 153, 102));
 
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setBorder(javax.swing.BorderFactory.createTitledBorder("TOTAL DE PRODUCTOS"));
+
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setBorder(javax.swing.BorderFactory.createTitledBorder("TOTAL"));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        TablaCotizaciones.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        TablaCotizaciones.setModel(new javax.swing.table.DefaultTableModel(
+        TablaVales.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        TablaVales.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -319,20 +354,20 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        TablaCotizaciones.setRowHeight(50);
-        TablaCotizaciones.addMouseListener(new java.awt.event.MouseAdapter() {
+        TablaVales.setRowHeight(50);
+        TablaVales.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TablaCotizacionesMouseClicked(evt);
+                TablaValesMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(TablaCotizaciones);
-        if (TablaCotizaciones.getColumnModel().getColumnCount() > 0) {
-            TablaCotizaciones.getColumnModel().getColumn(0).setPreferredWidth(10);
-            TablaCotizaciones.getColumnModel().getColumn(1).setPreferredWidth(40);
-            TablaCotizaciones.getColumnModel().getColumn(4).setPreferredWidth(25);
-            TablaCotizaciones.getColumnModel().getColumn(6).setPreferredWidth(25);
-            TablaCotizaciones.getColumnModel().getColumn(8).setPreferredWidth(25);
-            TablaCotizaciones.getColumnModel().getColumn(9).setPreferredWidth(15);
+        jScrollPane1.setViewportView(TablaVales);
+        if (TablaVales.getColumnModel().getColumnCount() > 0) {
+            TablaVales.getColumnModel().getColumn(0).setPreferredWidth(10);
+            TablaVales.getColumnModel().getColumn(1).setPreferredWidth(40);
+            TablaVales.getColumnModel().getColumn(4).setPreferredWidth(25);
+            TablaVales.getColumnModel().getColumn(6).setPreferredWidth(25);
+            TablaVales.getColumnModel().getColumn(8).setPreferredWidth(25);
+            TablaVales.getColumnModel().getColumn(9).setPreferredWidth(15);
         }
 
         lblTipoDeBusquedaRealizada.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
@@ -340,20 +375,31 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
 
         jLabel3.setText("FILTRO DE BÚSQUEDA:");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setText("TOTAL DE REGISTROS:");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel8.setText("jLabel8");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblTipoDeBusquedaRealizada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(id_TipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(id_TipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -364,7 +410,11 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
                     .addComponent(id_TipoBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -389,24 +439,24 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TablaCotizacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaCotizacionesMouseClicked
-        int fila = TablaCotizaciones.getSelectedRow();
+    private void TablaValesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaValesMouseClicked
+        int fila = TablaVales.getSelectedRow();
  
-        String codigo = TablaCotizaciones.getValueAt(fila, 1).toString();
+        String codigo = TablaVales.getValueAt(fila, 1).toString();
 
-        int Columna = TablaCotizaciones.getColumnModel().getColumnIndexAtX(evt.getX());
-        int Fila = evt.getY()/TablaCotizaciones.getRowHeight();
-        if(Fila < TablaCotizaciones.getRowCount() && Fila >= 0 && Columna < TablaCotizaciones.getColumnCount() && Columna >= 0){
-            Object value = TablaCotizaciones.getValueAt(Fila, Columna);
+        int Columna = TablaVales.getColumnModel().getColumnIndexAtX(evt.getX());
+        int Fila = evt.getY()/TablaVales.getRowHeight();
+        if(Fila < TablaVales.getRowCount() && Fila >= 0 && Columna < TablaVales.getColumnCount() && Columna >= 0){
+            Object value = TablaVales.getValueAt(Fila, Columna);
             if(value instanceof JButton){
                 ((JButton)value).doClick();
-                String Id = TablaCotizaciones.getValueAt(fila, 0).toString();
+                String Id = TablaVales.getValueAt(fila, 0).toString();
                 JButton boton = (JButton) value;
                 DetalleVales_Form de= new DetalleVales_Form(codigo, 1, 0, pos, this);
                 de.setVisible(true);
             }
         }
-    }//GEN-LAST:event_TablaCotizacionesMouseClicked
+    }//GEN-LAST:event_TablaValesMouseClicked
 
     private void EstadoCotizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EstadoCotizacionActionPerformed
         ActualizarTablaEstado(Integer.parseInt(id_TipoBusqueda.getText()), this.Parametro1, this.Parametro2);
@@ -491,14 +541,18 @@ public class ValesGenerales extends javax.swing.JInternalFrame {
     private static javax.swing.JComboBox<String> EstadoCotizacion;
     private com.toedter.calendar.JDateChooser FechaFin;
     private com.toedter.calendar.JDateChooser FechaInicial;
-    private static javax.swing.JTable TablaCotizaciones;
+    private static javax.swing.JTable TablaVales;
     private javax.swing.JLabel id_TipoBusqueda;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

@@ -9,6 +9,7 @@ import Tablas.ActualizarTablaUsuarios;
 import Vista.Principal;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -194,6 +195,10 @@ public class USUARIOS_INTERNOS extends javax.swing.JInternalFrame {
             } else {
                 DesktopNotify.setDefaultTheme(NotifyTheme.Light);
                 DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE USUARIOS", DesktopNotify.ERROR, 10000L);
+                // Si la ventana ya ha sido creada, lo restauramos si está minimizado
+                    if ((principal.ADMIN_USUARIOS.getExtendedState() & JFrame.ICONIFIED) != 0) {
+                        principal.ADMIN_USUARIOS.setExtendedState(principal.ADMIN_USUARIOS.getExtendedState() & ~JFrame.ICONIFIED);
+                    }
                 principal.ADMIN_USUARIOS.toFront();
             }
         }
@@ -207,6 +212,10 @@ public class USUARIOS_INTERNOS extends javax.swing.JInternalFrame {
         } else {
             DesktopNotify.setDefaultTheme(NotifyTheme.Light);
             DesktopNotify.showDesktopMessage("ERRÓR", "NO PUEDE ABRIR MÁS DE 1 VENTANA DE ADMINISTRACIÓN DE USUARIOS", DesktopNotify.ERROR, 10000L);
+            // Si la ventana ya ha sido creada, lo restauramos si está minimizado
+                    if ((principal.ADMIN_USUARIOS.getExtendedState() & JFrame.ICONIFIED) != 0) {
+                        principal.ADMIN_USUARIOS.setExtendedState(principal.ADMIN_USUARIOS.getExtendedState() & ~JFrame.ICONIFIED);
+                    }
             principal.ADMIN_USUARIOS.toFront();
         }
     }//GEN-LAST:event_jButton17ActionPerformed
